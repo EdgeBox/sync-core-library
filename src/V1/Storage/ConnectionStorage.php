@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use Drupal\cms_content_sync\SyncCore\V1\Entity\Connection;
-use Drupal\cms_content_sync\SyncCore\V1\Entity\EntityPreviewConnection;
+use EdgeBox\SyncCoreV1\Entity\Connection;
+use EdgeBox\SyncCoreV1\Entity\EntityPreviewConnection;
 
 /**
  * Class ConnectionStorage

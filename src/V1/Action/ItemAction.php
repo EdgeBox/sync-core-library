@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Action;
 
-use Drupal\cms_content_sync\SyncCore\V1\Query\ItemQuery;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\Storage;
+use EdgeBox\SyncCoreV1\Query\ItemQuery;
+use EdgeBox\SyncCoreV1\Storage\Storage;
 
 /**
  * Class ItemAction.

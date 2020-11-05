@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\IBatchOperation;
+use EdgeBox\SyncCoreInterfaces\IBatchOperation;
 
 /**
  *

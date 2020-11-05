@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IRegisterPool;
-use Drupal\cms_content_sync\SyncCore\V1\BatchOperation;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCoreInterfaces\Configuration\IRegisterPool;
+use EdgeBox\SyncCoreV1\BatchOperation;
+use EdgeBox\SyncCoreV1\Storage\ApiStorage;
 
 /**
  *

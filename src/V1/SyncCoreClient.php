@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use Drupal\cms_content_sync\SyncCore\Exception\BadRequestException;
-use Drupal\cms_content_sync\SyncCore\Exception\ForbiddenException;
-use Drupal\cms_content_sync\SyncCore\Exception\NotFoundException;
-use Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException;
-use Drupal\cms_content_sync\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCoreException\BadRequestException;
+use EdgeBox\SyncCoreException\ForbiddenException;
+use EdgeBox\SyncCoreException\NotFoundException;
+use EdgeBox\SyncCoreException\SyncCoreException;
+use EdgeBox\SyncCoreException\TimeoutException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 

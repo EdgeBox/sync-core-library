@@ -2,15 +2,15 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\ISyndicationService;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\SimpleQuery;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage;
-use Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient;
+use EdgeBox\SyncCoreException\SyncCoreException;
+use EdgeBox\SyncCoreInterfaces\Syndication\ISyndicationService;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreV1\Query\SimpleQuery;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
+use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCoreV1\Storage\MetaInformationConnectionStorage;
+use EdgeBox\SyncCoreV1\SyncCoreClient;
 
 /**
  *

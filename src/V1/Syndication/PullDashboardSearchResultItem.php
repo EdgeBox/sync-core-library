@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IPullDashboardSearchResultItem;
+use EdgeBox\SyncCoreInterfaces\Syndication\IPullDashboardSearchResultItem;
 
 /**
  *

@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use Drupal\cms_content_sync\SyncCore\V1\Entity\ConnectionSynchronization;
+use EdgeBox\SyncCoreV1\Entity\ConnectionSynchronization;
 
 /**
  * Class ConnectionStorage

@@ -2,13 +2,13 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IConfigurationService;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IRemoteFlow;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ObjectStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCoreInterfaces\Configuration\IConfigurationService;
+use EdgeBox\SyncCoreInterfaces\Configuration\IRemoteFlow;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreV1\Storage\ApiStorage;
+use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
+use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
 
 /**
  *

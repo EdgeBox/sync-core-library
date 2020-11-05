@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Result\ListResult;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreV1\Query\Result\ListResult;
 
 /**
  * Class ListQuery

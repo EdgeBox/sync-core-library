@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Entity;
 
-use Drupal\cms_content_sync\SyncCore\V1\Action\Connection\LoginAction;
+use EdgeBox\SyncCoreV1\Action\Connection\LoginAction;
 
 /**
  *

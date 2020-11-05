@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IEntityReference;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IPullOperation;
-use Drupal\cms_content_sync\SyncCore\V1\Entity\Entity;
+use EdgeBox\SyncCoreInterfaces\Syndication\IEntityReference;
+use EdgeBox\SyncCoreInterfaces\Syndication\IPullOperation;
+use EdgeBox\SyncCoreV1\Entity\Entity;
 
 /**
  *

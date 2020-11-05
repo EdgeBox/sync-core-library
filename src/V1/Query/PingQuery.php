@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use Drupal\cms_content_sync\SyncCore\V1\Query\Result\SimpleResult;
-use Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient;
+use EdgeBox\SyncCoreV1\Query\Result\SimpleResult;
+use EdgeBox\SyncCoreV1\SyncCoreClient;
 
 /**
  * Class PingQuery.

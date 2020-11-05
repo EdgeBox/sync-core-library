@@ -2,10 +2,10 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IPullAll;
-use Drupal\cms_content_sync\SyncCore\V1\SerializableWithSyncCoreReference;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCoreInterfaces\Syndication\IPullAll;
+use EdgeBox\SyncCoreV1\SerializableWithSyncCoreReference;
+use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
 
 /**
  *

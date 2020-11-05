@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\IProgress;
+use EdgeBox\SyncCoreInterfaces\IProgress;
 
 /**
  *

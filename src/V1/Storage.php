@@ -2,16 +2,16 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ObjectStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\RemoteStorageStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCoreV1\Storage\ApiStorage;
+use EdgeBox\SyncCoreV1\Storage\ConnectionStorage;
+use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCoreV1\Storage\MetaInformationConnectionStorage;
+use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
+use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCoreV1\Storage\RemoteStorageStorage;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
 
 /**
  * Class Storages.

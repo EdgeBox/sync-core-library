@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Entity;
 
-use Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllAction;
-use Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllStatus;
-use Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeSingleAction;
+use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeAllAction;
+use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeAllStatus;
+use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeSingleAction;
 
 /**
  *

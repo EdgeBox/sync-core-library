@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IPushSingle;
-use Drupal\cms_content_sync\SyncCore\V1\Entity\Entity;
-use Drupal\cms_content_sync\SyncCore\V1\Helper;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCoreInterfaces\Syndication\IPushSingle;
+use EdgeBox\SyncCoreV1\Entity\Entity;
+use EdgeBox\SyncCoreV1\Helper;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
+use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
 
 /**
  *

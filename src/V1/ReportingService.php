@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\IReportingService;
-use Drupal\cms_content_sync\SyncCore\V1\Query\SimpleQuery;
+use EdgeBox\SyncCoreInterfaces\IReportingService;
+use EdgeBox\SyncCoreV1\Query\SimpleQuery;
 
 /**
  *

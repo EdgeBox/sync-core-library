@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use Drupal\cms_content_sync\SyncCore\V1\Query\Result\SimpleResult;
+use EdgeBox\SyncCoreV1\Query\Result\SimpleResult;
 
 /**
  * Class SimpleQuery.

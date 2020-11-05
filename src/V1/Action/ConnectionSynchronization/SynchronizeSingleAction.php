@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Action\ConnectionSynchronization;
 
-use Drupal\cms_content_sync\SyncCore\V1\Action\SubItemAction;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\Storage;
-use Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient;
+use EdgeBox\SyncCoreV1\Action\SubItemAction;
+use EdgeBox\SyncCoreV1\Storage\Storage;
+use EdgeBox\SyncCoreV1\SyncCoreClient;
 
 /**
  * Class SynchronizeSingleAction.

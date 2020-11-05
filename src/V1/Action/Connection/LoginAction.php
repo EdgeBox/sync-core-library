@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Action\Connection;
 
-use Drupal\cms_content_sync\SyncCore\V1\Action\ItemAction;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\Storage;
-use Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient;
+use EdgeBox\SyncCoreV1\Action\ItemAction;
+use EdgeBox\SyncCoreV1\Storage\Storage;
+use EdgeBox\SyncCoreV1\SyncCoreClient;
 
 /**
  * Class LoginAction.

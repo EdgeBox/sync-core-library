@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use Drupal\cms_content_sync\SyncCore\V1\SyncCore;
+use EdgeBox\SyncCoreV1\SyncCore;
 
 /**
  * Class CustomStorage

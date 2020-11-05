@@ -2,10 +2,10 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IListRemoteFlows;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IRemoteFlowListItem;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ObjectStorage;
+use EdgeBox\SyncCoreInterfaces\Configuration\IListRemoteFlows;
+use EdgeBox\SyncCoreInterfaces\Configuration\IRemoteFlowListItem;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
 
 /**
  *

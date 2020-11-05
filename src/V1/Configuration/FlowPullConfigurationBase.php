@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IFlowPullConfiguration;
-use Drupal\cms_content_sync\SyncCore\V1\BatchOperation;
-use Drupal\cms_content_sync\SyncCore\V1\Entity\Entity;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreInterfaces\Configuration\IFlowPullConfiguration;
+use EdgeBox\SyncCoreV1\BatchOperation;
+use EdgeBox\SyncCoreV1\Entity\Entity;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
 
 /**
  *

@@ -2,15 +2,15 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IDefinePoolForFlow;
-use Drupal\cms_content_sync\SyncCore\V1\BatchOperation;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\RemoteStorageStorage;
+use EdgeBox\SyncCoreInterfaces\IApplicationInterface;
+use EdgeBox\SyncCoreInterfaces\Configuration\IDefinePoolForFlow;
+use EdgeBox\SyncCoreV1\BatchOperation;
+use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
+use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCoreV1\Storage\RemoteStorageStorage;
 
 /**
  *

@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCoreInterfaces\Syndication\ITriggerPullSingle;
+use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCoreV1\Storage\CustomStorage;
 
 /**
  *

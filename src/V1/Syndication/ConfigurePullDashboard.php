@@ -2,15 +2,15 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IConfigurePullDashboard;
-use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\IPullDashboardSearchResult;
-use Drupal\cms_content_sync\SyncCore\V1\Entity\Entity;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\ListQuery;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCoreInterfaces\Syndication\IConfigurePullDashboard;
+use EdgeBox\SyncCoreInterfaces\Syndication\IPullDashboardSearchResult;
+use EdgeBox\SyncCoreV1\Entity\Entity;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreV1\Query\ListQuery;
+use EdgeBox\SyncCoreV1\Storage\ApiStorage;
+use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
 
 /**
  *

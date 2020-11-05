@@ -2,18 +2,18 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use Drupal\cms_content_sync\SyncCore\Exception\SiteVerificationFailedException;
-use Drupal\cms_content_sync\SyncCore\Exception\NotFoundException;
-use Drupal\cms_content_sync\SyncCore\Interfaces\ISyncCore;
-use Drupal\cms_content_sync\SyncCore\V1\Configuration\ConfigurationService;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\DataCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\Condition\ParentCondition;
-use Drupal\cms_content_sync\SyncCore\V1\Query\PingQuery;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;
-use Drupal\cms_content_sync\SyncCore\V1\Syndication\SyndicationService;
+use EdgeBox\SyncCoreException\SiteVerificationFailedException;
+use EdgeBox\SyncCoreException\NotFoundException;
+use EdgeBox\SyncCoreInterfaces\ISyncCore;
+use EdgeBox\SyncCoreV1\Configuration\ConfigurationService;
+use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
+use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCoreV1\Query\PingQuery;
+use EdgeBox\SyncCoreV1\Storage\ApiStorage;
+use EdgeBox\SyncCoreV1\Storage\ConnectionStorage;
+use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCoreV1\Syndication\SyndicationService;
 
 /**
  * Class Client.
