@@ -1,5 +1,5 @@
 {
-  "name": "edgebox/sync-core",
+  "name": "edge-box/sync-core",
   "type": "library",
   "description": "The Sync Core PHP library.",
   "homepage": "https://www.cms-content-sync.io",
