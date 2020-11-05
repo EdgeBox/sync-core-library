@@ -2,15 +2,15 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\Syndication\IConfigurePullDashboard;
-use EdgeBox\SyncCoreInterfaces\Syndication\IPullDashboardSearchResult;
-use EdgeBox\SyncCoreV1\Entity\Entity;
-use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
-use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
-use EdgeBox\SyncCoreV1\Query\ListQuery;
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
-use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
-use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCore\Interfaces\Syndication\IConfigurePullDashboard;
+use EdgeBox\SyncCore\Interfaces\Syndication\IPullDashboardSearchResult;
+use EdgeBox\SyncCore\V1\Entity\Entity;
+use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
+use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCore\V1\Query\ListQuery;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 
 /**
  *

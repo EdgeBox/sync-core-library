@@ -2,13 +2,13 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\Configuration\IConfigurationService;
-use EdgeBox\SyncCoreInterfaces\Configuration\IRemoteFlow;
-use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
-use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
-use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
-use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
+use EdgeBox\SyncCore\Interfaces\Configuration\IRemoteFlow;
+use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
+use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
+use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 
 /**
  *

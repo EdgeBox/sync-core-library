@@ -2,16 +2,16 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
-use EdgeBox\SyncCoreV1\Storage\ConnectionStorage;
-use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
-use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
-use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
-use EdgeBox\SyncCoreV1\Storage\MetaInformationConnectionStorage;
-use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
-use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
-use EdgeBox\SyncCoreV1\Storage\RemoteStorageStorage;
-use EdgeBox\SyncCoreV1\Storage\CustomStorage;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCore\V1\Storage\ConnectionStorage;
+use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage;
+use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
+use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 
 /**
  * Class Storages.

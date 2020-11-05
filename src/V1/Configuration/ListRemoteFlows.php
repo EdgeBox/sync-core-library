@@ -2,10 +2,10 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\Configuration\IListRemoteFlows;
-use EdgeBox\SyncCoreInterfaces\Configuration\IRemoteFlowListItem;
-use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
-use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
+use EdgeBox\SyncCore\Interfaces\Configuration\IListRemoteFlows;
+use EdgeBox\SyncCore\Interfaces\Configuration\IRemoteFlowListItem;
+use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
+use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
 
 /**
  *

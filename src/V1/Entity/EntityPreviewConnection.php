@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Entity;
 
-use EdgeBox\SyncCoreV1\Action\Connection\AllowPublicAccessAction;
+use EdgeBox\SyncCore\V1\Action\Connection\AllowPublicAccessAction;
 
 /**
  *

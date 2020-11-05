@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Action;
 
-use EdgeBox\SyncCoreV1\Query\ItemQuery;
-use EdgeBox\SyncCoreV1\Storage\Storage;
+use EdgeBox\SyncCore\V1\Query\ItemQuery;
+use EdgeBox\SyncCore\V1\Storage\Storage;
 
 /**
  * Class ItemAction.

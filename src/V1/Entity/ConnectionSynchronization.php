@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Entity;
 
-use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeAllAction;
-use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeAllStatus;
-use EdgeBox\SyncCoreV1\Action\ConnectionSynchronization\SynchronizeSingleAction;
+use EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllAction;
+use EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllStatus;
+use EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeSingleAction;
 
 /**
  *

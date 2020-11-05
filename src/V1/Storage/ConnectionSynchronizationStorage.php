@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use EdgeBox\SyncCoreV1\Entity\ConnectionSynchronization;
+use EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization;
 
 /**
  * Class ConnectionStorage

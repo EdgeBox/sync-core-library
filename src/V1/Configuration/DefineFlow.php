@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\Configuration\IDefineFlow;
-use EdgeBox\SyncCoreV1\BatchOperation;
-use EdgeBox\SyncCoreV1\Storage\ObjectStorage;
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefineFlow;
+use EdgeBox\SyncCore\V1\BatchOperation;
+use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
 
 /**
  *

@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use EdgeBox\SyncCoreV1\SyncCoreClient;
+use EdgeBox\SyncCore\V1\SyncCoreClient;
 
 /**
  * Class CreateItemQuery

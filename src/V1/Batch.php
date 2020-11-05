@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCoreInterfaces\IBatch;
+use EdgeBox\SyncCore\Interfaces\IBatch;
 
 /**
  *

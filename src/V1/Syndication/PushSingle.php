@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\Syndication\IPushSingle;
-use EdgeBox\SyncCoreV1\Entity\Entity;
-use EdgeBox\SyncCoreV1\Helper;
-use EdgeBox\SyncCoreV1\Storage\CustomStorage;
-use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\Interfaces\Syndication\IPushSingle;
+use EdgeBox\SyncCore\V1\Entity\Entity;
+use EdgeBox\SyncCore\V1\Helper;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 
 /**
  *

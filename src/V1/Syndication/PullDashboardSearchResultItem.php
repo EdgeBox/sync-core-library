@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\Syndication\IPullDashboardSearchResultItem;
+use EdgeBox\SyncCore\Interfaces\Syndication\IPullDashboardSearchResultItem;
 
 /**
  *

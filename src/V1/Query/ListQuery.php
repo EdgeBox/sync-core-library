@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
-use EdgeBox\SyncCoreV1\Query\Result\ListResult;
+use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCore\V1\Query\Result\ListResult;
 
 /**
  * Class ListQuery

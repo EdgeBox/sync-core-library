@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\IProgress;
+use EdgeBox\SyncCore\Interfaces\IProgress;
 
 /**
  *

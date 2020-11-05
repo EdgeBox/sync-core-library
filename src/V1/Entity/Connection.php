@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Entity;
 
-use EdgeBox\SyncCoreV1\Action\Connection\LoginAction;
+use EdgeBox\SyncCore\V1\Action\Connection\LoginAction;
 
 /**
  *

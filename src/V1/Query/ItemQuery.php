@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use EdgeBox\SyncCoreV1\Query\Result\ItemResult;
+use EdgeBox\SyncCore\V1\Query\Result\ItemResult;
 
 /**
  * Class ItemQuery

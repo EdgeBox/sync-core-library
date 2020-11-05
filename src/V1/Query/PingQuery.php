@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
-use EdgeBox\SyncCoreV1\Query\Result\SimpleResult;
-use EdgeBox\SyncCoreV1\SyncCoreClient;
+use EdgeBox\SyncCore\V1\Query\Result\SimpleResult;
+use EdgeBox\SyncCore\V1\SyncCoreClient;
 
 /**
  * Class PingQuery.

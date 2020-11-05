@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCoreException\BadRequestException;
-use EdgeBox\SyncCoreException\ForbiddenException;
-use EdgeBox\SyncCoreException\NotFoundException;
-use EdgeBox\SyncCoreException\SyncCoreException;
-use EdgeBox\SyncCoreException\TimeoutException;
+use EdgeBox\SyncCore\Exception\BadRequestException;
+use EdgeBox\SyncCore\Exception\ForbiddenException;
+use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Exception\TimeoutException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 

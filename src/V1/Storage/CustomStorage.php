@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use EdgeBox\SyncCoreV1\SyncCore;
+use EdgeBox\SyncCore\V1\SyncCore;
 
 /**
  * Class CustomStorage

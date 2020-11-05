@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Action\ConnectionSynchronization;
 
-use EdgeBox\SyncCoreV1\Action\SubItemAction;
-use EdgeBox\SyncCoreV1\Storage\Storage;
-use EdgeBox\SyncCoreV1\SyncCoreClient;
+use EdgeBox\SyncCore\V1\Action\SubItemAction;
+use EdgeBox\SyncCore\V1\Storage\Storage;
+use EdgeBox\SyncCore\V1\SyncCoreClient;
 
 /**
  * Class SynchronizeSingleAction.

@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\Syndication\IEntityReference;
-use EdgeBox\SyncCoreInterfaces\Syndication\IPullOperation;
-use EdgeBox\SyncCoreV1\Entity\Entity;
+use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
+use EdgeBox\SyncCore\Interfaces\Syndication\IPullOperation;
+use EdgeBox\SyncCore\V1\Entity\Entity;
 
 /**
  *

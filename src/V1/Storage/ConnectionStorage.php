@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use EdgeBox\SyncCoreV1\Entity\Connection;
-use EdgeBox\SyncCoreV1\Entity\EntityPreviewConnection;
+use EdgeBox\SyncCore\V1\Entity\Connection;
+use EdgeBox\SyncCore\V1\Entity\EntityPreviewConnection;
 
 /**
  * Class ConnectionStorage

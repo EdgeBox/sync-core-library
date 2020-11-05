@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCoreInterfaces\IReportingService;
-use EdgeBox\SyncCoreV1\Query\SimpleQuery;
+use EdgeBox\SyncCore\Interfaces\IReportingService;
+use EdgeBox\SyncCore\V1\Query\SimpleQuery;
 
 /**
  *

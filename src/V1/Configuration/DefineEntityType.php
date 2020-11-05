@@ -2,14 +2,14 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\Configuration\IDefineEntityType;
-use EdgeBox\SyncCoreV1\BatchOperation;
-use EdgeBox\SyncCoreV1\Entity\Entity;
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
-use EdgeBox\SyncCoreV1\Storage\ConnectionStorage;
-use EdgeBox\SyncCoreV1\Storage\CustomStorage;
-use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
-use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefineEntityType;
+use EdgeBox\SyncCore\V1\BatchOperation;
+use EdgeBox\SyncCore\V1\Entity\Entity;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCore\V1\Storage\ConnectionStorage;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 
 /**
  *

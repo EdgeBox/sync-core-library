@@ -2,11 +2,11 @@
 
 namespace EdgeBox\SyncCore\V1\Storage;
 
-use EdgeBox\SyncCoreV1\Query\CreateItemQuery;
-use EdgeBox\SyncCoreV1\Query\DeleteItemQuery;
-use EdgeBox\SyncCoreV1\Query\ItemQuery;
-use EdgeBox\SyncCoreV1\Query\ListQuery;
-use EdgeBox\SyncCoreV1\Query\UpdateItemQuery;
+use EdgeBox\SyncCore\V1\Query\CreateItemQuery;
+use EdgeBox\SyncCore\V1\Query\DeleteItemQuery;
+use EdgeBox\SyncCore\V1\Query\ItemQuery;
+use EdgeBox\SyncCore\V1\Query\ListQuery;
+use EdgeBox\SyncCore\V1\Query\UpdateItemQuery;
 
 /**
  * Class Storage

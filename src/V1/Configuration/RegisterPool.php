@@ -2,9 +2,9 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\Configuration\IRegisterPool;
-use EdgeBox\SyncCoreV1\BatchOperation;
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
+use EdgeBox\SyncCore\Interfaces\Configuration\IRegisterPool;
+use EdgeBox\SyncCore\V1\BatchOperation;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
 
 /**
  *

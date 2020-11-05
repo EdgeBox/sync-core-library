@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\IBatchOperation;
+use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 
 /**
  *

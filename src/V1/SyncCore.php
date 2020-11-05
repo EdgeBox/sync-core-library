@@ -2,18 +2,18 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCoreException\SiteVerificationFailedException;
-use EdgeBox\SyncCoreException\NotFoundException;
-use EdgeBox\SyncCoreInterfaces\ISyncCore;
-use EdgeBox\SyncCoreV1\Configuration\ConfigurationService;
-use EdgeBox\SyncCoreV1\Query\Condition\DataCondition;
-use EdgeBox\SyncCoreV1\Query\Condition\ParentCondition;
-use EdgeBox\SyncCoreV1\Query\PingQuery;
-use EdgeBox\SyncCoreV1\Storage\ApiStorage;
-use EdgeBox\SyncCoreV1\Storage\ConnectionStorage;
-use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
-use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
-use EdgeBox\SyncCoreV1\Syndication\SyndicationService;
+use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
+use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Interfaces\ISyncCore;
+use EdgeBox\SyncCore\V1\Configuration\ConfigurationService;
+use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
+use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
+use EdgeBox\SyncCore\V1\Query\PingQuery;
+use EdgeBox\SyncCore\V1\Storage\ApiStorage;
+use EdgeBox\SyncCore\V1\Storage\ConnectionStorage;
+use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCore\V1\Syndication\SyndicationService;
 
 /**
  * Class Client.

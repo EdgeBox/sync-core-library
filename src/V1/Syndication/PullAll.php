@@ -2,10 +2,10 @@
 
 namespace EdgeBox\SyncCore\V1\Syndication;
 
-use EdgeBox\SyncCoreInterfaces\Syndication\IPullAll;
-use EdgeBox\SyncCoreV1\SerializableWithSyncCoreReference;
-use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
-use EdgeBox\SyncCoreV1\Storage\CustomStorage;
+use EdgeBox\SyncCore\Interfaces\Syndication\IPullAll;
+use EdgeBox\SyncCore\V1\SerializableWithSyncCoreReference;
+use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 
 /**
  *

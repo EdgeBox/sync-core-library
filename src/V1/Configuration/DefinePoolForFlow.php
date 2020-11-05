@@ -2,15 +2,15 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCoreInterfaces\IApplicationInterface;
-use EdgeBox\SyncCoreInterfaces\Configuration\IDefinePoolForFlow;
-use EdgeBox\SyncCoreV1\BatchOperation;
-use EdgeBox\SyncCoreV1\Storage\ConnectionSynchronizationStorage;
-use EdgeBox\SyncCoreV1\Storage\CustomStorage;
-use EdgeBox\SyncCoreV1\Storage\EntityTypeStorage;
-use EdgeBox\SyncCoreV1\Storage\InstanceStorage;
-use EdgeBox\SyncCoreV1\Storage\PreviewEntityStorage;
-use EdgeBox\SyncCoreV1\Storage\RemoteStorageStorage;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefinePoolForFlow;
+use EdgeBox\SyncCore\V1\BatchOperation;
+use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
+use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
+use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
+use EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage;
 
 /**
  *
