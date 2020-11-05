@@ -1,8 +1,8 @@
 {
-  "name": "edge-box/sync-core",
+  "name": "EdgeBox/SyncCore",
   "type": "library",
   "description": "The Sync Core PHP library.",
-  "homepage": "https://www.cms-content-sync.io",
+  "homepage": "https://www.cms-content-sync.io/",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "prefer-stable": true,
