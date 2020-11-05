@@ -1,0 +1,43 @@
+<?php
+
+namespace SyncCore\Interfaces\Syndication;
+
+/**
+ *
+ */
+interface ITriggerPullSingle {
+
+  /**
+   * @param string $pool_id
+   *
+   * @return $this
+   */
+  public function fromPool($pool_id);
+
+  /**
+   * @param bool $set
+   *
+   * @return $this
+   */
+  public function manually($set);
+
+  /**
+   * @param bool $set
+   *
+   * @return $this
+   */
+  public function asDependency($set);
+
+  /**
+   * @return $this
+   *
+   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   */
+  public function execute();
+
+  /**
+   * @return IPullDashboardSearchResultItem
+   */
+  public function getPullDashboardSearchResultItem();
+
+}
