@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Action;
+namespace EdgeBox\SyncCore\V1\Action;
 
 use Drupal\cms_content_sync\SyncCore\V1\Query\ItemQuery;
 use Drupal\cms_content_sync\SyncCore\V1\Storage\Storage;

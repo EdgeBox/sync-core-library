@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Exception;
+namespace EdgeBox\SyncCore\Exception;
 
 /**
  * The Sync Core responded with a non-OK status code or the request failed for other reasons (timeout for example).

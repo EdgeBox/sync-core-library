@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Query\Result;
+namespace EdgeBox\SyncCore\V1\Query\Result;
 
 /**
  * Class ItemResult

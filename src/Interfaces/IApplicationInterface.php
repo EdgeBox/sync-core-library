@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Interfaces;
+namespace EdgeBox\SyncCore\Interfaces;
 
 /**
  * Interface ApplicationInterface.

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Query;
+namespace EdgeBox\SyncCore\V1\Query;
 
 /**
  * Class StorageQuery.

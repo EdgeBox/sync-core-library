@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Syndication;
+namespace EdgeBox\SyncCore\V1\Syndication;
 
 use Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException;
 use Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\ISyndicationService;

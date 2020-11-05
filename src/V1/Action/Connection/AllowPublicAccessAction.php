@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Action\Connection;
+namespace EdgeBox\SyncCore\V1\Action\Connection;
 
 use Drupal\cms_content_sync\SyncCore\V1\Action\ItemAction;
 use Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Exception;
+namespace EdgeBox\SyncCore\Exception;
 
 /**
  * The Sync Core did not respond in time. Might be a temporary overload so if the

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Query\Result;
+namespace EdgeBox\SyncCore\V1\Query\Result;
 
 use Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient;
 

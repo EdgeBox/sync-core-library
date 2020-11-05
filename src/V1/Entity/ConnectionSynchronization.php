@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Entity;
+namespace EdgeBox\SyncCore\V1\Entity;
 
 use Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllAction;
 use Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllStatus;

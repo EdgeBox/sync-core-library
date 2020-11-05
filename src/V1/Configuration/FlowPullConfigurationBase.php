@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Configuration;
+namespace EdgeBox\SyncCore\V1\Configuration;
 
 use Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IFlowPullConfiguration;
 use Drupal\cms_content_sync\SyncCore\V1\BatchOperation;

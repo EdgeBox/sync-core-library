@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Exception;
+namespace EdgeBox\SyncCore\Exception;
 
 /**
  * The Sync core responded with 400 Bad Request.

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1;
+namespace EdgeBox\SyncCore\V1;
 
 use Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage;
 use Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage;

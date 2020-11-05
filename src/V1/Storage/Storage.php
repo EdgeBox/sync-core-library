@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Storage;
+namespace EdgeBox\SyncCore\V1\Storage;
 
 use Drupal\cms_content_sync\SyncCore\V1\Query\CreateItemQuery;
 use Drupal\cms_content_sync\SyncCore\V1\Query\DeleteItemQuery;

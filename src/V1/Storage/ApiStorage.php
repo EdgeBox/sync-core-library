@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Storage;
+namespace EdgeBox\SyncCore\V1\Storage;
 
 /**
  * Class ApiStorage

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1;
+namespace EdgeBox\SyncCore\V1;
 
 /**
  *

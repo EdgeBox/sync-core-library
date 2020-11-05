@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Exception;
+namespace EdgeBox\SyncCore\Exception;
 
 /**
  * The Sync Core responded with 404 Not Found.

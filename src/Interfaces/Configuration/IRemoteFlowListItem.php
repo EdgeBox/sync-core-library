@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\Interfaces\Configuration;
+namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
 /**
  *

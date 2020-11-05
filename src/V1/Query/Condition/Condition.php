@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncCore\V1\Query\Condition;
+namespace EdgeBox\SyncCore\V1\Query\Condition;
 
 /**
  * Class Condition
