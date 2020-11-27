@@ -61,7 +61,7 @@ interface ISyncCore {
   public function setSiteName($set);
 
   /**
-   * @return string
+   * @return array|null
    *
    * @throws \Drupal\cms_content_sync\SyncCore\Exception\NotFoundException
    */

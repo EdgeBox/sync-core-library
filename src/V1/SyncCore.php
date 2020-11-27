@@ -267,7 +267,7 @@ class SyncCore implements ISyncCore {
    * must decide whether to register a new site or forcibly overwrite the
    * existing base URL.
    *
-   * @return bool
+   * @return array|null
    */
   public function verifySiteId() {
     try {
@@ -279,7 +279,9 @@ class SyncCore implements ISyncCore {
 
       // No match: Warn user and don't export configuration.
       if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
-        return FALSE;
+        return [
+          $this->application->getSiteId() => $site['base_url'],
+        ];
       }
     }
     // Ignore "not found" as we're just about to export the configuration for
@@ -287,7 +289,7 @@ class SyncCore implements ISyncCore {
     catch (NotFoundException $e) {
     }
 
-    $exists = $this
+    $sites = $this
       ->storage->getInstanceStorage()
       ->listItems()
       ->setCondition(
@@ -301,15 +303,17 @@ class SyncCore implements ISyncCore {
           )
       )
       ->execute()
-      ->getNumberOfItems() > 1;
+      ->getAll();
 
     // Another ID is already used for this base URL.
-    if ($exists) {
-      return FALSE;
+    if (count($sites)) {
+      return [
+        $sites[0]['id'] => $sites[0]['base_url'],
+      ];
     }
 
     // All good.
-    return TRUE;
+    return NULL;
   }
 
   /**
@@ -317,8 +321,9 @@ class SyncCore implements ISyncCore {
    */
   public function registerSite($force = FALSE) {
     if (!$force && $this->application->getSiteId()) {
-      if (!$this->verifySiteId()) {
-        throw new SiteVerificationFailedException('A site with this ID and a different base URL already exists.');
+      $sites = $this->verifySiteId();
+      if (count($sites)) {
+        throw new SiteVerificationFailedException('A site with ID ' . array_keys($sites)[0] . ' and base URL ' . array_values($sites)[0] . ' already exists.');
       }
     }
 
