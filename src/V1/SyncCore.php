@@ -306,7 +306,7 @@ class SyncCore implements ISyncCore {
       ->getAll();
 
     // Another ID is already used for this base URL.
-    if (count($sites)) {
+    if ($sites && count($sites)) {
       return [
         $sites[0]['id'] => $sites[0]['base_url'],
       ];
@@ -322,7 +322,7 @@ class SyncCore implements ISyncCore {
   public function registerSite($force = FALSE) {
     if (!$force && $this->application->getSiteId()) {
       $sites = $this->verifySiteId();
-      if (count($sites)) {
+      if ($sites && count($sites)) {
         throw new SiteVerificationFailedException('A site with ID ' . array_keys($sites)[0] . ' and base URL ' . array_values($sites)[0] . ' already exists.');
       }
     }
