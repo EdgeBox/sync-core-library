@@ -12,7 +12,9 @@ use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
  *
  */
 abstract class FlowPullConfigurationBase extends BatchOperation implements IFlowPullConfiguration {
+
   protected $pull_condition = [];
+
   protected $index = 0;
 
   /**

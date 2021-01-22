@@ -67,6 +67,7 @@ class ListRemoteFlows implements IListRemoteFlows {
 
     foreach ($items as $item) {
       $result[] = new class($item) implements IRemoteFlowListItem {
+
         protected $item;
 
         /**

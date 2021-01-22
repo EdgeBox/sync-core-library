@@ -11,11 +11,15 @@ use EdgeBox\SyncCore\V1\SyncCore;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class EntityStorage extends Storage {
+
   protected $entityType;
+
   protected $bundle;
+
   protected $version;
 
   protected $instance_id;
+
   protected $api_id;
 
   /**

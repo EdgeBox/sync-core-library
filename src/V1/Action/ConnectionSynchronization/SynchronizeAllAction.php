@@ -28,6 +28,7 @@ class SynchronizeAllAction extends ItemAction {
 
   /**
    * @param bool $set
+   *
    * @return $this
    */
   public function force($set) {

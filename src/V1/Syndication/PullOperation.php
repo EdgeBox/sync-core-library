@@ -77,23 +77,6 @@ class PullOperation implements IPullOperation {
   /**
    * @inheritdoc
    */
-  public function getProperty($name, $language = NULL) {
-    if ($language) {
-      if (!isset($this->body['apiu_translation'][$language][$name])) {
-        return NULL;
-      }
-      return $this->body['apiu_translation'][$language][$name];
-    }
-
-    if (!isset($this->body[$name])) {
-      return NULL;
-    }
-    return $this->body[$name];
-  }
-
-  /**
-   * @inheritdoc
-   */
   public function loadReference($definition) {
     return new class ($this->core, $definition) implements IEntityReference {
 
@@ -214,6 +197,23 @@ class PullOperation implements IPullOperation {
       $content = base64_decode($content);
     }
     return $content;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getProperty($name, $language = NULL) {
+    if ($language) {
+      if (!isset($this->body['apiu_translation'][$language][$name])) {
+        return NULL;
+      }
+      return $this->body['apiu_translation'][$language][$name];
+    }
+
+    if (!isset($this->body[$name])) {
+      return NULL;
+    }
+    return $this->body[$name];
   }
 
   /**

@@ -48,13 +48,13 @@ class FlowPullConfiguration extends FlowPullConfigurationBase {
           'modes' => [
             [
               'id' => $flow->getMachineName(),
-    // $type['import'] == PullIntent::PULL_MANUALLY,
+              // $type['import'] == PullIntent::PULL_MANUALLY,
               'is_manual' => FALSE,
-    // $type['import'] == PullIntent::PULL_AS_DEPENDENCY,
+              // $type['import'] == PullIntent::PULL_AS_DEPENDENCY,
               'is_dependent' => FALSE,
-    // $pull_condition ? $pull_condition->toArray() : NULL,
+              // $pull_condition ? $pull_condition->toArray() : NULL,
               'condition' => NULL,
-    // boolval($type['import_deletion_settings']['import_deletion']),.
+              // boolval($type['import_deletion_settings']['import_deletion']),.
               'delete' => FALSE,
             ],
           ],

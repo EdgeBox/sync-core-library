@@ -29,10 +29,15 @@ class PreviewEntityStorage extends Storage {
   const ID = 'drupal_cms-content-sync_preview';
 
   const PROPERTY_PUBLISHED_DATE = 'published_date';
+
   const PROPERTY_PREVIEW_HTML = 'preview_html';
+
   const PROPERTY_TITLE = 'title';
+
   const PROPERTY_CUSTOM_PROPERTIES = 'fields';
+
   const PROPERTY_ENTITY_TYPE_ID = 'entity_type_id';
+
   const PROPERTY_ENTITY_TYPE_UNVERSIONED = 'entity_type_id_unversioned';
 
   /**

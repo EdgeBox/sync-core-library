@@ -42,33 +42,6 @@ class ParentCondition extends Condition {
   }
 
   /**
-   * @param Condition $condition
-   *
-   * @return $this
-   */
-  public function add($condition) {
-    $this->condition['conditions'][] = $condition;
-
-    return $this;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function toArray() {
-    $result = $this->condition;
-
-    /**
-     * @var Condition $condition
-     */
-    foreach ($result['conditions'] as $i => $condition) {
-      $result['conditions'][$i] = $condition->toArray();
-    }
-
-    return $result;
-  }
-
-  /**
    * Create an instance.
    *
    * @param string $operator
@@ -107,6 +80,33 @@ class ParentCondition extends Condition {
    */
   public static function none($conditions = []) {
     return new ParentCondition(self::MATCH_NONE, $conditions);
+  }
+
+  /**
+   * @param Condition $condition
+   *
+   * @return $this
+   */
+  public function add($condition) {
+    $this->condition['conditions'][] = $condition;
+
+    return $this;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function toArray() {
+    $result = $this->condition;
+
+    /**
+     * @var Condition $condition
+     */
+    foreach ($result['conditions'] as $i => $condition) {
+      $result['conditions'][$i] = $condition->toArray();
+    }
+
+    return $result;
   }
 
 }

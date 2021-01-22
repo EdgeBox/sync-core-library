@@ -87,7 +87,8 @@ interface ISyncCore {
    * @param string $bundle
    * @param string $target_version
    *
-   * @return array['SITE_ID']['remote_missing' | 'local_missing'][] = 'PROPERTY_NAME'
+   * @return array['SITE_ID']['remote_missing' | 'local_missing'][] =
+   *   'PROPERTY_NAME'
    */
   public function getSitesWithDifferentEntityTypeVersion($pool_id, $entity_type, $bundle, $target_version);
 

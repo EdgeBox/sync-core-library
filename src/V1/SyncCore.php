@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1;
 
-use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
 use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
 use EdgeBox\SyncCore\V1\Configuration\ConfigurationService;
 use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
@@ -27,6 +27,11 @@ use EdgeBox\SyncCore\V1\Syndication\SyndicationService;
 class SyncCore implements ISyncCore {
 
   /**
+   * @var \Drupal\cms_content_sync\SyncCore\V1\Storage
+   */
+  public $storage;
+
+  /**
    * @var string
    *    The base URL of the remote Sync Core. See Pool::$backend_url
    */
@@ -41,11 +46,6 @@ class SyncCore implements ISyncCore {
    * @var \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface
    */
   protected $application;
-
-  /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\Storage
-   */
-  public $storage;
 
   /**
    * @param \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface $application
@@ -165,11 +165,11 @@ class SyncCore implements ISyncCore {
   public function requestPing($site_url, $method, $authentication) {
     return PingQuery
       ::create($this, NULL)
-        ->setSiteUrl($site_url)
-        ->setMethod($method)
-        ->setAuthentication($authentication)
-        ->execute()
-        ->succeeded();
+      ->setSiteUrl($site_url)
+      ->setMethod($method)
+      ->setAuthentication($authentication)
+      ->execute()
+      ->succeeded();
   }
 
   /**
@@ -202,8 +202,7 @@ class SyncCore implements ISyncCore {
         ->getItem(PreviewEntityStorage::ID)
         ->execute()
         ->getItem();
-    }
-    catch (NotFoundException $e) {
+    } catch (NotFoundException $e) {
       return NULL;
     }
 
@@ -229,8 +228,7 @@ class SyncCore implements ISyncCore {
         ->getItem($id ? $id : $this->application->getSiteId())
         ->execute()
         ->getItem();
-    }
-    catch (NotFoundException $e) {
+    } catch (NotFoundException $e) {
       return NULL;
     }
 
@@ -259,64 +257,6 @@ class SyncCore implements ISyncCore {
   }
 
   /**
-   * Verify that the site ID is valid. This requires the base URL of the site to
-   * match the base URL stored in the Sync Core. If people deploy database
-   * updates for example, the site will think it's another site and things
-   * go south real quick. So we verify that the site ID and site URL are in
-   * sync before we export any configuration. If they don't match, the user
-   * must decide whether to register a new site or forcibly overwrite the
-   * existing base URL.
-   *
-   * @return array|null
-   */
-  public function verifySiteId() {
-    try {
-      $site = $this
-        ->storage->getInstanceStorage()
-        ->getItem($this->application->getSiteId())
-        ->execute()
-        ->getItem();
-
-      // No match: Warn user and don't export configuration.
-      if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
-        return [
-          $this->application->getSiteId() => $site['base_url'],
-        ];
-      }
-    }
-    // Ignore "not found" as we're just about to export the configuration for
-    // the first time then.
-    catch (NotFoundException $e) {
-    }
-
-    $sites = $this
-      ->storage->getInstanceStorage()
-      ->listItems()
-      ->setCondition(
-        ParentCondition
-          ::all()
-            ->add(
-            DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
-          )
-            ->add(
-            DataCondition::notEqual('id', $this->application->getSiteId())
-          )
-      )
-      ->execute()
-      ->getAll();
-
-    // Another ID is already used for this base URL.
-    if ($sites && count($sites)) {
-      return [
-        $sites[0]['id'] => $sites[0]['base_url'],
-      ];
-    }
-
-    // All good.
-    return NULL;
-  }
-
-  /**
    * @inheritdoc
    */
   public function registerSite($force = FALSE) {
@@ -338,8 +278,7 @@ class SyncCore implements ISyncCore {
             ->storage->getInstanceStorage()
             ->getItem($machine_name)
             ->execute();
-        }
-        // Unused ID- keep it.
+        } // Unused ID- keep it.
         catch (NotFoundException $e) {
           break;
         }
@@ -367,34 +306,61 @@ class SyncCore implements ISyncCore {
   }
 
   /**
-   * Get a list of fields that either the remote site or local site is missing
-   * in comparison.
+   * Verify that the site ID is valid. This requires the base URL of the site to
+   * match the base URL stored in the Sync Core. If people deploy database
+   * updates for example, the site will think it's another site and things
+   * go south real quick. So we verify that the site ID and site URL are in
+   * sync before we export any configuration. If they don't match, the user
+   * must decide whether to register a new site or forcibly overwrite the
+   * existing base URL.
    *
-   * @param $mine
-   * @param $theirs
-   *
-   * @return array
+   * @return array|null
    */
-  protected function getEntityTypeDiff($mine, $theirs) {
-    $result = [];
+  public function verifySiteId() {
+    try {
+      $site = $this
+        ->storage->getInstanceStorage()
+        ->getItem($this->application->getSiteId())
+        ->execute()
+        ->getItem();
 
-    foreach ($mine['new_properties'] as $name => $type) {
-      if (isset($theirs['new_properties'][$name])) {
-        continue;
+      // No match: Warn user and don't export configuration.
+      if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
+        return [
+          $this->application->getSiteId() => $site['base_url'],
+        ];
       }
-
-      $result['remote_missing'][] = $name;
+    }
+      // Ignore "not found" as we're just about to export the configuration for
+      // the first time then.
+    catch (NotFoundException $e) {
     }
 
-    foreach ($theirs['new_properties'] as $name => $type) {
-      if (isset($mine['new_properties'][$name])) {
-        continue;
-      }
+    $sites = $this
+      ->storage->getInstanceStorage()
+      ->listItems()
+      ->setCondition(
+        ParentCondition
+          ::all()
+          ->add(
+            DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
+          )
+          ->add(
+            DataCondition::notEqual('id', $this->application->getSiteId())
+          )
+      )
+      ->execute()
+      ->getAll();
 
-      $result['local_missing'][] = $name;
+    // Another ID is already used for this base URL.
+    if ($sites && count($sites)) {
+      return [
+        $sites[0]['id'] => $sites[0]['base_url'],
+      ];
     }
 
-    return $result;
+    // All good.
+    return NULL;
   }
 
   /**
@@ -420,9 +386,9 @@ class SyncCore implements ISyncCore {
 
     $result = [];
 
-    $same_version_sites  = [];
+    $same_version_sites = [];
     $other_version_sites = [];
-    $sites               = [];
+    $sites = [];
 
     /**
      * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage $entityTypeStorage
@@ -475,6 +441,37 @@ class SyncCore implements ISyncCore {
         ->getItem();
 
       $result[$site_id] = $this->getEntityTypeDiff($this_entity_type, $data);
+    }
+
+    return $result;
+  }
+
+  /**
+   * Get a list of fields that either the remote site or local site is missing
+   * in comparison.
+   *
+   * @param $mine
+   * @param $theirs
+   *
+   * @return array
+   */
+  protected function getEntityTypeDiff($mine, $theirs) {
+    $result = [];
+
+    foreach ($mine['new_properties'] as $name => $type) {
+      if (isset($theirs['new_properties'][$name])) {
+        continue;
+      }
+
+      $result['remote_missing'][] = $name;
+    }
+
+    foreach ($theirs['new_properties'] as $name => $type) {
+      if (isset($mine['new_properties'][$name])) {
+        continue;
+      }
+
+      $result['local_missing'][] = $name;
     }
 
     return $result;

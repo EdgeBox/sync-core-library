@@ -9,9 +9,11 @@ namespace EdgeBox\SyncCore\V1\Storage;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class ObjectStorage extends Storage {
+
   const ID = 'api_unify-api_unify-object_storage-0_1';
 
   const PROPERTY_TYPE = 'type';
+
   const PROPERTY_PROPERTIES = 'properties';
 
   /**

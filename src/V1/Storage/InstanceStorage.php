@@ -9,6 +9,7 @@ namespace EdgeBox\SyncCore\V1\Storage;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class InstanceStorage extends Storage {
+
   /**
    * Static ID of this entity type and connection.
    */

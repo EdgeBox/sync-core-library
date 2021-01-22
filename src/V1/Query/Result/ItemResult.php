@@ -9,4 +9,5 @@ namespace EdgeBox\SyncCore\V1\Query\Result;
  * @package Drupal\cms_content_sync\SyncCore
  */
 class ItemResult extends SimpleResult {
+
 }

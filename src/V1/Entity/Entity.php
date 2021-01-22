@@ -16,20 +16,27 @@ class Entity {
   /**
    * Keys used in the definition array for embedded entities.
    *
+   * @var string ENTITY_HASH_KEY          A unique hash of the serialized
+   *   entity.
+   * @var string API_KEY                  The API of the processed and
+   *   referenced entity.
+   * @var string ENTITY_TYPE_KEY          The entity type of the referenced
+   *   entity.
+   * @var string BUNDLE_KEY               The bundle of the referenced entity.
+   * @var string VERSION_KEY              The version of the entity type of the
+   *   referenced entity.
+   * @var string UUID_KEY                 The UUID of the referenced entity.
+   * @var string AUTO_PUSH_KEY            Whether or not to automatically push
+   *   the referenced entity as well.
+   * @var string SOURCE_CONNECTION_ID_KEY The Sync Core connection ID of the
+   *   referenced entity.
+   * @var string POOL_CONNECTION_ID_KEY   The Sync Core connection ID of the
+   *   pool for this api + entity type + bundle.
    * @see PushIntent::embed        for its usage on push. (Drupal)
    * @see PushIntent::addDependency        for its usage on push. (Drupal)
    * @see PushIntent::addReference        for its usage on push. (Drupal)
    * @see PullIntent::loadEmbeddedEntity for its usage on pull. (Drupal)
    *
-   * @var string ENTITY_HASH_KEY          A unique hash of the serialized entity.
-   * @var string API_KEY                  The API of the processed and referenced entity.
-   * @var string ENTITY_TYPE_KEY          The entity type of the referenced entity.
-   * @var string BUNDLE_KEY               The bundle of the referenced entity.
-   * @var string VERSION_KEY              The version of the entity type of the referenced entity.
-   * @var string UUID_KEY                 The UUID of the referenced entity.
-   * @var string AUTO_PUSH_KEY            Whether or not to automatically push the referenced entity as well.
-   * @var string SOURCE_CONNECTION_ID_KEY The Sync Core connection ID of the referenced entity.
-   * @var string POOL_CONNECTION_ID_KEY   The Sync Core connection ID of the pool for this api + entity type + bundle.
    */
   const ENTITY_HASH_KEY = 'entity_hash';
 

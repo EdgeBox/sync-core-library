@@ -72,7 +72,8 @@ class ListResult extends Result {
 
   /**
    * Get the raw response body as an array. Items are at 'items'.
-   * You should only use this if you provide it to other Sync Core applications, e.g. the Pull dashboard.
+   * You should only use this if you provide it to other Sync Core
+   * applications, e.g. the Pull dashboard.
    *
    * @return array
    *

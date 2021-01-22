@@ -22,13 +22,6 @@ abstract class SerializableWithSyncCoreReference implements \Serializable {
   }
 
   /**
-   * @return string[]
-   */
-  protected function serializeSyncCore() {
-    return [$this->core->getBaseUrl(), get_class($this->core->getApplication())];
-  }
-
-  /**
    * @param string[] $serialized
    */
   public function unserializeSyncCore($serialized) {
@@ -36,6 +29,16 @@ abstract class SerializableWithSyncCoreReference implements \Serializable {
     $app = $serialized[1];
 
     $this->core = SyncCore::get($base_url, $app::get());
+  }
+
+  /**
+   * @return string[]
+   */
+  protected function serializeSyncCore() {
+    return [
+      $this->core->getBaseUrl(),
+      get_class($this->core->getApplication()),
+    ];
   }
 
 }

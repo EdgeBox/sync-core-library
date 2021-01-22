@@ -18,6 +18,13 @@ class ItemQuery extends StorageQuery {
   protected $entityId;
 
   /**
+   * @inheritdoc
+   */
+  public static function create($storage) {
+    return new ItemQuery($storage);
+  }
+
+  /**
    * @param string $id
    *
    * @return $this
@@ -26,13 +33,6 @@ class ItemQuery extends StorageQuery {
     $this->entityId = $id;
 
     return $this;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public static function create($storage) {
-    return new ItemQuery($storage);
   }
 
   /**

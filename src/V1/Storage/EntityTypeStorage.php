@@ -9,6 +9,7 @@ namespace EdgeBox\SyncCore\V1\Storage;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class EntityTypeStorage extends Storage {
+
   const ID = 'api_unify-api_unify-entity_type-0_1';
 
   /**

@@ -1,25 +1,31 @@
 {
-  "name": "edge-box/sync-core",
-  "type": "library",
-  "description": "The Sync Core PHP library.",
-  "homepage": "https://www.cms-content-sync.io/",
-  "license": "GPL-2.0-or-later",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "authors": [
-    { "name": "Thiemo Müller", "email": "thiemo@edge-box.com" },
-    { "name": "Sebastian Gurlt", "email": "sebastian@edge-box.com" }
-  ],
-  "support": {
-    "forum": "https://www.drupal.org/project/issues/cms_content_sync",
-    "slack": "https://drupal.slack.com/archives/CKN24APFC"
-  },
-  "require": {
-    "php": ">=7.1.3"
-  },
-  "autoload": {
-    "psr-4": {
-      "EdgeBox\\SyncCore\\": "src/"
+    "name": "edge-box/sync-core",
+    "type": "library",
+    "description": "The Sync Core PHP library.",
+    "homepage": "https://www.cms-content-sync.io/",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Thiemo Müller",
+            "email": "thiemo@edge-box.com"
+        },
+        {
+            "name": "Sebastian Gurlt",
+            "email": "sebastian@edge-box.com"
+        }
+    ],
+    "support": {
+        "forum": "https://www.drupal.org/project/issues/cms_content_sync",
+        "slack": "https://drupal.slack.com/archives/CKN24APFC"
+    },
+    "require": {
+        "php": ">=7.1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "EdgeBox\\SyncCore\\": "src/"
+        }
     }
-  }
 }

@@ -13,12 +13,13 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
  * @package Drupal\cms_content_sync\SyncCore
  */
 class PingQuery extends SimpleQuery {
+
+  const PATH = '/ping';
+
   /**
    * @var array
    */
   protected $body;
-
-  const PATH = '/ping';
 
   /**
    * Query constructor.

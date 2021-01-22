@@ -11,6 +11,7 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
  * @package Drupal\cms_content_sync\SyncCore
  */
 class CreateItemQuery extends ItemQuery {
+
   /**
    * @var array
    */
@@ -39,6 +40,7 @@ class CreateItemQuery extends ItemQuery {
 
   /**
    * @param array $item
+   *
    * @return $this
    */
   public function setItem($item) {

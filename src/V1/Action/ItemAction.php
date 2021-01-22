@@ -15,6 +15,7 @@ use EdgeBox\SyncCore\V1\Storage\Storage;
 class ItemAction extends ItemQuery {
 
   protected $actionPath = NULL;
+
   protected $method = NULL;
 
   /**

@@ -8,6 +8,7 @@ use EdgeBox\SyncCore\Interfaces\Syndication\IPullDashboardSearchResultItem;
  *
  */
 class PullDashboardSearchResultItem implements IPullDashboardSearchResultItem {
+
   /**
    * @var array
    */
@@ -34,7 +35,7 @@ class PullDashboardSearchResultItem implements IPullDashboardSearchResultItem {
    */
   public function getType() {
     $entity_type_id = $this->item['entity_type_id'];
-    list(,, $entity_type_name,) = explode('-', $entity_type_id);
+    list(, , $entity_type_name,) = explode('-', $entity_type_id);
 
     return $entity_type_name;
   }
@@ -44,7 +45,7 @@ class PullDashboardSearchResultItem implements IPullDashboardSearchResultItem {
    */
   public function getBundle() {
     $entity_type_id = $this->item['entity_type_id'];
-    list(,,, $bundle_name) = explode('-', $entity_type_id);
+    list(, , , $bundle_name) = explode('-', $entity_type_id);
 
     return $bundle_name;
   }

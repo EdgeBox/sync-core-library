@@ -111,8 +111,8 @@ class SyndicationService implements ISyndicationService {
       if (!empty($item['entity']['_resource_url'])) {
         $entity = SimpleQuery
           ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
-            ->execute()
-            ->getResult();
+          ->execute()
+          ->getResult();
       }
       else {
         $storage = new CustomStorage(
@@ -128,37 +128,12 @@ class SyndicationService implements ISyndicationService {
             ->getItem($shared_entity_id)
             ->execute()
             ->getItem();
-        }
-        catch (SyncCoreException $e) {
+        } catch (SyncCoreException $e) {
           continue;
         }
       }
 
       $result[$site_id] = $entity['url'];
-    }
-
-    return $result;
-  }
-
-  /**
-   * Get a list of all Sync Core connections as resource URLs.
-   *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\Connection[]
-   *
-   * @throws \Exception
-   */
-  protected function getConnectionEntities() {
-    $storage = $this->core->storage->getConnectionStorage();
-    $result = [];
-
-    $items = $storage
-      ->listItems()
-      ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()->getSiteId()))
-      ->execute()
-      ->getAll();
-
-    foreach ($items as $item) {
-      $result[] = $storage->getEntity($item['id']);
     }
 
     return $result;
@@ -177,6 +152,31 @@ class SyndicationService implements ISyndicationService {
         ->login()
         ->execute()
         ->succeeded();
+    }
+
+    return $result;
+  }
+
+  /**
+   * Get a list of all Sync Core connections as resource URLs.
+   *
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\Connection[]
+   *
+   * @throws \Exception
+   */
+  protected function getConnectionEntities() {
+    $storage = $this->core->storage->getConnectionStorage();
+    $result = [];
+
+    $items = $storage
+      ->listItems()
+      ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()
+        ->getSiteId()))
+      ->execute()
+      ->getAll();
+
+    foreach ($items as $item) {
+      $result[] = $storage->getEntity($item['id']);
     }
 
     return $result;

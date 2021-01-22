@@ -26,6 +26,13 @@ class ListQuery extends StorageQuery {
   const ORDER_DESCENDING = 'DESC';
 
   /**
+   * @inheritdoc
+   */
+  public static function create($storage) {
+    return new ListQuery($storage);
+  }
+
+  /**
    * Set how many items should be returned per request (page).
    *
    * @param int $count
@@ -72,9 +79,9 @@ class ListQuery extends StorageQuery {
    * @param string $field
    * @param string $direction
    *
+   * @return $this
    * @throws \Exception
    *
-   * @return $this
    */
   public function orderBy($field, $direction = self::ORDER_ASCENDING) {
     if ($direction != self::ORDER_ASCENDING && $direction != self::ORDER_DESCENDING) {
@@ -136,13 +143,6 @@ class ListQuery extends StorageQuery {
     }
 
     return $result;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public static function create($storage) {
-    return new ListQuery($storage);
   }
 
   /**

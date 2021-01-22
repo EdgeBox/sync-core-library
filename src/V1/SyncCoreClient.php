@@ -17,7 +17,8 @@ class SyncCoreClient {
 
   /**
    * @var int MAX_ITEMS_PER_PAGE
-   *    The maximum number of items that can be queried per page as restricted by the Sync Core.
+   *    The maximum number of items that can be queried per page as restricted
+   *   by the Sync Core.
    */
   const MAX_ITEMS_PER_PAGE = 100;
 
@@ -72,6 +73,26 @@ class SyncCoreClient {
   }
 
   /**
+   * Receive an absolute URL to the Sync Core and provide a relative URL in
+   * return. If you have a '_resource_url' somewhere, use this function to
+   * convert it to a relative URL you can then pass to a simple query for
+   * example.
+   *
+   * @param string $url
+   *
+   * @return string
+   */
+  public static function getRelativeUrl($url) {
+    if (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://') {
+      // Remove protocol, host and path prefix so the path is relative and can be inserted into the normal Query classes.
+      return preg_replace('@^https?://[^/]+/rest@', '', $url);
+    }
+
+    // Is already relative.
+    return $url;
+  }
+
+  /**
    * Execute a GET request.
    *
    * @param \Drupal\cms_content_sync\SyncCore\V1\Query\Query $query
@@ -93,8 +114,8 @@ class SyncCoreClient {
 
     try {
       $options = [
-        'http_errors' => FALSE,
-      ] + $this->syncCore->getApplication()->getHttpOptions();
+          'http_errors' => FALSE,
+        ] + $this->syncCore->getApplication()->getHttpOptions();
 
       if ($body !== NULL) {
         $options['headers']['Content-Type'] = 'application/json';
@@ -110,14 +131,11 @@ class SyncCoreClient {
         $url,
         $options
       );
-    }
-    catch (ConnectException $e) {
+    } catch (ConnectException $e) {
       throw new TimeoutException('The Sync Core did not respond in time for ' . $method . ' ' . Helper::obfuscateCredentials($url));
-    }
-    catch (GuzzleException $e) {
+    } catch (GuzzleException $e) {
       throw new SyncCoreException($e->getMessage());
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       throw new SyncCoreException($e->getMessage());
     }
 
@@ -154,25 +172,6 @@ class SyncCoreClient {
     }
 
     return $data;
-  }
-
-  /**
-   * Receive an absolute URL to the Sync Core and provide a relative URL in return.
-   * If you have a '_resource_url' somewhere, use this function to convert it to a relative URL you can then pass to
-   * a simple query for example.
-   *
-   * @param string $url
-   *
-   * @return string
-   */
-  public static function getRelativeUrl($url) {
-    if (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://') {
-      // Remove protocol, host and path prefix so the path is relative and can be inserted into the normal Query classes.
-      return preg_replace('@^https?://[^/]+/rest@', '', $url);
-    }
-
-    // Is already relative.
-    return $url;
   }
 
 }

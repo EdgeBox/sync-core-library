@@ -6,12 +6,13 @@ use EdgeBox\SyncCore\V1\SyncCore;
 
 /**
  * Class CustomStorage
- * Implement Storage for any custom entity type + pool + site combination that has been exported before through
- * configuration.
+ * Implement Storage for any custom entity type + pool + site combination that
+ * has been exported before through configuration.
  *
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class CustomStorage extends Storage {
+
   const APPLICATION_DRUPAL = 'drupal';
 
   /**
@@ -29,63 +30,20 @@ class CustomStorage extends Storage {
   const DEPENDENCY_CONNECTION_ID = 'drupal-[api.name]-[instance.id]-[entity_type.name_space]-[entity_type.name]';
 
   /**
-   * Get the Sync Core connection ID for the given entity type config.
-   *
-   * @param string $api_id
-   *   API ID from this config.
-   * @param string $site_id
-   *   ID from this site from this config.
-   * @param string $entity_type_name
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle.
-   *
-   * @return string A unique connection ID.
-   */
-  public static function getCustomId($api_id, $site_id, $entity_type_name, $bundle_name) {
-    return sprintf('drupal-%s-%s-%s-%s',
-      $api_id,
-      $site_id,
-      $entity_type_name,
-      $bundle_name
-    );
-  }
-
-  /**
-   * Get the Sync Core connection path for the given entity type config.
-   *
-   * @param string $api_id
-   *   API ID from this config.
-   * @param string $site_id
-   *   ID from this site from this config.
-   * @param string $entity_type_name
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle.
-   *
-   * @return string A unique connection path.
-   */
-  public static function getCustomPath($api_id, $site_id, $entity_type_name, $bundle_name) {
-    return sprintf('drupal/%s/%s/%s/%s',
-      $api_id,
-      $site_id,
-      $entity_type_name,
-      $bundle_name
-    );
-  }
-
-  /**
    * @var string
    */
   protected $apiId;
+
   /**
    * @var string
    */
   protected $siteId;
+
   /**
    * @var string
    */
   protected $entityTypeName;
+
   /**
    * @var string
    */
@@ -117,10 +75,56 @@ class CustomStorage extends Storage {
   }
 
   /**
+   * Get the Sync Core connection ID for the given entity type config.
+   *
+   * @param string $api_id
+   *   API ID from this config.
+   * @param string $site_id
+   *   ID from this site from this config.
+   * @param string $entity_type_name
+   *   The entity type.
+   * @param string $bundle_name
+   *   The bundle.
+   *
+   * @return string A unique connection ID.
+   */
+  public static function getCustomId($api_id, $site_id, $entity_type_name, $bundle_name) {
+    return sprintf('drupal-%s-%s-%s-%s',
+      $api_id,
+      $site_id,
+      $entity_type_name,
+      $bundle_name
+    );
+  }
+
+  /**
    * @inheritdoc
    */
   public function getPath() {
     return '/' . self::getCustomPath($this->apiId, $this->siteId, $this->entityTypeName, $this->bundleName);
+  }
+
+  /**
+   * Get the Sync Core connection path for the given entity type config.
+   *
+   * @param string $api_id
+   *   API ID from this config.
+   * @param string $site_id
+   *   ID from this site from this config.
+   * @param string $entity_type_name
+   *   The entity type.
+   * @param string $bundle_name
+   *   The bundle.
+   *
+   * @return string A unique connection path.
+   */
+  public static function getCustomPath($api_id, $site_id, $entity_type_name, $bundle_name) {
+    return sprintf('drupal/%s/%s/%s/%s',
+      $api_id,
+      $site_id,
+      $entity_type_name,
+      $bundle_name
+    );
   }
 
 }

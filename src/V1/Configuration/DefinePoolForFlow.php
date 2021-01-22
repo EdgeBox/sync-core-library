@@ -2,8 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Configuration\IDefinePoolForFlow;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V1\BatchOperation;
 use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
 use EdgeBox\SyncCore\V1\Storage\CustomStorage;
@@ -63,7 +63,7 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow {
           'list_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', NULL, '[is_manual]', '[is_dependency]'),
           'item_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', '[id]', '[is_manual]', '[is_dependency]'),
           'authentication' => $authentication,
-    // $cms_content_sync_disable_optimization,
+          // $cms_content_sync_disable_optimization,
           'update_all' => FALSE,
         ],
       ]
@@ -163,7 +163,7 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow {
           'create_entities' => TRUE,
           'update_entities' => TRUE,
           'delete_entities' => TRUE,
-    // $cms_content_sync_disable_optimization,
+          // $cms_content_sync_disable_optimization,
           'force_updates' => FALSE,
           'dependent_entities_only' => FALSE,
           'update_none_when_loading' => TRUE,

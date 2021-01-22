@@ -93,7 +93,8 @@ class ConfigurePullDashboard implements IConfigurePullDashboard {
       $config['syncCoreCondition'] = $this->filters[0]->serialize();
     }
     elseif (count($this->filters) > 1) {
-      $config['syncCoreCondition'] = ParentCondition::all($this->filters)->serialize();
+      $config['syncCoreCondition'] = ParentCondition::all($this->filters)
+        ->serialize();
     }
 
     return $config;
@@ -178,6 +179,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard {
       ->getRaw();
 
     return new class($response) implements IPullDashboardSearchResult {
+
       /**
        * @var array
        */

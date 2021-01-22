@@ -3,17 +3,21 @@
 namespace EdgeBox\SyncCore\Exception;
 
 /**
- * The Sync Core responded with a non-OK status code or the request failed for other reasons (timeout for example).
+ * The Sync Core responded with a non-OK status code or the request failed for
+ * other reasons (timeout for example).
  */
 class SyncCoreException extends \Exception {
+
   /**
    * @var int
    */
   protected $statusCode;
+
   /**
    * @var string
    */
   protected $reasonPhrase;
+
   /**
    * @var string
    */

@@ -5,13 +5,13 @@ namespace EdgeBox\SyncCore\V1;
 use EdgeBox\SyncCore\V1\Storage\ApiStorage;
 use EdgeBox\SyncCore\V1\Storage\ConnectionStorage;
 use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
+use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
 use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 use EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage;
 use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
 use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 use EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage;
-use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 
 /**
  * Class Storages.
@@ -76,6 +76,83 @@ class Storage {
   }
 
   /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage
+   */
+  public function getMetaInformationConnectionStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new MetaInformationConnectionStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage
+   */
+  public function getConnectionStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new ConnectionStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage
+   */
+  public function getEntityTypeStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new EntityTypeStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage
+   */
+  public function getConnectionSynchronizationStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new ConnectionSynchronizationStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage
+   */
+  public function getPreviewEntityStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new PreviewEntityStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage
+   */
+  public function getInstanceStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new InstanceStorage($this->core);
+  }
+
+  /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage
+   */
+  public function getApiStorage() {
+    static $cache;
+    if (!empty($cache)) {
+      return $cache;
+    }
+    return $cache = new ApiStorage($this->core);
+  }
+
+  /**
    * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ObjectStorage
    */
   public function getObjectStorage() {
@@ -95,83 +172,6 @@ class Storage {
       return $cache;
     }
     return $cache = new RemoteStorageStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage
-   */
-  public function getConnectionSynchronizationStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new ConnectionSynchronizationStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage
-   */
-  public function getConnectionStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new ConnectionStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage
-   */
-  public function getApiStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new ApiStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage
-   */
-  public function getInstanceStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new InstanceStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage
-   */
-  public function getMetaInformationConnectionStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new MetaInformationConnectionStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage
-   */
-  public function getEntityTypeStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new EntityTypeStorage($this->core);
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage
-   */
-  public function getPreviewEntityStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
-    }
-    return $cache = new PreviewEntityStorage($this->core);
   }
 
   /**

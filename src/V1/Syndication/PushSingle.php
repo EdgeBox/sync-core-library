@@ -21,6 +21,16 @@ class PushSingle implements IPushSingle {
   ];
 
   /**
+   * @var array
+   *   A list of all entities that were pushed in the current request
+   *   and a unique hash of their current value. Used in serialized reference
+   *   fields to ensure that even if only a child entity has changed, the parent
+   *   entity is also syndicated. Format:
+   *   [$entity_type][$entity_uuid] = (string)$hash.
+   */
+  public static $serializedEntities = [];
+
+  /**
    * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
    */
   protected $core;
@@ -78,21 +88,11 @@ class PushSingle implements IPushSingle {
       'embed_entities' => [],
       'uuid' => $entity_uuid,
       'id' => $entity_id ? $entity_id : $entity_uuid,
-      'apiu_translation'  => NULL,
+      'apiu_translation' => NULL,
     ];
 
     self::$serializedEntities[$type][$entity_uuid] = &$this->body;
   }
-
-  /**
-   * @var array
-   *   A list of all entities that were pushed in the current request
-   *   and a unique hash of their current value. Used in serialized reference
-   *   fields to ensure that even if only a child entity has changed, the parent
-   *   entity is also syndicated. Format:
-   *   [$entity_type][$entity_uuid] = (string)$hash.
-   */
-  public static $serializedEntities = [];
 
   /**
    * @inheritdoc
@@ -141,16 +141,37 @@ class PushSingle implements IPushSingle {
 
   /**
    * @inheritdoc
+   *
+   * @param PushSingle $embed_entity
    */
-  public function getData() {
-    return $this->body;
-  }
+  public function embed($type, $bundle, $uuid, $id, $version, $embed_entity, $details = NULL) {
+    $data = $this->getEmbedEntityDefinition($type, $bundle, $uuid, $id, Entity::ENTITY_REFERENCE_EMBED, $version, $embed_entity->getPoolId(), $details);
 
-  /**
-   * @return string
-   */
-  public function getPoolId() {
-    return $this->pool;
+    // If this is nested, we already get the serialized entity from the child.
+    if (!isset($data[Entity::ENTITY_EMBED_KEY])) {
+      $data[Entity::ENTITY_EMBED_KEY] = $embed_entity->getData();
+    }
+
+    // Add all dependencies from the child directly to us, otherwise they'll
+    // be missing on the remote site.
+    if (!empty($data[Entity::ENTITY_EMBED_KEY]['embed_entities'])) {
+      foreach ($data[Entity::ENTITY_EMBED_KEY]['embed_entities'] as $embed) {
+        $this->embedEntityDefinition(
+          $embed[Entity::ENTITY_TYPE_KEY],
+          $embed[Entity::BUNDLE_KEY],
+          $embed[Entity::UUID_KEY],
+          $embed[Entity::ID_KEY],
+          $embed[Entity::AUTO_PUSH_KEY],
+          $embed[Entity::VERSION_KEY],
+          $embed[Entity::API_KEY],
+          $embed
+        );
+      }
+    }
+
+    $data[Entity::ENTITY_EMBED_KEY]['embed_entities'] = [];
+
+    return $data;
   }
 
   /**
@@ -204,10 +225,21 @@ class PushSingle implements IPushSingle {
   }
 
   /**
+   * @return string
+   */
+  public function getPoolId() {
+    return $this->pool;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getData() {
+    return $this->body;
+  }
+
+  /**
    * Embed an entity by its properties.
-   *
-   * @see SyncIntent::getEmbedEntityDefinition
-   * @see SyncIntent::embedEntity
    *
    * @param string $type
    *   {@see SyncIntent::getEmbedEntityDefinition}.
@@ -227,6 +259,9 @@ class PushSingle implements IPushSingle {
    *   {@see SyncIntent::getEmbedEntityDefinition}.
    *
    * @return array The definition you can store via {@see SyncIntent::setField}
+   * @see SyncIntent::getEmbedEntityDefinition
+   * @see SyncIntent::embedEntity
+   *
    */
   public function embedEntityDefinition($type, $bundle, $uuid, $id, $auto_push, $version, $pool_id, $details = NULL) {
     // Already included? Just return the definition then.
@@ -251,41 +286,6 @@ class PushSingle implements IPushSingle {
     }
 
     return $result;
-  }
-
-  /**
-   * @inheritdoc
-   *
-   * @param PushSingle $embed_entity
-   */
-  public function embed($type, $bundle, $uuid, $id, $version, $embed_entity, $details = NULL) {
-    $data = $this->getEmbedEntityDefinition($type, $bundle, $uuid, $id, Entity::ENTITY_REFERENCE_EMBED, $version, $embed_entity->getPoolId(), $details);
-
-    // If this is nested, we already get the serialized entity from the child.
-    if (!isset($data[Entity::ENTITY_EMBED_KEY])) {
-      $data[Entity::ENTITY_EMBED_KEY] = $embed_entity->getData();
-    }
-
-    // Add all dependencies from the child directly to us, otherwise they'll
-    // be missing on the remote site.
-    if (!empty($data[Entity::ENTITY_EMBED_KEY]['embed_entities'])) {
-      foreach ($data[Entity::ENTITY_EMBED_KEY]['embed_entities'] as $embed) {
-        $this->embedEntityDefinition(
-          $embed[Entity::ENTITY_TYPE_KEY],
-          $embed[Entity::BUNDLE_KEY],
-          $embed[Entity::UUID_KEY],
-          $embed[Entity::ID_KEY],
-          $embed[Entity::AUTO_PUSH_KEY],
-          $embed[Entity::VERSION_KEY],
-          $embed[Entity::API_KEY],
-          $embed
-        );
-      }
-    }
-
-    $data[Entity::ENTITY_EMBED_KEY]['embed_entities'] = [];
-
-    return $data;
   }
 
   /**
@@ -323,6 +323,13 @@ class PushSingle implements IPushSingle {
   /**
    * @inheritdoc
    */
+  public function setName($value, $language = NULL) {
+    $this->setProperty(Entity::PROPERTY_NAME, $value, $language);
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function setProperty($name, $value, $language = NULL) {
     if ($language) {
       if (empty($this->body['apiu_translation'])) {
@@ -335,13 +342,6 @@ class PushSingle implements IPushSingle {
     }
 
     return $this;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function setName($value, $language = NULL) {
-    $this->setProperty(Entity::PROPERTY_NAME, $value, $language);
   }
 
   /**

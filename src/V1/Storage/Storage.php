@@ -17,6 +17,7 @@ use EdgeBox\SyncCore\V1\Query\UpdateItemQuery;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 abstract class Storage {
+
   /**
    * ID property.
    */
@@ -37,13 +38,6 @@ abstract class Storage {
   }
 
   /**
-   * Get the entity type ID.
-   *
-   * @return string
-   */
-  abstract public function getId();
-
-  /**
    * Get the path to append to the Pool::$backend_url to query entities of this
    * type.
    *
@@ -52,6 +46,13 @@ abstract class Storage {
   public function getPath() {
     return '/' . $this->getId();
   }
+
+  /**
+   * Get the entity type ID.
+   *
+   * @return string
+   */
+  abstract public function getId();
 
   /**
    * Get the client that this Storage belongs to.

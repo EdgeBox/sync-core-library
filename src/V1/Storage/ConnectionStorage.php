@@ -12,6 +12,7 @@ use EdgeBox\SyncCore\V1\Entity\EntityPreviewConnection;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class ConnectionStorage extends Storage {
+
   const ID = 'api_unify-api_unify-connection-0_1';
 
   /**

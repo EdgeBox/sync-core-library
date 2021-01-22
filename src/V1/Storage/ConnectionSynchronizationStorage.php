@@ -11,6 +11,7 @@ use EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class ConnectionSynchronizationStorage extends Storage {
+
   const ID = 'api_unify-api_unify-connection_synchronisation-0_1';
 
   /**

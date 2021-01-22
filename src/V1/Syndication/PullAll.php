@@ -103,6 +103,21 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll {
   }
 
   /**
+   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\ConnectionSynchronization
+   */
+  protected function getSyncEntity() {
+    $api = $this->pool;
+    $site_id = $this->core->getApplication()->getSiteMachineName();
+
+    $local_connection_id = CustomStorage::getCustomId($api, $site_id, $this->type, $this->bundle);
+    $sync_id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, FALSE);
+
+    return $this->core
+      ->storage->getConnectionSynchronizationStorage()
+      ->getEntity($sync_id);
+  }
+
+  /**
    * @inheritdoc
    */
   public function getPoolMachineName() {
@@ -121,21 +136,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll {
    */
   public function getBundleMachineName() {
     return $this->bundle;
-  }
-
-  /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\ConnectionSynchronization
-   */
-  protected function getSyncEntity() {
-    $api     = $this->pool;
-    $site_id = $this->core->getApplication()->getSiteMachineName();
-
-    $local_connection_id = CustomStorage::getCustomId($api, $site_id, $this->type, $this->bundle);
-    $sync_id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, FALSE);
-
-    return $this->core
-      ->storage->getConnectionSynchronizationStorage()
-      ->getEntity($sync_id);
   }
 
   /**

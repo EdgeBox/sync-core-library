@@ -39,6 +39,7 @@ class AllowPublicAccessAction extends ItemAction {
 
   /**
    * @param bool $set
+   *
    * @return AllowPublicAccessAction
    */
   public function setAllowPublicAccess($set) {

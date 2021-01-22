@@ -26,6 +26,7 @@ class SynchronizeSingleAction extends SubItemAction {
 
   /**
    * @param bool $set
+   *
    * @return $this
    */
   public function isManual($set) {
@@ -36,6 +37,7 @@ class SynchronizeSingleAction extends SubItemAction {
 
   /**
    * @param bool $set
+   *
    * @return $this
    */
   public function isDependency($set) {

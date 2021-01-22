@@ -9,6 +9,7 @@ namespace EdgeBox\SyncCore\V1\Storage;
  * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
 class RemoteStorageStorage extends Storage {
+
   const ID = 'api_unify-api_unify-remote_storage-0_1';
 
   /**

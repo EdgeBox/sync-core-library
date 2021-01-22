@@ -28,21 +28,21 @@ abstract class Condition {
   }
 
   /**
-   * Get a flat array representation of this condition.
-   *
-   * @return array
-   */
-  public function toArray() {
-    return $this->condition;
-  }
-
-  /**
    * Get a JSON version of the condition.
    *
    * @return string
    */
   public function serialize() {
     return json_encode($this->toArray());
+  }
+
+  /**
+   * Get a flat array representation of this condition.
+   *
+   * @return array
+   */
+  public function toArray() {
+    return $this->condition;
   }
 
 }

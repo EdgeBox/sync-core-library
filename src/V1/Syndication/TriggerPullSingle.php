@@ -47,6 +47,11 @@ class TriggerPullSingle implements ITriggerPullSingle {
   protected $is_dependency;
 
   /**
+   * @var array|null
+   */
+  protected $previewData = NULL;
+
+  /**
    *
    */
   public function __construct($core, $type, $bundle, $entity_id) {
@@ -109,11 +114,6 @@ class TriggerPullSingle implements ITriggerPullSingle {
 
     return $this;
   }
-
-  /**
-   * @var array|null
-   */
-  protected $previewData = NULL;
 
   /**
    * @inheritdoc

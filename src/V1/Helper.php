@@ -12,7 +12,8 @@ namespace EdgeBox\SyncCore\V1;
 class Helper {
 
   /**
-   * Remove any information about basic auth in any URLs contained in the given messages.
+   * Remove any information about basic auth in any URLs contained in the given
+   * messages.
    *
    * @param $message
    *
@@ -27,8 +28,8 @@ class Helper {
         $message['err']['message'] = self::obfuscateCredentials($message['err']['message']);
       }
       /**
-             * Ignore other associative arrays.
-             */
+       * Ignore other associative arrays.
+       */
       elseif (isset($message[0])) {
         for ($i = 0; $i < count($message); $i++) {
           $message[$i] = self::obfuscateCredentials($message[$i]);
@@ -54,7 +55,7 @@ class Helper {
    *
    * @return string A unique hash based on the provided array.
    */
-  public static function getSerializedEntityHash(Array $data) {
+  public static function getSerializedEntityHash(array $data) {
     // A new preview doesn't require the entity to be syndicated again as the
     // preview is only every used by the Sync Core itself.
     if (isset($data['preview'])) {

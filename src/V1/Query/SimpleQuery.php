@@ -12,6 +12,7 @@ use EdgeBox\SyncCore\V1\Query\Result\SimpleResult;
  * @package Drupal\cms_content_sync\SyncCore
  */
 class SimpleQuery extends Query {
+
   /**
    * @var string
    */

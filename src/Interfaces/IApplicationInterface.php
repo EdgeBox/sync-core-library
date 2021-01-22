@@ -5,27 +5,27 @@ namespace EdgeBox\SyncCore\Interfaces;
 /**
  * Interface ApplicationInterface.
  *
- * Every application using the Sync Core library must implement this interface and provide it to the client. It provides
- * all basic information about the application itself to the Sync Core.
+ * Every application using the Sync Core library must implement this interface
+ * and provide it to the client. It provides all basic information about the
+ * application itself to the Sync Core.
  */
 interface IApplicationInterface {
-
-  /**
-   * @return IApplicationInterface
-   */
-  public static function get();
 
   /**
    * @var string AUTHENTICATION_TYPE_BASIC_AUTH always send username:password
    * as Authentication header when making REST requests to this site.
    */
   const AUTHENTICATION_TYPE_BASIC_AUTH = 'basic_auth';
-
   /**
    * @var string AUTHENTICATION_TYPE_COOKIE Use Drupal default cookie
    * authentication before making any REST requests to this site.
    */
   const AUTHENTICATION_TYPE_COOKIE = 'cookie';
+
+  /**
+   * @return IApplicationInterface
+   */
+  public static function get();
 
   /**
    * Provide a unique identifier for the site. The ID is created by the Sync
@@ -102,7 +102,8 @@ interface IApplicationInterface {
 
   /**
    * @return array [
-   *   'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} | {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
+   *   'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |
+   *   {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
    *   'username' => string,
    *   'password' => string,
    *   ]
@@ -110,7 +111,8 @@ interface IApplicationInterface {
   public function getAuthentication();
 
   /**
-   * Provide a unique identifier for the application. The following IDs are supported right now:
+   * Provide a unique identifier for the application. The following IDs are
+   * supported right now:
    * - drupal.
    *
    * @return string
@@ -118,7 +120,8 @@ interface IApplicationInterface {
   public function getApplicationId();
 
   /**
-   * Get a version (major, optionally minor) of the application as a string. For Drupal this is "8.x" right now.
+   * Get a version (major, optionally minor) of the application as a string.
+   * For Drupal this is "8.x" right now.
    *
    * @return string
    */
@@ -134,15 +137,17 @@ interface IApplicationInterface {
   public function getApplicationModuleVersion();
 
   /**
-   * Provide an HTTP client to use for all requests against the Sync Core. This allows the application to apply any
-   * custom settings for the client name, timeouts, other security measures to be applied.
+   * Provide an HTTP client to use for all requests against the Sync Core. This
+   * allows the application to apply any custom settings for the client name,
+   * timeouts, other security measures to be applied.
    *
    * @return \GuzzleHttp\Client
    */
   public function getHttpClient();
 
   /**
-   * Provide any additional options to the request, e.g. a timeout or proxy settings.
+   * Provide any additional options to the request, e.g. a timeout or proxy
+   * settings.
    *
    * @return array
    */

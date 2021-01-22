@@ -16,7 +16,8 @@ use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 class ConfigurationService implements IConfigurationService {
 
   /**
-   * The type to identify what kind of object we want to query in the general object storage.
+   * The type to identify what kind of object we want to query in the general
+   * object storage.
    */
   const OBJECT_STORAGE_TYPE = 'content_sync-drupal-flow-config';
 
@@ -57,6 +58,7 @@ class ConfigurationService implements IConfigurationService {
       ->getItem();
 
     return new class($item) implements IRemoteFlow {
+
       protected $item;
 
       /**
@@ -114,7 +116,8 @@ class ConfigurationService implements IConfigurationService {
       ->setCondition(
         ParentCondition::all()
           ->add(DataCondition::equal(ApiStorage::PROPERTY_VERSION, ApiStorage::CUSTOM_API_VERSION))
-          ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()->getApplicationId() . '-' . ApiStorage::CUSTOM_API_VERSION))
+          ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()
+              ->getApplicationId() . '-' . ApiStorage::CUSTOM_API_VERSION))
       )
       ->execute()
       ->getAll();
@@ -127,6 +130,15 @@ class ConfigurationService implements IConfigurationService {
     }
 
     return $options;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function usePool($pool_id, $pool_name) {
+    $this->registerDrupalApi();
+
+    return new RegisterPool($this->core, $pool_id, $pool_name);
   }
 
   /**
@@ -153,15 +165,6 @@ class ConfigurationService implements IConfigurationService {
       ->storage->getApiStorage()
       ->createItem($body)
       ->execute();
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function usePool($pool_id, $pool_name) {
-    $this->registerDrupalApi();
-
-    return new RegisterPool($this->core, $pool_id, $pool_name);
   }
 
   /**

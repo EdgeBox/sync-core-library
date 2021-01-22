@@ -209,7 +209,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType {
         'usage' => 'EXTERNAL',
         'status' => 'READY',
         'options' => [
-    // $cms_content_sync_disable_optimization,
+          // $cms_content_sync_disable_optimization,
           'update_all' => FALSE,
         ],
         'entity_type_id' => $entity_type_id,
@@ -251,17 +251,8 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType {
   /**
    * @inheritdoc
    */
-  public function isFile($set) {
-    if ($set) {
-      $this->body['new_properties']['apiu_file_content'] = [
-        'type' => 'string',
-        'default_value' => NULL,
-      ];
-      $this->body['new_property_lists']['details']['apiu_file_content'] = 'value';
-      $this->body['new_property_lists']['filesystem']['apiu_file_content'] = 'value';
-      $this->body['new_property_lists']['modifiable']['apiu_file_content'] = 'value';
-      $this->body['new_property_lists']['required']['apiu_file_content'] = 'value';
-    }
+  public function addObjectProperty($name, $multiple = FALSE, $required = FALSE) {
+    $this->addProperty($name, 'object', $multiple, $required);
     return $this;
   }
 
@@ -295,6 +286,23 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType {
   /**
    * @inheritdoc
    */
+  public function isFile($set) {
+    if ($set) {
+      $this->body['new_properties']['apiu_file_content'] = [
+        'type' => 'string',
+        'default_value' => NULL,
+      ];
+      $this->body['new_property_lists']['details']['apiu_file_content'] = 'value';
+      $this->body['new_property_lists']['filesystem']['apiu_file_content'] = 'value';
+      $this->body['new_property_lists']['modifiable']['apiu_file_content'] = 'value';
+      $this->body['new_property_lists']['required']['apiu_file_content'] = 'value';
+    }
+    return $this;
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function addBooleanProperty($name, $multiple = FALSE, $required = FALSE) {
     $this->addProperty($name, 'boolean', $multiple, $required);
     return $this;
@@ -321,14 +329,6 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType {
    */
   public function addStringProperty($name, $multiple = FALSE, $required = FALSE) {
     $this->addProperty($name, 'string', $multiple, $required);
-    return $this;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function addObjectProperty($name, $multiple = FALSE, $required = FALSE) {
-    $this->addProperty($name, 'object', $multiple, $required);
     return $this;
   }
 
