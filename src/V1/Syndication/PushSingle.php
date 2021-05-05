@@ -390,7 +390,7 @@ class PushSingle implements IPushSingle {
       );
 
     if ($this->is_deletion) {
-      $query = $storage->deleteItem($this->entity_uuid);
+      $query = $storage->deleteItem($this->body['id']);
     }
     else {
       $query = $storage->createItem($this->body);
