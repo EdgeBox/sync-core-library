@@ -61,7 +61,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
   }
 
   /**
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function execute() {
     $operations = array_merge([

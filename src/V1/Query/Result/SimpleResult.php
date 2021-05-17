@@ -21,11 +21,11 @@ class SimpleResult extends Result {
    *
    * @return $this
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\TimeoutException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\BadRequestException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\ForbiddenException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\NotFoundException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\TimeoutException
+   * @throws \EdgeBox\SyncCore\Exception\BadRequestException
+   * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
+   * @throws \EdgeBox\SyncCore\Exception\NotFoundException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function execute() {
     $this->result = $this->query

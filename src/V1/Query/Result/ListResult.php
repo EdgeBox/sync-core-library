@@ -28,7 +28,7 @@ class ListResult extends Result {
   /**
    * @return int
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function getNumberOfItems() {
     if ($this->totalNumberOfItems === NULL) {
@@ -46,11 +46,11 @@ class ListResult extends Result {
    *
    * @return array The entities as an array.
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function getPage($page = 1) {
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Query\ListQuery $query
+     * @var \EdgeBox\SyncCore\V1\Query\ListQuery $query
      */
     $query = $this->query;
 
@@ -77,7 +77,7 @@ class ListResult extends Result {
    *
    * @return array
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function getRaw() {
     $client = $this->query->getCore();
@@ -103,7 +103,7 @@ class ListResult extends Result {
    */
   public function getAll() {
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Query\ListQuery $query
+     * @var \EdgeBox\SyncCore\V1\Query\ListQuery $query
      */
     $query = $this->query;
 

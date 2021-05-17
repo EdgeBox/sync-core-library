@@ -24,7 +24,7 @@ class AllowPublicAccessAction extends ItemAction {
   /**
    * CloneAction constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage $storage
+   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
    */
   public function __construct(Storage $storage) {
     parent::__construct($storage, '', SyncCoreClient::METHOD_POST);

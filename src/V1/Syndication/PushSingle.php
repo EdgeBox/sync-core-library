@@ -31,7 +31,7 @@ class PushSingle implements IPushSingle {
   public static $serializedEntities = [];
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
@@ -73,7 +73,7 @@ class PushSingle implements IPushSingle {
   /**
    * PushSingle constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param string $type
    * @param string $bundle
    * @param string $entity_uuid

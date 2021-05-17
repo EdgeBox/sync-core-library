@@ -52,7 +52,7 @@ class SyncCoreClient {
   const METHOD_DELETE = 'DELETE';
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $syncCore;
 
@@ -65,7 +65,7 @@ class SyncCoreClient {
   /**
    * SyncCoreClient constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $sync_core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $sync_core
    */
   public function __construct($sync_core) {
     $this->syncCore = $sync_core;
@@ -95,15 +95,15 @@ class SyncCoreClient {
   /**
    * Execute a GET request.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Query\Query $query
+   * @param \EdgeBox\SyncCore\V1\Query\Query $query
    *
    * @return mixed
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\TimeoutException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\BadRequestException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\ForbiddenException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\NotFoundException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\TimeoutException
+   * @throws \EdgeBox\SyncCore\Exception\BadRequestException
+   * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
+   * @throws \EdgeBox\SyncCore\Exception\NotFoundException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function request($query) {
     $params = http_build_query($query->toArray());

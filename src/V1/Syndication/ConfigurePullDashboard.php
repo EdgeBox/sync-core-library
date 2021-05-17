@@ -18,7 +18,7 @@ use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 class ConfigurePullDashboard implements IConfigurePullDashboard {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
@@ -42,7 +42,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard {
   /**
    * ConfigurePullDashboard constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;

@@ -13,14 +13,14 @@ namespace EdgeBox\SyncCore\V1\Query\Result;
 class Result {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\Query\Query
+   * @var \EdgeBox\SyncCore\V1\Query\Query
    */
   protected $query;
 
   /**
    * Result constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Query\Query $query
+   * @param \EdgeBox\SyncCore\V1\Query\Query $query
    */
   public function __construct($query) {
     $this->query = $query;

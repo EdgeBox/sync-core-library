@@ -27,7 +27,7 @@ use EdgeBox\SyncCore\V1\Syndication\SyndicationService;
 class SyncCore implements ISyncCore {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\Storage
+   * @var \EdgeBox\SyncCore\V1\Storage
    */
   public $storage;
 
@@ -38,17 +38,17 @@ class SyncCore implements ISyncCore {
   protected $base_url;
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient
+   * @var \EdgeBox\SyncCore\V1\SyncCoreClient
    */
   protected $client;
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface
+   * @var \EdgeBox\SyncCore\Interfaces\IApplicationInterface
    */
   protected $application;
 
   /**
-   * @param \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface $application
+   * @param \EdgeBox\SyncCore\Interfaces\IApplicationInterface $application
    * @param string $base_url
    *   The Sync Core base URL.
    */
@@ -63,7 +63,7 @@ class SyncCore implements ISyncCore {
 
   /**
    * @param string $base_url
-   * @param \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface $application
+   * @param \EdgeBox\SyncCore\Interfaces\IApplicationInterface $application
    *
    * @return SyncCore
    */
@@ -125,7 +125,7 @@ class SyncCore implements ISyncCore {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\Interfaces\IApplicationInterface
+   * @return \EdgeBox\SyncCore\Interfaces\IApplicationInterface
    */
   public function getApplication() {
     return $this->application;
@@ -147,7 +147,7 @@ class SyncCore implements ISyncCore {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\SyncCoreClient
+   * @return \EdgeBox\SyncCore\V1\SyncCoreClient
    */
   public function getClient() {
     return $this->client;
@@ -160,7 +160,7 @@ class SyncCore implements ISyncCore {
    *
    * @return bool
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function requestPing($site_url, $method, $authentication) {
     return PingQuery
@@ -178,13 +178,13 @@ class SyncCore implements ISyncCore {
   public function isDirectUserAccessEnabled($set = NULL) {
     if ($set !== NULL) {
       /**
-       * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage $storage
+       * @var \EdgeBox\SyncCore\V1\Storage\ConnectionStorage $storage
        */
       $storage = $this
         ->storage->getConnectionStorage();
 
       /**
-       * @var \Drupal\cms_content_sync\SyncCore\V1\Entity\EntityPreviewConnection $connection
+       * @var \EdgeBox\SyncCore\V1\Entity\EntityPreviewConnection $connection
        */
       $connection = $storage
         ->getEntity(PreviewEntityStorage::ID);
@@ -368,7 +368,7 @@ class SyncCore implements ISyncCore {
    */
   public function getSitesWithDifferentEntityTypeVersion($pool_id, $entity_type, $bundle, $target_version) {
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage $connectionStorage
+     * @var \EdgeBox\SyncCore\V1\Storage\ConnectionStorage $connectionStorage
      */
     $connectionStorage = $this
       ->storage->getConnectionStorage();
@@ -391,7 +391,7 @@ class SyncCore implements ISyncCore {
     $sites = [];
 
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage $entityTypeStorage
+     * @var \EdgeBox\SyncCore\V1\Storage\EntityTypeStorage $entityTypeStorage
      */
     $entityTypeStorage = $this
       ->storage->getEntityTypeStorage();

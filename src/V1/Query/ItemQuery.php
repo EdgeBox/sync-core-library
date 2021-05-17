@@ -45,7 +45,7 @@ class ItemQuery extends StorageQuery {
   /**
    * @inheritdoc
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\Result\ItemResult
+   * @return \EdgeBox\SyncCore\V1\Query\Result\ItemResult
    */
   public function execute() {
     $result = new ItemResult($this);

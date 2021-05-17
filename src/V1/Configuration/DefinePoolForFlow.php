@@ -30,7 +30,7 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow {
   /**
    * DefineFlow constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param DefineFlow $flow
    * @param string $pool_id
    */

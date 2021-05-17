@@ -24,7 +24,7 @@ class PingQuery extends SimpleQuery {
   /**
    * Query constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     parent::__construct($core, self::PATH);
@@ -84,9 +84,9 @@ class PingQuery extends SimpleQuery {
   /**
    * Provide a Result object to get the actual entities from.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\Result\SimpleResult
+   * @return \EdgeBox\SyncCore\V1\Query\Result\SimpleResult
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function execute() {
     $result = new SimpleResult($this);

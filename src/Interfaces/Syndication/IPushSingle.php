@@ -131,7 +131,7 @@ interface IPushSingle {
   /**
    * @return $this
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function execute();
 

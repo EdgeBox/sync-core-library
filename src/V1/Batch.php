@@ -15,14 +15,14 @@ class Batch implements IBatch {
   protected $operations = [];
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
   /**
    * Batch constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;

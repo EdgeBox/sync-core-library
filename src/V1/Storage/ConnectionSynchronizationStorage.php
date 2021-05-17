@@ -41,7 +41,7 @@ class ConnectionSynchronizationStorage extends Storage {
   /**
    * @param string $id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\ConnectionSynchronization
+   * @return \EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization
    */
   public function getEntity($id) {
     return new ConnectionSynchronization($this, $id);

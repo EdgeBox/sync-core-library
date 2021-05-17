@@ -14,7 +14,7 @@ class FlowPullConfiguration extends FlowPullConfigurationBase {
   /**
    * DefineFlow constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param DefinePoolForFlow $pool
    * @param DefineEntityType $type
    */

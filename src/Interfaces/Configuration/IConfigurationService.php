@@ -24,7 +24,7 @@ interface IConfigurationService {
   /**
    * @return array pool ID => pool name.
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function listRemotePools();
 
@@ -34,7 +34,7 @@ interface IConfigurationService {
    *
    * @return IRegisterPool
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function usePool($pool_id, $pool_name);
 

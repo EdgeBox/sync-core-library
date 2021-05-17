@@ -44,7 +44,7 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
     $this->pull_condition[] = DataCondition::in($property . '.*.' . Entity::UUID_KEY, $allowed_entity_ids);
 
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Query\Condition\Condition $condition
+     * @var \EdgeBox\SyncCore\V1\Query\Condition\Condition $condition
      */
 
     if (count($this->pull_condition) > 1) {

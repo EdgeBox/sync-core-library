@@ -13,7 +13,7 @@ use EdgeBox\SyncCore\V1\Storage\ObjectStorage;
 class ListRemoteFlows implements IListRemoteFlows {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 

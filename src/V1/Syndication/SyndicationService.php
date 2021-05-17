@@ -18,14 +18,14 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class SyndicationService implements ISyndicationService {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
   /**
    * SyndicationService constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;
@@ -71,7 +71,7 @@ class SyndicationService implements ISyndicationService {
    */
   public function getExternalUsages($pool_id, $entity_type, $bundle, $shared_entity_id) {
     /**
-     * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
+     * @var \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
      */
     $storage = $this
       ->core
@@ -160,7 +160,7 @@ class SyndicationService implements ISyndicationService {
   /**
    * Get a list of all Sync Core connections as resource URLs.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\Connection[]
+   * @return \EdgeBox\SyncCore\V1\Entity\Connection[]
    *
    * @throws \Exception
    */

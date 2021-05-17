@@ -20,14 +20,14 @@ abstract class Query {
   protected $arguments;
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
   /**
    * Query constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param array $arguments
    */
   public function __construct($core, $arguments = []) {
@@ -36,7 +36,7 @@ abstract class Query {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @return \EdgeBox\SyncCore\V1\SyncCore
    */
   public function getCore() {
     return $this->core;
@@ -86,13 +86,13 @@ abstract class Query {
   /**
    * Provide a Result object to get the actual entities from.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\Result\Result
+   * @return \EdgeBox\SyncCore\V1\Query\Result\Result
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\TimeoutException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\BadRequestException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\ForbiddenException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\NotFoundException
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\TimeoutException
+   * @throws \EdgeBox\SyncCore\Exception\BadRequestException
+   * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
+   * @throws \EdgeBox\SyncCore\Exception\NotFoundException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   abstract public function execute();
 

@@ -17,7 +17,7 @@ use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 class DefineEntityType extends BatchOperation implements IDefineEntityType {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 

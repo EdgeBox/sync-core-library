@@ -18,7 +18,7 @@ interface IListRemoteFlows {
    * @return IRemoteFlowListItem[] The properties the remote site saved for
    *   this Flow.
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function execute();
 

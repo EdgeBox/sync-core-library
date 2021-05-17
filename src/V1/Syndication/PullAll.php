@@ -103,7 +103,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\ConnectionSynchronization
+   * @return \EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization
    */
   protected function getSyncEntity() {
     $api = $this->pool;

@@ -12,7 +12,7 @@ use EdgeBox\SyncCore\V1\Entity\Entity;
 class PullOperation implements IPullOperation {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
@@ -34,7 +34,7 @@ class PullOperation implements IPullOperation {
   /**
    * PushSingle constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param string $type
    * @param string $bundle
    * @param array $body
@@ -81,7 +81,7 @@ class PullOperation implements IPullOperation {
     return new class ($this->core, $definition) implements IEntityReference {
 
       /**
-       * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+       * @var \EdgeBox\SyncCore\V1\SyncCore
        */
       protected $core;
 
@@ -93,7 +93,7 @@ class PullOperation implements IPullOperation {
       /**
        * constructor.
        *
-       * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+       * @param \EdgeBox\SyncCore\V1\SyncCore $core
        * @param array $definition
        */
       public function __construct($core, $definition) {

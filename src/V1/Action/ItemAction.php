@@ -21,7 +21,7 @@ class ItemAction extends ItemQuery {
   /**
    * ItemAction constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage $storage
+   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
    * @param string $actionPath
    * @param string $method
    */

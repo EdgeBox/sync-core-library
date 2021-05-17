@@ -29,7 +29,7 @@ interface IBatch {
   /**
    * Convenience method to call ->execute() for all indices until ->count().
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   public function executeAll();
 

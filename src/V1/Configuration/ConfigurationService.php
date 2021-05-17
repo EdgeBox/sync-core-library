@@ -26,14 +26,14 @@ class ConfigurationService implements IConfigurationService {
   const OBJECT_STORAGE_PROPERTY_POOLS = ObjectStorage::PROPERTY_PROPERTIES . '.pools';
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
   /**
    * SyndicationService constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;
@@ -144,7 +144,7 @@ class ConfigurationService implements IConfigurationService {
   /**
    * Create API entity for Drupal that the other types inherit from.
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SyncCoreException
+   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
    */
   protected function registerDrupalApi() {
     // Only do it once (performance).

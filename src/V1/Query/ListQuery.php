@@ -107,7 +107,7 @@ class ListQuery extends StorageQuery {
   /**
    * Apply the given condition to the list before returning it.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Query\Condition\Condition|Condition[] $condition
+   * @param \EdgeBox\SyncCore\V1\Query\Condition\Condition|Condition[] $condition
    *
    * @return $this
    */
@@ -153,7 +153,7 @@ class ListQuery extends StorageQuery {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\Result\ListResult
+   * @return \EdgeBox\SyncCore\V1\Query\Result\ListResult
    */
   public function execute() {
     return new ListResult($this);

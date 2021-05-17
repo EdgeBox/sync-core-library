@@ -12,7 +12,7 @@ use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 class TriggerPullSingle implements ITriggerPullSingle {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 

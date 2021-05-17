@@ -87,7 +87,7 @@ class Entity {
   const ENTITY_REFERENCE_RESOLVE_IF_EXISTS = 0;
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage
+   * @var \EdgeBox\SyncCore\V1\Storage\Storage
    */
   protected $storage;
 
@@ -99,7 +99,7 @@ class Entity {
   /**
    * Entity constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage $storage
+   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
    * @param string $id
    */
   public function __construct($storage, $id) {
@@ -108,7 +108,7 @@ class Entity {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage
+   * @return \EdgeBox\SyncCore\V1\Storage\Storage
    */
   public function getStorage() {
     return $this->storage;

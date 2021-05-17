@@ -14,7 +14,7 @@ class EntityPreviewConnection extends Connection {
    *
    * @param bool $set
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Action\Connection\AllowPublicAccessAction
+   * @return \EdgeBox\SyncCore\V1\Action\Connection\AllowPublicAccessAction
    */
   public function allowPublicAccess($set) {
     $action = new AllowPublicAccessAction($this->storage);

@@ -12,7 +12,7 @@ use EdgeBox\SyncCore\V1\Storage\ApiStorage;
 class RegisterPool extends BatchOperation implements IRegisterPool {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
@@ -29,7 +29,7 @@ class RegisterPool extends BatchOperation implements IRegisterPool {
   /**
    * RegisterPool constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param string $pool_id
    * @param string $pool_name
    */

@@ -25,7 +25,7 @@ class EntityStorage extends Storage {
   /**
    * EntityStorage constructor. Include instance ID and API ID.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $client
+   * @param \EdgeBox\SyncCore\V1\SyncCore $client
    * @param $instance_id
    * @param $api_id
    */

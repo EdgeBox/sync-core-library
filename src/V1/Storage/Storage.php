@@ -24,14 +24,14 @@ abstract class Storage {
   const PROPERTY_ID = 'id';
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $client;
 
   /**
    * Storage constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $client
+   * @param \EdgeBox\SyncCore\V1\SyncCore $client
    */
   public function __construct($client) {
     $this->client = $client;
@@ -57,7 +57,7 @@ abstract class Storage {
   /**
    * Get the client that this Storage belongs to.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @return \EdgeBox\SyncCore\V1\SyncCore
    */
   public function getClient() {
     return $this->client;
@@ -66,7 +66,7 @@ abstract class Storage {
   /**
    * Create and return an instance of the ListQuery.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\ListQuery
+   * @return \EdgeBox\SyncCore\V1\Query\ListQuery
    */
   public function listItems() {
     return new ListQuery($this);
@@ -77,7 +77,7 @@ abstract class Storage {
    *
    * @param string $id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\ItemQuery
+   * @return \EdgeBox\SyncCore\V1\Query\ItemQuery
    */
   public function getItem($id) {
     $query = new ItemQuery($this);
@@ -90,7 +90,7 @@ abstract class Storage {
    *
    * @param array $item
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\CreateItemQuery
+   * @return \EdgeBox\SyncCore\V1\Query\CreateItemQuery
    */
   public function createItem($item) {
     $query = new CreateItemQuery($this);
@@ -104,7 +104,7 @@ abstract class Storage {
    * @param string $id
    * @param array $item
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\UpdateItemQuery
+   * @return \EdgeBox\SyncCore\V1\Query\UpdateItemQuery
    */
   public function updateItem($id, $item) {
     $query = new UpdateItemQuery($this);
@@ -118,7 +118,7 @@ abstract class Storage {
    *
    * @param string $id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\DeleteItemQuery
+   * @return \EdgeBox\SyncCore\V1\Query\DeleteItemQuery
    */
   public function deleteItem($id) {
     $query = new DeleteItemQuery($this);

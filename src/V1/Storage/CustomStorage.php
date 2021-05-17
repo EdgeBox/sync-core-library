@@ -52,7 +52,7 @@ class CustomStorage extends Storage {
   /**
    * CustomStorage constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $client
+   * @param \EdgeBox\SyncCore\V1\SyncCore $client
    * @param string $api_id
    * @param string $site_id
    * @param string $entity_type_name

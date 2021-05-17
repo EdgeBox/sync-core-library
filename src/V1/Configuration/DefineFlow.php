@@ -19,7 +19,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow {
   /**
    * DefineFlow constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    * @param string $machine_name
    * @param string $name
    * @param string $config

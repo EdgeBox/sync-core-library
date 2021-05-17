@@ -12,7 +12,7 @@ class Connection extends Entity {
   /**
    * Create and return an instance of an LoginAction.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Action\Connection\LoginAction
+   * @return \EdgeBox\SyncCore\V1\Action\Connection\LoginAction
    */
   public function login() {
     $action = new LoginAction($this->storage);

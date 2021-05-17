@@ -16,7 +16,7 @@ class ConnectionSynchronization extends Entity {
    *
    * @param string $item_id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeSingleAction
+   * @return \EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeSingleAction
    */
   public function synchronizeSingle($item_id) {
     $action = new SynchronizeSingleAction($this->storage);
@@ -31,7 +31,7 @@ class ConnectionSynchronization extends Entity {
    *
    * @param string $runner_id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllStatus
+   * @return \EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllStatus
    */
   public function synchronizeAllStatus($runner_id) {
     $action = new SynchronizeAllStatus($this->storage);
@@ -44,7 +44,7 @@ class ConnectionSynchronization extends Entity {
   /**
    * Create and return an instance of an SynchronizeAllAction.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllAction
+   * @return \EdgeBox\SyncCore\V1\Action\ConnectionSynchronization\SynchronizeAllAction
    */
   public function synchronizeAll() {
     $action = new SynchronizeAllAction($this->storage);

@@ -17,12 +17,12 @@ interface ISyncCore {
   public function getReportingService();
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\Interfaces\Syndication\ISyndicationService
+   * @return \EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService
    */
   public function getSyndicationService();
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\Interfaces\Configuration\IConfigurationService
+   * @return \EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService
    */
   public function getConfigurationService();
 
@@ -63,7 +63,7 @@ interface ISyncCore {
   /**
    * @return array|null
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\NotFoundException
+   * @throws \EdgeBox\SyncCore\Exception\NotFoundException
    */
   public function verifySiteId();
 
@@ -74,7 +74,7 @@ interface ISyncCore {
    *
    * @return string
    *
-   * @throws \Drupal\cms_content_sync\SyncCore\Exception\SiteVerificationFailedException
+   * @throws \EdgeBox\SyncCore\Exception\SiteVerificationFailedException
    */
   public function registerSite($force = FALSE);
 

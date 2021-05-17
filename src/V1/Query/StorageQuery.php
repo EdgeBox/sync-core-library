@@ -14,14 +14,14 @@ namespace EdgeBox\SyncCore\V1\Query;
 abstract class StorageQuery extends Query {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage
+   * @var \EdgeBox\SyncCore\V1\Storage\Storage
    */
   protected $storage;
 
   /**
    * Query constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage $storage
+   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
    */
   public function __construct($storage) {
     parent::__construct($storage->getClient());
@@ -32,16 +32,16 @@ abstract class StorageQuery extends Query {
   /**
    * Get a RequestArguments instance.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage $storage
+   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Query\Query
+   * @return \EdgeBox\SyncCore\V1\Query\Query
    */
   abstract public static function create($storage);
 
   /**
    * Get the Storage the Query belongs to.
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage
+   * @return \EdgeBox\SyncCore\V1\Storage\Storage
    */
   public function getStorage() {
     return $this->storage;

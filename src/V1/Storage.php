@@ -23,14 +23,14 @@ use EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage;
 class Storage {
 
   /**
-   * @var \Drupal\cms_content_sync\SyncCore\V1\SyncCore
+   * @var \EdgeBox\SyncCore\V1\SyncCore
    */
   protected $core;
 
   /**
    * Storages constructor.
    *
-   * @param \Drupal\cms_content_sync\SyncCore\V1\SyncCore $core
+   * @param \EdgeBox\SyncCore\V1\SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;
@@ -39,7 +39,7 @@ class Storage {
   /**
    * @param string $type
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\Storage
+   * @return \EdgeBox\SyncCore\V1\Storage\Storage
    *
    * @throws \Exception
    */
@@ -76,7 +76,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\MetaInformationConnectionStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage
    */
   public function getMetaInformationConnectionStorage() {
     static $cache;
@@ -87,7 +87,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\ConnectionStorage
    */
   public function getConnectionStorage() {
     static $cache;
@@ -98,7 +98,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\EntityTypeStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\EntityTypeStorage
    */
   public function getEntityTypeStorage() {
     static $cache;
@@ -109,7 +109,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ConnectionSynchronizationStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage
    */
   public function getConnectionSynchronizationStorage() {
     static $cache;
@@ -120,7 +120,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\PreviewEntityStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage
    */
   public function getPreviewEntityStorage() {
     static $cache;
@@ -131,7 +131,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\InstanceStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\InstanceStorage
    */
   public function getInstanceStorage() {
     static $cache;
@@ -142,7 +142,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ApiStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\ApiStorage
    */
   public function getApiStorage() {
     static $cache;
@@ -153,7 +153,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\ObjectStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\ObjectStorage
    */
   public function getObjectStorage() {
     static $cache;
@@ -164,7 +164,7 @@ class Storage {
   }
 
   /**
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\RemoteStorageStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage
    */
   public function getRemoteStorage() {
     static $cache;
@@ -180,7 +180,7 @@ class Storage {
    * @param string $entity_type_name
    * @param string $bundle_name
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Storage\CustomStorage
+   * @return \EdgeBox\SyncCore\V1\Storage\CustomStorage
    */
   public function getCustomStorage($api_id, $site_id, $entity_type_name, $bundle_name) {
     static $cache;

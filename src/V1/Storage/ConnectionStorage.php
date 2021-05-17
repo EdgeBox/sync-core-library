@@ -25,7 +25,7 @@ class ConnectionStorage extends Storage {
   /**
    * @param string $id
    *
-   * @return \Drupal\cms_content_sync\SyncCore\V1\Entity\Connection
+   * @return \EdgeBox\SyncCore\V1\Entity\Connection
    */
   public function getEntity($id) {
     if ($id === PreviewEntityStorage::ID) {
