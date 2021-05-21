@@ -154,9 +154,9 @@ class SyncCore implements ISyncCore {
   }
 
   /**
-   * @param $site_url
-   * @param $method
-   * @param $authentication
+   * @param string $site_url
+   * @param string $method
+   * @param array $authentication
    *
    * @return bool
    *
@@ -240,7 +240,7 @@ class SyncCore implements ISyncCore {
    *
    * @return bool
    */
-  public function setSiteName($set) {
+  public function setSiteName(string $set) {
     $site = $this
       ->storage->getInstanceStorage()
       ->getItem($this->application->getSiteId())
@@ -262,7 +262,7 @@ class SyncCore implements ISyncCore {
   public function registerSite($force = FALSE) {
     if (!$force && $this->application->getSiteId()) {
       $sites = $this->verifySiteId();
-      if ($sites && count($sites)) {
+      if ($sites) {
         throw new SiteVerificationFailedException('A site with ID ' . array_keys($sites)[0] . ' and base URL ' . array_values($sites)[0] . ' already exists.');
       }
     }
@@ -353,7 +353,7 @@ class SyncCore implements ISyncCore {
       ->getAll();
 
     // Another ID is already used for this base URL.
-    if ($sites && count($sites)) {
+    if ($sites) {
       return [
         $sites[0]['id'] => $sites[0]['base_url'],
       ];
@@ -366,7 +366,7 @@ class SyncCore implements ISyncCore {
   /**
    * @inheritdoc
    */
-  public function getSitesWithDifferentEntityTypeVersion($pool_id, $entity_type, $bundle, $target_version) {
+  public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version) {
     /**
      * @var \EdgeBox\SyncCore\V1\Storage\ConnectionStorage $connectionStorage
      */
@@ -450,8 +450,8 @@ class SyncCore implements ISyncCore {
    * Get a list of fields that either the remote site or local site is missing
    * in comparison.
    *
-   * @param $mine
-   * @param $theirs
+   * @param array $mine
+   * @param array $theirs
    *
    * @return array
    */

@@ -36,7 +36,7 @@ interface ITriggerPullSingle {
   public function execute();
 
   /**
-   * @return IPullDashboardSearchResultItem
+   * @return IPullDashboardSearchResultItem|null
    */
   public function getPullDashboardSearchResultItem();
 

@@ -20,9 +20,11 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
   protected $body;
 
   /**
-   * @var arrayAdditionaloperationstoexecuteafterthemainoperationEg
-   *            when defining an entity type we immediately create a pool
-   *            connection for it.
+   * @var array
+   * Additional operations to execute after the main operation
+   * E.g.
+   * when defining an entity type we immediately create a pool
+   * connection for it.
    */
   protected $downstream = [];
 

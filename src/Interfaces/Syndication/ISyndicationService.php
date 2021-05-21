@@ -8,7 +8,7 @@ namespace EdgeBox\SyncCore\Interfaces\Syndication;
 interface ISyndicationService {
 
   /**
-   * @return IConfigurePullDashboard
+   * @return IConfigurePullDashboard|null
    */
   public function configurePullDashboard();
 

@@ -1,0 +1,525 @@
+<?php
+
+namespace EdgeBox\SyncCore\V2;
+
+use EdgeBox\SyncCore\Exception\BadRequestException;
+use EdgeBox\SyncCore\Exception\ForbiddenException;
+use EdgeBox\SyncCore\Exception\InternalContentSyncError;
+use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+use EdgeBox\SyncCore\Interfaces\ISyncCore;
+use EdgeBox\SyncCore\V1\Helper;
+use EdgeBox\SyncCore\V2\Configuration\ConfigurationService;
+use EdgeBox\SyncCore\V2\Embed\EmbedService;
+use EdgeBox\SyncCore\V2\Raw\Api\DefaultApi;
+use EdgeBox\SyncCore\V2\Raw\Configuration;
+use EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteStatus;
+use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
+use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
+use Firebase\JWT\JWT;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\RequestOptions;
+
+// TODO: Refactor to never pass arrays but instead use all the setter methods, making it
+//  easier to identify mistakes
+// TODO: Is there any linting tool that could show us if we're using any non-existent
+//  method etc. and prevent a push?
+
+class SyncCore implements ISyncCore {
+  /**
+   * @var string
+   *    The base URL of the remote Sync Core. See Pool::$backend_url
+   */
+  protected $base_url;
+
+  /**
+   * @var DefaultApi
+   */
+  protected $client;
+
+  /**
+   * @var IApplicationInterface
+   */
+  protected $application;
+
+  /**
+   * @var string
+   */
+  protected $cloud_base_url;
+
+  /**
+   * @var string
+   */
+  protected $cloud_embed_url;
+
+  /**
+   * @var int
+   */
+  protected $default_timeout = 15;
+
+  /**
+   * @param IApplicationInterface $application
+   * @param string $base_url
+   *   The Sync Core base URL.
+   */
+  public function __construct(IApplicationInterface $application, string $base_url) {
+    if(substr($base_url,-10)!='/sync-core') {
+      throw new InternalContentSyncError("Invalid base URL doesn't end with /sync-core");
+    }
+
+    if(isset($_ENV['SYNC_CORE_DEFAULT_TIMEOUT'])) {
+      $this->default_timeout = $_ENV['SYNC_CORE_DEFAULT_TIMEOUT'];
+    }
+
+    $this->application = $application;
+    // As the /sync-core will be exported with the routes in the swagger.yaml docs
+    // that is fed into the openapi generator, our library will already include
+    // that prefix for all routes. So we need to cut it off or we would end up
+    // with an incorrect double-prefix of /sync-core/sync-core.
+    $this->base_url = substr($base_url,0,-10);
+    $this->cloud_base_url = isset($_ENV["CONTENT_SYNC_CLOUD_BASE_URL"])
+        ? $_ENV["CONTENT_SYNC_CLOUD_BASE_URL"]
+        : 'https://app.cms-content-sync.io';
+    $this->cloud_embed_url = isset($_ENV["CONTENT_SYNC_CLOUD_EMBED_URL"])
+        ? $_ENV["CONTENT_SYNC_CLOUD_EMBED_URL"]
+        : 'https://embed.cms-content-sync.io';
+
+    $configuration = new Configuration();
+    $configuration->setHost($this->base_url);
+
+    $this->client = new DefaultApi(
+      $application->getHttpClient(),
+      $configuration
+    );
+  }
+
+  public function getBaseUrl() {
+    return $this->base_url;
+  }
+
+  public function getClient() {
+    return $this->client;
+  }
+
+  /**
+   * @param string $base_url
+   * @param IApplicationInterface $application
+   *
+   * @return SyncCore
+   */
+  public static function get($base_url, $application) {
+    static $instances = [];
+
+    if (isset($instances[$base_url])) {
+      return $instances[$base_url];
+    }
+
+    return $instances[$base_url] = new SyncCore($application, $base_url);
+  }
+
+  /**
+   * @param string $type
+   * @param string $file_name
+   * @param string $content
+   *
+   * @return FileEntity
+   *
+   * @throws BadRequestException
+   * @throws ForbiddenException
+   * @throws NotFoundException
+   * @throws SyncCoreException
+   * @throws TimeoutException
+   */
+  public function sendFile($type, $file_name, $content) {
+    $fileDto = new CreateFileDto([
+        'type' => $type,
+        'fileName' => $file_name,
+    ]);
+
+    $request = $this->getClient()->fileControllerCreateRequest($fileDto);
+    $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+
+    $request = new Request("PUT", $file->getUploadUrl(), [
+        RequestOptions::BODY => $content,
+    ]);
+    $this->sendRaw($request);
+
+    $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
+    $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+
+    return $file;
+  }
+
+  /**
+   * Send the given request to the server. As the OpenAPI generator will add all kind
+   * of unnecessary nonsense, we only want the raw request and then handle status codes
+   * etc ourselves.
+   *
+   * @param Request $request
+   * @param array $options
+   * @return mixed
+   *
+   * @throws BadRequestException
+   * @throws ForbiddenException
+   * @throws NotFoundException
+   * @throws SyncCoreException
+   * @throws TimeoutException
+   */
+  public function sendRaw(Request $request, $options=[]) {
+    try {
+      $options = [
+              RequestOptions::HTTP_ERRORS => FALSE,
+          ] + $this->application->getHttpOptions() + $options;
+
+      if (empty($options[RequestOptions::TIMEOUT])) {
+        $options[RequestOptions::TIMEOUT] = $this->default_timeout;
+      }
+
+      $response = $this->application->getHttpClient()->send($request, $options);
+    }
+    catch (ConnectException $e) {
+      throw new TimeoutException('The Sync Core did not respond in time for ' . $request->getMethod() . ' ' . Helper::obfuscateCredentials($request->getUri()) . ' ' . $e->getMessage());
+    }
+    catch (GuzzleException $e) {
+      throw new SyncCoreException($e->getMessage());
+    }
+    catch (\Exception $e) {
+      throw new SyncCoreException($e->getMessage());
+    }
+
+    $status = $response->getStatusCode();
+
+    $response_body = $response->getBody();
+    $data = json_decode($response_body, TRUE);
+    $message = isset($data['message']) ? $data['message'] : $response_body . '';
+    if(!is_string($message)) {
+      $message = json_encode($message);
+    }
+
+    if ($status === 400) {
+      throw new BadRequestException('The Sync Core responded with 400 Bad Request for ' . $request->getMethod() . ' ' . Helper::obfuscateCredentials($request->getUri()) . ' ' . $message, $status, $response->getReasonPhrase(), $response_body);
+    }
+    elseif ($status === 403) {
+      throw new ForbiddenException('The Sync Core responded with 403 Forbidden for ' . $request->getMethod() . ' ' . Helper::obfuscateCredentials($request->getUri()) . ' ' . $message, $status, $response->getReasonPhrase(), $response_body);
+    }
+    elseif ($status === 404) {
+      throw new NotFoundException('The Sync Core responded with 404 Not Found for ' . $request->getMethod() . ' ' . Helper::obfuscateCredentials($request->getUri()) . ' ' . $message, $status, $response->getReasonPhrase(), $response_body);
+    }
+    elseif ($status !== 200 && $status !== 201) {
+      throw new SyncCoreException('The Sync Core responded with a non-OK status code for ' . $request->getMethod() . ' ' . Helper::obfuscateCredentials($request->getUri()) . ' ' . $message, $status, $response->getReasonPhrase(), $response_body);
+    }
+
+    return $data;
+  }
+
+  /**
+   * Send the given request to the server. As the OpenAPI generator will add all kind
+   * of unnecessary nonsense, we only want the raw request and then handle status codes
+   * etc ourselves.
+   *
+   * @param Request $request
+   * @param string $permissions
+   * @return mixed
+   *
+   * @throws BadRequestException
+   * @throws ForbiddenException
+   * @throws NotFoundException
+   * @throws SyncCoreException
+   * @throws TimeoutException
+   */
+  public function sendToSyncCore(Request $request, string $permissions) {
+    $jwt = $this->createJwt($permissions);
+    return $this->sendToSyncCore($request, $jwt);
+  }
+
+  public function sendToSyncCoreWithJwt(Request $request, string $jwt) {
+    $options = [];
+    $options[RequestOptions::HEADERS]['Authorization'] = 'Bearer '.$jwt;
+
+    $this->sendRaw($request, $options);
+  }
+
+  /**
+   * @param Request $request
+   * @param string $class
+   * @param string $permissions
+   *
+   * @return Raw\Model\ModelInterface|object
+   *
+   * @throws BadRequestException
+   * @throws ForbiddenException
+   * @throws NotFoundException
+   * @throws SyncCoreException
+   * @throws TimeoutException
+   */
+  public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions) {
+    $response = $this->sendToSyncCore($request, $permissions);
+    return ObjectSerializer::deserialize($response, $class);
+  }
+
+  protected function hasValidV2SiteId() {
+    $site_id = $this->application->getSiteId();
+    if(!$site_id) {
+      return FALSE;
+    }
+
+    // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
+    // is a UUID and if it's not, the site must be re-registered first.
+    return preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $site_id)===1;
+  }
+
+  // TODO: Interface: Add to ISyncCore interface.
+  // TODO: Drupal: Use. If a site isn't registered yet and it's augmented, show the register site page
+  public function isSiteRegistered() {
+    return $this->hasValidV2SiteId();
+  }
+
+  // TODO Interface: Add to IApplicationInterface::..
+  const SYNC_CORE_PERMISSIONS_CONTENT = 'content';
+  const SYNC_CORE_PERMISSIONS_CONFIGURATION = 'configuration';
+
+  protected function getSiteSecret() {
+    return $this->application->getAuthentication()['password'];
+  }
+
+  public function createJwt($permissions) {
+    $site_id = $this->application->getSiteId();
+    if(!$site_id) {
+      return NULL;
+    }
+
+    $secret = $this->getSiteSecret();
+    $payload = [
+      'type' => 'site',
+      'scopes' => $permissions===self::SYNC_CORE_PERMISSIONS_CONFIGURATION
+          ? [
+              self::SYNC_CORE_PERMISSIONS_CONFIGURATION,
+              self::SYNC_CORE_PERMISSIONS_CONTENT,
+          ]
+          : [$permissions],
+      'provider' => 'jwt-header',
+      'uuid' => $site_id,
+    ];
+
+    return JWT::encode($payload, $secret);
+  }
+
+  public function getSyncCoreDomain() {
+    $url = parse_url($this->base_url);
+    return $url['host'];
+  }
+
+  // TODO: Library: Add dependency to library for: composer require firebase/php-jwt
+  // TODO: Library: Add static linting and analyzing.
+
+  public function registerSiteWithJwt($options) {
+    $dto = new RegisterSiteDto($options);
+    // TODO: Drupal: Use longer passwords on creation (64 characters if possible).
+    // TODO: Drupal/Interface: When the password changes, we need to make a request to the Sync Core using
+    //   the old password to set the new password. If the request fails, the password
+    //   can't be changed.
+    $dto->setSecret($this->getSiteSecret());
+    if(!$dto->valid()) {
+      throw new InternalContentSyncError("Invalid augment URL options.");
+    }
+
+    $request = $this->client->siteControllerRegisterRequest($dto);
+    $response = $this->sendToSyncCoreWithJwt($request, $options['jwt']);
+
+    $response['status'] = SiteStatus::_100_ACTIVE;
+    $entity = new SiteEntity($response);
+
+    $siteId = $entity->getUuid();
+    $this->application->setSiteId($siteId);
+
+    // Save the credentials to the Sync Core so it can connect to the site as well.
+    $auth = $this->application->getAuthentication();
+
+    $authentication = new CreateAuthenticationDto();
+    /**
+     * @var AuthenticationType $type
+     */
+    $type = $auth['type']===IApplicationInterface::AUTHENTICATION_TYPE_COOKIE
+        ? AuthenticationType::DRUPAL8_SERVICES
+        : AuthenticationType::BASIC_AUTH;
+    $authentication->setType($type);
+    $authentication->setUsername($auth['username']);
+    $authentication->setPassword($auth['password']);
+
+    $request = $this->client->authenticationControllerCreateRequest($authentication);
+    $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+  }
+
+  public function getCloudEmbedUrl() {
+    return $this->cloud_embed_url;
+  }
+
+  public function batch()
+  {
+    return new Batch($this);
+  }
+
+  public function canHandleFlowConfigurationIndependently()
+  {
+    return TRUE;
+  }
+
+  public function getApplication() {
+    return $this->application;
+  }
+
+  public function getReservedPropertyNames()
+  {
+    // All handled independently now, so we don't have any reserved names.
+    return [];
+  }
+
+  public function getSiteName($id = NULL)
+  {
+    if(!$id) {
+      if(!$this->hasValidV2SiteId()) {
+        throw new InternalContentSyncError("Site is not registered yet. Can't provide a name.");
+      }
+
+      $id = $this->application->getSiteId();
+    }
+
+    $request = $this->client->siteControllerItemByUuidRequest($id);
+    $response = $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+    return $response['name'];
+  }
+
+  public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version)
+  {
+    $request = $this->client->remoteEntityTypeVersionControllerGetVersionUsageRequest(
+        $target_version,
+        $bundle,
+        $entity_type
+    );
+
+    /**
+     * @var EntityTypeVersionUsage $response
+     */
+    $response = $this->sendToSyncCoreAndExpect(
+        $request,
+        EntityTypeVersionUsage::class,
+        self::SYNC_CORE_PERMISSIONS_CONFIGURATION
+    );
+
+    // FIXME: With the new Sync Core version we have a lot more helpful data available.
+    //  Once SC 1 is dead, we can improve and provide that here, too.
+    $result = [];
+
+    foreach($response->getDifferent() as $different) {
+      $local_missing = [];
+      foreach($different->getAdditionalProperties() as $property) {
+        $local_missing[] = $property->getMachineName();
+      }
+      if(count($local_missing)) {
+        foreach($different->getSites() as $site) {
+          $result[$site->getUuid()]['local_missing'] = $local_missing;
+        }
+      }
+
+      $remote_missing = [];
+      foreach($different->getMissingProperties() as $property) {
+        $remote_missing[] = $property->getMachineName();
+      }
+      if(count($remote_missing)) {
+        foreach($different->getSites() as $site) {
+          $result[$site->getUuid()]['remote_missing'] = $remote_missing;
+        }
+      }
+    }
+
+    return $result;
+  }
+
+  public function getConfigurationService()
+  {
+    static $cache = NULL;
+    if ($cache) {
+      return $cache;
+    }
+    return $cache = new ConfigurationService($this);
+  }
+
+  public function getReportingService()
+  {
+    static $cache = NULL;
+    if ($cache) {
+      return $cache;
+    }
+    return $cache = new ReportingService($this);
+  }
+
+  public function getSyndicationService()
+  {
+    static $cache = NULL;
+    if ($cache) {
+      return $cache;
+    }
+    return $cache = new SyndicationService($this);
+  }
+
+  // TODO: Interface: Add to ISyncCore interface.
+  // TODO: Drupal: Use. Provide a route like /content-sync/:augment-id?..args that forwards to this.
+  public function getEmbedService()
+  {
+    static $cache = NULL;
+    if ($cache) {
+      return $cache;
+    }
+    return $cache = new EmbedService($this);
+  }
+
+  public function isDirectUserAccessEnabled($set = NULL)
+  {
+    // Sync Core 2.0 has it always enabled.
+    return TRUE;
+  }
+
+  public function registerSite($force = FALSE)
+  {
+    // TODO: Allow if a special multi-site-register JWT is provided.
+    throw new InternalContentSyncError("Can't register sites directly. Use augmentation instead.");
+  }
+
+  public function setSiteName(string $set)
+  {
+    if(!$this->hasValidV2SiteId()) {
+      throw new InternalContentSyncError("Site is not registered yet. Can't change site name.");
+    }
+
+    $id = $this->application->getSiteId();
+    $request = $this->client->siteControllerItemByUuidRequest($id);
+    $current = $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+    if($current['name']===$set) {
+      return;
+    }
+
+    $dto = new CreateSiteDto($current);
+    $dto->setName($set);
+    $this->client->siteControllerUpdateRequest($dto);
+  }
+
+  public function verifySiteId()
+  {
+    // As sites are registered globally now, we don't need additional verification.
+    // Sites can't be registered multiple times with the same ID or base URL.
+    return NULL;
+  }
+}

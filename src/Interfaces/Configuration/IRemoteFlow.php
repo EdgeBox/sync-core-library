@@ -8,7 +8,7 @@ namespace EdgeBox\SyncCore\Interfaces\Configuration;
 interface IRemoteFlow {
 
   /**
-   * @return mixed
+   * @return string|null
    */
   public function getConfig();
 

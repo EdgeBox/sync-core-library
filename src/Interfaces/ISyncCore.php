@@ -2,6 +2,11 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
+use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
+use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
+use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
+
 /**
  * Interface ISyncCore.
  *
@@ -17,12 +22,12 @@ interface ISyncCore {
   public function getReportingService();
 
   /**
-   * @return \EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService
+   * @return ISyndicationService
    */
   public function getSyndicationService();
 
   /**
-   * @return \EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService
+   * @return IConfigurationService
    */
   public function getConfigurationService();
 
@@ -47,23 +52,23 @@ interface ISyncCore {
   public function isDirectUserAccessEnabled($set = NULL);
 
   /**
-   * @param string $id
+   * @param string|null $id
    *   Optional ID of the site. Defaults to the ID of the
    *   current site.
    *
-   * @return string
+   * @return string|null
    */
   public function getSiteName($id = NULL);
 
   /**
-   * @param bool $set
+   * @param string $set
    */
-  public function setSiteName($set);
+  public function setSiteName(string $set);
 
   /**
    * @return array|null
    *
-   * @throws \EdgeBox\SyncCore\Exception\NotFoundException
+   * @throws NotFoundException
    */
   public function verifySiteId();
 
@@ -74,7 +79,7 @@ interface ISyncCore {
    *
    * @return string
    *
-   * @throws \EdgeBox\SyncCore\Exception\SiteVerificationFailedException
+   * @throws SiteVerificationFailedException
    */
   public function registerSite($force = FALSE);
 
@@ -90,7 +95,7 @@ interface ISyncCore {
    * @return array['SITE_ID']['remote_missing' | 'local_missing'][] =
    *   'PROPERTY_NAME'
    */
-  public function getSitesWithDifferentEntityTypeVersion($pool_id, $entity_type, $bundle, $target_version);
+  public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version);
 
   /**
    * @return string[]

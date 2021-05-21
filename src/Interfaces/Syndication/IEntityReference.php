@@ -12,7 +12,7 @@ interface IEntityReference {
    * {@see IPushSingle::embed}, {@see IPushSingle::addReference} or
    * {@see IPushSingle::addDependency}.
    *
-   * @return array
+   * @return array|null
    */
   public function getDetails();
 

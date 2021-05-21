@@ -9,17 +9,17 @@ namespace EdgeBox\SyncCore\Exception;
 class SyncCoreException extends \Exception {
 
   /**
-   * @var int
+   * @var int|null
    */
   protected $statusCode;
 
   /**
-   * @var string
+   * @var string|null
    */
   protected $reasonPhrase;
 
   /**
-   * @var string
+   * @var string|null
    */
   protected $responseBody;
 
@@ -28,11 +28,11 @@ class SyncCoreException extends \Exception {
    *
    * @param string $message
    *   Error message.
-   * @param null $statusCode
+   * @param int|null $statusCode
    *   HTTP Status Code.
-   * @param null $reasonPhrase
+   * @param string|null $reasonPhrase
    *   HTTP Reason Phrase.
-   * @param null $responseBody
+   * @param string|null $responseBody
    *   HTTP Body.
    */
   public function __construct($message = "", $statusCode = NULL, $reasonPhrase = NULL, $responseBody = NULL) {

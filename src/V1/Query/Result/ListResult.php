@@ -14,13 +14,13 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class ListResult extends Result {
 
   /**
-   * @var int
+   * @var int|null
    *    Cache how many pages can be returned eventually.
    */
   protected $numberOfPages = NULL;
 
   /**
-   * @var int
+   * @var int|null
    *    Cache how many items will be provided in total.
    */
   protected $totalNumberOfItems = NULL;

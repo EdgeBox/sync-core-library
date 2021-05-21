@@ -13,7 +13,7 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class UpdateItemQuery extends ItemQuery {
 
   /**
-   * @var array
+   * @var array|null
    */
   protected $item = NULL;
 

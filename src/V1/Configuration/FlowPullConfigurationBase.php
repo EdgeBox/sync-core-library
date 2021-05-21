@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V1\Configuration;
 use EdgeBox\SyncCore\Interfaces\Configuration\IFlowPullConfiguration;
 use EdgeBox\SyncCore\V1\BatchOperation;
 use EdgeBox\SyncCore\V1\Entity\Entity;
+use EdgeBox\SyncCore\V1\Query\Condition\Condition;
 use EdgeBox\SyncCore\V1\Query\Condition\DataCondition;
 use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
 
@@ -43,14 +44,13 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
   public function ifTaggedWith($property, $allowed_entity_ids) {
     $this->pull_condition[] = DataCondition::in($property . '.*.' . Entity::UUID_KEY, $allowed_entity_ids);
 
-    /**
-     * @var \EdgeBox\SyncCore\V1\Query\Condition\Condition $condition
-     */
-
     if (count($this->pull_condition) > 1) {
       $condition = ParentCondition::all($this->pull_condition);
     }
     else {
+      /**
+       * @var Condition $condition
+       */
       $condition = $this->pull_condition[0];
     }
 

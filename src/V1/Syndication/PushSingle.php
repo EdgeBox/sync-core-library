@@ -325,6 +325,7 @@ class PushSingle implements IPushSingle {
    */
   public function setName($value, $language = NULL) {
     $this->setProperty(Entity::PROPERTY_NAME, $value, $language);
+    return $this;
   }
 
   /**
@@ -349,6 +350,7 @@ class PushSingle implements IPushSingle {
    */
   public function setPreviewHtml($value, $language = NULL) {
     $this->setProperty(Entity::PROPERTY_PREVIEW_HTML, $value, $language);
+    return $this;
   }
 
   /**
@@ -356,6 +358,7 @@ class PushSingle implements IPushSingle {
    */
   public function setSourceDeepLink($value, $language = NULL) {
     $this->setProperty(Entity::PROPERTY_SOURCE_DEEP_LINK_URL, $value, $language);
+    return $this;
   }
 
   /**

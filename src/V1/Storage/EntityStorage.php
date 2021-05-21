@@ -26,10 +26,10 @@ class EntityStorage extends Storage {
    * EntityStorage constructor. Include instance ID and API ID.
    *
    * @param \EdgeBox\SyncCore\V1\SyncCore $client
-   * @param $instance_id
-   * @param $api_id
+   * @param string $instance_id
+   * @param string $api_id
    */
-  public function __construct(SyncCore $client, $instance_id, $api_id) {
+  public function __construct(SyncCore $client, string $instance_id, string $api_id) {
     parent::__construct($client);
 
     $this->instance_id = $instance_id;

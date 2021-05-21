@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V1\Configuration;
 use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
 use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\V1\SyncCore;
 
 /**
  *
@@ -14,7 +15,7 @@ class FlowPullConfiguration extends FlowPullConfigurationBase {
   /**
    * DefineFlow constructor.
    *
-   * @param \EdgeBox\SyncCore\V1\SyncCore $core
+   * @param SyncCore $core
    * @param DefinePoolForFlow $pool
    * @param DefineEntityType $type
    */

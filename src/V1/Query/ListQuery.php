@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\V1\Query;
 
+use EdgeBox\SyncCore\Exception\InternalContentSyncError;
+use EdgeBox\SyncCore\V1\Query\Condition\Condition;
 use EdgeBox\SyncCore\V1\Query\Condition\ParentCondition;
 use EdgeBox\SyncCore\V1\Query\Result\ListResult;
 
@@ -35,11 +37,11 @@ class ListQuery extends StorageQuery {
   /**
    * Set how many items should be returned per request (page).
    *
-   * @param int $count
+   * @param int|null $count
    *
    * @return $this
    */
-  public function setItemsPerPage($count) {
+  public function setItemsPerPage(?int $count) {
     if ($count === NULL) {
       unset($this->arguments['items_per_page']);
     }
@@ -85,7 +87,7 @@ class ListQuery extends StorageQuery {
    */
   public function orderBy($field, $direction = self::ORDER_ASCENDING) {
     if ($direction != self::ORDER_ASCENDING && $direction != self::ORDER_DESCENDING) {
-      throw new \Exception('Unknown order direction ', $direction);
+      throw new InternalContentSyncError('Unknown order direction ' . $direction);
     }
 
     $this->arguments['order_by'][$field] = $direction;
@@ -107,7 +109,7 @@ class ListQuery extends StorageQuery {
   /**
    * Apply the given condition to the list before returning it.
    *
-   * @param \EdgeBox\SyncCore\V1\Query\Condition\Condition|Condition[] $condition
+   * @param Condition|Condition[] $condition
    *
    * @return $this
    */

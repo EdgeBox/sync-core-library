@@ -44,7 +44,7 @@ interface IFlowPullConfiguration extends IBatchOperation {
   /**
    * @param string $flow_id
    *
-   * @return IFlowPullConfiguration
+   * @return IFlowPullConfiguration|null
    */
   public function configureOverride($flow_id);
 

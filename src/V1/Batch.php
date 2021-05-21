@@ -15,14 +15,14 @@ class Batch implements IBatch {
   protected $operations = [];
 
   /**
-   * @var \EdgeBox\SyncCore\V1\SyncCore
+   * @var SyncCore
    */
   protected $core;
 
   /**
    * Batch constructor.
    *
-   * @param \EdgeBox\SyncCore\V1\SyncCore $core
+   * @param SyncCore $core
    */
   public function __construct($core) {
     $this->core = $core;
@@ -32,7 +32,12 @@ class Batch implements IBatch {
    * @inheritdoc
    */
   public function add($operation) {
+    /**
+     * @var BatchOperation $operation
+     */
     $this->operations[] = $operation;
+
+    return $this;
   }
 
   /**

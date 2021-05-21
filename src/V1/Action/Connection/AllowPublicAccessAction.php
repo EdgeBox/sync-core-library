@@ -17,7 +17,7 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class AllowPublicAccessAction extends ItemAction {
 
   /**
-   * @var bool
+   * @var bool|null
    */
   protected $value = NULL;
 

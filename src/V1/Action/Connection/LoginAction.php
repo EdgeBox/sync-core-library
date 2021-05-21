@@ -25,7 +25,7 @@ class LoginAction extends ItemAction {
   }
 
   /**
-   * @return string
+   * @inheritDoc
    */
   public function getBody() {
     // POST must contain a body, but can be anything.

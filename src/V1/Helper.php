@@ -15,7 +15,7 @@ class Helper {
    * Remove any information about basic auth in any URLs contained in the given
    * messages.
    *
-   * @param $message
+   * @param string|array $message
    *
    * @return array|string|string[]|null
    */

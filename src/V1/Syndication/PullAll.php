@@ -43,7 +43,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll {
   protected $progress = 0;
 
   /**
-   * @var int|null
+   * @var string|null
    */
   protected $sync_id = NULL;
 

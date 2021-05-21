@@ -70,7 +70,7 @@ abstract class Query {
   /**
    * Get the request body to use.
    *
-   * @return string|null
+   * @return array|bool|null
    */
   public function getBody() {
     return NULL;
