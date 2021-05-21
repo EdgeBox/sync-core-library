@@ -32,7 +32,7 @@ abstract class Embed
         $this->url = $this->core->getCloudEmbedUrl().'/'.$embed_id;
 
         $this->config = [
-            'jwt' => $this->core->createJwt($permissions),
+            'jwt' => $permissions ? $this->core->createJwt($permissions) : '',
             'syncCoreDomain' => $this->core->getSyncCoreDomain(),
             'baseUrl' => $this->core->getApplication()->getSiteBaseUrl(),
         ];

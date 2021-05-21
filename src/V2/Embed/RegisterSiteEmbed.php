@@ -5,7 +5,6 @@ namespace EdgeBox\SyncCore\V2\Embed;
 use EdgeBox\SyncCore\Helpers\EmbedResult;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -21,7 +20,9 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         parent::__construct(
         $core,
             IEmbedService::REGISTER_SITE,
-            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            // Set this to "none" as the site is not yet registered, so it can't make
+        // any requests to the Sync Core yet.
+            ''
     );
     }
 

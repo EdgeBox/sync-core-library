@@ -237,7 +237,7 @@ class SyncCore implements ISyncCore
     {
         $jwt = $this->createJwt($permissions);
 
-        return $this->sendToSyncCore($request, $jwt);
+        return $this->sendToSyncCoreWithJwt($request, $jwt);
     }
 
     public function sendToSyncCoreWithJwt(Request $request, string $jwt)
@@ -245,7 +245,7 @@ class SyncCore implements ISyncCore
         $options = [];
         $options[RequestOptions::HEADERS]['Authorization'] = 'Bearer '.$jwt;
 
-        $this->sendRaw($request, $options);
+        return $this->sendRaw($request, $options);
     }
 
     /**
@@ -291,7 +291,7 @@ class SyncCore implements ISyncCore
     {
         $site_id = $this->application->getSiteId();
         if (!$site_id) {
-            return null;
+            throw new InternalContentSyncError("This site is not registered yet; can't execute a signed request.");
         }
 
         $secret = $this->getSiteSecret();
@@ -332,6 +332,7 @@ class SyncCore implements ISyncCore
         $request = $this->client->siteControllerRegisterRequest($dto);
         $response = $this->sendToSyncCoreWithJwt($request, $options['jwt']);
 
+        // Must set manually as the library won't validate correctly otherwise.
         $response['status'] = SiteStatus::_100_ACTIVE;
         $entity = new SiteEntity($response);
 
