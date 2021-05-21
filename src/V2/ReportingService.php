@@ -8,108 +8,105 @@ use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType;
 use EdgeBox\SyncCore\V2\Raw\Model\UsageSummary;
 
-/**
- *
- */
-class ReportingService implements IReportingService {
-
-  /**
-   * @var SyncCore
-   */
-  protected $core;
-
-  /**
-   * SyndicationService constructor.
-   *
-   * @param SyncCore $core
-   */
-  public function __construct(SyncCore $core) {
-    $this->core = $core;
-  }
-
-  /**
-   * @param SyndicationError $error
-   */
-  protected function getOperationErrorMessage(SyndicationError $error) {
+class ReportingService implements IReportingService
+{
     /**
-     * @var string $type
+     * @var SyncCore
      */
-    $type = $error->getType();
-    $timestamp = $error->getTimestamp();
-    $date = date('Y-m-d--H-i-s', (int)$timestamp) . ': ';
-
-    if($type===SyndicationErrorType::TIMEOUT) {
-      return $date."The request timed out.";
-    }
-
-    if($type===SyndicationErrorType::BAD_RESPONSE_CODE) {
-      $status = $error->getStatusCode();
-      $body = $error->getResponseBody();
-      return $date."The site responded with status code $status and response body $body";
-    }
-
-    $message = $error->getErrorMessage();
-    if($type===SyndicationErrorType::INVALID_DEPENDENCY) {
-      return $date."Invalid dependency: $message";
-    }
-
-    return $date."Unexpected error: $message";
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function getLog($level = NULL) {
-    $request = $this->core->getClient()->syndicationControllerGetErrorsRequest();
+    protected $core;
 
     /**
-     * @var SyndicationErrorList $response
+     * SyndicationService constructor.
      */
-    $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+    public function __construct(SyncCore $core)
+    {
+        $this->core = $core;
+    }
 
-    $messages = [];
-    foreach($response->getItems() as $item) {
-      /**
-       * @var string $status
-       */
-      $status = $item->getStatus();
-      $message = "Syndication error (now in status $status).";
-
-      foreach($item->getOperationErrors() as $operation) {
+    protected function getOperationErrorMessage(SyndicationError $error)
+    {
         /**
-         * @var string $status
+         * @var string $type
          */
-        $status = $operation->getStatus();
-        $index = $operation->getOperationIndex();
-        $type = $operation->getEntityTypeNamespaceMachineName();
-        $bundle = $operation->getEntityTypeMachineName();
-        $name = $operation->getEntityName() ?? '(no name)';
-        $uuid = $operation->getEntityRemoteUuid() ?? '(no UUID)';
-        $uniqueId = $operation->getEntityRemoteUniqueId() ?? '(no ID)';
-        $errors = $operation->getErrors();
-        $mostRecent = $errors[0];
-        $error = $this->getOperationErrorMessage($mostRecent);
-        $message .= "\nOperation $index (now in status $status) failed to syndicate $type.$bundle $name $uuid $uniqueId. Most recent error: $error";
-      }
+        $type = $error->getType();
+        $timestamp = $error->getTimestamp();
+        $date = date('Y-m-d--H-i-s', (int) $timestamp).': ';
 
-      $messages[] = $message;
+        if (SyndicationErrorType::TIMEOUT === $type) {
+            return $date.'The request timed out.';
+        }
+
+        if (SyndicationErrorType::BAD_RESPONSE_CODE === $type) {
+            $status = $error->getStatusCode();
+            $body = $error->getResponseBody();
+
+            return $date."The site responded with status code $status and response body $body";
+        }
+
+        $message = $error->getErrorMessage();
+        if (SyndicationErrorType::INVALID_DEPENDENCY === $type) {
+            return $date."Invalid dependency: $message";
+        }
+
+        return $date."Unexpected error: $message";
     }
 
-    return $messages;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getLog($level = null)
+    {
+        $request = $this->core->getClient()->syndicationControllerGetErrorsRequest();
 
-  /**
-   * @inheritdoc
-   */
-  public function getStatus() {
-    $request = $this->core->getClient()->usageStatsControllerSummaryRequest();
+        /**
+         * @var SyndicationErrorList $response
+         */
+        $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        $messages = [];
+        foreach ($response->getItems() as $item) {
+            /**
+             * @var string $status
+             */
+            $status = $item->getStatus();
+            $message = "Syndication error (now in status $status).";
+
+            foreach ($item->getOperationErrors() as $operation) {
+                /**
+                 * @var string $status
+                 */
+                $status = $operation->getStatus();
+                $index = $operation->getOperationIndex();
+                $type = $operation->getEntityTypeNamespaceMachineName();
+                $bundle = $operation->getEntityTypeMachineName();
+                $name = $operation->getEntityName() ?? '(no name)';
+                $uuid = $operation->getEntityRemoteUuid() ?? '(no UUID)';
+                $uniqueId = $operation->getEntityRemoteUniqueId() ?? '(no ID)';
+                $errors = $operation->getErrors();
+                $mostRecent = $errors[0];
+                $error = $this->getOperationErrorMessage($mostRecent);
+                $message .= "\nOperation $index (now in status $status) failed to syndicate $type.$bundle $name $uuid $uniqueId. Most recent error: $error";
+            }
+
+            $messages[] = $message;
+        }
+
+        return $messages;
+    }
 
     /**
-     * @var UsageSummary $response
+     * {@inheritdoc}
      */
-    $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+    public function getStatus()
+    {
+        $request = $this->core->getClient()->usageStatsControllerSummaryRequest();
 
-    return [
+        /**
+         * @var UsageSummary $response
+         */
+        $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return [
       // TODO: Drupal: ".x" means don't compare minor versions.
       'version' => '2.x',
       // TODO: Drupal: Different values provided here.
@@ -133,5 +130,5 @@ class ReportingService implements IReportingService {
         ],
       ],
     ];
-  }
+    }
 }

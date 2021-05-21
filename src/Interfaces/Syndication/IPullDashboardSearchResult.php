@@ -2,19 +2,15 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
-/**
- *
- */
-interface IPullDashboardSearchResult {
+interface IPullDashboardSearchResult
+{
+    /**
+     * @return array
+     */
+    public function toArray();
 
-  /**
-   * @return array
-   */
-  public function toArray();
-
-  /**
-   * @return IPullDashboardSearchResultItem[]
-   */
-  public function getItems();
-
+    /**
+     * @return IPullDashboardSearchResultItem[]
+     */
+    public function getItems();
 }

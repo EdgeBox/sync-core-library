@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2;
 
-class V2Constants {
-  const PROPERTY_NAME_PREVIEW = '__preview';
+class V2Constants
+{
+    public const PROPERTY_NAME_PREVIEW = '__preview';
 }

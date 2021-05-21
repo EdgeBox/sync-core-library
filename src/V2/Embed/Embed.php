@@ -5,54 +5,54 @@ namespace EdgeBox\SyncCore\V2\Embed;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 // TODO: Add interface for constants
-abstract class Embed {
-  const REGISTER_SITE = 'register-site';
-  const SITE_REGISTERED = 'site-registered';
-  const PULL_DASHBOARD = 'pull-dashboard';
+abstract class Embed
+{
+    public const REGISTER_SITE = 'register-site';
+    public const SITE_REGISTERED = 'site-registered';
+    public const PULL_DASHBOARD = 'pull-dashboard';
 
-  /**
-   * @var SyncCore $core
-   */
-  protected $core;
+    /**
+     * @var SyncCore
+     */
+    protected $core;
 
-  /**
-   * @var string $url
-   */
-  protected $url;
+    /**
+     * @var string
+     */
+    protected $url;
 
-  /**
-   * @var array $config
-   */
-  protected $config;
+    /**
+     * @var array
+     */
+    protected $config;
 
-  /**
-   * Embed constructor.
-   *
-   * @param SyncCore $core
-   * @param string $embed_id
-   * @param string $permissions
-   */
-  public function __construct(SyncCore $core, string $embed_id, string $permissions) {
-    $this->core = $core;
-    $this->url = $this->core->getCloudEmbedUrl() . '/' . $embed_id;
+    /**
+     * Embed constructor.
+     */
+    public function __construct(SyncCore $core, string $embed_id, string $permissions)
+    {
+        $this->core = $core;
+        $this->url = $this->core->getCloudEmbedUrl().'/'.$embed_id;
 
-    $this->config = [
+        $this->config = [
         'jwt' => $this->core->createJwt($permissions),
         'syncCoreDomain' => $this->core->getSyncCoreDomain(),
         'baseUrl' => $this->core->getApplication()->getSiteBaseUrl(),
     ];
-  }
+    }
 
-  protected function getOptions() {
-    return [];
-  }
+    protected function getOptions()
+    {
+        return [];
+    }
 
-  abstract public function run();
+    abstract public function run();
 
-  protected function render() {
-    $options = $this->getOptions();
+    protected function render()
+    {
+        $options = $this->getOptions();
 
-    $html = '<style>
+        $html = '<style>
   #contentSyncEmbed {
     width: 1px;
     min-width: 100%;
@@ -89,6 +89,6 @@ abstract class Embed {
 })();
 </script>';
 
-    return new EmbedResult(EmbedResult::TYPE_RENDER, $html);
-  }
+        return new EmbedResult(EmbedResult::TYPE_RENDER, $html);
+    }
 }

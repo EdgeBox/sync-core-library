@@ -22,7 +22,9 @@
     },
     "scripts": {
         "lint": "./vendor/bin/phplint ./ --exclude=vendor --warning",
-        "analyze": "./vendor/bin/phpstan analyse src"
+        "analyze": "./vendor/bin/phpstan analyse src",
+        "test-cs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run",
+        "fix-cs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
     },
     "require": {
         "php": ">=7.1.3",
@@ -46,10 +48,12 @@
                 "stop-on-failure": ["pre-commit", "pre-push"]
             },
             "pre-commit": [
-                "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run"
+                "composer test-cs",
+                "composer lint",
+                "composer analyze"
             ],
             "pre-push": [
-                "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run",
+                "composer test-cs",
                 "composer lint",
                 "composer analyze"
             ]

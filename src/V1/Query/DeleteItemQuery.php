@@ -7,37 +7,36 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 /**
  * Class DeleteItemQuery
  * Delete an existing item.
- *
- * @package Drupal\cms_content_sync\SyncCore
  */
-class DeleteItemQuery extends ItemQuery {
-
-  /**
-   * @inheritdoc
-   */
-  public static function create($storage) {
-    return new DeleteItemQuery($storage);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function setAsDependency($set) {
-    if ($set) {
-      $this->arguments['is_dependency'] = 'true';
-    }
-    else {
-      unset($this->arguments['is_dependency']);
+class DeleteItemQuery extends ItemQuery
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function create($storage)
+    {
+        return new DeleteItemQuery($storage);
     }
 
-    return $this;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function setAsDependency($set)
+    {
+        if ($set) {
+            $this->arguments['is_dependency'] = 'true';
+        } else {
+            unset($this->arguments['is_dependency']);
+        }
 
-  /**
-   * @inheritdoc
-   */
-  public function getMethod() {
-    return SyncCoreClient::METHOD_DELETE;
-  }
+        return $this;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getMethod()
+    {
+        return SyncCoreClient::METHOD_DELETE;
+    }
 }

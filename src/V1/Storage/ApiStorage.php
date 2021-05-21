@@ -5,30 +5,28 @@ namespace EdgeBox\SyncCore\V1\Storage;
 /**
  * Class ApiStorage
  * Implement Storage for the Sync Core "API" entity type.
- *
- * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
-class ApiStorage extends Storage {
+class ApiStorage extends Storage
+{
+    public const ID = 'api_unify-api_unify-api-0_1';
 
-  const ID = 'api_unify-api_unify-api-0_1';
+    public const PROPERTY_VERSION = 'version';
 
-  const PROPERTY_VERSION = 'version';
+    public const PROPERTY_PARENT_ID = 'parent_id';
 
-  const PROPERTY_PARENT_ID = 'parent_id';
+    /**
+     * @var string CUSTOM_API_VERSION
+     *             The API version used to identify APIs as. Breaking changes in
+     *             Flow will require this version to be increased and all
+     *             synchronization entities to be re-saved via update hook.
+     */
+    public const CUSTOM_API_VERSION = '1.0';
 
-  /**
-   * @var string CUSTOM_API_VERSION
-   *   The API version used to identify APIs as. Breaking changes in
-   *   Flow will require this version to be increased and all
-   *   synchronization entities to be re-saved via update hook.
-   */
-  const CUSTOM_API_VERSION = '1.0';
-
-  /**
-   * @inheritdoc
-   */
-  public function getId() {
-    return self::ID;
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return self::ID;
+    }
 }

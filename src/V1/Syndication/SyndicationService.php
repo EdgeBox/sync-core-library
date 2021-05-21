@@ -12,110 +12,113 @@ use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 use EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage;
 use EdgeBox\SyncCore\V1\SyncCoreClient;
 
-/**
- *
- */
-class SyndicationService implements ISyndicationService {
-
-  /**
-   * @var \EdgeBox\SyncCore\V1\SyncCore
-   */
-  protected $core;
-
-  /**
-   * SyndicationService constructor.
-   *
-   * @param \EdgeBox\SyncCore\V1\SyncCore $core
-   */
-  public function __construct($core) {
-    $this->core = $core;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function configurePullDashboard() {
-    return new ConfigurePullDashboard($this->core);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function pullSingle($flow_id, $type, $bundle, $entity_id) {
-    return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function pullAll($flow_id, $type, $bundle) {
-    return new PullAll($this->core, $type, $bundle);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function handlePull($flow_id, $type, $bundle, $data) {
-    return new PullOperation($this->core, $type, $bundle, $data);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function pushSingle($flow_id, $type, $bundle, $entity_uuid, $entity_id) {
-    return new PushSingle($this->core, $type, $bundle, $entity_uuid, $entity_id);
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function getExternalUsages($pool_id, $entity_type, $bundle, $shared_entity_id) {
+class SyndicationService implements ISyndicationService
+{
     /**
-     * @var \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
+     * @var \EdgeBox\SyncCore\V1\SyncCore
      */
-    $storage = $this
+    protected $core;
+
+    /**
+     * SyndicationService constructor.
+     *
+     * @param \EdgeBox\SyncCore\V1\SyncCore $core
+     */
+    public function __construct($core)
+    {
+        $this->core = $core;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configurePullDashboard()
+    {
+        return new ConfigurePullDashboard($this->core);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pullSingle($flow_id, $type, $bundle, $entity_id)
+    {
+        return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pullAll($flow_id, $type, $bundle)
+    {
+        return new PullAll($this->core, $type, $bundle);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handlePull($flow_id, $type, $bundle, $data)
+    {
+        return new PullOperation($this->core, $type, $bundle, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pushSingle($flow_id, $type, $bundle, $entity_uuid, $entity_id)
+    {
+        return new PushSingle($this->core, $type, $bundle, $entity_uuid, $entity_id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExternalUsages($pool_id, $entity_type, $bundle, $shared_entity_id)
+    {
+        /**
+         * @var \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
+         */
+        $storage = $this
       ->core
       ->storage->getMetaInformationConnectionStorage();
 
-    $application = $this->core->getApplication();
+        $application = $this->core->getApplication();
 
-    $items = $storage->listItems()
+        $items = $storage->listItems()
       ->orderBy('connection_id')
       ->setCondition(
         ParentCondition::all()
           ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
-          ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId() . '-' . $pool_id . '-'))
-          ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-' . $entity_type . '-' . $bundle))
+          ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
+          ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$entity_type.'-'.$bundle))
       )
       ->getDetails()
       ->execute()
       ->getAll();
 
-    $result = [];
+        $result = [];
 
-    foreach ($items as $item) {
-      if (!empty($item['deleted_at'])) {
-        continue;
-      }
-      $connection_id = !empty($item['connection']['id']) ? $item['connection']['id'] : $item['connection_id'];
-      $site_id = preg_replace('@^' . $application->getApplicationId() . '-' . $pool_id . '-(.+)-' . $entity_type . '-' . $bundle . '$@', '$1', $connection_id);
+        foreach ($items as $item) {
+            if (!empty($item['deleted_at'])) {
+                continue;
+            }
+            $connection_id = !empty($item['connection']['id']) ? $item['connection']['id'] : $item['connection_id'];
+            $site_id = preg_replace('@^'.$application->getApplicationId().'-'.$pool_id.'-(.+)-'.$entity_type.'-'.$bundle.'$@', '$1', $connection_id);
 
-      if ($site_id == InstanceStorage::POOL_SITE_ID) {
-        continue;
-      }
+            if (InstanceStorage::POOL_SITE_ID == $site_id) {
+                continue;
+            }
 
-      if ($site_id == $application->getSiteMachineName()) {
-        continue;
-      }
+            if ($site_id == $application->getSiteMachineName()) {
+                continue;
+            }
 
-      if (!empty($item['entity']['_resource_url'])) {
-        $entity = SimpleQuery
+            if (!empty($item['entity']['_resource_url'])) {
+                $entity = SimpleQuery
           ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
           ->execute()
           ->getResult();
-      }
-      else {
-        $storage = new CustomStorage(
+            } else {
+                $storage = new CustomStorage(
           $this->core,
           $pool_id,
           $site_id,
@@ -123,63 +126,64 @@ class SyndicationService implements ISyndicationService {
           $bundle
         );
 
-        try {
-          $entity = $storage
+                try {
+                    $entity = $storage
             ->getItem($shared_entity_id)
             ->execute()
             ->getItem();
-        } catch (SyncCoreException $e) {
-          continue;
-        }
-      }
+                } catch (SyncCoreException $e) {
+                    continue;
+                }
+            }
 
-      $result[$site_id] = $entity['url'];
+            $result[$site_id] = $entity['url'];
+        }
+
+        return $result;
     }
 
-    return $result;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshAuthentication()
+    {
+        $connections = $this->getConnectionEntities();
 
-  /**
-   * @inheritdoc
-   */
-  public function refreshAuthentication() {
-    $connections = $this->getConnectionEntities();
+        $result = true;
 
-    $result = TRUE;
-
-    foreach ($connections as $connection) {
-      $result &= $connection
+        foreach ($connections as $connection) {
+            $result &= $connection
         ->login()
         ->execute()
         ->succeeded();
+        }
+
+        return $result;
     }
 
-    return $result;
-  }
+    /**
+     * Get a list of all Sync Core connections as resource URLs.
+     *
+     * @return \EdgeBox\SyncCore\V1\Entity\Connection[]
+     *
+     * @throws \Exception
+     */
+    protected function getConnectionEntities()
+    {
+        $storage = $this->core->storage->getConnectionStorage();
+        $result = [];
 
-  /**
-   * Get a list of all Sync Core connections as resource URLs.
-   *
-   * @return \EdgeBox\SyncCore\V1\Entity\Connection[]
-   *
-   * @throws \Exception
-   */
-  protected function getConnectionEntities() {
-    $storage = $this->core->storage->getConnectionStorage();
-    $result = [];
-
-    $items = $storage
+        $items = $storage
       ->listItems()
       ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()
         ->getSiteId()))
       ->execute()
       ->getAll();
 
-    foreach ($items as $item) {
-      $result[] = $storage->getEntity($item['id']);
+        foreach ($items as $item) {
+            $result[] = $storage->getEntity($item['id']);
+        }
+
+        return $result;
     }
-
-    return $result;
-  }
-
 }

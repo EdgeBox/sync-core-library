@@ -2,42 +2,38 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
-/**
- *
- */
-interface IBatch {
+interface IBatch
+{
+    /**
+     * @param IBatchOperation $operation
+     *
+     * @return $this
+     */
+    public function add($operation);
 
-  /**
-   * @param IBatchOperation $operation
-   *
-   * @return $this
-   */
-  public function add($operation);
+    /**
+     * @return int
+     */
+    public function count();
 
-  /**
-   * @return int
-   */
-  public function count();
+    /**
+     * @param int $index
+     *
+     * @return IBatchOperation
+     */
+    public function get($index);
 
-  /**
-   * @param int $index
-   *
-   * @return IBatchOperation
-   */
-  public function get($index);
+    /**
+     * Convenience method to call ->execute() for all indices until ->count().
+     *
+     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     */
+    public function executeAll();
 
-  /**
-   * Convenience method to call ->execute() for all indices until ->count().
-   *
-   * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
-   */
-  public function executeAll();
-
-  /**
-   * Can only be used for batch operations using the same Sync Core!
-   *
-   * @param IBatch $other
-   */
-  public function prepend($other);
-
+    /**
+     * Can only be used for batch operations using the same Sync Core!
+     *
+     * @param IBatch $other
+     */
+    public function prepend($other);
 }
