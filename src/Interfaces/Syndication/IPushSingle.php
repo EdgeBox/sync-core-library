@@ -37,22 +37,26 @@ interface IPushSingle
     public function delete(bool $set);
 
     /**
-     * @param string     $pool_id
-     *                            Can be any pool if it's not syndicated like Drupal config entities
+     * @param array      $pool_machine_names
+     *                                       Can be any pool if it's not syndicated like Drupal config entities
      * @param array|null $details
-     *                            Any additional properties you may want to add
+     *                                       Any additional properties you may want to add
      *
-     * @return array
+     * @return array|object
      */
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null);
+    // TODO: Drupal: Verify that getting an object here is acceptable.
+    // TODO: Drupal: Provide multiple pools at once.
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null);
 
     /**
      * @param array|null $details
      *                            Any additional properties you may want to add
      *
-     * @return array
+     * @return array|object
      */
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null);
+    // TODO: Drupal: Verify that getting an object here is acceptable.
+    // TODO: Drupal: Provide multiple pools at once.
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null);
 
     /**
      * @param IPushSingle $embed_entity
@@ -60,8 +64,9 @@ interface IPushSingle
      * @param array|null  $details
      *                                  Any additional properties you may want to add
      *
-     * @return array
+     * @return array|object
      */
+    // TODO: Drupal: Verify that getting an object here is acceptable.
     public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null);
 
     /**

@@ -121,8 +121,8 @@ class PullOperation implements IPullOperation
         $embed = null;
         for ($i = 0; $i < count($embeds); ++$i) {
             $candidate = $embeds[$i];
-            // TODO: Interface/Drupal: We need to save the language per reference.
             if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName() &&
+                $candidate->getLanguage() === $referenceDto->getLanguage() &&
           $candidate->getEntityTypeMachineName() === $referenceDto->getEntityTypeMachineName() &&
           $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
           $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {

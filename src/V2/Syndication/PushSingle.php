@@ -176,25 +176,25 @@ class PushSingle implements IPushSingle
      * embedded as well.
      *
      * @param string     $type
-     *                            The entity type of the referenced entity
+     *                                       The entity type of the referenced entity
      * @param string     $bundle
-     *                            The bundle of the referenced entity
+     *                                       The bundle of the referenced entity
      * @param string     $uuid
-     *                            The UUID of the referenced entity
+     *                                       The UUID of the referenced entity
      * @param string     $id
-     *                            The ID of the entity, if it should be kept across sites
+     *                                       The ID of the entity, if it should be kept across sites
      * @param string     $version
-     *                            The version hash of the entity type definition
-     * @param string     $pool_id
-     *                            The pool ID to add the entity for. Can be different to the current pool
-     *                            ID.
+     *                                       The version hash of the entity type definition
+     * @param string[]   $pool_machine_names
+     *                                       The pool ID to add the entity for. Can be different to the current pool
+     *                                       ID.
      * @param array|null $details
-     *                            Additional details you would like to push
+     *                                       Additional details you would like to push
      *
      * @return array|object the definition to be pushed
      */
     // TODO: Interface: We allow multiple pools at once.
-    public function getEntityReferenceDto(string $type, string $bundle, string $uuid, string $id, string $version, string $pool_id, $details = null)
+    public function getEntityReferenceDto(string $type, string $bundle, string $uuid, string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         $entityReference = new RemoteEntityDependency();
 
@@ -202,12 +202,13 @@ class PushSingle implements IPushSingle
 
         $entityReference->setRemoteUuid($uuid);
         $entityReference->setRemoteUniqueId($id);
+        $entityReference->setLanguage($language);
 
         $entityReference->setEntityTypeNamespaceMachineName($type);
         $entityReference->setEntityTypeMachineName($bundle);
         $entityReference->setEntityTypeVersion($version);
 
-        $entityReference->setPoolMachineNames([$pool_id]);
+        $entityReference->setPoolMachineNames($pool_machine_names);
 
         if ($details) {
             /**
@@ -223,19 +224,19 @@ class PushSingle implements IPushSingle
      * Embed an entity by its properties.
      *
      * @param string $type
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
      * @param string $bundle
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
      * @param string $uuid
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
      * @param string $id
-     *                        The ID of the entity, if it should be kept across sites
+     *                                   The ID of the entity, if it should be kept across sites
      * @param string $version
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
-     * @param string $pool_id
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
+     * @param array  $pool_machine_names
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
      * @param null   $details
-     *                        {@see SyncIntent::getEmbedEntityDefinition}
+     *                                   {@see SyncIntent::getEmbedEntityDefinition}
      *
      * @return array The definition you can store via {@see SyncIntent::setField}
      *
@@ -248,7 +249,8 @@ class PushSingle implements IPushSingle
                                       string $id,
                                       bool $embed,
                                       string $version,
-                                      string $pool_id,
+                                      array $pool_machine_names,
+                                      string $language,
                                       $details = null)
     {
         if ($embed) {
@@ -261,14 +263,14 @@ class PushSingle implements IPushSingle
                 foreach ($embeds as $definition) {
                     if ($definition->getEntityTypeNamespaceMachineName() === $type && $definition->getRemoteUuid() == $uuid && $definition->getRemoteUniqueId() == $id) {
                         return $this->getEntityReferenceDto(
-                $type, $bundle, $uuid, $id, $version, $pool_id, $details
+                $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
             );
                     }
                 }
             }
 
             $dto = $this->getEntityReferenceDto(
-          $type, $bundle, $uuid, $id, $version, $pool_id, $details
+          $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
       );
 
             $embeds[] = $dto;
@@ -287,14 +289,14 @@ class PushSingle implements IPushSingle
             foreach ($direct_dependencies as $definition) {
                 if ($definition->getEntityTypeNamespaceMachineName() === $type && $definition->getEntityTypeMachineName() === $bundle && $definition->getRemoteUuid() == $uuid && $definition->getRemoteUniqueId() == $id) {
                     return $this->getEntityReferenceDto(
-              $type, $bundle, $uuid, $id, $version, $pool_id, $details
+              $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
           );
                 }
             }
         }
 
         $dto = $this->getEntityReferenceDto(
-        $type, $bundle, $uuid, $id, $version, $pool_id, $details
+        $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
     );
 
         $direct_dependencies[] = $dto;
@@ -334,8 +336,8 @@ class PushSingle implements IPushSingle
           $dependency->getRemoteUniqueId(),
           false,
           $dependency->getEntityTypeVersion(),
-          // TODO: Interface/Drupal: Support multiple.
-          $dependency->getPoolMachineNames()[0],
+          $dependency->getPoolMachineNames(),
+          $dependency->getLanguage(),
           $dependency->getReferenceDetails()
       );
         }
@@ -364,8 +366,8 @@ class PushSingle implements IPushSingle
         $id,
         true,
         $version,
-        // TODO: Interface/Drupal: Support multiple.
-        $embed_entity->getPoolId(),
+        $embed_entity->getDto()->getPoolMachineNames(),
+        $embed_entity->getDto()->getLanguage(),
         $details
     );
     }
@@ -373,7 +375,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         return $this->addDirectDependency(
       $type,
@@ -382,7 +384,8 @@ class PushSingle implements IPushSingle
       $id,
       false,
       $version,
-      $pool_id,
+      $pool_machine_names,
+        $language,
       $details
     );
     }
@@ -390,7 +393,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         return $this->getEntityReferenceDto(
       $type,
@@ -398,7 +401,8 @@ class PushSingle implements IPushSingle
       $uuid,
       $id,
       $version,
-      $pool_id,
+      $pool_machine_names,
+      $language,
       $details
     );
     }
@@ -419,12 +423,15 @@ class PushSingle implements IPushSingle
             }
         }
 
-        $newProperty = new RemoteEntityProperty([
-            // TODO: Interface: Ask for type.
-            'type' => RemoteEntityTypePropertyType::OBJECT,
-            'name' => $name,
-            'value' => $value,
-        ]);
+        $newProperty = new RemoteEntityProperty();
+        // TODO: Interface: Ask for type.
+        /**
+         * @var RemoteEntityTypePropertyType $type
+         */
+        $type = RemoteEntityTypePropertyType::OBJECT;
+        $newProperty->setType($type);
+        $newProperty->setName($name);
+        $newProperty->setValue($value);
         $properties[] = $newProperty;
         $dto->setProperties($properties);
 

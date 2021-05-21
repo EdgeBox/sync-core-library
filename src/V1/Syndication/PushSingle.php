@@ -304,7 +304,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,
@@ -313,7 +313,8 @@ class PushSingle implements IPushSingle
       $id,
       Entity::ENTITY_REFERENCE_PUSH_AS_DEPENDENCY,
       $version,
-      $pool_id,
+            // TODO: Drupal: Check whether pushing to multiple pools at once is possible.
+      $pool_machine_names[0],
       $details
     );
     }
@@ -321,7 +322,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,
@@ -330,7 +331,8 @@ class PushSingle implements IPushSingle
       $id,
       Entity::ENTITY_REFERENCE_RESOLVE_IF_EXISTS,
       $version,
-      $pool_id,
+      // TODO: Drupal: Check whether pushing to multiple pools at once is possible.
+      $pool_machine_names[0],
       $details
     );
     }
