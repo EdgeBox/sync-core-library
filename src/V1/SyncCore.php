@@ -270,6 +270,33 @@ class SyncCore implements ISyncCore
       ->succeeded();
     }
 
+    public function isSiteRegistered()
+    {
+        if (!$this->application->getSiteId()) {
+            return false;
+        }
+
+        try {
+            $site = $this
+          ->storage->getInstanceStorage()
+          ->getItem($this->application->getSiteId())
+          ->execute()
+          ->getItem();
+
+            // No match: Warn user and don't export configuration.
+            if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
+                return false;
+            }
+
+            return true;
+        }
+        // Ignore "not found" as we're just about to export the configuration for
+        // the first time then.
+        catch (NotFoundException $e) {
+            return false;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */

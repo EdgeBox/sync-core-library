@@ -68,6 +68,11 @@ interface ISyncCore
     public function verifySiteId();
 
     /**
+     * @return bool
+     */
+    public function isSiteRegistered();
+
+    /**
      * @param bool $force
      *                    Force updating any existing configuration (skip
      *                    verification from above)

@@ -275,7 +275,6 @@ class SyncCore implements ISyncCore
         return 1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $site_id);
     }
 
-    // TODO: Interface: Add to ISyncCore interface.
     // TODO: Drupal: Use. If a site isn't registered yet and it's augmented, show the register site page
     public function isSiteRegistered()
     {
