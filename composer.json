@@ -37,6 +37,22 @@
     },
     "require-dev": {
         "overtrue/phplint": "^2.3",
-        "phpstan/phpstan": "^0.12.88"
+        "phpstan/phpstan": "^0.12.88",
+        "brainmaestro/composer-git-hooks": "^2.8"
+    },
+    "extra": {
+        "hooks": {
+            "config": {
+                "stop-on-failure": ["pre-commit", "pre-push"]
+            },
+            "pre-commit": [
+                "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run"
+            ],
+            "pre-push": [
+                "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run",
+                "composer lint",
+                "composer analyze"
+            ]
+        }
     }
 }

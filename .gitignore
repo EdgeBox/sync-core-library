@@ -1,3 +1,9 @@
+# caches
 .phplint-cache
+.php-cs-fixer.cache
+
+# packages
 vendor
+
+# IDEs
 .idea
