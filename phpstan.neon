@@ -1,0 +1,5 @@
+parameters:
+  # See https://phpstan.org/user-guide/rule-levels
+  level: 5
+  excludePaths:
+  - src/V2/Raw/*
