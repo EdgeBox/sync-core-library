@@ -11,11 +11,11 @@ use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 class PushSingle implements IPushSingle
 {
     public const RESERVED_PROPERTY_NAMES = [
-    Entity::UUID_KEY,
-    Entity::ID_KEY,
-    'embed_entities',
-    'apiu_translation',
-  ];
+        Entity::UUID_KEY,
+        Entity::ID_KEY,
+        'embed_entities',
+        'apiu_translation',
+    ];
 
     /**
      * @var array
@@ -83,11 +83,11 @@ class PushSingle implements IPushSingle
         $this->bundle = $bundle;
         $this->entity_uuid = $entity_uuid;
         $this->body = [
-      'embed_entities' => [],
-      'uuid' => $entity_uuid,
-      'id' => $entity_id ? $entity_id : $entity_uuid,
-      'apiu_translation' => null,
-    ];
+            'embed_entities' => [],
+            'uuid' => $entity_uuid,
+            'id' => $entity_id ? $entity_id : $entity_uuid,
+            'apiu_translation' => null,
+        ];
 
         self::$serializedEntities[$type][$entity_uuid] = &$this->body;
     }
@@ -209,27 +209,27 @@ class PushSingle implements IPushSingle
     public function getEmbedEntityDefinition($type, $bundle, $uuid, $id, $auto_push, $version, $pool_id, $details = null)
     {
         return array_merge([
-      Entity::ENTITY_HASH_KEY => self::getReferencedEntityHash($type, $uuid),
-      Entity::API_KEY => $pool_id,
-      Entity::ENTITY_TYPE_KEY => $type,
-      Entity::UUID_KEY => $uuid,
-      Entity::ID_KEY => $id,
-      Entity::BUNDLE_KEY => $bundle,
-      Entity::VERSION_KEY => $version,
-      Entity::AUTO_PUSH_KEY => $auto_push,
-      Entity::SOURCE_CONNECTION_ID_KEY => CustomStorage::getCustomId(
-        $pool_id,
-        $this->core->getApplication()->getSiteMachineName(),
-        $type,
-        $bundle
-      ),
-      Entity::POOL_CONNECTION_ID_KEY => CustomStorage::getCustomId(
-        $pool_id,
-        InstanceStorage::POOL_SITE_ID,
-        $type,
-        $bundle
-      ),
-    ], $details ? $details : []);
+            Entity::ENTITY_HASH_KEY => self::getReferencedEntityHash($type, $uuid),
+            Entity::API_KEY => $pool_id,
+            Entity::ENTITY_TYPE_KEY => $type,
+            Entity::UUID_KEY => $uuid,
+            Entity::ID_KEY => $id,
+            Entity::BUNDLE_KEY => $bundle,
+            Entity::VERSION_KEY => $version,
+            Entity::AUTO_PUSH_KEY => $auto_push,
+            Entity::SOURCE_CONNECTION_ID_KEY => CustomStorage::getCustomId(
+              $pool_id,
+              $this->core->getApplication()->getSiteMachineName(),
+              $type,
+              $bundle
+            ),
+            Entity::POOL_CONNECTION_ID_KEY => CustomStorage::getCustomId(
+              $pool_id,
+              InstanceStorage::POOL_SITE_ID,
+              $type,
+              $bundle
+            ),
+        ], $details ? $details : []);
     }
 
     /**

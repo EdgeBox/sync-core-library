@@ -47,9 +47,9 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     public function addDownstream($type, $body)
     {
         $this->downstream[] = [
-      'type' => $type,
-      'body' => $body,
-    ];
+            'type' => $type,
+            'body' => $body,
+        ];
     }
 
     /**
@@ -68,11 +68,11 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     public function execute()
     {
         $operations = array_merge([
-      [
-        'type' => $this->type,
-        'body' => $this->body,
-      ],
-    ], $this->downstream);
+            [
+                'type' => $this->type,
+                'body' => $this->body,
+            ],
+        ], $this->downstream);
 
         foreach ($operations as $op) {
             $this
@@ -90,11 +90,11 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     public function serialize()
     {
         return serialize([
-      $this->serializeSyncCore(),
-      $this->type,
-      $this->body,
-      $this->downstream,
-    ]);
+            $this->serializeSyncCore(),
+            $this->type,
+            $this->body,
+            $this->downstream,
+        ]);
     }
 
     /**

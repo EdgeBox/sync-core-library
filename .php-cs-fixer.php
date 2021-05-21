@@ -7,5 +7,6 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
   '@Symfony' => true,
   'phpdoc_to_comment' => false,
+  'array_indentation' => true,
 ])
     ->setFinder($finder);

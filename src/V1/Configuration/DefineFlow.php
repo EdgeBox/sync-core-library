@@ -29,16 +29,16 @@ class DefineFlow extends BatchOperation implements IDefineFlow
       $core,
       ObjectStorage::ID,
       [
-        'id' => ConfigurationService::OBJECT_STORAGE_TYPE.'-'.$app->getSiteId().'-'.$machine_name,
-        'type' => ConfigurationService::OBJECT_STORAGE_TYPE,
-        'properties' => [
-          'module_version' => $app->getApplicationModuleVersion(),
-          'pools' => [],
-          'id' => $machine_name,
-          'name' => $name,
-          'site' => $app->getSiteId(),
-          'config' => $config,
-        ],
+          'id' => ConfigurationService::OBJECT_STORAGE_TYPE.'-'.$app->getSiteId().'-'.$machine_name,
+          'type' => ConfigurationService::OBJECT_STORAGE_TYPE,
+          'properties' => [
+              'module_version' => $app->getApplicationModuleVersion(),
+              'pools' => [],
+              'id' => $machine_name,
+              'name' => $name,
+              'site' => $app->getSiteId(),
+              'config' => $config,
+          ],
       ]
     );
 

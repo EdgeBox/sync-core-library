@@ -80,11 +80,11 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     public function serialize()
     {
         return serialize([
-      'syncCore' => $this->serializeSyncCore(),
-      'requestMethod' => $this->requestMethod,
-      'dtoClass' => get_class($this->dto),
-      'dtoSerialized' => $this->dto->jsonSerialize(),
-    ]);
+            'syncCore' => $this->serializeSyncCore(),
+            'requestMethod' => $this->requestMethod,
+            'dtoClass' => get_class($this->dto),
+            'dtoSerialized' => $this->dto->jsonSerialize(),
+        ]);
     }
 
     /**

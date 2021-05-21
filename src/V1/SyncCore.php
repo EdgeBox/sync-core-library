@@ -305,12 +305,12 @@ class SyncCore implements ISyncCore
         $this
       ->storage->getInstanceStorage()
       ->createItem([
-        // Old Sync Core: Use machine name as site ID.
-        'id' => $machine_name,
-        'name' => $this->application->getSiteName(),
-        'base_url' => $this->application->getSiteBaseUrl(),
-        'version' => $this->application->getApplicationModuleVersion(),
-        'api_id' => $this->application->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION,
+          // Old Sync Core: Use machine name as site ID.
+          'id' => $machine_name,
+          'name' => $this->application->getSiteName(),
+          'base_url' => $this->application->getSiteBaseUrl(),
+          'version' => $this->application->getApplicationModuleVersion(),
+          'api_id' => $this->application->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION,
       ])
       ->execute()
       ->getItem();
@@ -343,8 +343,8 @@ class SyncCore implements ISyncCore
             // No match: Warn user and don't export configuration.
             if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
                 return [
-          $this->application->getSiteId() => $site['base_url'],
-        ];
+                    $this->application->getSiteId() => $site['base_url'],
+                ];
             }
         }
         // Ignore "not found" as we're just about to export the configuration for
@@ -371,8 +371,8 @@ class SyncCore implements ISyncCore
         // Another ID is already used for this base URL.
         if ($sites) {
             return [
-        $sites[0]['id'] => $sites[0]['base_url'],
-      ];
+                $sites[0]['id'] => $sites[0]['base_url'],
+            ];
         }
 
         // All good.
@@ -500,19 +500,19 @@ class SyncCore implements ISyncCore
     public function getReservedPropertyNames()
     {
         return [
-      'source',
-      'source_id',
-      'source_connection_id',
-      'preview',
-      'url',
-      'apiu_translation',
-      'metadata',
-      'embed_entities',
-      'title',
-      'created',
-      'changed',
-      'uuid',
-      'menu_link',
-    ];
+            'source',
+            'source_id',
+            'source_connection_id',
+            'preview',
+            'url',
+            'apiu_translation',
+            'metadata',
+            'embed_entities',
+            'title',
+            'created',
+            'changed',
+            'uuid',
+            'menu_link',
+        ];
     }
 }

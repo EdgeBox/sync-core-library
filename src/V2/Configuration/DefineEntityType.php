@@ -106,12 +106,12 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     protected function addProperty(string $machine_name, string $type, bool $multiple, bool $required, $name = null)
     {
         $newProperty = new RemoteEntityTypeProperty([
-      'machineName' => $machine_name,
-      'name' => $name ?? $machine_name,
-      'type' => $type,
-      'required' => $required,
-      'multiple' => $multiple,
-    ]);
+            'machineName' => $machine_name,
+            'name' => $name ?? $machine_name,
+            'type' => $type,
+            'required' => $required,
+            'multiple' => $multiple,
+        ]);
 
         /**
          * @var RemoteEntityTypeProperty[] $properties

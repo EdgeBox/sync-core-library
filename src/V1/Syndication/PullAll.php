@@ -167,14 +167,14 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     public function serialize()
     {
         return serialize([
-      $this->serializeSyncCore(),
-      $this->type,
-      $this->bundle,
-      $this->pool,
-      $this->total,
-      $this->progress,
-      $this->sync_id,
-    ]);
+            $this->serializeSyncCore(),
+            $this->type,
+            $this->bundle,
+            $this->pool,
+            $this->total,
+            $this->progress,
+            $this->sync_id,
+        ]);
     }
 
     /**

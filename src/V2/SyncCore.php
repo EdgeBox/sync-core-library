@@ -149,16 +149,16 @@ class SyncCore implements ISyncCore
     public function sendFile($type, $file_name, $content)
     {
         $fileDto = new CreateFileDto([
-        'type' => $type,
-        'fileName' => $file_name,
-    ]);
+            'type' => $type,
+            'fileName' => $file_name,
+        ]);
 
         $request = $this->getClient()->fileControllerCreateRequest($fileDto);
         $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
 
         $request = new Request('PUT', $file->getUploadUrl(), [
-        RequestOptions::BODY => $content,
-    ]);
+            RequestOptions::BODY => $content,
+        ]);
         $this->sendRaw($request);
 
         $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
@@ -186,8 +186,8 @@ class SyncCore implements ISyncCore
     {
         try {
             $options = [
-              RequestOptions::HTTP_ERRORS => false,
-          ] + $this->application->getHttpOptions() + $options;
+                RequestOptions::HTTP_ERRORS => false,
+            ] + $this->application->getHttpOptions() + $options;
 
             if (empty($options[RequestOptions::TIMEOUT])) {
                 $options[RequestOptions::TIMEOUT] = $this->default_timeout;
@@ -305,16 +305,16 @@ class SyncCore implements ISyncCore
 
         $secret = $this->getSiteSecret();
         $payload = [
-      'type' => 'site',
-      'scopes' => self::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
-          ? [
-              self::SYNC_CORE_PERMISSIONS_CONFIGURATION,
-              self::SYNC_CORE_PERMISSIONS_CONTENT,
-          ]
-          : [$permissions],
-      'provider' => 'jwt-header',
-      'uuid' => $site_id,
-    ];
+            'type' => 'site',
+            'scopes' => self::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
+                ? [
+                    self::SYNC_CORE_PERMISSIONS_CONFIGURATION,
+                    self::SYNC_CORE_PERMISSIONS_CONTENT,
+                ]
+                : [$permissions],
+            'provider' => 'jwt-header',
+            'uuid' => $site_id,
+        ];
 
         return JWT::encode($payload, $secret);
     }

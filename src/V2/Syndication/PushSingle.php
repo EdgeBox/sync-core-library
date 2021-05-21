@@ -51,17 +51,17 @@ class PushSingle implements IPushSingle
         $this->core = $core;
 
         $typeReference = new EntityTypeVersionReference([
-      'namespaceMachineName' => $namespaceMachineName,
-      'machineName' => $machineName,
-      // TODO: Interface: Require versionId to be provided to IPushSingle
-      'versionId' => '',
-    ]);
+            'namespaceMachineName' => $namespaceMachineName,
+            'machineName' => $machineName,
+            // TODO: Interface: Require versionId to be provided to IPushSingle
+            'versionId' => '',
+        ]);
 
         $this->dto = new CreateRemoteEntityRevisionDto([
-      'remoteUuid' => $uuid,
-      'remoteUniqueId' => $unique_id,
-      'entityTypeByMachineName' => $typeReference,
-    ]);
+            'remoteUuid' => $uuid,
+            'remoteUniqueId' => $unique_id,
+            'entityTypeByMachineName' => $typeReference,
+        ]);
 
         $this->translations = [];
 
@@ -423,11 +423,11 @@ class PushSingle implements IPushSingle
         }
 
         $newProperty = new RemoteEntityProperty([
-      // TODO: Interface: Ask for type.
-      'type' => RemoteEntityTypePropertyType::OBJECT,
-      'name' => $name,
-      'value' => $value,
-    ]);
+            // TODO: Interface: Ask for type.
+            'type' => RemoteEntityTypePropertyType::OBJECT,
+            'name' => $name,
+            'value' => $value,
+        ]);
         $properties[] = $newProperty;
         $dto->setProperties($properties);
 
@@ -539,8 +539,8 @@ class PushSingle implements IPushSingle
 
         $file = $this->core->sendFile(FileType::ENTITY_FILE, $name, $content);
         $this->setProperty(DefineEntityType::FILE_PROPERTY_NAME, [
-      'id' => $file->getId(),
-    ]);
+            'id' => $file->getId(),
+        ]);
 
         return $this;
     }

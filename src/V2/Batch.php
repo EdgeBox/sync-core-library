@@ -88,7 +88,7 @@ class Batch implements IBatch
     public function __sleep()
     {
         return [
-      'operations',
-    ];
+            'operations',
+        ];
     }
 }

@@ -107,28 +107,28 @@ class ReportingService implements IReportingService
         $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return [
-      // TODO: Drupal: ".x" means don't compare minor versions.
-      'version' => '2.x',
-      // TODO: Drupal: Different values provided here.
-      // TODO: Library: Must provide different values in v1
-      'usage' => [
-        'site' => [
-          'monthly' => [
-            'updateCount' => $response->getSiteMonthly(),
-          ],
-          'daily' => [
-            'updateCount' => $response->getSiteDaily(),
-          ],
-          'hourly' => [
-            'updateCount' => $response->getSiteHourly(),
-          ],
-        ],
-        'contract' => [
-          'monthly' => [
-            'updateCount' => $response->getContractMonthly(),
-          ],
-        ],
-      ],
-    ];
+            // TODO: Drupal: ".x" means don't compare minor versions.
+            'version' => '2.x',
+            // TODO: Drupal: Different values provided here.
+            // TODO: Library: Must provide different values in v1
+            'usage' => [
+                'site' => [
+                    'monthly' => [
+                        'updateCount' => $response->getSiteMonthly(),
+                    ],
+                    'daily' => [
+                        'updateCount' => $response->getSiteDaily(),
+                    ],
+                    'hourly' => [
+                        'updateCount' => $response->getSiteHourly(),
+                    ],
+                ],
+                'contract' => [
+                    'monthly' => [
+                        'updateCount' => $response->getContractMonthly(),
+                    ],
+                ],
+            ],
+        ];
     }
 }

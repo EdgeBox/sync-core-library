@@ -51,140 +51,140 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
       $core,
       EntityTypeStorage::ID,
       [
-        'id' => $entity_type_id,
-        'name_space' => $type_machine_name,
-        'name' => $bundle_machine_name,
-        'version' => $version_id,
-        'base_class' => 'api-unify/services/drupal/v0.1/models/base.model',
-        'custom' => true,
-        'new_properties' => [
-          'source' => [
-            'type' => 'reference',
-            'default_value' => null,
-            'connection_identifiers' => [
-              [
-                'properties' => [
-                  'id' => 'source_connection_id',
-                ],
+          'id' => $entity_type_id,
+          'name_space' => $type_machine_name,
+          'name' => $bundle_machine_name,
+          'version' => $version_id,
+          'base_class' => 'api-unify/services/drupal/v0.1/models/base.model',
+          'custom' => true,
+          'new_properties' => [
+              'source' => [
+                  'type' => 'reference',
+                  'default_value' => null,
+                  'connection_identifiers' => [
+                      [
+                          'properties' => [
+                              'id' => 'source_connection_id',
+                          ],
+                      ],
+                  ],
+                  'model_identifiers' => [
+                      [
+                          'properties' => [
+                              'id' => 'source_id',
+                          ],
+                      ],
+                  ],
+                  'multiple' => false,
               ],
-            ],
-            'model_identifiers' => [
-              [
-                'properties' => [
-                  'id' => 'source_id',
-                ],
+              'source_id' => [
+                  'type' => 'id',
+                  'default_value' => null,
               ],
-            ],
-            'multiple' => false,
+              'source_connection_id' => [
+                  'type' => 'id',
+                  'default_value' => null,
+              ],
+              Entity::PROPERTY_PREVIEW_HTML => [
+                  'type' => 'string',
+                  'default_value' => null,
+              ],
+              Entity::PROPERTY_SOURCE_DEEP_LINK_URL => [
+                  'type' => 'string',
+                  'default_value' => null,
+              ],
+              'apiu_translation' => [
+                  'type' => 'object',
+                  'default_value' => null,
+              ],
+              'metadata' => [
+                  'type' => 'object',
+                  'default_value' => null,
+              ],
+              'embed_entities' => [
+                  'type' => 'object',
+                  'default_value' => null,
+                  'multiple' => true,
+              ],
+              'menu_items' => [
+                  'type' => 'object',
+                  'default_value' => null,
+                  'multiple' => true,
+              ],
+              Entity::PROPERTY_NAME => [
+                  'type' => 'string',
+                  'default_value' => null,
+              ],
+              'created' => [
+                  'type' => 'int',
+                  'default_value' => null,
+              ],
+              'changed' => [
+                  'type' => 'int',
+                  'default_value' => null,
+              ],
+              'uuid' => [
+                  'type' => 'string',
+                  'default_value' => null,
+              ],
           ],
-          'source_id' => [
-            'type' => 'id',
-            'default_value' => null,
+          'new_property_lists' => [
+              'list' => [
+                  '_resource_url' => 'value',
+                  '_resource_connection_id' => 'value',
+                  'id' => 'value',
+              ],
+              'reference' => [
+                  '_resource_url' => 'value',
+                  '_resource_connection_id' => 'value',
+                  'id' => 'value',
+              ],
+              'details' => [
+                  '_resource_url' => 'value',
+                  '_resource_connection_id' => 'value',
+                  'id' => 'value',
+                  'source' => 'reference',
+                  'apiu_translation' => 'value',
+                  'metadata' => 'value',
+                  'embed_entities' => 'value',
+                  'title' => 'value',
+                  'created' => 'value',
+                  'changed' => 'value',
+                  'uuid' => 'value',
+                  'url' => 'value',
+                  'menu_items' => 'value',
+              ],
+              'database' => [
+                  'id' => 'value',
+                  'source_id' => 'value',
+                  'source_connection_id' => 'value',
+                  'preview' => 'value',
+                  'url' => 'value',
+                  'apiu_translation' => 'value',
+                  'metadata' => 'value',
+                  'embed_entities' => 'value',
+                  'title' => 'value',
+                  'created' => 'value',
+                  'changed' => 'value',
+                  'uuid' => 'value',
+                  'menu_items' => 'value',
+              ],
+              'modifiable' => [
+                  'preview' => 'value',
+                  'url' => 'value',
+                  'apiu_translation' => 'value',
+                  'metadata' => 'value',
+                  'embed_entities' => 'value',
+                  'title' => 'value',
+                  'created' => 'value',
+                  'changed' => 'value',
+                  'menu_items' => 'value',
+              ],
+              'required' => [
+                  'uuid' => 'value',
+              ],
           ],
-          'source_connection_id' => [
-            'type' => 'id',
-            'default_value' => null,
-          ],
-          Entity::PROPERTY_PREVIEW_HTML => [
-            'type' => 'string',
-            'default_value' => null,
-          ],
-          Entity::PROPERTY_SOURCE_DEEP_LINK_URL => [
-            'type' => 'string',
-            'default_value' => null,
-          ],
-          'apiu_translation' => [
-            'type' => 'object',
-            'default_value' => null,
-          ],
-          'metadata' => [
-            'type' => 'object',
-            'default_value' => null,
-          ],
-          'embed_entities' => [
-            'type' => 'object',
-            'default_value' => null,
-            'multiple' => true,
-          ],
-          'menu_items' => [
-            'type' => 'object',
-            'default_value' => null,
-            'multiple' => true,
-          ],
-          Entity::PROPERTY_NAME => [
-            'type' => 'string',
-            'default_value' => null,
-          ],
-          'created' => [
-            'type' => 'int',
-            'default_value' => null,
-          ],
-          'changed' => [
-            'type' => 'int',
-            'default_value' => null,
-          ],
-          'uuid' => [
-            'type' => 'string',
-            'default_value' => null,
-          ],
-        ],
-        'new_property_lists' => [
-          'list' => [
-            '_resource_url' => 'value',
-            '_resource_connection_id' => 'value',
-            'id' => 'value',
-          ],
-          'reference' => [
-            '_resource_url' => 'value',
-            '_resource_connection_id' => 'value',
-            'id' => 'value',
-          ],
-          'details' => [
-            '_resource_url' => 'value',
-            '_resource_connection_id' => 'value',
-            'id' => 'value',
-            'source' => 'reference',
-            'apiu_translation' => 'value',
-            'metadata' => 'value',
-            'embed_entities' => 'value',
-            'title' => 'value',
-            'created' => 'value',
-            'changed' => 'value',
-            'uuid' => 'value',
-            'url' => 'value',
-            'menu_items' => 'value',
-          ],
-          'database' => [
-            'id' => 'value',
-            'source_id' => 'value',
-            'source_connection_id' => 'value',
-            'preview' => 'value',
-            'url' => 'value',
-            'apiu_translation' => 'value',
-            'metadata' => 'value',
-            'embed_entities' => 'value',
-            'title' => 'value',
-            'created' => 'value',
-            'changed' => 'value',
-            'uuid' => 'value',
-            'menu_items' => 'value',
-          ],
-          'modifiable' => [
-            'preview' => 'value',
-            'url' => 'value',
-            'apiu_translation' => 'value',
-            'metadata' => 'value',
-            'embed_entities' => 'value',
-            'title' => 'value',
-            'created' => 'value',
-            'changed' => 'value',
-            'menu_items' => 'value',
-          ],
-          'required' => [
-            'uuid' => 'value',
-          ],
-        ],
-        'api_id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
+          'api_id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
       ]
     );
 
@@ -198,16 +198,16 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         $this->addDownstream(
       ConnectionStorage::ID,
       [
-        'id' => $pool_connection_id,
-        'name' => 'Drupal pool connection for '.$type_machine_name.'-'.$bundle_machine_name.'-'.$version_id,
-        'hash' => CustomStorage::getCustomPath($pool_id, InstanceStorage::POOL_SITE_ID, $type_machine_name, $bundle_machine_name),
-        'usage' => 'EXTERNAL',
-        'status' => 'READY',
-        'options' => [
-          // $cms_content_sync_disable_optimization,
-          'update_all' => false,
-        ],
-        'entity_type_id' => $entity_type_id,
+          'id' => $pool_connection_id,
+          'name' => 'Drupal pool connection for '.$type_machine_name.'-'.$bundle_machine_name.'-'.$version_id,
+          'hash' => CustomStorage::getCustomPath($pool_id, InstanceStorage::POOL_SITE_ID, $type_machine_name, $bundle_machine_name),
+          'usage' => 'EXTERNAL',
+          'status' => 'READY',
+          'options' => [
+              // $cms_content_sync_disable_optimization,
+              'update_all' => false,
+          ],
+          'entity_type_id' => $entity_type_id,
       ]
     );
     }
@@ -271,10 +271,10 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         }
 
         $this->body['new_properties'][$name] = [
-      'type' => $type,
-      'default_value' => null,
-      'multiple' => $multiple,
-    ];
+            'type' => $type,
+            'default_value' => null,
+            'multiple' => $multiple,
+        ];
 
         $this->body['new_property_lists']['details'][$name] = 'value';
         $this->body['new_property_lists']['database'][$name] = 'value';
@@ -293,9 +293,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     {
         if ($set) {
             $this->body['new_properties']['apiu_file_content'] = [
-        'type' => 'string',
-        'default_value' => null,
-      ];
+                'type' => 'string',
+                'default_value' => null,
+            ];
             $this->body['new_property_lists']['details']['apiu_file_content'] = 'value';
             $this->body['new_property_lists']['filesystem']['apiu_file_content'] = 'value';
             $this->body['new_property_lists']['modifiable']['apiu_file_content'] = 'value';

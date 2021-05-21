@@ -194,11 +194,11 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     public function serialize()
     {
         return serialize([
-      'core' => $this->serializeSyncCore(),
-      'namespaceMachineName' => $this->namespaceMachineName,
-      'machineName' => $this->machineName,
-      'migrationId' => $this->migrationId,
-    ]);
+            'core' => $this->serializeSyncCore(),
+            'namespaceMachineName' => $this->namespaceMachineName,
+            'machineName' => $this->machineName,
+            'migrationId' => $this->migrationId,
+        ]);
     }
 
     /**

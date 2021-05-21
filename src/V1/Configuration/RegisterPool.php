@@ -36,10 +36,10 @@ class RegisterPool extends BatchOperation implements IRegisterPool
       $core,
       ApiStorage::ID,
       [
-        'id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
-        'name' => $pool_name,
-        'version' => ApiStorage::CUSTOM_API_VERSION,
-        'parent_id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
+          'id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
+          'name' => $pool_name,
+          'version' => ApiStorage::CUSTOM_API_VERSION,
+          'parent_id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
       ]
     );
     }

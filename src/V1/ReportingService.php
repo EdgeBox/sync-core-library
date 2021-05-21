@@ -59,17 +59,17 @@ class ReportingService implements IReportingService
       ->getResult();
 
         return [
-      'version' => $result['version'],
-      'usage' => [
-        'today' => [
-          // Note that a push from a site means it's an import to the Sync Core
-          // so don't get confused by the naming.
-          'entitiesPushedFromSites' => $result['runtime_usage']['sumImport'],
-          'rootEntitiesPushedFromSites' => $result['runtime_usage']['sumRootImport'],
-          'entitiesPulledBySites' => $result['runtime_usage']['sumExport'],
-          'rootEntitiesPulledBySites' => $result['runtime_usage']['sumRootExport'],
-        ],
-      ],
-    ];
+            'version' => $result['version'],
+            'usage' => [
+                'today' => [
+                    // Note that a push from a site means it's an import to the Sync Core
+                    // so don't get confused by the naming.
+                    'entitiesPushedFromSites' => $result['runtime_usage']['sumImport'],
+                    'rootEntitiesPushedFromSites' => $result['runtime_usage']['sumRootImport'],
+                    'entitiesPulledBySites' => $result['runtime_usage']['sumExport'],
+                    'rootEntitiesPulledBySites' => $result['runtime_usage']['sumRootExport'],
+                ],
+            ],
+        ];
     }
 }

@@ -82,29 +82,29 @@ class DataCondition extends Condition
     {
         if (self::SEARCH === $operator) {
             $this->condition['values'] = [
-        [
-          'source' => 'data',
-          'field' => $field,
-        ],
-        [
-          'source' => 'value',
-          'value' => preg_quote($value),
-          'flags' => 'i',
-        ],
-      ];
+                [
+                    'source' => 'data',
+                    'field' => $field,
+                ],
+                [
+                    'source' => 'value',
+                    'value' => preg_quote($value),
+                    'flags' => 'i',
+                ],
+            ];
 
             parent::__construct(self::MATCHES_REGEX);
         } else {
             $this->condition['values'] = [
-        [
-          'source' => 'data',
-          'field' => $field,
-        ],
-        [
-          'source' => 'value',
-          'value' => $value,
-        ],
-      ];
+                [
+                    'source' => 'data',
+                    'field' => $field,
+                ],
+                [
+                    'source' => 'value',
+                    'value' => $value,
+                ],
+            ];
 
             parent::__construct($operator);
         }

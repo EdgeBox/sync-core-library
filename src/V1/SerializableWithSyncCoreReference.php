@@ -36,8 +36,8 @@ abstract class SerializableWithSyncCoreReference implements \Serializable
     protected function serializeSyncCore()
     {
         return [
-      $this->core->getBaseUrl(),
-      get_class($this->core->getApplication()),
-    ];
+            $this->core->getBaseUrl(),
+            get_class($this->core->getApplication()),
+        ];
     }
 }

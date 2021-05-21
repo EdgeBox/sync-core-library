@@ -111,18 +111,18 @@ class PullOperation implements IPullOperation
             {
                 return array_filter($this->definition, function ($key) {
                     return !in_array($key, [
-            Entity::API_KEY,
-            Entity::ENTITY_TYPE_KEY,
-            Entity::BUNDLE_KEY,
-            Entity::VERSION_KEY,
-            Entity::UUID_KEY,
-            Entity::ID_KEY,
-            Entity::AUTO_PUSH_KEY,
-            Entity::SOURCE_CONNECTION_ID_KEY,
-            Entity::POOL_CONNECTION_ID_KEY,
-            Entity::ENTITY_EMBED_KEY,
-            Entity::ENTITY_HASH_KEY,
-          ]);
+                        Entity::API_KEY,
+                        Entity::ENTITY_TYPE_KEY,
+                        Entity::BUNDLE_KEY,
+                        Entity::VERSION_KEY,
+                        Entity::UUID_KEY,
+                        Entity::ID_KEY,
+                        Entity::AUTO_PUSH_KEY,
+                        Entity::SOURCE_CONNECTION_ID_KEY,
+                        Entity::POOL_CONNECTION_ID_KEY,
+                        Entity::ENTITY_EMBED_KEY,
+                        Entity::ENTITY_HASH_KEY,
+                    ]);
                 }, ARRAY_FILTER_USE_KEY);
             }
 

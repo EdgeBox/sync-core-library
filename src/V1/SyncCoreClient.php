@@ -114,8 +114,8 @@ class SyncCoreClient
 
         try {
             $options = [
-          'http_errors' => false,
-        ] + $this->syncCore->getApplication()->getHttpOptions();
+                'http_errors' => false,
+            ] + $this->syncCore->getApplication()->getHttpOptions();
 
             if (null !== $body) {
                 $options['headers']['Content-Type'] = 'application/json';

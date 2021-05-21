@@ -23,8 +23,8 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
      * @var array
      */
     protected $config = [
-    'api_version' => ApiStorage::CUSTOM_API_VERSION,
-  ];
+        'api_version' => ApiStorage::CUSTOM_API_VERSION,
+    ];
 
     /**
      * @var array
@@ -51,9 +51,9 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
             $hash = md5($time.':'.$authentication['password']);
             $token = base64_encode(
         json_encode([
-          't' => $time,
-          'h' => $hash,
-          's' => $this->core->getApplication()->getSiteMachineName(),
+            't' => $time,
+            'h' => $hash,
+            's' => $this->core->getApplication()->getSiteMachineName(),
         ])
       );
             $this->config['syncCoreUrl'] = $core->getBaseUrl(true);

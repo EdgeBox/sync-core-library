@@ -150,10 +150,10 @@ class ConfigurationService implements IConfigurationService
         $done = true;
 
         $body = [
-      'id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
-      'name' => 'drupal',
-      'version' => ApiStorage::CUSTOM_API_VERSION,
-    ];
+            'id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
+            'name' => 'drupal',
+            'version' => ApiStorage::CUSTOM_API_VERSION,
+        ];
 
         $this
       ->core
@@ -184,20 +184,20 @@ class ConfigurationService implements IConfigurationService
         }
 
         $body = [
-      'id' => PreviewEntityStorage::ID,
-      'name' => 'Drupal preview connection',
-      'hash' => PreviewEntityStorage::EXTERNAL_PREVIEW_PATH,
-      'usage' => 'EXTERNAL',
-      'status' => 'READY',
-      'entity_type_id' => PreviewEntityStorage::PREVIEW_ENTITY_ID,
-      'options' => [
-        'crud' => [
-          'read_list' => [],
-        ],
-        'static_values' => [],
-        PreviewEntityStorage::PUBLIC_ACCESS_OPTION_NAME => $public_access,
-      ],
-    ];
+            'id' => PreviewEntityStorage::ID,
+            'name' => 'Drupal preview connection',
+            'hash' => PreviewEntityStorage::EXTERNAL_PREVIEW_PATH,
+            'usage' => 'EXTERNAL',
+            'status' => 'READY',
+            'entity_type_id' => PreviewEntityStorage::PREVIEW_ENTITY_ID,
+            'options' => [
+                'crud' => [
+                    'read_list' => [],
+                ],
+                'static_values' => [],
+                PreviewEntityStorage::PUBLIC_ACCESS_OPTION_NAME => $public_access,
+            ],
+        ];
 
         $this
       ->core
