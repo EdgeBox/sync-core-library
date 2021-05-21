@@ -77,6 +77,11 @@ class ListRemoteFlows implements IListRemoteFlows
                     return $this->item['id'];
                 }
 
+                public function getMachineName()
+                {
+                    return $this->item['id'];
+                }
+
                 public function getName()
                 {
                     return $this->item['properties']['name'];

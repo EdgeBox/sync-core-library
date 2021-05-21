@@ -39,7 +39,6 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         return $this->item->getId();
     }
 
-    // TODO: Interface/Drupal: Need to differentiate between ID and machineName two in the new version.
     public function getMachineName()
     {
         return $this->item->getMachineName();
