@@ -18,6 +18,21 @@ interface IPullAll extends IProgress
     public function force(bool $set);
 
     /**
+     * @return bool
+     */
+    public function hasFinished();
+
+    /**
+     * @return bool
+     */
+    public function hasFailed();
+
+    /**
+     * @return bool
+     */
+    public function wasAborted();
+
+    /**
      * @return string
      */
     public function getTypeMachineName();

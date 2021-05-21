@@ -104,6 +104,30 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     }
 
     /**
+     * @return bool
+     */
+    public function hasFinished()
+    {
+        return $this->progress() >= $this->total();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFailed()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function wasAborted()
+    {
+        return false;
+    }
+
+    /**
      * @return \EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization
      */
     protected function getSyncEntity()

@@ -90,7 +90,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         return $this;
     }
 
-    // TODO: Interface/Drupal: Use this to check if it's done as we now have a status property.
+    // TODO: Drupal: Use this to check if it's done as we now have a status property.
     public function hasFinished()
     {
         return SyndicationStatus::_400_FINISHED === $this->getDto()->getStatus();
