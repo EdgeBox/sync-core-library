@@ -218,10 +218,9 @@ class PullOperation implements IPullOperation
             /**
              * {@inheritdoc}
              */
-            public function getPoolId()
+            public function getPoolIds()
             {
-                // TODO: Support multiple.
-                return $this->dto->getPoolMachineNames()[0];
+                return $this->dto->getPoolMachineNames();
             }
 
             /**

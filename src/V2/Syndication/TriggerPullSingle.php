@@ -28,6 +28,7 @@ class TriggerPullSingle implements ITriggerPullSingle
         $this->core = $core;
 
         $this->dto = new CreateSyndicationDto();
+        $this->dto->setPoolMachineNames([]);
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
 
@@ -41,10 +42,12 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
+    // TODO: Drupal: Support multiple pools.
     public function fromPool(string $pool_id)
     {
-        // TODO: Support multiple pools.
-        $this->dto->setPoolMachineNames([$pool_id]);
+        $pools = $this->dto->getPoolMachineNames();
+        $pools[] = $pool_id;
+        $this->dto->setPoolMachineNames($pools);
 
         return $this;
     }
@@ -85,7 +88,7 @@ class TriggerPullSingle implements ITriggerPullSingle
      */
     public function getPullDashboardSearchResultItem()
     {
-        // TODO: Interface/Drupal: As this is replaced with the embed service, we don't implement this here.
+        // TODO: Drupal: As this is replaced with the embed service, we don't implement this here.
         //  Drupal must use embed instead in that case.
         return null;
     }

@@ -59,7 +59,8 @@ interface IEntityReference
     public function getName();
 
     /**
-     * @return string
+     * @return string[]|null
      */
-    public function getPoolId();
+    // TODO: Drupal: Expect multiple
+    public function getPoolIds();
 }

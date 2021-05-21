@@ -51,18 +51,17 @@ class PushSingle implements IPushSingle
     {
         $this->core = $core;
 
-        $typeReference = new EntityTypeVersionReference([
-            'namespaceMachineName' => $namespaceMachineName,
-            'machineName' => $machineName,
-            // TODO: Interface: Require versionId to be provided to IPushSingle
-            'versionId' => '',
-        ]);
+        $typeReference = new EntityTypeVersionReference();
+        $typeReference->setNamespaceMachineName($namespaceMachineName);
+        $typeReference->setMachineName($machineName);
+        // TODO: Interface: Require versionId to be provided to IPushSingle
+        $typeReference->setVersionId('$versionId');
 
-        $this->dto = new CreateRemoteEntityRevisionDto([
-            'remoteUuid' => $uuid,
-            'remoteUniqueId' => $unique_id,
-            'entityTypeByMachineName' => $typeReference,
-        ]);
+        $this->dto = new CreateRemoteEntityRevisionDto();
+        $this->dto->setRemoteUuid($uuid);
+        $this->dto->setRemoteUniqueId($unique_id);
+        $this->dto->setEntityTypeByMachineName($typeReference);
+        $this->dto->setPoolMachineNames([]);
 
         $this->translations = [];
 
@@ -126,10 +125,12 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
+    // TODO: Drupal: Support multiple pools.
     public function toPool(string $pool_id)
     {
-        // TODO: Support multiple.
-        $this->dto->setPoolMachineNames([$pool_id]);
+        $pools = $this->dto->getPoolMachineNames();
+        $pools[] = $pool_id;
+        $this->dto->setPoolMachineNames($pools);
 
         return $this;
     }
@@ -163,15 +164,6 @@ class PushSingle implements IPushSingle
     }
 
     /**
-     * @return string
-     */
-    public function getPoolId()
-    {
-        // TODO: Support multiple.
-        return $this->dto->getPoolMachineNames()[0];
-    }
-
-    /**
      * Get the definition for a referenced entity that should be pushed /
      * embedded as well.
      *
@@ -193,7 +185,6 @@ class PushSingle implements IPushSingle
      *
      * @return array|object the definition to be pushed
      */
-    // TODO: Interface: We allow multiple pools at once.
     public function getEntityReferenceDto(string $type, string $bundle, string $uuid, string $id, string $version, array $pool_machine_names, string $language, $details = null)
     {
         $entityReference = new RemoteEntityDependency();
@@ -527,11 +518,6 @@ class PushSingle implements IPushSingle
 
         return $this;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    // TODO: Interface/Drupal: Add $name to IPushSingle
 
     /**
      * @return $this|IPushSingle|PushSingle

@@ -177,9 +177,13 @@ class PullOperation implements IPullOperation
             /**
              * {@inheritdoc}
              */
-            public function getPoolId()
+            public function getPoolIds()
             {
-                return empty($this->definition[Entity::API_KEY]) ? null : $this->definition[Entity::API_KEY];
+                return empty($this->definition[Entity::API_KEY])
+                    ? null
+                    : [
+                        $this->definition[Entity::API_KEY],
+                    ];
             }
 
             /**
