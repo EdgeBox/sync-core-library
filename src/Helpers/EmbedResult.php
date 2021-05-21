@@ -1,8 +1,7 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Embed;
+namespace EdgeBox\SyncCore\Helpers;
 
-// TODO: Library: Move to library.
 class EmbedResult
 {
     public const TYPE_REDIRECT = 'redirect';

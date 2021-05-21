@@ -102,6 +102,13 @@ interface IApplicationInterface
      */
     public function getRestUrl($pool_id, $type_machine_name, $bundle_machine_name, $version_id, $entity_uuid = null, $manually = null, $as_dependency = null);
 
+    // TODO: Drupal: Implement.
+
+    /**
+     * @return string
+     */
+    public function getEmbedBaseUrl(string $feature);
+
     /**
      * @return array [
      *               'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |

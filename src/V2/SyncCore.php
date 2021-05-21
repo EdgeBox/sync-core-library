@@ -316,9 +316,6 @@ class SyncCore implements ISyncCore
         return $url['host'];
     }
 
-    // TODO: Library: Add dependency to library for: composer require firebase/php-jwt
-    // TODO: Library: Add static linting and analyzing.
-
     public function registerSiteWithJwt($options)
     {
         $dto = new RegisterSiteDto($options);
@@ -476,7 +473,6 @@ class SyncCore implements ISyncCore
         return $cache = new SyndicationService($this);
     }
 
-    // TODO: Interface: Add to ISyncCore interface.
     // TODO: Drupal: Use. Provide a route like /content-sync/:augment-id?..args that forwards to this.
     public function getEmbedService()
     {

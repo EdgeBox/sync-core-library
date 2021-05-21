@@ -2,13 +2,13 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Library: add interface.
-// TODO: Library: Refactor ConfigurePullDashboard to be an Embed class in V1.
 // TODO: Drupal: Use embed instead of the ConfigurePullDashboard.
-class PullDashboardEmbed extends Embed
+class PullDashboardEmbed extends Embed implements IEmbedFeature
 {
     /**
      * @var array
@@ -21,7 +21,7 @@ class PullDashboardEmbed extends Embed
 
         parent::__construct(
         $core,
-        Embed::PULL_DASHBOARD,
+            IEmbedService::PULL_DASHBOARD,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
     );
     }
@@ -45,25 +45,5 @@ class PullDashboardEmbed extends Embed
     public function getConfig()
     {
         return null;
-    }
-
-    public function ifTaggedWith($pool_id, $type, $bundle, $property, $uuids)
-    {
-    }
-
-    public function forEntityType($pool_id, $type, $bundle)
-    {
-    }
-
-    public function searchInTitle($text)
-    {
-    }
-
-    public function searchInPreview($text)
-    {
-    }
-
-    public function publishedBetween($from, $to)
-    {
     }
 }

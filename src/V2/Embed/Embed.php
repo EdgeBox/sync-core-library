@@ -2,15 +2,12 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Helpers\EmbedResult;
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Add interface for constants
 abstract class Embed
 {
-    public const REGISTER_SITE = 'register-site';
-    public const SITE_REGISTERED = 'site-registered';
-    public const PULL_DASHBOARD = 'pull-dashboard';
-
     /**
      * @var SyncCore
      */
@@ -82,7 +79,7 @@ abstract class Embed
         window.location.reload();
       }
       else if(message.type==="register-site") {
-        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(Embed::REGISTER_SITE).'";
+        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE).'";
       }
     },
   }, "#contentSyncEmbed");

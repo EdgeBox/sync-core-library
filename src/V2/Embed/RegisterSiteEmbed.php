@@ -2,12 +2,14 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Helpers\EmbedResult;
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Library: add interface.
-class RegisterSiteEmbed extends Embed
+class RegisterSiteEmbed extends Embed implements IEmbedFeature
 {
     protected $params;
 
@@ -17,7 +19,7 @@ class RegisterSiteEmbed extends Embed
 
         parent::__construct(
         $core,
-        Embed::REGISTER_SITE,
+            IEmbedService::REGISTER_SITE,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
     );
     }
@@ -29,7 +31,7 @@ class RegisterSiteEmbed extends Embed
 
             return new EmbedResult(
         EmbedResult::TYPE_REDIRECT,
-        $this->core->getApplication()->getEmbedBaseUrl(Embed::SITE_REGISTERED)
+        $this->core->getApplication()->getEmbedBaseUrl(IEmbedService::SITE_REGISTERED)
       );
         }
 
@@ -50,7 +52,7 @@ class RegisterSiteEmbed extends Embed
         $options = (array) $siteDto->jsonSerialize();
 
         // Redirect to this page.
-        $options['redirectUrl'] = $application->getEmbedBaseUrl(Embed::REGISTER_SITE);
+        $options['redirectUrl'] = $application->getEmbedBaseUrl(IEmbedService::REGISTER_SITE);
 
         return $options;
     }

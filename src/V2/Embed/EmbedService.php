@@ -2,10 +2,10 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Library: Add interfaces.
-class EmbedService
+class EmbedService implements IEmbedService
 {
     /**
      * @var SyncCore
@@ -20,17 +20,26 @@ class EmbedService
         $this->core = $core;
     }
 
-    public function registerSite($params)
+    /**
+     * {@inheritDoc}
+     */
+    public function registerSite(?array $params)
     {
         return new RegisterSiteEmbed($this->core, $params);
     }
 
-    public function siteRegistered($params)
+    /**
+     * {@inheritDoc}
+     */
+    public function siteRegistered(?array $params)
     {
         return new SiteRegisteredEmbed($this->core);
     }
 
-    public function pullDashboard($params)
+    /**
+     * {@inheritDoc}
+     */
+    public function pullDashboard(?array $params)
     {
         return new PullDashboardEmbed($this->core, $params);
     }

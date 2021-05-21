@@ -116,6 +116,11 @@ class SyncCore implements ISyncCore
         return $cache = new ConfigurationService($this);
     }
 
+    public function getEmbedService()
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\Interfaces;
 use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
 use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
 
 /**
@@ -28,6 +29,11 @@ interface ISyncCore
      * @return IConfigurationService
      */
     public function getConfigurationService();
+
+    /**
+     * @return IEmbedService|null
+     */
+    public function getEmbedService();
 
     /**
      * @return IBatch
