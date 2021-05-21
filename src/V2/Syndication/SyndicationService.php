@@ -60,9 +60,9 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pushSingle(string $flow_id, string $type, string $bundle, string $entity_uuid, ?string $entity_id)
+    public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $entity_uuid, ?string $entity_id)
     {
-        return new PushSingle($this->core, $type, $bundle, $entity_uuid, $entity_id);
+        return new PushSingle($this->core, $type, $bundle, $entity_uuid, $version_id, $entity_id);
     }
 
     /**

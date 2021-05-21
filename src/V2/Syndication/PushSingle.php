@@ -47,15 +47,14 @@ class PushSingle implements IPushSingle
     /**
      * PushSingle constructor.
      */
-    public function __construct(SyncCore $core, string $namespaceMachineName, string $machineName, string $uuid, ?string $unique_id)
+    public function __construct(SyncCore $core, string $namespaceMachineName, string $machineName, $versionId, string $uuid, ?string $unique_id)
     {
         $this->core = $core;
 
         $typeReference = new EntityTypeVersionReference();
         $typeReference->setNamespaceMachineName($namespaceMachineName);
         $typeReference->setMachineName($machineName);
-        // TODO: Interface: Require versionId to be provided to IPushSingle
-        $typeReference->setVersionId('$versionId');
+        $typeReference->setVersionId($versionId);
 
         $this->dto = new CreateRemoteEntityRevisionDto();
         $this->dto->setRemoteUuid($uuid);

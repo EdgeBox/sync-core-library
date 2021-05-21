@@ -34,7 +34,8 @@ interface ISyndicationService
      *
      * @return IPushSingle
      */
-    public function pushSingle(string $flow_id, string $type, string $bundle, string $entity_uuid, ?string $entity_id);
+    // TODO: Drupal: Provide version ID.
+    public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $entity_uuid, ?string $entity_id);
 
     /**
      * Get a list of all sites using the given entity from this pool.
