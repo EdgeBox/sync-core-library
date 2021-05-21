@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 // TODO: Library: add interface.
@@ -12,7 +13,7 @@ class SiteRegisteredEmbed extends Embed
         parent::__construct(
         $core,
         Embed::SITE_REGISTERED,
-        SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
     );
     }
 

@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\IReportingService;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationError;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList;
@@ -61,7 +62,7 @@ class ReportingService implements IReportingService
         /**
          * @var SyndicationErrorList $response
          */
-        $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         $messages = [];
         foreach ($response->getItems() as $item) {
@@ -104,7 +105,7 @@ class ReportingService implements IReportingService
         /**
          * @var UsageSummary $response
          */
-        $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return [
             // TODO: Drupal: ".x" means don't compare minor versions.

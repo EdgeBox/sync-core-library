@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -17,7 +18,7 @@ class RegisterSiteEmbed extends Embed
         parent::__construct(
         $core,
         Embed::REGISTER_SITE,
-        SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
     );
     }
 

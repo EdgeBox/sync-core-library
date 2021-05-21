@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPushSingle;
 use EdgeBox\SyncCore\V2\Configuration\DefineEntityType;
 use EdgeBox\SyncCore\V2\Helper;
@@ -507,7 +508,7 @@ class PushSingle implements IPushSingle
           ->getClient()
           ->remoteEntityRevisionControllerDeleteRequest($dto);
 
-            $this->core->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+            $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
             return $this;
         } else {
@@ -518,7 +519,7 @@ class PushSingle implements IPushSingle
 
             $this
         ->core
-        ->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
         }
 
         return $this;

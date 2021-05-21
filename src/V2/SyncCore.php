@@ -32,11 +32,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 
-// TODO: Refactor to never pass arrays but instead use all the setter methods, making it
-//  easier to identify mistakes
-// TODO: Is there any linting tool that could show us if we're using any non-existent
-//  method etc. and prevent a push?
-
 class SyncCore implements ISyncCore
 {
     /**
@@ -154,7 +149,7 @@ class SyncCore implements ISyncCore
         ]);
 
         $request = $this->getClient()->fileControllerCreateRequest($fileDto);
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         $request = new Request('PUT', $file->getUploadUrl(), [
             RequestOptions::BODY => $content,
@@ -162,7 +157,7 @@ class SyncCore implements ISyncCore
         $this->sendRaw($request);
 
         $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         return $file;
     }
@@ -287,10 +282,6 @@ class SyncCore implements ISyncCore
         return $this->hasValidV2SiteId();
     }
 
-    // TODO Interface: Add to IApplicationInterface::..
-    public const SYNC_CORE_PERMISSIONS_CONTENT = 'content';
-    public const SYNC_CORE_PERMISSIONS_CONFIGURATION = 'configuration';
-
     protected function getSiteSecret()
     {
         return $this->application->getAuthentication()['password'];
@@ -306,10 +297,10 @@ class SyncCore implements ISyncCore
         $secret = $this->getSiteSecret();
         $payload = [
             'type' => 'site',
-            'scopes' => self::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
+            'scopes' => IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
                 ? [
-                    self::SYNC_CORE_PERMISSIONS_CONFIGURATION,
-                    self::SYNC_CORE_PERMISSIONS_CONTENT,
+                    IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION,
+                    IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT,
                 ]
                 : [$permissions],
             'provider' => 'jwt-header',
@@ -365,7 +356,7 @@ class SyncCore implements ISyncCore
         $authentication->setPassword($auth['password']);
 
         $request = $this->client->authenticationControllerCreateRequest($authentication);
-        $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
     public function getCloudEmbedUrl()
@@ -405,7 +396,7 @@ class SyncCore implements ISyncCore
         }
 
         $request = $this->client->siteControllerItemByUuidRequest($id);
-        $response = $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        $response = $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         return $response['name'];
     }
@@ -424,7 +415,7 @@ class SyncCore implements ISyncCore
         $response = $this->sendToSyncCoreAndExpect(
         $request,
         EntityTypeVersionUsage::class,
-        self::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
     );
 
         // FIXME: With the new Sync Core version we have a lot more helpful data available.
@@ -518,7 +509,7 @@ class SyncCore implements ISyncCore
 
         $id = $this->application->getSiteId();
         $request = $this->client->siteControllerItemByUuidRequest($id);
-        $current = $this->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $current = $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         if ($current['name'] === $set) {
             return;

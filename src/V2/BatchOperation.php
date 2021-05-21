@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V2;
 use ArrayAccess;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\ModelInterface;
 use JsonSerializable;
@@ -71,7 +72,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
 
         $this
       ->core
-      ->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+      ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
     /**

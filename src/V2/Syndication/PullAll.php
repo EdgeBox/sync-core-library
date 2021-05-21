@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullAll;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
@@ -120,7 +121,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         }
 
         $request = $this->core->getClient()->migrationControllerItemRequest($this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return $this->dto = $response;
     }
@@ -180,7 +181,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $migrationDto->setFlowMachineName($this->flow);
 
         $request = $this->core->getClient()->migrationControllerCreateRequest($migrationDto);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
         $this->dto = $response;
 
         $this->migrationId = $this->dto->getId();

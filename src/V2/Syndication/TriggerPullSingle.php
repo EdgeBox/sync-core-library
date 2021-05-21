@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
 use EdgeBox\SyncCore\V2\Helper;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto;
@@ -74,7 +75,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest($this->dto);
-        $this->core->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return $this;
     }

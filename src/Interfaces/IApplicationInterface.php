@@ -21,6 +21,8 @@ interface IApplicationInterface
      *             authentication before making any REST requests to this site
      */
     public const AUTHENTICATION_TYPE_COOKIE = 'cookie';
+    public const SYNC_CORE_PERMISSIONS_CONFIGURATION = 'configuration';
+    public const SYNC_CORE_PERMISSIONS_CONTENT = 'content';
 
     /**
      * @return IApplicationInterface

@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Configuration;
 
 use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\FlowEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -45,7 +46,7 @@ class ConfigurationService implements IConfigurationService
          */
         $item = $this
         ->core
-        ->sendToSyncCoreAndExpect($request, FlowEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return new RemoteFlowItem($this->core, $item);
     }
@@ -78,7 +79,7 @@ class ConfigurationService implements IConfigurationService
 
         $remote_pools = $this
       ->core
-      ->sendToSyncCore($request, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+      ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         $options = [];
         foreach ($remote_pools as $option) {

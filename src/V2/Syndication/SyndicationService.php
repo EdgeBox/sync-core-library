@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
 use EdgeBox\SyncCore\V2\Helper;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
@@ -78,7 +79,7 @@ class SyndicationService implements ISyndicationService
         $bundle,
         $entity_type
     );
-        $entity_type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $entity_type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         do {
             $request = $this->core->getClient()->remoteEntityUsageControllerListRequest(
@@ -89,7 +90,7 @@ class SyndicationService implements ISyndicationService
           $is_uuid ? null : $shared_entity_id,
           $is_uuid ? $shared_entity_id : null
       );
-            $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
             foreach ($response->getItems() as $item) {
                 $result[$item['site']['id']] = $item['viewUrl'];

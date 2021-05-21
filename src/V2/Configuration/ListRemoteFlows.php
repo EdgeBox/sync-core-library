@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Configuration;
 
 use EdgeBox\SyncCore\Interfaces\Configuration\IListRemoteFlows;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -62,7 +63,7 @@ class ListRemoteFlows implements IListRemoteFlows
              */
             $response = $this
           ->core
-          ->sendToSyncCoreAndExpect($request, PagedFlowList::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+          ->sendToSyncCoreAndExpect($request, PagedFlowList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
             foreach ($response->getItems() as $item) {
                 $result[] = new RemoteFlowItem($this->core, $item);

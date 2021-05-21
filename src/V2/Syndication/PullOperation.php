@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullOperation;
 use EdgeBox\SyncCore\V2\Configuration\DefineEntityType;
@@ -259,7 +260,7 @@ class PullOperation implements IPullOperation
         /**
          * @var FileEntity $file
          */
-        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         if (empty($file->getDownloadUrl())) {
             return null;

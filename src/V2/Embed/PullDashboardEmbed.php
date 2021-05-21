@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 // TODO: Library: add interface.
@@ -21,7 +22,7 @@ class PullDashboardEmbed extends Embed
         parent::__construct(
         $core,
         Embed::PULL_DASHBOARD,
-        SyncCore::SYNC_CORE_PERMISSIONS_CONTENT
+            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
     );
     }
 

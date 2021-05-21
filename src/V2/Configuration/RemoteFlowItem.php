@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2\Configuration;
 
 use EdgeBox\SyncCore\Interfaces\Configuration\IRemoteFlow;
 use EdgeBox\SyncCore\Interfaces\Configuration\IRemoteFlowListItem;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FlowEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FlowSummary;
@@ -60,7 +61,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
 
         $response = $this
         ->core
-        ->sendToSyncCoreAndExpect($request, SiteEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        ->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         return $response['name'];
     }
@@ -83,7 +84,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
              */
             $item = $this
           ->core
-          ->sendToSyncCoreAndExpect($request, FlowEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+          ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
         }
 
         $config_file = $item->getRemoteConfigAsFile();
@@ -100,7 +101,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         /**
          * @var FileEntity $file
          */
-        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, SyncCore::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         if (empty($file->getDownloadUrl())) {
             return null;
