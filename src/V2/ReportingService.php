@@ -110,7 +110,6 @@ class ReportingService implements IReportingService
             // TODO: Drupal: ".x" means don't compare minor versions.
             'version' => '2.x',
             // TODO: Drupal: Different values provided here.
-            // TODO: Library: Must provide different values in v1
             'usage' => [
                 'site' => [
                     'monthly' => [
