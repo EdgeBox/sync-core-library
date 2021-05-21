@@ -188,7 +188,7 @@ class PushSingle implements IPushSingle
     {
         $entityReference = new RemoteEntityDependency();
 
-        // TODO: Interface: We need to add the label somewhere (see PullOperation).
+        // TODO: Drupal: We need to add the label somewhere for taxonomy term matching (see PullOperation).
 
         $entityReference->setRemoteUuid($uuid);
         $entityReference->setRemoteUniqueId($id);
@@ -414,7 +414,7 @@ class PushSingle implements IPushSingle
         }
 
         $newProperty = new RemoteEntityProperty();
-        // TODO: Interface: Ask for type.
+        // TODO?: Drupal: Provide type if not "object" anywhere.
         /**
          * @var RemoteEntityTypePropertyType $type
          */
