@@ -209,7 +209,7 @@ class PushSingle implements IPushSingle
         $entityReference->setPoolMachineNames([$pool_id]);
 
         if ($details) {
-            /*
+            /**
              * @var object $details
              */
             $entityReference->setReferenceDetails($details);

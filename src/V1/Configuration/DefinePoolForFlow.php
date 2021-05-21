@@ -187,7 +187,7 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
      */
     public function enablePull($type)
     {
-        /*
+        /**
          * @var DefineEntityType $type
          */
         return new FlowPullConfiguration($this->core, $this, $type);

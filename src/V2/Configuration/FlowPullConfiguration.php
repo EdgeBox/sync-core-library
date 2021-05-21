@@ -28,7 +28,7 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
 
     protected function setMode(string $mode)
     {
-        /*
+        /**
          * @var FlowSyndicationMode $mode
          */
         $this->dto->setMode($mode);

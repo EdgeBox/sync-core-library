@@ -31,7 +31,7 @@ class Batch implements IBatch
      */
     public function add($operation)
     {
-        /*
+        /**
          * @var BatchOperation $operation
          */
         $this->operations[] = $operation;

@@ -24,7 +24,10 @@
         "lint": "./vendor/bin/phplint ./ --exclude=vendor --warning",
         "analyze": "./vendor/bin/phpstan analyse src",
         "test-cs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run",
-        "fix-cs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
+        "fix-cs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "cghooks": "vendor/bin/cghooks",
+        "post-install-cmd": "cghooks add --ignore-lock",
+        "post-update-cmd": "cghooks update"
     },
     "require": {
         "php": ">=7.1.3",
