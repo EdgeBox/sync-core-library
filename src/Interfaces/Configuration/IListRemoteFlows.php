@@ -2,20 +2,20 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface IListRemoteFlows
 {
     /**
-     * @param string $pool_id
-     *
      * @return $this
      */
-    public function thatUsePool($pool_id);
+    public function thatUsePool(string $pool_id);
 
     /**
      * @return IRemoteFlowListItem[] the properties the remote site saved for
      *                               this Flow
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
 }

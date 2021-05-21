@@ -2,17 +2,17 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface IBatchOperation
 {
     /**
-     * @param IBatch $batch
-     *
      * @return mixed
      */
-    public function addToBatch($batch);
+    public function addToBatch(IBatch $batch);
 
     /**
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
 }

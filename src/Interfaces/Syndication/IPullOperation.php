@@ -39,15 +39,14 @@ interface IPullOperation
      *
      * @return IEntityReference
      */
-    public function loadReference($data);
+    public function loadReference(array $data);
 
     /**
-     * @param string      $name
      * @param string|null $language
      *
      * @return mixed
      */
-    public function getProperty($name, $language = null);
+    public function getProperty(string $name, $language = null);
 
     /**
      * Return the contents of the file that was uploaded on the remote site.
@@ -60,9 +59,7 @@ interface IPullOperation
      * Get the proper response body to return to the Sync Core. Should include a
      * deep link to the entity so that other sites can deep link to this content.
      *
-     * @param string|null $entity_deep_link
-     *
      * @return array
      */
-    public function getResponseBody($entity_deep_link);
+    public function getResponseBody(?string $entity_deep_link);
 }

@@ -35,11 +35,9 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function manually($set)
+    public function manually(bool $set)
     {
         if ($set) {
             $this->setMode(FlowSyndicationMode::MANUALLY);
@@ -51,11 +49,9 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         if ($set) {
             $this->setMode(FlowSyndicationMode::DEPENDENT);
@@ -69,7 +65,7 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     /**
      * {@inheritdoc}
      */
-    public function ifTaggedWith($property, $allowed_entity_ids)
+    public function ifTaggedWith(string $property, array $allowed_entity_ids)
     {
         $newCondition = new FlowSyndicationFilter();
         /**
@@ -95,11 +91,9 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function pullDeletions($set)
+    public function pullDeletions(bool $set)
     {
         $this->dto->setSyndicateDeletions($set);
 
@@ -107,13 +101,11 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @param string $flow_id
-     *
      * @return IFlowPullConfiguration|void
      *
      * @throws InternalContentSyncError
      */
-    public function configureOverride($flow_id)
+    public function configureOverride(string $flow_id)
     {
         throw new InternalContentSyncError("Sync Core v2 doesn't need flow overrides.");
     }

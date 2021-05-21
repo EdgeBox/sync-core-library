@@ -2,23 +2,20 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IProgress;
 
 interface IPullAll extends IProgress
 {
     /**
-     * @param string $pool_id
-     *
      * @return $this
      */
-    public function fromPool($pool_id);
+    public function fromPool(string $pool_id);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function force($set);
+    public function force(bool $set);
 
     /**
      * @return string
@@ -38,7 +35,7 @@ interface IPullAll extends IProgress
     /**
      * @return $this
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
 

@@ -10,38 +10,29 @@ interface IFlowPullConfiguration extends IBatchOperation
      * Only apply syndication if one of the given entities is referenced. This
      * allows users to syndicate content based on simple tagging.
      *
-     * @param string   $property
      * @param string[] $allowed_entity_ids
      *
      * @return $this
      */
-    public function ifTaggedWith($property, $allowed_entity_ids);
+    public function ifTaggedWith(string $property, array $allowed_entity_ids);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function manually($set);
+    public function manually(bool $set);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function asDependency($set);
+    public function asDependency(bool $set);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function pullDeletions($set);
+    public function pullDeletions(bool $set);
 
     /**
-     * @param string $flow_id
-     *
      * @return IFlowPullConfiguration|null
      */
-    public function configureOverride($flow_id);
+    public function configureOverride(string $flow_id);
 }

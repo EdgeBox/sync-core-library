@@ -41,10 +41,10 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function fromPool($pool_machine_name)
+    public function fromPool(string $pool_id)
     {
         // TODO: Support multiple pools.
-        $this->dto->setPoolMachineNames([$pool_machine_name]);
+        $this->dto->setPoolMachineNames([$pool_id]);
 
         return $this;
     }
@@ -52,7 +52,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function manually($set)
+    public function manually(bool $set)
     {
         $this->dto->setManually($set);
 
@@ -62,7 +62,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         $this->dto->setAsDependency($set);
 

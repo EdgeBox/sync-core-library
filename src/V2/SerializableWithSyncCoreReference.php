@@ -11,10 +11,8 @@ abstract class SerializableWithSyncCoreReference implements \Serializable
 
     /**
      * SerializableWithSyncCoreReference constructor.
-     *
-     * @param SyncCore $core
      */
-    public function __construct($core)
+    public function __construct(SyncCore $core)
     {
         $this->core = $core;
     }
@@ -30,7 +28,7 @@ abstract class SerializableWithSyncCoreReference implements \Serializable
     /**
      * @param string[] $serialized
      */
-    public function unserializeSyncCore($serialized)
+    public function unserializeSyncCore(array $serialized)
     {
         $base_url = $serialized[0];
         $app = $serialized[1];

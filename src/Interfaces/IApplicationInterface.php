@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
+use GuzzleHttp\Client;
+
 /**
  * Interface ApplicationInterface.
  *
@@ -49,10 +51,8 @@ interface IApplicationInterface
     /**
      * After registering this site, save the ID of this site locally for later
      * access.
-     *
-     * @param string $set
      */
-    public function setSiteId($set);
+    public function setSiteId(string $set);
 
     /**
      * Human readable name for the site.
@@ -72,10 +72,8 @@ interface IApplicationInterface
     /**
      * A unique identifier for this site, but human readable. Will be removed in
      * a future release and is there for legacy reasons only.
-     *
-     * @param string $set
      */
-    public function setSiteMachineName($set);
+    public function setSiteMachineName(string $set);
 
     /**
      * Provide the base URL for the site.
@@ -88,19 +86,15 @@ interface IApplicationInterface
      * Provide the URLs that the Sync Core can use to create, update and delete
      * entities.
      *
-     * @param string      $pool_id
-     * @param string      $type_machine_name
-     * @param string      $bundle_machine_name
-     * @param string      $version_id
      * @param string|null $entity_uuid
      * @param string|null $manually
-     *                                         Will be "true" or "false" (string!)
+     *                                   Will be "true" or "false" (string!)
      * @param string|null $as_dependency
-     *                                         Will be "true" or "false" (string!)
+     *                                   Will be "true" or "false" (string!)
      *
      * @return string
      */
-    public function getRestUrl($pool_id, $type_machine_name, $bundle_machine_name, $version_id, $entity_uuid = null, $manually = null, $as_dependency = null);
+    public function getRestUrl(string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, $entity_uuid = null, $manually = null, $as_dependency = null);
 
     // TODO: Drupal: Implement.
 
@@ -150,7 +144,7 @@ interface IApplicationInterface
      * allows the application to apply any custom settings for the client name,
      * timeouts, other security measures to be applied.
      *
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
     public function getHttpClient();
 

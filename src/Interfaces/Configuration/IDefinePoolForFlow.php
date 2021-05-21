@@ -7,30 +7,22 @@ use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 interface IDefinePoolForFlow extends IBatchOperation
 {
     /**
-     * @param IDefineEntityType $entity_type
-     *
      * @return $this
      */
-    public function useEntityType($entity_type);
+    public function useEntityType(IDefineEntityType $entity_type);
 
     /**
-     * @param IDefineEntityType $entity_type
-     *
      * @return $this
      */
-    public function enablePreview($entity_type);
+    public function enablePreview(IDefineEntityType $entity_type);
 
     /**
-     * @param IDefineEntityType $entity_type
-     *
      * @return $this
      */
-    public function enablePush($entity_type);
+    public function enablePush(IDefineEntityType $entity_type);
 
     /**
-     * @param IDefineEntityType $entity_type
-     *
      * @return IFlowPullConfiguration
      */
-    public function enablePull($entity_type);
+    public function enablePull(IDefineEntityType $entity_type);
 }

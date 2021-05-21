@@ -59,7 +59,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function fromPool($pool_id)
+    public function fromPool(string $pool_id)
     {
         $this->pool = $pool_id;
 
@@ -69,7 +69,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function manually($set)
+    public function manually(bool $set)
     {
         $this->is_manual = $set;
 
@@ -79,7 +79,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * {@inheritdoc}
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         $this->is_dependency = $set;
 

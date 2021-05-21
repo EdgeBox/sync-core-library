@@ -2,6 +2,11 @@
 
 namespace EdgeBox\SyncCore\V2\Configuration;
 
+use EdgeBox\SyncCore\Exception\BadRequestException;
+use EdgeBox\SyncCore\Exception\ForbiddenException;
+use EdgeBox\SyncCore\Exception\NotFoundException;
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Exception\TimeoutException;
 use EdgeBox\SyncCore\Interfaces\Configuration\IDefineFlow;
 use EdgeBox\SyncCore\V2\BatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto;
@@ -23,14 +28,16 @@ class DefineFlow extends BatchOperation implements IDefineFlow
      */
     protected $machineName;
 
-    // TODO: Interface: Make $config optional in IDefineFlow
-
     /**
      * DefineFlow constructor.
      *
-     * @param string|null $config
+     * @throws BadRequestException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws SyncCoreException
+     * @throws TimeoutException
      */
-    public function __construct(SyncCore $core, string $machine_name, string $name, $config)
+    public function __construct(SyncCore $core, string $machine_name, string $name, ?string $config)
     {
         $dto = new CreateFlowDto();
         $dto->setMachineName($machine_name);
@@ -61,8 +68,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
     /**
      * {@inheritdoc}
      */
-    // TODO: Interface: Add types to interface methods like usePool( >string< $pool_id)
-    public function usePool($pool_id)
+    public function usePool(string $pool_id)
     {
         return new DefinePoolForFlow($this->core, $this, $pool_id);
     }

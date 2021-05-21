@@ -36,7 +36,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullSingle($flow_id, $type, $bundle, $entity_id)
+    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
     {
         return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
     }
@@ -44,7 +44,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullAll($flow_id, $type, $bundle)
+    public function pullAll(string $flow_id, string $type, string $bundle)
     {
         return new PullAll($this->core, $type, $bundle);
     }
@@ -52,7 +52,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function handlePull($flow_id, $type, $bundle, $data)
+    public function handlePull(string $flow_id, string $type, string $bundle, array $data)
     {
         return new PullOperation($this->core, $type, $bundle, $data);
     }
@@ -60,7 +60,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pushSingle($flow_id, $type, $bundle, $entity_uuid, $entity_id)
+    public function pushSingle(string $flow_id, string $type, string $bundle, string $entity_uuid, ?string $entity_id)
     {
         return new PushSingle($this->core, $type, $bundle, $entity_uuid, $entity_id);
     }
@@ -68,7 +68,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function getExternalUsages($pool_id, $entity_type, $bundle, $shared_entity_id)
+    public function getExternalUsages(string $pool_id, string $type, string $bundle, string $shared_entity_id)
     {
         $is_uuid = Helper::isUuid($shared_entity_id);
 
@@ -77,23 +77,26 @@ class SyndicationService implements ISyndicationService
 
         $request = $this->core->getClient()->remoteEntityTypeControllerByMachineNameRequest(
         $bundle,
-        $entity_type
+        $type
     );
-        $entity_type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         do {
             $request = $this->core->getClient()->remoteEntityUsageControllerListRequest(
           100,
           $page,
-          $entity_type->getId(),
+          $type->getId(),
           null,
           $is_uuid ? null : $shared_entity_id,
           $is_uuid ? $shared_entity_id : null
       );
+            /**
+             * @var PagedRemoteEntityUsageListResponse $response
+             */
             $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
             foreach ($response->getItems() as $item) {
-                $result[$item['site']['id']] = $item['viewUrl'];
+                $result[$item->getSite()->getId()] = $item->getViewUrl();
             }
 
             ++$page;

@@ -2,38 +2,33 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface IConfigurationService
 {
     /**
-     * @param string $remote_module_version
-     *
      * @return IListRemoteFlows
      */
-    public function listRemoteFlows($remote_module_version);
+    public function listRemoteFlows(string $remote_module_version);
 
     /**
-     * @param string $id
-     *
      * @return IRemoteFlow
      */
-    public function getRemoteFlow($id);
+    public function getRemoteFlow(string $id);
 
     /**
      * @return array pool ID => pool name
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function listRemotePools();
 
     /**
-     * @param string $pool_id
-     * @param string $pool_name
-     *
      * @return IRegisterPool
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
-    public function usePool($pool_id, $pool_name);
+    public function usePool(string $pool_id, string $pool_name);
 
     /**
      * @param bool $public_access_possible
@@ -43,21 +38,12 @@ interface IConfigurationService
     public function enableEntityPreviews($public_access_possible = false);
 
     /**
-     * @param string $machine_name
-     * @param string $name
-     * @param string $config
-     *
      * @return IDefineFlow
      */
-    public function defineFlow($machine_name, $name, $config);
+    public function defineFlow(string $machine_name, string $name, ?string $config);
 
     /**
-     * @param string $pool_id
-     * @param string $type_machine_name
-     * @param string $bundle_machine_name
-     * @param string $version_id
-     *
      * @return IDefineEntityType
      */
-    public function defineEntityType($pool_id, $type_machine_name, $bundle_machine_name, $version_id);
+    public function defineEntityType(string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id);
 }

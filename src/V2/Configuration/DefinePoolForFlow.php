@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Configuration;
 
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefineEntityType;
 use EdgeBox\SyncCore\Interfaces\Configuration\IDefinePoolForFlow;
 use EdgeBox\SyncCore\V2\BatchOperation;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -50,47 +51,45 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     }
 
     /**
-     * @param DefineEntityType $type
-     *
      * @return $this
      */
-    public function enablePreview($type)
+    public function enablePreview(IDefineEntityType $entity_type)
     {
         // Nothing to do in V2.
         return $this;
     }
 
     /**
-     * @param DefineEntityType $type
-     *
      * @return $this
      */
-    public function useEntityType($type)
+    public function useEntityType(IDefineEntityType $entity_type)
     {
         // Nothing to do in V2.
         return $this;
     }
 
     /**
-     * @param DefineEntityType $type
-     *
      * @return $this
      */
-    public function enablePush($type)
+    public function enablePush(IDefineEntityType $entity_type)
     {
-        $this->flow->enablePush($type, $this->poolMachineName);
+        /**
+         * @var DefineEntityType $entity_type
+         */
+        $this->flow->enablePush($entity_type, $this->poolMachineName);
 
         return $this;
     }
 
     /**
-     * @param DefineEntityType $type
-     *
      * @return FlowPullConfiguration
      */
-    public function enablePull($type)
+    public function enablePull(IDefineEntityType $entity_type)
     {
-        $dto = $this->flow->enablePull($type, $this->poolMachineName);
+        /**
+         * @var DefineEntityType $entity_type
+         */
+        $dto = $this->flow->enablePull($entity_type, $this->poolMachineName);
 
         return new FlowPullConfiguration($this->core, $dto);
     }

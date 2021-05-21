@@ -7,6 +7,7 @@ use EdgeBox\SyncCore\V1\Entity\Entity;
 use EdgeBox\SyncCore\V1\Helper;
 use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
+use EdgeBox\SyncCore\V1\SyncCore;
 
 class PushSingle implements IPushSingle
 {
@@ -28,7 +29,7 @@ class PushSingle implements IPushSingle
     public static $serializedEntities = [];
 
     /**
-     * @var \EdgeBox\SyncCore\V1\SyncCore
+     * @var SyncCore
      */
     protected $core;
 
@@ -70,11 +71,11 @@ class PushSingle implements IPushSingle
     /**
      * PushSingle constructor.
      *
-     * @param \EdgeBox\SyncCore\V1\SyncCore $core
-     * @param string                        $type
-     * @param string                        $bundle
-     * @param string                        $entity_uuid
-     * @param string|null                   $entity_id
+     * @param SyncCore    $core
+     * @param string      $type
+     * @param string      $bundle
+     * @param string      $entity_uuid
+     * @param string|null $entity_id
      */
     public function __construct($core, $type, $bundle, $entity_uuid, $entity_id)
     {
@@ -118,7 +119,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function toPool($pool_id)
+    public function toPool(string $pool_id)
     {
         $this->pool = $pool_id;
 
@@ -128,7 +129,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         $this->is_dependency = $set;
 
@@ -138,7 +139,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function delete($set)
+    public function delete(bool $set)
     {
         $this->is_deletion = $set;
 
@@ -150,7 +151,7 @@ class PushSingle implements IPushSingle
      *
      * @param PushSingle $embed_entity
      */
-    public function embed($type, $bundle, $uuid, $id, $version, $embed_entity, $details = null)
+    public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null)
     {
         $data = $this->getEmbedEntityDefinition($type, $bundle, $uuid, $id, Entity::ENTITY_REFERENCE_EMBED, $version, $embed_entity->getPoolId(), $details);
 
@@ -303,7 +304,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency($type, $bundle, $uuid, $id, $version, $pool_id, $details = null)
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,
@@ -320,7 +321,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference($type, $bundle, $uuid, $id, $version, $pool_id, $details = null)
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,
@@ -337,7 +338,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setName($value, $language = null)
+    public function setName(string $value, $language = null)
     {
         $this->setProperty(Entity::PROPERTY_NAME, $value, $language);
 
@@ -347,7 +348,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setProperty($name, $value, $language = null)
+    public function setProperty(string $name, $value, $language = null)
     {
         if ($language) {
             if (empty($this->body['apiu_translation'])) {
@@ -364,7 +365,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setPreviewHtml($value, $language = null)
+    public function setPreviewHtml(string $value, $language = null)
     {
         $this->setProperty(Entity::PROPERTY_PREVIEW_HTML, $value, $language);
 
@@ -374,7 +375,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setSourceDeepLink($value, $language = null)
+    public function setSourceDeepLink(string $value, $language = null)
     {
         $this->setProperty(Entity::PROPERTY_SOURCE_DEEP_LINK_URL, $value, $language);
 
@@ -384,7 +385,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function getProperty($name, $language = null)
+    public function getProperty(string $name, $language = null)
     {
         if ($language) {
             if (!isset($this->body['apiu_translation'][$language][$name])) {
@@ -432,7 +433,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function uploadFile($content)
+    public function uploadFile(string $content, ?string $name = null)
     {
         $this->setProperty('apiu_file_content', base64_encode($content));
 

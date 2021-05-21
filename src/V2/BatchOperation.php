@@ -6,6 +6,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+use EdgeBox\SyncCore\Interfaces\IBatch;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\ModelInterface;
 use JsonSerializable;
@@ -38,7 +39,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     /**
      * {@inheritdoc}
      */
-    public function addToBatch($batch)
+    public function addToBatch(IBatch $batch)
     {
         $batch->add($this);
 

@@ -55,7 +55,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function fromPool($pool_id)
+    public function fromPool(string $pool_id)
     {
         $this->pool = $pool_id;
 
@@ -65,7 +65,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function force($set)
+    public function force(bool $set)
     {
         $this->is_force = $set;
 

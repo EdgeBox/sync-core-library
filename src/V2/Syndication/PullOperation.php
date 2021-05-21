@@ -95,7 +95,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getProperty($name, $language = null)
+    public function getProperty(string $name, $language = null)
     {
         $properties = $language ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
         foreach ($properties as $property) {
@@ -110,12 +110,12 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function loadReference($definition)
+    public function loadReference(array $data)
     {
         /**
          * @var RemoteEntityDependency $referenceDto
          */
-        $referenceDto = ObjectSerializer::deserialize($definition, RemoteEntityDependency::class);
+        $referenceDto = ObjectSerializer::deserialize($data, RemoteEntityDependency::class);
 
         $embeds = $this->dto->getEmbed();
         $embed = null;
@@ -282,7 +282,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getResponseBody($entity_deep_link)
+    public function getResponseBody(?string $entity_deep_link)
     {
         $data = $this->dto->jsonSerialize();
         $data['viewUrl'] = $entity_deep_link;

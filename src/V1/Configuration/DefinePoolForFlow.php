@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1\Configuration;
 
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefineEntityType;
 use EdgeBox\SyncCore\Interfaces\Configuration\IDefinePoolForFlow;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V1\BatchOperation;
@@ -11,6 +12,7 @@ use EdgeBox\SyncCore\V1\Storage\EntityTypeStorage;
 use EdgeBox\SyncCore\V1\Storage\InstanceStorage;
 use EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage;
 use EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage;
+use EdgeBox\SyncCore\V1\SyncCore;
 
 class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
 {
@@ -27,9 +29,9 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     /**
      * DefineFlow constructor.
      *
-     * @param \EdgeBox\SyncCore\V1\SyncCore $core
-     * @param DefineFlow                    $flow
-     * @param string                        $pool_id
+     * @param SyncCore   $core
+     * @param DefineFlow $flow
+     * @param string     $pool_id
      */
     public function __construct($core, $flow, $pool_id)
     {
@@ -87,24 +89,25 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     }
 
     /**
-     * @param DefineEntityType $type
-     *
      * @return $this
      */
-    public function enablePreview($type)
+    public function enablePreview(IDefineEntityType $entity_type)
     {
+        /**
+         * @var DefineEntityType $entity_type
+         */
         $pool_connection_id = CustomStorage::getCustomId(
       $this->pool_id,
       InstanceStorage::POOL_SITE_ID,
-      $type->getTypeMachineName(),
-      $type->getBundleMachineName()
+      $entity_type->getTypeMachineName(),
+      $entity_type->getBundleMachineName()
     );
 
         $this->addDownstream(
       ConnectionSynchronizationStorage::ID,
       [
           'id' => $pool_connection_id.'--to--preview',
-          'name' => 'Synchronization Pool '.$type->getTypeMachineName().'-'.$type->getBundleMachineName().' -> Preview',
+          'name' => 'Synchronization Pool '.$entity_type->getTypeMachineName().'-'.$entity_type->getBundleMachineName().' -> Preview',
           'options' => [
               'create_entities' => true,
               'update_entities' => true,
@@ -124,13 +127,14 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     }
 
     /**
-     * @param DefineEntityType $type
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function useEntityType($type)
+    public function useEntityType(IDefineEntityType $entity_type)
     {
-        $entity_type_id = EntityTypeStorage::getExternalEntityTypeId($this->pool_id, $type->getTypeMachineName(), $type->getBundleMachineName(), $type->getVersionId());
+        /**
+         * @var DefineEntityType $entity_type
+         */
+        $entity_type_id = EntityTypeStorage::getExternalEntityTypeId($this->pool_id, $entity_type->getTypeMachineName(), $entity_type->getBundleMachineName(), $entity_type->getVersionId());
 
         if (!in_array($entity_type_id, $this->body['entity_type_ids'])) {
             $this->body['entity_type_ids'][] = $entity_type_id;
@@ -140,23 +144,24 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     }
 
     /**
-     * @param DefineEntityType $type
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function enablePush($type)
+    public function enablePush(IDefineEntityType $entity_type)
     {
+        /**
+         * @var DefineEntityType $entity_type
+         */
         $app = $this->core->getApplication();
 
-        $local_connection_id = CustomStorage::getCustomId($this->pool_id, $app->getSiteId(), $type->getTypeMachineName(), $type->getBundleMachineName());
+        $local_connection_id = CustomStorage::getCustomId($this->pool_id, $app->getSiteId(), $entity_type->getTypeMachineName(), $entity_type->getBundleMachineName());
 
-        $pool_connection_id = CustomStorage::getCustomId($this->pool_id, InstanceStorage::POOL_SITE_ID, $type->getTypeMachineName(), $type->getBundleMachineName());
+        $pool_connection_id = CustomStorage::getCustomId($this->pool_id, InstanceStorage::POOL_SITE_ID, $entity_type->getTypeMachineName(), $entity_type->getBundleMachineName());
 
         $this->addDownstream(
       ConnectionSynchronizationStorage::ID,
       [
           'id' => ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, true),
-          'name' => 'Synchronization for '.$type->getTypeMachineName().'/'.$type->getBundleMachineName().'/'.$type->getVersionId().' from '.$app->getSiteId().' -> Pool',
+          'name' => 'Synchronization for '.$entity_type->getTypeMachineName().'/'.$entity_type->getBundleMachineName().'/'.$entity_type->getVersionId().' from '.$app->getSiteId().' -> Pool',
           'options' => [
               'dependency_connection_id' => CustomStorage::POOL_DEPENDENCY_CONNECTION_ID,
               // As entities will only be sent to Sync Core if the sync config
@@ -185,11 +190,11 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     /**
      * {@inheritdoc}
      */
-    public function enablePull($type)
+    public function enablePull(IDefineEntityType $entity_type)
     {
         /**
-         * @var DefineEntityType $type
+         * @var DefineEntityType $entity_type
          */
-        return new FlowPullConfiguration($this->core, $this, $type);
+        return new FlowPullConfiguration($this->core, $this, $entity_type);
     }
 }

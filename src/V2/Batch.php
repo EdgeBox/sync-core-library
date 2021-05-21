@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2;
 
 use EdgeBox\SyncCore\Interfaces\IBatch;
+use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 
 class Batch implements IBatch
 {
@@ -27,7 +28,7 @@ class Batch implements IBatch
     /**
      * {@inheritdoc}
      */
-    public function add($operation)
+    public function add(IBatchOperation $operation)
     {
         /**
          * @var BatchOperation $operation
@@ -48,7 +49,7 @@ class Batch implements IBatch
     /**
      * {@inheritdoc}
      */
-    public function get($index)
+    public function get(int $index)
     {
         return $this->operations[$index];
     }
@@ -63,11 +64,11 @@ class Batch implements IBatch
         }
     }
 
-    /**
-     * @param Batch $other
-     */
-    public function prepend($other)
+    public function prepend(IBatch $other)
     {
+        /**
+         * @var Batch $other
+         */
         $this->operations = array_merge(
       $other->getOperations(),
       $this->operations

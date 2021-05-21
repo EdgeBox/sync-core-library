@@ -2,14 +2,14 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface IBatch
 {
     /**
-     * @param IBatchOperation $operation
-     *
      * @return $this
      */
-    public function add($operation);
+    public function add(IBatchOperation $operation);
 
     /**
      * @return int
@@ -17,23 +17,19 @@ interface IBatch
     public function count();
 
     /**
-     * @param int $index
-     *
      * @return IBatchOperation
      */
-    public function get($index);
+    public function get(int $index);
 
     /**
      * Convenience method to call ->execute() for all indices until ->count().
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function executeAll();
 
     /**
      * Can only be used for batch operations using the same Sync Core!
-     *
-     * @param IBatch $other
      */
-    public function prepend($other);
+    public function prepend(IBatch $other);
 }

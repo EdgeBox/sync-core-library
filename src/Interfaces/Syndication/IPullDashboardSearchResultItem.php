@@ -4,10 +4,7 @@ namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
 interface IPullDashboardSearchResultItem
 {
-    /**
-     * @param array $properties
-     */
-    public function extend($properties);
+    public function extend(array $properties);
 
     /**
      * @return string

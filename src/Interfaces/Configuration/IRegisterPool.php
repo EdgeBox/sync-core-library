@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 
 interface IRegisterPool extends IBatchOperation
@@ -9,7 +10,7 @@ interface IRegisterPool extends IBatchOperation
     /**
      * @return null
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
 }

@@ -54,7 +54,7 @@ class PullDashboardSearchResultItem implements IPullDashboardSearchResultItem
     /**
      * {@inheritdoc}
      */
-    public function extend($properties)
+    public function extend(array $properties)
     {
         foreach ($properties as $key => $value) {
             $this->item[$key] = $value;

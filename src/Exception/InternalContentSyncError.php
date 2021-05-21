@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\Exception;
 
-class InternalContentSyncError extends \Exception
+use Exception;
+
+class InternalContentSyncError extends Exception
 {
 }

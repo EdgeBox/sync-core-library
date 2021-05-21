@@ -33,7 +33,7 @@ class ListRemoteFlows implements IListRemoteFlows
     /**
      * {@inheritdoc}
      */
-    public function thatUsePool($pool_id)
+    public function thatUsePool(string $pool_id)
     {
         $this->pools[] = $pool_id;
 

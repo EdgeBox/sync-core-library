@@ -2,11 +2,13 @@
 
 namespace EdgeBox\SyncCore\Exception;
 
+use Exception;
+
 /**
  * The Sync Core responded with a non-OK status code or the request failed for
  * other reasons (timeout for example).
  */
-class SyncCoreException extends \Exception
+class SyncCoreException extends Exception
 {
     /**
      * @var int|null

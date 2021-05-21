@@ -63,7 +63,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function fromPool($pool_id)
+    public function fromPool(string $pool_id)
     {
         throw new InternalContentSyncError('Must use Flow instead of Pool.');
     }
@@ -83,7 +83,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function force($set)
+    public function force(bool $set)
     {
         $this->pullAll = $set;
 
@@ -132,7 +132,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     public function progress($fromCache = false)
     {
         if (!$this->migrationId) {
-            throw new \Exception("Can't get syndication progress before executing the pull all operation.");
+            throw new InternalContentSyncError("Can't get syndication progress before executing the pull all operation.");
         }
 
         $migration = $this->getDto();

@@ -79,9 +79,9 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function loadReference($definition)
+    public function loadReference(array $data)
     {
-        return new class($this->core, $definition) implements IEntityReference {
+        return new class($this->core, $data) implements IEntityReference {
             /**
              * @var \EdgeBox\SyncCore\V1\SyncCore
              */
@@ -216,7 +216,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getProperty($name, $language = null)
+    public function getProperty(string $name, $language = null)
     {
         if ($language) {
             if (!isset($this->body['apiu_translation'][$language][$name])) {
@@ -244,7 +244,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getResponseBody($entity_deep_link)
+    public function getResponseBody(?string $entity_deep_link)
     {
         $data = $this->body;
         $data['url'] = $entity_deep_link;

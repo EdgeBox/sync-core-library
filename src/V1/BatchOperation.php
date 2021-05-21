@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V1;
 
+use EdgeBox\SyncCore\Interfaces\IBatch;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 
 class BatchOperation extends SerializableWithSyncCoreReference implements IBatchOperation
@@ -55,7 +56,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     /**
      * {@inheritdoc}
      */
-    public function addToBatch($batch)
+    public function addToBatch(IBatch $batch)
     {
         $batch->add($this);
 

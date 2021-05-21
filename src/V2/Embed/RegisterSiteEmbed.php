@@ -7,6 +7,7 @@ use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class RegisterSiteEmbed extends Embed implements IEmbedFeature
@@ -43,7 +44,11 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         $application = $this->core->getApplication();
 
         $siteDto = new CreateSiteDto();
-        $siteDto->setAppType($application->getApplicationId());
+        /**
+         * @var SiteApplicationType $app_type
+         */
+        $app_type = $application->getApplicationId();
+        $siteDto->setAppType($app_type);
         $siteDto->setAppVersion($application->getApplicationVersion());
         $siteDto->setAppModuleVersion($application->getApplicationModuleVersion());
         $siteDto->setBaseUrl($application->getSiteBaseUrl());

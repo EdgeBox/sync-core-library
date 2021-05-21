@@ -2,33 +2,29 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface ITriggerPullSingle
 {
     /**
-     * @param string $pool_id
-     *
      * @return $this
      */
-    public function fromPool($pool_id);
+    public function fromPool(string $pool_id);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function manually($set);
+    public function manually(bool $set);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function asDependency($set);
+    public function asDependency(bool $set);
 
     /**
      * @return $this
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
 

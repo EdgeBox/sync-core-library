@@ -26,6 +26,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteStatus;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
+use Exception;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -193,7 +194,7 @@ class SyncCore implements ISyncCore
             throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
         } catch (GuzzleException $e) {
             throw new SyncCoreException($e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new SyncCoreException($e->getMessage());
         }
 

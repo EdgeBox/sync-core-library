@@ -40,7 +40,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullSingle($flow_id, $type, $bundle, $entity_id)
+    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
     {
         return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
     }
@@ -48,7 +48,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullAll($flow_id, $type, $bundle)
+    public function pullAll(string $flow_id, string $type, string $bundle)
     {
         return new PullAll($this->core, $type, $bundle);
     }
@@ -56,7 +56,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function handlePull($flow_id, $type, $bundle, $data)
+    public function handlePull(string $flow_id, string $type, string $bundle, array $data)
     {
         return new PullOperation($this->core, $type, $bundle, $data);
     }
@@ -64,7 +64,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pushSingle($flow_id, $type, $bundle, $entity_uuid, $entity_id)
+    public function pushSingle(string $flow_id, string $type, string $bundle, string $entity_uuid, ?string $entity_id)
     {
         return new PushSingle($this->core, $type, $bundle, $entity_uuid, $entity_id);
     }
@@ -72,7 +72,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function getExternalUsages($pool_id, $entity_type, $bundle, $shared_entity_id)
+    public function getExternalUsages(string $pool_id, string $type, string $bundle, string $shared_entity_id)
     {
         /**
          * @var \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
@@ -89,7 +89,7 @@ class SyndicationService implements ISyndicationService
         ParentCondition::all()
           ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
           ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
-          ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$entity_type.'-'.$bundle))
+          ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$type.'-'.$bundle))
       )
       ->getDetails()
       ->execute()
@@ -102,7 +102,7 @@ class SyndicationService implements ISyndicationService
                 continue;
             }
             $connection_id = !empty($item['connection']['id']) ? $item['connection']['id'] : $item['connection_id'];
-            $site_id = preg_replace('@^'.$application->getApplicationId().'-'.$pool_id.'-(.+)-'.$entity_type.'-'.$bundle.'$@', '$1', $connection_id);
+            $site_id = preg_replace('@^'.$application->getApplicationId().'-'.$pool_id.'-(.+)-'.$type.'-'.$bundle.'$@', '$1', $connection_id);
 
             if (InstanceStorage::POOL_SITE_ID == $site_id) {
                 continue;
@@ -122,7 +122,7 @@ class SyndicationService implements ISyndicationService
           $this->core,
           $pool_id,
           $site_id,
-          $entity_type,
+          $type,
           $bundle
         );
 

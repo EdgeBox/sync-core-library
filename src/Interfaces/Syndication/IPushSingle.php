@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
+
 interface IPushSingle
 {
     /**
@@ -20,61 +22,39 @@ interface IPushSingle
     public function getEntityHash();
 
     /**
-     * @param string $pool_id
-     *
      * @return $this
      */
-    public function toPool($pool_id);
+    public function toPool(string $pool_id);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function asDependency($set);
+    public function asDependency(bool $set);
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function delete($set);
+    public function delete(bool $set);
 
     /**
-     * @param string      $type
-     * @param string      $bundle
-     * @param string      $uuid
-     * @param string|null $id
-     * @param string      $version
-     * @param string      $pool_id
-     *                             Can be any pool if it's not syndicated like Drupal config entities
-     * @param array|null  $details
-     *                             Any additional properties you may want to add
+     * @param string     $pool_id
+     *                            Can be any pool if it's not syndicated like Drupal config entities
+     * @param array|null $details
+     *                            Any additional properties you may want to add
      *
      * @return array
      */
-    public function addReference($type, $bundle, $uuid, $id, $version, $pool_id, $details = null);
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null);
 
     /**
-     * @param string      $type
-     * @param string      $bundle
-     * @param string      $uuid
-     * @param string|null $id
-     * @param string      $version
-     * @param string      $pool_id
-     * @param array|null  $details
-     *                             Any additional properties you may want to add
+     * @param array|null $details
+     *                            Any additional properties you may want to add
      *
      * @return array
      */
-    public function addDependency($type, $bundle, $uuid, $id, $version, $pool_id, $details = null);
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null);
 
     /**
-     * @param string      $type
-     * @param string      $bundle
-     * @param string      $uuid
-     * @param string|null $id
-     * @param string      $version
      * @param IPushSingle $embed_entity
      *                                  The definition of the whole entity
      * @param array|null  $details
@@ -82,55 +62,52 @@ interface IPushSingle
      *
      * @return array
      */
-    public function embed($type, $bundle, $uuid, $id, $version, $embed_entity, $details = null);
+    public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null);
 
     /**
-     * @param string      $name
      * @param mixed       $value
      * @param string|null $language
      *
      * @return $this
      */
-    public function setProperty($name, $value, $language = null);
+    public function setProperty(string $name, $value, $language = null);
 
     /**
-     * @param string      $value
      * @param string|null $language
      *
      * @return $this
      */
-    public function setName($value, $language = null);
+    public function setName(string $value, $language = null);
 
     /**
-     * @param string      $value
      * @param string|null $language
      *
      * @return $this
      */
-    public function setPreviewHtml($value, $language = null);
+    public function setPreviewHtml(string $value, $language = null);
 
     /**
-     * @param string      $value
      * @param string|null $language
      *
      * @return $this
      */
-    public function setSourceDeepLink($value, $language = null);
+    public function setSourceDeepLink(string $value, $language = null);
 
     /**
-     * @param string      $name
      * @param string|null $language
      *
      * @return mixed|null
      */
-    public function getProperty($name, $language = null);
+    public function getProperty(string $name, $language = null);
 
     /**
      * @return $this
      *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     * @throws SyncCoreException
      */
     public function execute();
+
+    // TODO: Drupal: Provide $name.
 
     /**
      * @param string $content
@@ -138,5 +115,5 @@ interface IPushSingle
      *
      * @return $this
      */
-    public function uploadFile($content);
+    public function uploadFile(string $content, ?string $name = null);
 }

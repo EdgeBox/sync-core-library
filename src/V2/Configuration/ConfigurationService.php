@@ -25,7 +25,7 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    public function listRemoteFlows($remote_module_version)
+    public function listRemoteFlows(string $remote_module_version)
     {
         return new ListRemoteFlows($this->core, $remote_module_version);
     }
@@ -33,8 +33,8 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    // TODO: Interface/Drupal: We need the actual entity ID; double check that Drupal provides it and not the machine name.
-    public function getRemoteFlow($id)
+    // TODO: Drupal: We need the actual entity ID; double check that Drupal provides it and not the machine name.
+    public function getRemoteFlow(string $id)
     {
         $request = $this
         ->core
@@ -54,7 +54,7 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    public function defineFlow($machine_name, $name, $config)
+    public function defineFlow(string $machine_name, string $name, ?string $config)
     {
         return new DefineFlow($this->core, $machine_name, $name, $config);
     }
@@ -62,7 +62,7 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    public function defineEntityType($pool_id, $type_machine_name, $bundle_machine_name, $version_id)
+    public function defineEntityType(string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id)
     {
         return new DefineEntityType($this->core, $type_machine_name, $bundle_machine_name, $version_id);
     }
@@ -93,7 +93,7 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    public function usePool($pool_id, $pool_name)
+    public function usePool(string $pool_id, string $pool_name)
     {
         return new RegisterPool($this->core, $pool_id, $pool_name);
     }

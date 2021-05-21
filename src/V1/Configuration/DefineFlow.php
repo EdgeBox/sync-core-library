@@ -19,7 +19,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
      * @param \EdgeBox\SyncCore\V1\SyncCore $core
      * @param string                        $machine_name
      * @param string                        $name
-     * @param string                        $config
+     * @param string|null                   $config
      */
     public function __construct($core, $machine_name, $name, $config)
     {
@@ -37,7 +37,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
               'id' => $machine_name,
               'name' => $name,
               'site' => $app->getSiteId(),
-              'config' => $config,
+              'config' => $config ?? '',
           ],
       ]
     );
@@ -56,7 +56,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
     /**
      * {@inheritdoc}
      */
-    public function usePool($pool_id)
+    public function usePool(string $pool_id)
     {
         $this->body['properties']['pools'][$pool_id] = true;
 

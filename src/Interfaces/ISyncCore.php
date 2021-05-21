@@ -93,8 +93,10 @@ interface ISyncCore
      * Get a list of all sites from this pool that use a different version ID and
      * provide a diff on field basis.
      *
-     * @return array['SITE_ID']['remote_missing' | 'local_missing'][] =
-     *                                           'PROPERTY_NAME'
+     * Return format is:
+     * ['SITE_ID']['remote_missing' | 'local_missing'][] = 'PROPERTY_NAME'
+     *
+     * @return array
      */
     public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version);
 

@@ -77,7 +77,7 @@ class FlowPullConfiguration extends FlowPullConfigurationBase
     /**
      * {@inheritdoc}
      */
-    public function configureOverride($flow_id)
+    public function configureOverride(string $flow_id)
     {
         return new class($this->core, $this->type, $this->body, $flow_id) extends FlowPullConfigurationBase {
             public function __construct($core, $type, &$body, $flow_id)
@@ -95,7 +95,7 @@ class FlowPullConfiguration extends FlowPullConfigurationBase
                 ];
             }
 
-            public function configureOverride($flow_id)
+            public function configureOverride(string $flow_id)
             {
                 return null;
             }

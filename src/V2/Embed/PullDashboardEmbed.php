@@ -35,15 +35,4 @@ class PullDashboardEmbed extends Embed implements IEmbedFeature
     {
         return $this->render();
     }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Returning NULL means we don't want to use the dashboard from the Drupal module but
-     * rather provide our own.
-     */
-    public function getConfig()
-    {
-        return null;
-    }
 }

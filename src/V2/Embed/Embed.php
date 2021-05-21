@@ -61,7 +61,7 @@ abstract class Embed
 <script type="text/javascript" src="//'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
-  const iframe = iFrameResize({
+  iFrameResize({
     log: true,
     onInit: function(iframe) {
       iframe.iFrameResizer.sendMessage({
@@ -73,7 +73,7 @@ abstract class Embed
         options: '.json_encode($options).',
       });
     },
-    onMessage: function({iframe,message}) {
+    onMessage: function({message}) {
       // Need a fresh access token.
       if(message.type==="reload") {
         window.location.reload();

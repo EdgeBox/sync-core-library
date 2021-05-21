@@ -64,7 +64,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     /**
      * {@inheritdoc}
      */
-    public function ifTaggedWith($pool_id, $type, $bundle, $property, $uuids)
+    public function ifTaggedWith(string $pool_id, string $type, string $bundle, string $property, array $uuids)
     {
         $id = EntityTypeStorage::getExternalEntityTypeId(
       $pool_id,
@@ -102,7 +102,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     /**
      * {@inheritdoc}
      */
-    public function forEntityType($pool_id, $type, $bundle)
+    public function forEntityType(string $pool_id, string $type, string $bundle)
     {
         $id = EntityTypeStorage::getExternalEntityTypeId(
       $pool_id,
@@ -118,7 +118,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     /**
      * {@inheritdoc}
      */
-    public function searchInTitle($text)
+    public function searchInTitle(string $text)
     {
         $this->filters[] = DataCondition::search(PreviewEntityStorage::PROPERTY_TITLE, $text);
 
@@ -128,7 +128,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     /**
      * {@inheritdoc}
      */
-    public function searchInPreview($text)
+    public function searchInPreview(string $text)
     {
         $this->filters[] = DataCondition::search(PreviewEntityStorage::PROPERTY_PREVIEW_HTML, $text);
 
@@ -138,7 +138,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     /**
      * {@inheritdoc}
      */
-    public function publishedBetween($from, $to)
+    public function publishedBetween(?int $from, ?int $to)
     {
         if ($from) {
             $filters[] = DataCondition::greaterOrEqual(PreviewEntityStorage::PROPERTY_PUBLISHED_DATE, $from);

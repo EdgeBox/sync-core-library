@@ -5,15 +5,11 @@ namespace EdgeBox\SyncCore\Interfaces\Syndication;
 interface IConfigurePullDashboard
 {
     /**
-     * @param string   $pool_id
-     * @param string   $type
-     * @param string   $bundle
-     * @param string   $property
      * @param string[] $uuids
      *
      * @return $this
      */
-    public function ifTaggedWith($pool_id, $type, $bundle, $property, $uuids);
+    public function ifTaggedWith(string $pool_id, string $type, string $bundle, string $property, array $uuids);
 
     /**
      * @return array
@@ -21,35 +17,24 @@ interface IConfigurePullDashboard
     public function getConfig();
 
     /**
-     * @param string $pool_id
-     * @param string $type
-     * @param string $bundle
-     *
      * @return $this
      */
-    public function forEntityType($pool_id, $type, $bundle);
+    public function forEntityType(string $pool_id, string $type, string $bundle);
 
     /**
-     * @param string $text
-     *
      * @return $this
      */
-    public function searchInTitle($text);
+    public function searchInTitle(string $text);
 
     /**
-     * @param string $text
-     *
      * @return $this
      */
-    public function searchInPreview($text);
+    public function searchInPreview(string $text);
 
     /**
-     * @param int|null $from
-     * @param int|null $to
-     *
      * @return $this
      */
-    public function publishedBetween($from, $to);
+    public function publishedBetween(?int $from, ?int $to);
 
     /**
      * @param bool     $order_by_title

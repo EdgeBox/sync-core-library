@@ -16,11 +16,9 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
     protected $index = 0;
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function manually($set)
+    public function manually(bool $set)
     {
         $this->body['options']['modes'][$this->index]['is_manual'] = $set;
 
@@ -28,11 +26,9 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
     }
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         $this->body['options']['modes'][$this->index]['is_dependent'] = $set;
 
@@ -42,7 +38,7 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
     /**
      * {@inheritdoc}
      */
-    public function ifTaggedWith($property, $allowed_entity_ids)
+    public function ifTaggedWith(string $property, array $allowed_entity_ids)
     {
         $this->pull_condition[] = DataCondition::in($property.'.*.'.Entity::UUID_KEY, $allowed_entity_ids);
 
@@ -61,11 +57,9 @@ abstract class FlowPullConfigurationBase extends BatchOperation implements IFlow
     }
 
     /**
-     * @param bool $set
-     *
      * @return $this
      */
-    public function pullDeletions($set)
+    public function pullDeletions(bool $set)
     {
         $this->body['options']['modes'][$this->index]['delete'] = $set;
 

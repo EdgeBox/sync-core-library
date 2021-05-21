@@ -126,10 +126,10 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function toPool($pool_machine_name)
+    public function toPool(string $pool_id)
     {
         // TODO: Support multiple.
-        $this->dto->setPoolMachineNames([$pool_machine_name]);
+        $this->dto->setPoolMachineNames([$pool_id]);
 
         return $this;
     }
@@ -137,7 +137,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function asDependency($set)
+    public function asDependency(bool $set)
     {
         $this->is_dependency = $set;
 
@@ -147,7 +147,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function delete($set)
+    public function delete(bool $set)
     {
         $this->is_deletion = $set;
 
@@ -316,17 +316,13 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      *
-     * @param string     $type
-     * @param string     $bundle
-     * @param string     $uuid
      * @param string     $id
-     * @param string     $version
      * @param PushSingle $embed_entity
      * @param null       $details
      *
      * @return array|RemoteEntityDependency
      */
-    public function embed($type, $bundle, $uuid, $id, $version, $embed_entity, $details = null)
+    public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null)
     {
         // Add all dependencies from the child directly to us, otherwise they'll
         // be missing on the remote site.
@@ -377,7 +373,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency($type, $bundle, $uuid, $id, $version, $pool_id, $details = null)
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
     {
         return $this->addDirectDependency(
       $type,
@@ -394,7 +390,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference($type, $bundle, $uuid, $id, $version, $pool_id, $details = null)
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, string $pool_id, $details = null)
     {
         return $this->getEntityReferenceDto(
       $type,
@@ -410,7 +406,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setProperty($name, $value, $language = null)
+    public function setProperty(string $name, $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 
@@ -438,7 +434,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setName($value, $language = null)
+    public function setName(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
         $dto->setName($value);
@@ -449,7 +445,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setPreviewHtml($value, $language = null)
+    public function setPreviewHtml(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 
@@ -463,7 +459,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function setSourceDeepLink($value, $language = null)
+    public function setSourceDeepLink(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
         $dto->setViewUrl($value);
@@ -474,7 +470,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function getProperty($name, $language = null)
+    public function getProperty(string $name, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 
@@ -529,7 +525,11 @@ class PushSingle implements IPushSingle
      * {@inheritdoc}
      */
     // TODO: Interface/Drupal: Add $name to IPushSingle
-    public function uploadFile($content, $name = null)
+
+    /**
+     * @return $this|IPushSingle|PushSingle
+     */
+    public function uploadFile(string $content, ?string $name = null)
     {
         if (!$name) {
             $name = $this->dto->getName();

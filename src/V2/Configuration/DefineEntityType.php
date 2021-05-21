@@ -74,7 +74,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function isTranslatable($set)
+    public function isTranslatable(bool $set)
     {
         if ($set) {
             $this->dto->setTranslatable(true);
@@ -86,7 +86,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function isFile($set)
+    public function isFile(bool $set)
     {
         if ($set) {
             $this->addProperty(
@@ -135,7 +135,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addBooleanProperty($name, $multiple = false, $required = false)
+    public function addBooleanProperty(string $name, $multiple = false, $required = false)
     {
         $this->addProperty($name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required);
 
@@ -145,7 +145,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addIntegerProperty($name, $multiple = false, $required = false)
+    public function addIntegerProperty(string $name, $multiple = false, $required = false)
     {
         $this->addProperty($name, RemoteEntityTypePropertyType::INTEGER, $multiple, $required);
 
@@ -155,7 +155,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addFloatProperty($name, $multiple = false, $required = false)
+    public function addFloatProperty(string $name, $multiple = false, $required = false)
     {
         $this->addProperty($name, RemoteEntityTypePropertyType::FLOAT, $multiple, $required);
 
@@ -165,7 +165,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addStringProperty($name, $multiple = false, $required = false)
+    public function addStringProperty(string $name, $multiple = false, $required = false)
     {
         $this->addProperty($name, RemoteEntityTypePropertyType::STRING, $multiple, $required);
 
@@ -175,7 +175,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addObjectProperty($name, $multiple = false, $required = false)
+    public function addObjectProperty(string $name, $multiple = false, $required = false)
     {
         $this->addProperty($name, RemoteEntityTypePropertyType::OBJECT, $multiple, $required);
 
