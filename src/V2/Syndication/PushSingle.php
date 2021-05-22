@@ -13,6 +13,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class PushSingle implements IPushSingle
@@ -47,7 +48,7 @@ class PushSingle implements IPushSingle
     /**
      * PushSingle constructor.
      */
-    public function __construct(SyncCore $core, string $namespaceMachineName, string $machineName, $versionId, string $uuid, ?string $unique_id)
+    public function __construct(SyncCore $core, string $flowMachineName, string $namespaceMachineName, string $machineName, string $versionId, string $root_language, string $uuid, ?string $unique_id)
     {
         $this->core = $core;
 
@@ -57,10 +58,18 @@ class PushSingle implements IPushSingle
         $typeReference->setVersionId($versionId);
 
         $this->dto = new CreateRemoteEntityRevisionDto();
+        $this->dto->setFlowMachineName($flowMachineName);
         $this->dto->setRemoteUuid($uuid);
         $this->dto->setRemoteUniqueId($unique_id);
         $this->dto->setEntityTypeByMachineName($typeReference);
         $this->dto->setPoolMachineNames([]);
+        $this->dto->setProperties([]);
+        $this->dto->setLanguage($root_language);
+        /**
+         * @var SiteApplicationType $type
+         */
+        $type = $core->getApplication()->getApplicationId();
+        $this->dto->setAppType($type);
 
         $this->translations = [];
 

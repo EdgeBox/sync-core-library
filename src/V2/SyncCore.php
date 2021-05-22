@@ -23,7 +23,6 @@ use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
-use EdgeBox\SyncCore\V2\Raw\Model\SiteStatus;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Exception;
@@ -361,7 +360,6 @@ class SyncCore implements ISyncCore
 
         $request = $this->client->siteControllerRegisterRequest($dto);
         $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
-
 
         $siteId = $entity->getUuid();
         $this->application->setSiteId($siteId);

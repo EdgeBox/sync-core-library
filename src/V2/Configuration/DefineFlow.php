@@ -108,7 +108,9 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $mode = FlowSyndicationMode::ALL;
         $config->setMode($mode);
         $config->setPoolMachineName($poolMachineName);
-        $config->setEntityTypesByMachineName([]);
+        $config->setEntityTypesByMachineName([
+            $typeReference,
+        ]);
 
         $allPools[] = $config;
         $this->dto->setSitePullsByMachineName($allPools);
@@ -144,7 +146,9 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $mode = FlowSyndicationMode::ALL;
         $config->setMode($mode);
         $config->setPoolMachineName($poolMachineName);
-        $config->setEntityTypesByMachineName([]);
+        $config->setEntityTypesByMachineName([
+            $typeReference,
+        ]);
         $allPools[] = $config;
         $this->dto->setSitePushesByMachineName($allPools);
 
