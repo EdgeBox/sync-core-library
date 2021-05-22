@@ -30,6 +30,7 @@ use Exception;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 
@@ -142,23 +143,42 @@ class SyncCore implements ISyncCore
      * @throws SyncCoreException
      * @throws TimeoutException
      */
-    public function sendFile($type, $file_name, $content)
+    public function sendFile($type, $file_name, $content, $is_configuration = false)
     {
         $fileDto = new CreateFileDto([
             'type' => $type,
             'fileName' => $file_name,
         ]);
 
-        $request = $this->getClient()->fileControllerCreateRequest($fileDto);
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $permissions = $is_configuration
+            ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
 
-        $request = new Request('PUT', $file->getUploadUrl(), [
-            RequestOptions::BODY => $content,
+        $request = $this->getClient()->fileControllerCreateRequest($fileDto);
+        /**
+         * @var FileEntity $file
+         */
+        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
+
+        if (!$file->getUploadUrl()) {
+            throw new InternalContentSyncError('File has no upload URL.');
+        }
+
+        $httpBody = new MultipartStream([
+            [
+                'name' => 'file',
+                'contents' => $content,
+                // The Sync Core won't accept requests that don't contain a filename.
+                'filename' => $file_name,
+            ],
         ]);
+        $upload_url = $file->getUploadUrl();
+        $request = new Request('PUT', $upload_url,
+            [], $httpBody);
         $this->sendRaw($request);
 
         $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
 
         return $file;
     }
@@ -201,23 +221,26 @@ class SyncCore implements ISyncCore
         $status = $response->getStatusCode();
 
         $response_body = $response->getBody();
-        $data = json_decode($response_body, true);
-        $message = isset($data['message']) ? $data['message'] : $response_body.'';
-        if (!is_string($message)) {
-            $message = json_encode($message);
-        }
 
-        if (400 === $status) {
-            throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (403 === $status) {
-            throw new ForbiddenException('The Sync Core responded with 403 Forbidden for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (404 === $status) {
-            throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (200 !== $status && 201 !== $status) {
+        if (200 !== $status && 201 !== $status) {
+            $data = json_decode($response_body, true);
+            $message = isset($data['message']) ? $data['message'] : $response_body.'';
+            if (!is_string($message)) {
+                $message = json_encode($message);
+            }
+            if (400 === $status) {
+                throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            } elseif (403 === $status) {
+                throw new ForbiddenException('The Sync Core responded with 403 Forbidden for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            } elseif (404 === $status) {
+                throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            }
             throw new SyncCoreException('The Sync Core responded with a non-OK status code for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
         }
 
-        return $data;
+        $response_body = (string) $response_body;
+
+        return $response_body;
     }
 
     /**
@@ -248,6 +271,13 @@ class SyncCore implements ISyncCore
         return $this->sendRaw($request, $options);
     }
 
+    public function sendToSyncCoreWithJwtAndExpect(Request $request, string $class, string $jwt)
+    {
+        $response = $this->sendToSyncCoreWithJwt($request, $jwt);
+
+        return ObjectSerializer::deserialize($response, $class, []);
+    }
+
     /**
      * @return Raw\Model\ModelInterface|object
      *
@@ -261,7 +291,7 @@ class SyncCore implements ISyncCore
     {
         $response = $this->sendToSyncCore($request, $permissions);
 
-        return ObjectSerializer::deserialize($response, $class);
+        return ObjectSerializer::deserialize($response, $class, []);
     }
 
     protected function hasValidV2SiteId()
@@ -330,11 +360,8 @@ class SyncCore implements ISyncCore
         }
 
         $request = $this->client->siteControllerRegisterRequest($dto);
-        $response = $this->sendToSyncCoreWithJwt($request, $options['jwt']);
+        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
 
-        // Must set manually as the library won't validate correctly otherwise.
-        $response['status'] = SiteStatus::_100_ACTIVE;
-        $entity = new SiteEntity($response);
 
         $siteId = $entity->getUuid();
         $this->application->setSiteId($siteId);

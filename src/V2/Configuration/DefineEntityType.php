@@ -41,9 +41,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         $dto->setProperties([]);
 
         parent::__construct(
-      $core,
-      BatchOperation::REQUEST_ENTITY_TYPE_CREATE,
-      $dto
+        $core,
+        BatchOperation::REQUEST_ENTITY_TYPE_CREATE,
+        $dto
     );
     }
 
@@ -60,7 +60,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
      */
     public function getMachineName()
     {
-        return $this->getMachineName();
+        return $this->dto->getMachineName();
     }
 
     /**
@@ -68,7 +68,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
      */
     public function getVersionId()
     {
-        return $this->getVersionId();
+        return $this->dto->getVersionId();
     }
 
     /**

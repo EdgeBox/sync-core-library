@@ -42,6 +42,8 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $dto = new CreateFlowDto();
         $dto->setMachineName($machine_name);
         $dto->setName($name);
+        $dto->setSitePullsByMachineName([]);
+        $dto->setSitePushesByMachineName([]);
 
         parent::__construct(
       $core,
@@ -52,7 +54,12 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $this->machineName = $machine_name;
 
         if ($config) {
-            $file = $this->core->sendFile(FileType::REMOTE_FLOW_CONFIG, $machine_name.'.yml', $config);
+            $file = $this->core->sendFile(
+                FileType::REMOTE_FLOW_CONFIG,
+                $machine_name.'.yml',
+                $config,
+                true
+            );
             $dto->setRemoteConfigFileId($file->getId());
         }
     }

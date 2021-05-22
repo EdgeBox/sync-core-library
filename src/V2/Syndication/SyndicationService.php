@@ -96,6 +96,8 @@ class SyndicationService implements ISyndicationService
             $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
             foreach ($response->getItems() as $item) {
+                // TODO: Library: This should be the site's UUID, not it's ID. Need to change the usage
+                //  interface to return it, too.
                 $result[$item->getSite()->getId()] = $item->getViewUrl();
             }
 
