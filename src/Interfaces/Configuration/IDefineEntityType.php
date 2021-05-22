@@ -22,7 +22,8 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addBooleanProperty(string $name, $multiple = false, $required = false);
+    // TODO: Drupal: Pass property name, not only machine name.
+    public function addBooleanProperty(string $machine_name, string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -30,7 +31,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addIntegerProperty(string $name, $multiple = false, $required = false);
+    public function addIntegerProperty(string $machine_name, string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -38,7 +39,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addFloatProperty(string $name, $multiple = false, $required = false);
+    public function addFloatProperty(string $machine_name, string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -46,7 +47,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addStringProperty(string $name, $multiple = false, $required = false);
+    public function addStringProperty(string $machine_name, string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -54,5 +55,5 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addObjectProperty(string $name, $multiple = false, $required = false);
+    public function addObjectProperty(string $machine_name, string $name, $multiple = false, $required = false);
 }
