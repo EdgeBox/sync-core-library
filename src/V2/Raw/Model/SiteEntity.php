@@ -80,6 +80,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'secret' => 'string',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
     ];
 
     /**
@@ -108,6 +109,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => null,
         'updatedAt' => null,
         'secret' => null,
+        'restUrls' => null,
     ];
 
     /**
@@ -155,6 +157,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'secret' => 'secret',
+        'restUrls' => 'restUrls',
     ];
 
     /**
@@ -181,6 +184,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'secret' => 'setSecret',
+        'restUrls' => 'setRestUrls',
     ];
 
     /**
@@ -207,6 +211,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'secret' => 'getSecret',
+        'restUrls' => 'getRestUrls',
     ];
 
     /**
@@ -283,6 +288,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['createdAt'] = $data['createdAt'] ?? null;
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
         $this->container['secret'] = $data['secret'] ?? null;
+        $this->container['restUrls'] = $data['restUrls'] ?? null;
     }
 
     /**
@@ -335,6 +341,9 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['updatedAt']) {
             $invalidProperties[] = "'updatedAt' can't be null";
+        }
+        if (null === $this->container['restUrls']) {
+            $invalidProperties[] = "'restUrls' can't be null";
         }
 
         return $invalidProperties;
@@ -779,6 +788,30 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSecret($secret)
     {
         $this->container['secret'] = $secret;
+
+        return $this;
+    }
+
+    /**
+     * Gets restUrls.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     */
+    public function getRestUrls()
+    {
+        return $this->container['restUrls'];
+    }
+
+    /**
+     * Sets restUrls.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     *
+     * @return self
+     */
+    public function setRestUrls($restUrls)
+    {
+        $this->container['restUrls'] = $restUrls;
 
         return $this;
     }

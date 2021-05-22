@@ -337,7 +337,7 @@ class ObjectSerializer
             }
         }
 
-        /* @psalm-suppress ParadoxicalCondition */
+        /** @psalm-suppress ParadoxicalCondition */
         if (in_array($class, ['DateTime', 'bool', 'boolean', 'byte', 'double', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
             settype($data, $class);
 
@@ -345,7 +345,7 @@ class ObjectSerializer
         }
 
         if ('\SplFileObject' === $class) {
-            /* @var \Psr\Http\Message\StreamInterface $data */
+            /** @var \Psr\Http\Message\StreamInterface $data */
 
             // determine file name
             if (array_key_exists('Content-Disposition', $httpHeaders) &&

@@ -1,6 +1,6 @@
 <?php
 /**
- * RegisterSiteDto.
+ * SiteRestUrls.
  *
  * PHP version 7.2
  *
@@ -34,7 +34,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RegisterSiteDto Class Doc Comment.
+ * SiteRestUrls Class Doc Comment.
  *
  * @category Class
  *
@@ -45,7 +45,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -54,7 +54,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RegisterSiteDto';
+    protected static $openAPIModelName = 'SiteRestUrls';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -62,9 +62,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'uuid' => 'string',
-        'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'retrieveEntity' => 'string',
+        'listEntities' => 'string',
+        'createEntity' => 'string',
+        'deleteEntity' => 'string',
     ];
 
     /**
@@ -75,9 +76,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'uuid' => null,
-        'secret' => null,
-        'restUrls' => null,
+        'retrieveEntity' => null,
+        'listEntities' => null,
+        'createEntity' => null,
+        'deleteEntity' => null,
     ];
 
     /**
@@ -107,9 +109,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'uuid' => 'uuid',
-        'secret' => 'secret',
-        'restUrls' => 'restUrls',
+        'retrieveEntity' => 'retrieveEntity',
+        'listEntities' => 'listEntities',
+        'createEntity' => 'createEntity',
+        'deleteEntity' => 'deleteEntity',
     ];
 
     /**
@@ -118,9 +121,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'uuid' => 'setUuid',
-        'secret' => 'setSecret',
-        'restUrls' => 'setRestUrls',
+        'retrieveEntity' => 'setRetrieveEntity',
+        'listEntities' => 'setListEntities',
+        'createEntity' => 'setCreateEntity',
+        'deleteEntity' => 'setDeleteEntity',
     ];
 
     /**
@@ -129,9 +133,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'uuid' => 'getUuid',
-        'secret' => 'getSecret',
-        'restUrls' => 'getRestUrls',
+        'retrieveEntity' => 'getRetrieveEntity',
+        'listEntities' => 'getListEntities',
+        'createEntity' => 'getCreateEntity',
+        'deleteEntity' => 'getDeleteEntity',
     ];
 
     /**
@@ -190,9 +195,10 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['uuid'] = $data['uuid'] ?? null;
-        $this->container['secret'] = $data['secret'] ?? null;
-        $this->container['restUrls'] = $data['restUrls'] ?? null;
+        $this->container['retrieveEntity'] = $data['retrieveEntity'] ?? null;
+        $this->container['listEntities'] = $data['listEntities'] ?? null;
+        $this->container['createEntity'] = $data['createEntity'] ?? null;
+        $this->container['deleteEntity'] = $data['deleteEntity'] ?? null;
     }
 
     /**
@@ -204,14 +210,17 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['uuid']) {
-            $invalidProperties[] = "'uuid' can't be null";
+        if (null === $this->container['retrieveEntity']) {
+            $invalidProperties[] = "'retrieveEntity' can't be null";
         }
-        if (null === $this->container['secret']) {
-            $invalidProperties[] = "'secret' can't be null";
+        if (null === $this->container['listEntities']) {
+            $invalidProperties[] = "'listEntities' can't be null";
         }
-        if (null === $this->container['restUrls']) {
-            $invalidProperties[] = "'restUrls' can't be null";
+        if (null === $this->container['createEntity']) {
+            $invalidProperties[] = "'createEntity' can't be null";
+        }
+        if (null === $this->container['deleteEntity']) {
+            $invalidProperties[] = "'deleteEntity' can't be null";
         }
 
         return $invalidProperties;
@@ -229,73 +238,97 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets uuid.
+     * Gets retrieveEntity.
      *
      * @return string
      */
-    public function getUuid()
+    public function getRetrieveEntity()
     {
-        return $this->container['uuid'];
+        return $this->container['retrieveEntity'];
     }
 
     /**
-     * Sets uuid.
+     * Sets retrieveEntity.
      *
-     * @param string $uuid uuid
+     * @param string $retrieveEntity retrieveEntity
      *
      * @return self
      */
-    public function setUuid($uuid)
+    public function setRetrieveEntity($retrieveEntity)
     {
-        $this->container['uuid'] = $uuid;
+        $this->container['retrieveEntity'] = $retrieveEntity;
 
         return $this;
     }
 
     /**
-     * Gets secret.
+     * Gets listEntities.
      *
      * @return string
      */
-    public function getSecret()
+    public function getListEntities()
     {
-        return $this->container['secret'];
+        return $this->container['listEntities'];
     }
 
     /**
-     * Sets secret.
+     * Sets listEntities.
      *
-     * @param string $secret secret
+     * @param string $listEntities listEntities
      *
      * @return self
      */
-    public function setSecret($secret)
+    public function setListEntities($listEntities)
     {
-        $this->container['secret'] = $secret;
+        $this->container['listEntities'] = $listEntities;
 
         return $this;
     }
 
     /**
-     * Gets restUrls.
+     * Gets createEntity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     * @return string
      */
-    public function getRestUrls()
+    public function getCreateEntity()
     {
-        return $this->container['restUrls'];
+        return $this->container['createEntity'];
     }
 
     /**
-     * Sets restUrls.
+     * Sets createEntity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     * @param string $createEntity createEntity
      *
      * @return self
      */
-    public function setRestUrls($restUrls)
+    public function setCreateEntity($createEntity)
     {
-        $this->container['restUrls'] = $restUrls;
+        $this->container['createEntity'] = $createEntity;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleteEntity.
+     *
+     * @return string
+     */
+    public function getDeleteEntity()
+    {
+        return $this->container['deleteEntity'];
+    }
+
+    /**
+     * Sets deleteEntity.
+     *
+     * @param string $deleteEntity deleteEntity
+     *
+     * @return self
+     */
+    public function setDeleteEntity($deleteEntity)
+    {
+        $this->container['deleteEntity'] = $deleteEntity;
 
         return $this;
     }

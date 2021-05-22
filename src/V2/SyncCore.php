@@ -23,6 +23,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Exception;
@@ -346,6 +347,24 @@ class SyncCore implements ISyncCore
         return $url['host'];
     }
 
+    protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
+    protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
+    protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';
+
+    protected function getRelativeReference(string $action)
+    {
+        $relative = $this->application->getRelativeReferenceForRestCall(
+          self::PLACEHOLDER_FLOW_MACHINE_NAME,
+          $action,
+          self::PLACEHOLDER_ENTITY_SHARED_ID
+      );
+        if ('/' !== $relative[0]) {
+            throw new InternalContentSyncError('Relative reference must start with a slash /.');
+        }
+
+        return $relative;
+    }
+
     public function registerSiteWithJwt($options)
     {
         $dto = new RegisterSiteDto($options);
@@ -358,12 +377,20 @@ class SyncCore implements ISyncCore
             throw new InternalContentSyncError('Invalid augment URL options.');
         }
 
+        $urls = new SiteRestUrls();
+
+        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
+        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
+        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
+        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+
+        $dto->setRestUrls($urls);
+
         $request = $this->client->siteControllerRegisterRequest($dto);
         $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
 
         $siteId = $entity->getUuid();
         $this->application->setSiteId($siteId);
-
         // Save the credentials to the Sync Core so it can connect to the site as well.
         $auth = $this->application->getAuthentication();
 

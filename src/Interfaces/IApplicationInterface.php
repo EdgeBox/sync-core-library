@@ -27,6 +27,28 @@ interface IApplicationInterface
     public const SYNC_CORE_PERMISSIONS_CONTENT = 'content';
 
     /**
+     * @var string REST_ACTION_CREATE_ENTITY Create OR Update an entity
+     */
+    public const REST_ACTION_CREATE_ENTITY = 'create';
+    /**
+     * @var string REST_ACTION_DELETE_ENTITY Delete the given entity
+     */
+    public const REST_ACTION_DELETE_ENTITY = 'delete';
+    /**
+     * @var string REST_ACTION_RETRIEVE_ENTITY
+     *             Get details about the given entity.
+     *             404 means it doesn't exist (any longer).
+     */
+    public const REST_ACTION_RETRIEVE_ENTITY = 'retrieve';
+    /**
+     * @var string REST_ACTION_LIST_ENTITIES
+     *
+     * List all entities of the site. Will include a "mode" query parameter to get one of
+     * the lists defined below.
+     */
+    public const REST_ACTION_LIST_ENTITIES = 'list';
+
+    /**
      * @return IApplicationInterface
      */
     public static function get();
@@ -86,6 +108,8 @@ interface IApplicationInterface
      * Provide the URLs that the Sync Core can use to create, update and delete
      * entities.
      *
+     * Used by the Sync Core v1.
+     *
      * @param string|null $entity_uuid
      * @param string|null $manually
      *                                   Will be "true" or "false" (string!)
@@ -95,6 +119,19 @@ interface IApplicationInterface
      * @return string
      */
     public function getRestUrl(string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, $entity_uuid = null, $manually = null, $as_dependency = null);
+
+    // TODO: Drupal: Implement.
+
+    /**
+     * Provide the path/query that the site wants to be called for the individual actions.
+     * So this must not include the base URL of the site. Actions are one of:
+     * IApplicationInterface::REST_ACTION_*.
+     *
+     * Used by the Sync Core v2.
+     *
+     * @return string
+     */
+    public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action, string $shared_entity_id);
 
     // TODO: Drupal: Implement.
 
