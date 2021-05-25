@@ -33,7 +33,6 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
-    // TODO: Drupal: We need the actual entity ID; double check that Drupal provides it and not the machine name.
     public function getRemoteFlow(string $id)
     {
         $request = $this

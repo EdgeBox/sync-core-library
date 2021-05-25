@@ -22,7 +22,6 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    // TODO: Drupal: Pass property name, not only machine name.
     public function addBooleanProperty(string $machine_name, string $name, $multiple = false, $required = false);
 
     /**

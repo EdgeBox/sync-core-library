@@ -58,7 +58,7 @@ abstract class Embed
 <iframe id="contentSyncEmbed" src="'.$this->url.'" frameborder="0">
   The page could not be loaded as your browser does not support it.
 </iframe>
-<script type="text/javascript" src="//'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
+<script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
   iFrameResize({

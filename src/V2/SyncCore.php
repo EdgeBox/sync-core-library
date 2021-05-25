@@ -8,6 +8,7 @@ use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCore\Exception\UnauthorizedException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
 use EdgeBox\SyncCore\V1\Helper;
@@ -77,8 +78,8 @@ class SyncCore implements ISyncCore
             throw new InternalContentSyncError("Invalid base URL doesn't end with /sync-core");
         }
 
-        if (isset($_ENV['SYNC_CORE_DEFAULT_TIMEOUT'])) {
-            $this->default_timeout = $_ENV['SYNC_CORE_DEFAULT_TIMEOUT'];
+        if (getenv('SYNC_CORE_DEFAULT_TIMEOUT')) {
+            $this->default_timeout = (int)getenv('SYNC_CORE_DEFAULT_TIMEOUT');
         }
 
         $this->application = $application;
@@ -87,11 +88,11 @@ class SyncCore implements ISyncCore
         // that prefix for all routes. So we need to cut it off or we would end up
         // with an incorrect double-prefix of /sync-core/sync-core.
         $this->base_url = substr($base_url, 0, -10);
-        $this->cloud_base_url = isset($_ENV['CONTENT_SYNC_CLOUD_BASE_URL'])
-        ? $_ENV['CONTENT_SYNC_CLOUD_BASE_URL']
+        $this->cloud_base_url = getenv('CONTENT_SYNC_CLOUD_BASE_URL')
+        ? getenv('CONTENT_SYNC_CLOUD_BASE_URL')
         : 'https://app.cms-content-sync.io';
-        $this->cloud_embed_url = isset($_ENV['CONTENT_SYNC_CLOUD_EMBED_URL'])
-        ? $_ENV['CONTENT_SYNC_CLOUD_EMBED_URL']
+        $this->cloud_embed_url = getenv('CONTENT_SYNC_CLOUD_EMBED_URL')
+        ? getenv('CONTENT_SYNC_CLOUD_EMBED_URL')
         : 'https://embed.cms-content-sync.io';
 
         $configuration = new Configuration();
@@ -230,6 +231,8 @@ class SyncCore implements ISyncCore
             }
             if (400 === $status) {
                 throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            } elseif (401 === $status) {
+                throw new UnauthorizedException('The Sync Core responded with 401 Unauthorized for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
             } elseif (403 === $status) {
                 throw new ForbiddenException('The Sync Core responded with 403 Forbidden for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
             } elseif (404 === $status) {
@@ -259,6 +262,8 @@ class SyncCore implements ISyncCore
     public function sendToSyncCore(Request $request, string $permissions)
     {
         $jwt = $this->createJwt($permissions);
+
+        var_dump($jwt);
 
         return $this->sendToSyncCoreWithJwt($request, $jwt);
     }
@@ -306,7 +311,6 @@ class SyncCore implements ISyncCore
         return 1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $site_id);
     }
 
-    // TODO: Drupal: Use. If a site isn't registered yet and it's augmented, show the register site page
     public function isSiteRegistered()
     {
         return $this->hasValidV2SiteId();
@@ -319,8 +323,8 @@ class SyncCore implements ISyncCore
 
     public function createJwt($permissions)
     {
-        $site_id = $this->application->getSiteId();
-        if (!$site_id) {
+        $uuid = $this->application->getSiteUuid();
+        if (!$uuid) {
             throw new InternalContentSyncError("This site is not registered yet; can't execute a signed request.");
         }
 
@@ -334,7 +338,7 @@ class SyncCore implements ISyncCore
                 ]
                 : [$permissions],
             'provider' => 'jwt-header',
-            'uuid' => $site_id,
+            'uuid' => $uuid,
         ];
 
         return JWT::encode($payload, $secret);
@@ -368,14 +372,10 @@ class SyncCore implements ISyncCore
     public function registerSiteWithJwt($options)
     {
         $dto = new RegisterSiteDto($options);
-        // TODO: Drupal: Use longer passwords on creation (64 characters if possible).
         // TODO: Drupal/Interface: When the password changes, we need to make a request to the Sync Core using
         //   the old password to set the new password. If the request fails, the password
         //   can't be changed.
         $dto->setSecret($this->getSiteSecret());
-        if (!$dto->valid()) {
-            throw new InternalContentSyncError('Invalid augment URL options.');
-        }
 
         $urls = new SiteRestUrls();
 
@@ -386,11 +386,15 @@ class SyncCore implements ISyncCore
 
         $dto->setRestUrls($urls);
 
+        if (!$dto->valid()) {
+            throw new InternalContentSyncError('Invalid URL options.');
+        }
+
         $request = $this->client->siteControllerRegisterRequest($dto);
         $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
 
         $siteId = $entity->getUuid();
-        $this->application->setSiteId($siteId);
+        $this->application->setSiteUuid($siteId);
         // Save the credentials to the Sync Core so it can connect to the site as well.
         $auth = $this->application->getAuthentication();
 
@@ -404,6 +408,8 @@ class SyncCore implements ISyncCore
         $authentication->setType($type);
         $authentication->setUsername($auth['username']);
         $authentication->setPassword($auth['password']);
+
+        var_dump($authentication);
 
         $request = $this->client->authenticationControllerCreateRequest($authentication);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
@@ -527,7 +533,6 @@ class SyncCore implements ISyncCore
         return $cache = new SyndicationService($this);
     }
 
-    // TODO: Drupal: Use. Provide a route like /content-sync/:augment-id?..args that forwards to this.
     public function getEmbedService()
     {
         static $cache = null;

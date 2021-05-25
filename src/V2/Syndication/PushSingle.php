@@ -193,11 +193,9 @@ class PushSingle implements IPushSingle
      *
      * @return array|object the definition to be pushed
      */
-    public function getEntityReferenceDto(string $type, string $bundle, string $uuid, string $id, string $version, array $pool_machine_names, string $language, $details = null)
+    public function getEntityReferenceDto(string $type, string $bundle, string $uuid, string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         $entityReference = new RemoteEntityDependency();
-
-        // TODO: Drupal: We need to add the label somewhere for taxonomy term matching (see PullOperation).
 
         $entityReference->setRemoteUuid($uuid);
         $entityReference->setRemoteUniqueId($id);
@@ -208,6 +206,10 @@ class PushSingle implements IPushSingle
         $entityReference->setEntityTypeVersion($version);
 
         $entityReference->setPoolMachineNames($pool_machine_names);
+
+        if ($name) {
+            $entityReference->setName($name);
+        }
 
         if ($details) {
             /**
@@ -250,6 +252,7 @@ class PushSingle implements IPushSingle
                                       string $version,
                                       array $pool_machine_names,
                                       string $language,
+                                      ?string $name,
                                       $details = null)
     {
         if ($embed) {
@@ -262,14 +265,14 @@ class PushSingle implements IPushSingle
                 foreach ($embeds as $definition) {
                     if ($definition->getEntityTypeNamespaceMachineName() === $type && $definition->getRemoteUuid() == $uuid && $definition->getRemoteUniqueId() == $id) {
                         return $this->getEntityReferenceDto(
-                $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
-            );
+                            $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
+                        );
                     }
                 }
             }
 
             $dto = $this->getEntityReferenceDto(
-          $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
+          $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
       );
 
             $embeds[] = $dto;
@@ -288,14 +291,14 @@ class PushSingle implements IPushSingle
             foreach ($direct_dependencies as $definition) {
                 if ($definition->getEntityTypeNamespaceMachineName() === $type && $definition->getEntityTypeMachineName() === $bundle && $definition->getRemoteUuid() == $uuid && $definition->getRemoteUniqueId() == $id) {
                     return $this->getEntityReferenceDto(
-              $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
+              $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
           );
                 }
             }
         }
 
         $dto = $this->getEntityReferenceDto(
-        $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $details
+        $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
     );
 
         $direct_dependencies[] = $dto;
@@ -337,6 +340,7 @@ class PushSingle implements IPushSingle
           $dependency->getEntityTypeVersion(),
           $dependency->getPoolMachineNames(),
           $dependency->getLanguage(),
+          $dependency->getName(),
           $dependency->getReferenceDetails()
       );
         }
@@ -367,6 +371,7 @@ class PushSingle implements IPushSingle
         $version,
         $embed_entity->getDto()->getPoolMachineNames(),
         $embed_entity->getDto()->getLanguage(),
+        $embed_entity->getDto()->getName(),
         $details
     );
     }
@@ -374,7 +379,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->addDirectDependency(
       $type,
@@ -384,7 +389,8 @@ class PushSingle implements IPushSingle
       false,
       $version,
       $pool_machine_names,
-        $language,
+      $language,
+      $name,
       $details
     );
     }
@@ -392,7 +398,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null)
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->getEntityReferenceDto(
       $type,
@@ -402,6 +408,7 @@ class PushSingle implements IPushSingle
       $version,
       $pool_machine_names,
       $language,
+      $name,
       $details
     );
     }
@@ -423,7 +430,7 @@ class PushSingle implements IPushSingle
         }
 
         $newProperty = new RemoteEntityProperty();
-        // TODO?: Drupal: Provide type if not "object" anywhere.
+        // TODO: Sync Core: Assign this automatically based on the entity type version.
         /**
          * @var RemoteEntityTypePropertyType $type
          */
@@ -455,7 +462,6 @@ class PushSingle implements IPushSingle
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 
-        // TODO: Drupal: Don't bother generating "has no preview" preview HTML. Just leave it empty in that case.
         $file = $this->core->sendFile(FileType::ENTITY_PREVIEW, 'preview.html', $value);
         $dto->setPreviewHtmlFileId($file->getId());
 

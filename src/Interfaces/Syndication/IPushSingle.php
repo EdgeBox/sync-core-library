@@ -44,9 +44,7 @@ interface IPushSingle
      *
      * @return array|object
      */
-    // TODO: Drupal: Verify that getting an object here is acceptable.
-    // TODO: Drupal: Provide multiple pools at once.
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null);
+    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null);
 
     /**
      * @param array|null $details
@@ -54,9 +52,7 @@ interface IPushSingle
      *
      * @return array|object
      */
-    // TODO: Drupal: Verify that getting an object here is acceptable.
-    // TODO: Drupal: Provide multiple pools at once.
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, $details = null);
+    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null);
 
     /**
      * @param IPushSingle $embed_entity
@@ -66,7 +62,6 @@ interface IPushSingle
      *
      * @return array|object
      */
-    // TODO: Drupal: Verify that getting an object here is acceptable.
     public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null);
 
     /**
@@ -111,8 +106,6 @@ interface IPushSingle
      * @throws SyncCoreException
      */
     public function execute();
-
-    // TODO: Drupal: Provide $name.
 
     /**
      * @param string $content

@@ -57,6 +57,11 @@ class ReportingService implements IReportingService
      */
     public function getLog($level = null)
     {
+        // We don't have any mechanism for warnings yet.
+        if (IReportingService::LOG_LEVEL_WARNING === $level) {
+            return [];
+        }
+
         $request = $this->core->getClient()->syndicationControllerGetErrorsRequest();
 
         /**
@@ -108,9 +113,7 @@ class ReportingService implements IReportingService
         $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return [
-            // TODO: Drupal: ".x" means don't compare minor versions.
             'version' => '2.x',
-            // TODO: Drupal: Different values provided here.
             'usage' => [
                 'site' => [
                     'monthly' => [

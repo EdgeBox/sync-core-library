@@ -7,7 +7,6 @@ use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Drupal: Use embed instead of the ConfigurePullDashboard.
 class PullDashboardEmbed extends Embed implements IEmbedFeature
 {
     /**

@@ -29,7 +29,6 @@ class SyndicationService implements ISyndicationService
      */
     public function configurePullDashboard()
     {
-        // TODO: Drupal: Handle NULL response; use EmbedService instead.
         return null;
     }
 
@@ -79,6 +78,7 @@ class SyndicationService implements ISyndicationService
         $bundle,
         $type
     );
+        // TODO: Sync Core: Provide filter by pool name and entity type machine names.
         $type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         do {
@@ -114,7 +114,11 @@ class SyndicationService implements ISyndicationService
     {
         // With our decentralized worker architecture we can't re-login so easily, so this
         // is not supported in Sync Core V2.
-        // TODO: Drupal: Tell Drupal that we don't support this so that the button doesn't show up.
         return true;
+    }
+
+    public function canRefreshAuthentication()
+    {
+        return false;
     }
 }

@@ -34,8 +34,6 @@ interface ISyndicationService
      *
      * @return IPushSingle
      */
-    // TODO: Drupal: Provide version ID.
-    // TODO: Drupal: Provide root language
     public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $root_language, string $entity_uuid, ?string $entity_id);
 
     /**
@@ -54,4 +52,11 @@ interface ISyndicationService
      * @throws SyncCoreException
      */
     public function refreshAuthentication();
+
+    /**
+     * Whether or not the `$this->refreshAuthentication()` method is supported.
+     *
+     * @return bool
+     */
+    public function canRefreshAuthentication();
 }

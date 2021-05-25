@@ -88,8 +88,6 @@ class TriggerPullSingle implements ITriggerPullSingle
      */
     public function getPullDashboardSearchResultItem()
     {
-        // TODO: Drupal: As this is replaced with the embed service, we don't implement this here.
-        //  Drupal must use embed instead in that case.
         return null;
     }
 }

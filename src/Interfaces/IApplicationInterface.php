@@ -71,10 +71,43 @@ interface IApplicationInterface
     public function getSiteId();
 
     /**
+     * After registering this site, save the default Sync Core URL to be assigned when creating
+     * a pool.
+     *
+     * @return void
+     */
+    public function setSyncCoreUrl(string $set);
+
+    /**
+     * Get the default Sync Core URL of the site.
+     *
+     * @return string|null
+     */
+    public function getSyncCoreUrl();
+
+    /**
      * After registering this site, save the ID of this site locally for later
      * access.
+     *
+     * @return void
      */
     public function setSiteId(string $set);
+
+    /**
+     * Set the globally unique identifier for this site. This identifier will be the same
+     * across all Content Sync services and Sync Cores.
+     *
+     * @return void
+     */
+    public function setSiteUuid(string $set);
+
+    /**
+     * Get the globally unique identifier for this site. This identifier will be the same
+     * across all Content Sync services and Sync Cores.
+     *
+     * @return string
+     */
+    public function getSiteUuid();
 
     /**
      * Human readable name for the site.
@@ -94,6 +127,8 @@ interface IApplicationInterface
     /**
      * A unique identifier for this site, but human readable. Will be removed in
      * a future release and is there for legacy reasons only.
+     *
+     * @return void
      */
     public function setSiteMachineName(string $set);
 
@@ -120,8 +155,6 @@ interface IApplicationInterface
      */
     public function getRestUrl(string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, $entity_uuid = null, $manually = null, $as_dependency = null);
 
-    // TODO: Drupal: Implement.
-
     /**
      * Provide the path/query that the site wants to be called for the individual actions.
      * So this must not include the base URL of the site. Actions are one of:
@@ -131,9 +164,7 @@ interface IApplicationInterface
      *
      * @return string
      */
-    public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action, string $shared_entity_id);
-
-    // TODO: Drupal: Implement.
+    public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action, string $shared_entity_id = null);
 
     /**
      * @return string
@@ -141,12 +172,12 @@ interface IApplicationInterface
     public function getEmbedBaseUrl(string $feature);
 
     /**
-     * @return array [
-     *               'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |
-     *               {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
-     *               'username' => string,
-     *               'password' => string,
-     *               ]
+     * @return string[] [
+     *                 'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |
+     *                 {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
+     *                 'username' => string,
+     *                 'password' => string,
+     *                 ]
      */
     public function getAuthentication();
 
@@ -189,7 +220,7 @@ interface IApplicationInterface
      * Provide any additional options to the request, e.g. a timeout or proxy
      * settings.
      *
-     * @return array
+     * @return array[]
      */
     public function getHttpOptions();
 }
