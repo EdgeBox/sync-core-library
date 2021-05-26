@@ -53,17 +53,15 @@ class Helper
      * serialized reference field, forcing the Sync Core to trigger syndications
      * even if only a child entity was changed.
      *
-     * @param array $data
+     * @param array|object $data
      *                    The serialized entity
      *
      * @return string a unique hash based on the provided array
      */
-    public static function getSerializedEntityHash(array $data)
+    public static function getSerializedEntityHash($data)
     {
-        // A new preview doesn't require the entity to be syndicated again as the
-        // preview is only every used by the Sync Core itself.
-        if (isset($data[V2Constants::PROPERTY_NAME_PREVIEW])) {
-            unset($data[V2Constants::PROPERTY_NAME_PREVIEW]);
+        if(!is_array($data)) {
+            $data = (array)$data;
         }
 
         // Ensure the order of indices doesn't matter.

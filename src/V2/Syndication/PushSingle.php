@@ -418,6 +418,10 @@ class PushSingle implements IPushSingle
      */
     public function setProperty(string $name, $value, $language = null)
     {
+        // Will lead to a validation error if sent to the backend.
+        if($value===NULL) {
+            return;
+        }
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 
         $properties = $dto->getProperties();
