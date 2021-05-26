@@ -75,6 +75,16 @@ class Batch implements IBatch
     );
     }
 
+    public function prependOperation(IBatchOperation $operation)
+    {
+        $this->operations = array_merge(
+            [$operation],
+            $this->operations
+          );
+
+        return $this;
+    }
+
     /**
      * @return BatchOperation[]
      */
