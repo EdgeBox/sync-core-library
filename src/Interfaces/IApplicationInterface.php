@@ -173,11 +173,11 @@ interface IApplicationInterface
 
     /**
      * @return string[] [
-     *                 'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |
-     *                 {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
-     *                 'username' => string,
-     *                 'password' => string,
-     *                 ]
+     *                  'type' => {@see IApplicationInterface::AUTHENTICATION_TYPE_BASIC_AUTH} |
+     *                  {@see IApplicationInterface::AUTHENTICATION_TYPE_COOKIE},
+     *                  'username' => string,
+     *                  'password' => string,
+     *                  ]
      */
     public function getAuthentication();
 

@@ -77,6 +77,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'secret' => 'string',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
     ];
 
     /**
@@ -102,6 +103,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => null,
         'environmentType' => null,
         'secret' => null,
+        'restUrls' => null,
     ];
 
     /**
@@ -146,6 +148,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'secret' => 'secret',
+        'restUrls' => 'restUrls',
     ];
 
     /**
@@ -169,6 +172,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'secret' => 'setSecret',
+        'restUrls' => 'setRestUrls',
     ];
 
     /**
@@ -192,6 +196,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'secret' => 'getSecret',
+        'restUrls' => 'getRestUrls',
     ];
 
     /**
@@ -265,6 +270,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['environmentType'] = $data['environmentType'] ?? null;
         $this->container['secret'] = $data['secret'] ?? null;
+        $this->container['restUrls'] = $data['restUrls'] ?? null;
     }
 
     /**
@@ -299,6 +305,9 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['environmentType']) {
             $invalidProperties[] = "'environmentType' can't be null";
+        }
+        if (null === $this->container['restUrls']) {
+            $invalidProperties[] = "'restUrls' can't be null";
         }
 
         return $invalidProperties;
@@ -671,6 +680,30 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSecret($secret)
     {
         $this->container['secret'] = $secret;
+
+        return $this;
+    }
+
+    /**
+     * Gets restUrls.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     */
+    public function getRestUrls()
+    {
+        return $this->container['restUrls'];
+    }
+
+    /**
+     * Sets restUrls.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     *
+     * @return self
+     */
+    public function setRestUrls($restUrls)
+    {
+        $this->container['restUrls'] = $restUrls;
 
         return $this;
     }

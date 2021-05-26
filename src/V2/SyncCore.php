@@ -79,7 +79,7 @@ class SyncCore implements ISyncCore
         }
 
         if (getenv('SYNC_CORE_DEFAULT_TIMEOUT')) {
-            $this->default_timeout = (int)getenv('SYNC_CORE_DEFAULT_TIMEOUT');
+            $this->default_timeout = (int) getenv('SYNC_CORE_DEFAULT_TIMEOUT');
         }
 
         $this->application = $application;
@@ -263,8 +263,6 @@ class SyncCore implements ISyncCore
     {
         $jwt = $this->createJwt($permissions);
 
-        var_dump($jwt);
-
         return $this->sendToSyncCoreWithJwt($request, $jwt);
     }
 
@@ -358,10 +356,10 @@ class SyncCore implements ISyncCore
     protected function getRelativeReference(string $action)
     {
         $relative = $this->application->getRelativeReferenceForRestCall(
-          self::PLACEHOLDER_FLOW_MACHINE_NAME,
-          $action,
-          self::PLACEHOLDER_ENTITY_SHARED_ID
-      );
+        self::PLACEHOLDER_FLOW_MACHINE_NAME,
+        $action,
+        self::PLACEHOLDER_ENTITY_SHARED_ID
+    );
         if ('/' !== $relative[0]) {
             throw new InternalContentSyncError('Relative reference must start with a slash /.');
         }
@@ -408,8 +406,6 @@ class SyncCore implements ISyncCore
         $authentication->setType($type);
         $authentication->setUsername($auth['username']);
         $authentication->setPassword($auth['password']);
-
-        var_dump($authentication);
 
         $request = $this->client->authenticationControllerCreateRequest($authentication);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
