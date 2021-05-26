@@ -54,14 +54,14 @@ class Helper
      * even if only a child entity was changed.
      *
      * @param array|object $data
-     *                    The serialized entity
+     *                           The serialized entity
      *
      * @return string a unique hash based on the provided array
      */
     public static function getSerializedEntityHash($data)
     {
-        if(!is_array($data)) {
-            $data = (array)$data;
+        if (!is_array($data)) {
+            $data = (array) $data;
         }
 
         // Ensure the order of indices doesn't matter.

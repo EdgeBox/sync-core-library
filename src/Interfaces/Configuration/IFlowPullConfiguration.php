@@ -19,16 +19,6 @@ interface IFlowPullConfiguration extends IBatchOperation
     /**
      * @return $this
      */
-    public function manually(bool $set);
-
-    /**
-     * @return $this
-     */
-    public function asDependency(bool $set);
-
-    /**
-     * @return $this
-     */
     public function pullDeletions(bool $set);
 
     /**

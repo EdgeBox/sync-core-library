@@ -50,10 +50,12 @@ class SyndicationService implements ISyndicationService
 
     /**
      * {@inheritdoc}
+     *
+     * @return PullOperation
      */
-    public function handlePull(string $flow_id, string $type, string $bundle, array $data)
+    public function handlePull(string $flow_id, ?string $type, ?string $bundle, array $data)
     {
-        return new PullOperation($this->core, $type, $bundle, $data);
+        return new PullOperation($this->core, $data);
     }
 
     /**

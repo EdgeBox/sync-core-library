@@ -21,16 +21,6 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var string
-     */
-    protected $bundle;
-
-    /**
      * @var CreateRemoteEntityRevisionDto
      */
     protected $dto;
@@ -43,12 +33,12 @@ class PullOperation implements IPullOperation
     /**
      * PushSingle constructor.
      */
-    public function __construct(SyncCore $core, string $type, string $bundle, array $body)
+    public function __construct(SyncCore $core, array $body)
     {
+        // Turn nested arrays into objects.
+        $body = json_decode(json_encode($body));
         $this->core = $core;
-        $this->type = $type;
-        $this->bundle = $bundle;
-        $this->dto = new CreateRemoteEntityRevisionDto($body);
+        $this->dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
         $this->translations = [];
 
         $translations = $this->dto->getTranslations();
@@ -58,6 +48,35 @@ class PullOperation implements IPullOperation
                 $this->translations[$language] = $translation_dto;
             }
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPoolIds()
+    {
+        return $this->dto->getPoolMachineNames();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityTypeNamespaceMachineName()
+    {
+        return $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityTypeMachineName()
+    {
+        return $this->dto->getEntityTypeByMachineName()->getMachineName();
+    }
+
+    public function getEntityTypeVersionId()
+    {
+        return $this->dto->getEntityTypeByMachineName()->getVersionId();
     }
 
     /**
@@ -100,7 +119,8 @@ class PullOperation implements IPullOperation
         $properties = $language ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
         foreach ($properties as $property) {
             if ($property->getName() === $name) {
-                return $property->getValue();
+                // Turn objects into arrays.
+                return json_decode(json_encode($property->getValue()), true);
             }
         }
 
@@ -284,6 +304,10 @@ class PullOperation implements IPullOperation
     public function getResponseBody(?string $entity_deep_link)
     {
         $data = $this->dto->jsonSerialize();
+
+        // Turn objects into arrays
+        $data = json_decode(json_encode($data), true);
+
         $data['viewUrl'] = $entity_deep_link;
 
         return $data;

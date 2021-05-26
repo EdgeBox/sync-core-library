@@ -106,7 +106,7 @@ class SyncCore implements ISyncCore
 
     public function getBaseUrl()
     {
-        return $this->base_url;
+        return $this->base_url.'/sync-core';
     }
 
     public function getClient()
@@ -519,6 +519,9 @@ class SyncCore implements ISyncCore
         return $cache = new ReportingService($this);
     }
 
+    /**
+     * @return SyndicationService
+     */
     public function getSyndicationService()
     {
         static $cache = null;
@@ -548,7 +551,6 @@ class SyncCore implements ISyncCore
     public function registerSite($force = false)
     {
         // TODO: Allow if a special multi-site-register JWT is provided.
-        throw new InternalContentSyncError("Can't register sites directly. Use augmentation instead.");
     }
 
     public function setSiteName(string $set)

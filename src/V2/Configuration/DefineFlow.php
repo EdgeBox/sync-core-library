@@ -89,9 +89,11 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $typeReference->setNamespaceMachineName($type->getNamespaceMachineName());
         $typeReference->setMachineName($type->getMachineName());
         $typeReference->setVersionId($type->getVersionId());
+
         $allPools = $this->dto->getSitePullsByMachineName();
 
-        foreach ($allPools as &$config) {
+        // TODO: SyncCore: Can't use optimization below as the config will be changed after being returned. Should optimize in the backend.
+        /*foreach ($allPools as &$config) {
             if ($config->getPoolMachineName() === $poolMachineName) {
                 $allTypes = $config->getEntityTypesByMachineName();
                 $allTypes[] = $typeReference;
@@ -99,7 +101,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
 
                 return $config;
             }
-        }
+        }*/
 
         $config = new NewFlowSyndication();
         /**
@@ -129,7 +131,9 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $typeReference->setVersionId($type->getVersionId());
 
         $allPools = $this->dto->getSitePushesByMachineName();
-        foreach ($allPools as &$config) {
+
+        // TODO: SyncCore: Can't use optimization below as the config will be changed after being returned. Should optimize in the backend.
+        /*foreach ($allPools as &$config) {
             if ($config->getPoolMachineName() === $poolMachineName) {
                 $allTypes = $config->getEntityTypesByMachineName();
                 $allTypes[] = $typeReference;
@@ -137,7 +141,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
 
                 return $config;
             }
-        }
+        }*/
 
         $config = new NewFlowSyndication();
         /**

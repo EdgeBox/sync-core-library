@@ -9,6 +9,7 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\IBatch;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\ModelInterface;
+use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use JsonSerializable;
 
 class BatchOperation extends SerializableWithSyncCoreReference implements IBatchOperation
@@ -84,8 +85,8 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         return serialize([
             'syncCore' => $this->serializeSyncCore(),
             'requestMethod' => $this->requestMethod,
-            'dtoClass' => get_class($this->dto),
-            'dtoSerialized' => $this->dto->jsonSerialize(),
+            'dtoClass' => $this->dto ? get_class($this->dto) : null,
+            'dtoSerialized' => $this->dto ? $this->dto->jsonSerialize() : null,
         ]);
     }
 
@@ -100,6 +101,10 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
 
         $this->requestMethod = $data['requestMethod'];
 
-        $this->dto = new $data['dtoClass']($data['dtoSerialized']);
+        if ($data['dtoClass'] && $data['dtoSerialized']) {
+            $this->dto = ObjectSerializer::deserialize($data['dtoSerialized'], $data['dtoClass'], []);
+        } else {
+            $this->dto = null;
+        }
     }
 }

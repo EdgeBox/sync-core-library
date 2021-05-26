@@ -24,9 +24,10 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     public const FILE_PROPERTY_NAME = '__file__';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function addToBatch($batch) {
+    public function addToBatch($batch)
+    {
         /**
          * @var Batch $batch
          */
