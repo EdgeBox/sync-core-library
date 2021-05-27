@@ -299,7 +299,7 @@ class SyncCore implements ISyncCore
 
     protected function hasValidV2SiteId()
     {
-        $site_id = $this->application->getSiteId();
+        $site_id = $this->application->getSiteUuid();
         if (!$site_id) {
             return false;
         }
@@ -437,20 +437,23 @@ class SyncCore implements ISyncCore
         return [];
     }
 
-    public function getSiteName($id = null)
+    public function getSiteName($uuid = null)
     {
-        if (!$id) {
+        if (!$uuid) {
             if (!$this->hasValidV2SiteId()) {
                 throw new InternalContentSyncError("Site is not registered yet. Can't provide a name.");
             }
 
-            $id = $this->application->getSiteId();
+            $uuid = $this->application->getSiteUuid();
         }
 
-        $request = $this->client->siteControllerItemByUuidRequest($id);
-        $response = $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $request = $this->client->siteControllerItemByUuidRequest($uuid);
+        /**
+         * @var SiteEntity $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
-        return $response['name'];
+        return $response->getName();
     }
 
     public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version)
