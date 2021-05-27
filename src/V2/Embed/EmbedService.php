@@ -43,4 +43,12 @@ class EmbedService implements IEmbedService
     {
         return new PullDashboardEmbed($this->core, $params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function entityStatus(array $params)
+    {
+        return new EntityStatus($this->core, $params);
+    }
 }
