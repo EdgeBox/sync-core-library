@@ -62,7 +62,7 @@ abstract class Embed
 <script>
 (function() {
   iFrameResize({
-    log: true,
+    //log: true,
     onInit: function(iframe) {
       iframe.iFrameResizer.sendMessage({
         type: "config",
