@@ -151,7 +151,7 @@ class PushSingle implements IPushSingle
      *
      * @param PushSingle $embed_entity
      */
-    public function embed(string $type, string $bundle, string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null)
+    public function embed(string $type, string $bundle, ?string $uuid, ?string $id, string $version, IPushSingle $embed_entity, $details = null)
     {
         $data = $this->getEmbedEntityDefinition($type, $bundle, $uuid, $id, Entity::ENTITY_REFERENCE_EMBED, $version, $embed_entity->getPoolId(), $details);
 
@@ -304,7 +304,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addDependency(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
+    public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,
@@ -322,7 +322,7 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    public function addReference(string $type, string $bundle, string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
+    public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->embedEntityDefinition(
       $type,

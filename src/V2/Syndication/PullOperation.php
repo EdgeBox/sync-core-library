@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullOperation;
@@ -21,9 +22,14 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var CreateRemoteEntityRevisionDto
+     * @var CreateRemoteEntityRevisionDto|RemoteEntityEmbed
      */
     protected $dto;
+
+    /**
+     * @var PullOperation|null
+     */
+    protected $parentPullOperation;
 
     /**
      * @var CreateRemoteEntityRevisionDto[]
@@ -32,20 +38,31 @@ class PullOperation implements IPullOperation
 
     /**
      * PushSingle constructor.
+     * 
+     * @param SyncCore $core
+     * @param RemoteEntityEmbed|array $body
+     * @param PullOperation|null $parentPullOperation
      */
-    public function __construct(SyncCore $core, array $body)
+    public function __construct(SyncCore $core, $body, ?PullOperation $parentPullOperation=NULL)
     {
-        // Turn nested arrays into objects.
-        $body = json_decode(json_encode($body));
         $this->core = $core;
-        $this->dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
         $this->translations = [];
 
-        $translations = $this->dto->getTranslations();
-        if ($translations) {
-            foreach ($translations as $translation_dto) {
-                $language = $translation_dto->getLanguage();
-                $this->translations[$language] = $translation_dto;
+        if($body instanceof RemoteEntityEmbed) {
+            $this->dto = $body;
+            $this->parentPullOperation = $parentPullOperation;
+        }
+        else {
+            // Turn nested arrays into objects.
+            $body = json_decode(json_encode($body));
+            $this->dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
+
+            $translations = $this->dto->getTranslations();
+            if ($translations) {
+                foreach ($translations as $translation_dto) {
+                    $language = $translation_dto->getLanguage();
+                    $this->translations[$language] = $translation_dto;
+                }
             }
         }
     }
@@ -100,6 +117,9 @@ class PullOperation implements IPullOperation
      */
     public function getSourceUrl()
     {
+        if($this->parentPullOperation) {
+            return $this->parentPullOperation->getSourceUrl();
+        }
         return $this->dto->getViewUrl();
     }
 
@@ -132,6 +152,12 @@ class PullOperation implements IPullOperation
      */
     public function loadReference(array $data)
     {
+        if($this->parentPullOperation) {
+            return $this->parentPullOperation->loadReference($data);
+        }
+
+        // Need to turn arrays into objects.
+        $data = json_decode(json_encode($data));
         /**
          * @var RemoteEntityDependency $referenceDto
          */
@@ -147,10 +173,15 @@ class PullOperation implements IPullOperation
           $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
           $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
                 $embed = $candidate;
+                break;
             }
         }
 
-        return new class($this->core, $referenceDto, $embed) implements IEntityReference {
+        /*if(!$embed) {
+            throw new InternalContentSyncError("Embedded entity not found: ".$referenceDto->getEntityTypeNamespaceMachineName().".".$referenceDto->getEntityTypeMachineName()." ".$candidate->getRemoteUuid()." / ".$referenceDto->getRemoteUniqueId()." (".$referenceDto->getLanguage().")");
+        }*/
+
+        return new class($this->core, $referenceDto, $this, $embed) implements IEntityReference {
             /**
              * @var SyncCore
              */
@@ -160,6 +191,10 @@ class PullOperation implements IPullOperation
              */
             protected $dto;
             /**
+             * @var PullOperation
+             */
+            protected $pullOperation;
+            /**
              * @var RemoteEntityEmbed|null
              */
             protected $embed;
@@ -167,10 +202,11 @@ class PullOperation implements IPullOperation
             /**
              * constructor.
              */
-            public function __construct(SyncCore $core, RemoteEntityDependency $dto, ?RemoteEntityEmbed $embed = null)
+            public function __construct(SyncCore $core, RemoteEntityDependency $dto, PullOperation $pullOperation, ?RemoteEntityEmbed $embed = null)
             {
                 $this->core = $core;
                 $this->dto = $dto;
+                $this->pullOperation = $pullOperation;
                 $this->embed = $embed;
             }
 
@@ -183,6 +219,10 @@ class PullOperation implements IPullOperation
                  * @var array|null $details
                  */
                 $details = $this->dto->getReferenceDetails();
+
+                if(!$details) {
+                    return [];
+                }
 
                 return $details;
             }
@@ -257,10 +297,9 @@ class PullOperation implements IPullOperation
             public function getEmbeddedEntity()
             {
                 return new PullOperation(
-            $this->core,
-            $this->getType(),
-            $this->getBundle(),
-            $this->embed->jsonSerialize());
+                $this->core,
+                $this->embed,
+                $this->pullOperation);
             }
         };
     }

@@ -447,7 +447,15 @@ class SyncCore implements ISyncCore
             $uuid = $this->application->getSiteUuid();
         }
 
-        $request = $this->client->siteControllerItemByUuidRequest($uuid);
+        // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
+        // is a UUID and if it's not, the site must be re-registered first.
+        if(1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
+            $request = $this->client->siteControllerItemByUuidRequest($uuid);
+        }
+        else {
+            $request = $this->client->siteControllerItemRequest($uuid);
+        }
+
         /**
          * @var SiteEntity $response
          */
