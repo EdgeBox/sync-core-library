@@ -53,9 +53,9 @@ class SyndicationService implements ISyndicationService
      *
      * @return PullOperation
      */
-    public function handlePull(string $flow_id, ?string $type, ?string $bundle, array $data)
+    public function handlePull(string $flow_id, ?string $type, ?string $bundle, array $data, bool $delete)
     {
-        return new PullOperation($this->core, $data);
+        return new PullOperation($this->core, $data, $delete);
     }
 
     /**

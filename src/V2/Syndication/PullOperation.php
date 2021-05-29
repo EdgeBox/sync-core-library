@@ -2,12 +2,12 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
-use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullOperation;
 use EdgeBox\SyncCore\V2\Configuration\DefineEntityType;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
@@ -22,7 +22,7 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var CreateRemoteEntityRevisionDto|RemoteEntityEmbed
+     * @var DeleteRemoteEntityRevisionDto|CreateRemoteEntityRevisionDto|RemoteEntityEmbed
      */
     protected $dto;
 
@@ -43,12 +43,17 @@ class PullOperation implements IPullOperation
      * @param RemoteEntityEmbed|array $body
      * @param PullOperation|null $parentPullOperation
      */
-    public function __construct(SyncCore $core, $body, ?PullOperation $parentPullOperation=NULL)
+    public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation=NULL)
     {
         $this->core = $core;
         $this->translations = [];
 
-        if($body instanceof RemoteEntityEmbed) {
+        if($delete) {
+            // Turn nested arrays into objects.
+            $body = json_decode(json_encode($body));
+            $this->dto = ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
+        }
+        elseif($body instanceof RemoteEntityEmbed) {
             $this->dto = $body;
             $this->parentPullOperation = $parentPullOperation;
         }
@@ -300,6 +305,7 @@ class PullOperation implements IPullOperation
                 return new PullOperation(
                 $this->core,
                 $this->embed,
+                FALSE,
                 $this->pullOperation);
             }
         };
@@ -343,6 +349,10 @@ class PullOperation implements IPullOperation
      */
     public function getResponseBody(?string $entity_deep_link)
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return [];
+        }
+
         $data = $this->dto->jsonSerialize();
 
         // Turn objects into arrays

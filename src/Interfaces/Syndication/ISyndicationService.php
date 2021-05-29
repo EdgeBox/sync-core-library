@@ -14,7 +14,7 @@ interface ISyndicationService
     /**
      * @return ITriggerPullSingle
      */
-    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id);
+    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id, bool $delete);
 
     /**
      * @return IPullAll

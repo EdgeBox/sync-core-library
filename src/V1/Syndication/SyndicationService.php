@@ -40,7 +40,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
+    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id, bool $delete)
     {
         return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
     }
