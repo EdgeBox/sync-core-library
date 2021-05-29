@@ -498,6 +498,7 @@ class PushSingle implements IPushSingle
             $entityType = $this->dto->getEntityTypeByMachineName();
 
             $dto = new DeleteRemoteEntityRevisionDto();
+            $dto->setFlowMachineName($this->dto->getFlowMachineName());
             $dto->setEntityTypeNamespaceMachineName($entityType->getNamespaceMachineName());
             $dto->setEntityTypeMachineName($entityType->getMachineName());
             $dto->setLanguage($this->dto->getLanguage());
