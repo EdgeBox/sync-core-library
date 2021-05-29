@@ -40,7 +40,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id, bool $delete)
+    public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
     {
         return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
     }
@@ -56,7 +56,7 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function handlePull(string $flow_id, string $type, string $bundle, array $data)
+    public function handlePull(string $flow_id, string $type, string $bundle, array $data, bool $delete)
     {
         return new PullOperation($this->core, $type, $bundle, $data);
     }
