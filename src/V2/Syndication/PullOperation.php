@@ -224,7 +224,8 @@ class PullOperation implements IPullOperation
                     return [];
                 }
 
-                return $details;
+                // Turn objects into arrays.
+                return json_decode(json_encode($details), TRUE);
             }
 
             /**
