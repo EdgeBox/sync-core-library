@@ -41,8 +41,6 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     {
         if ($set) {
             $this->setMode(FlowSyndicationMode::MANUALLY);
-        } else {
-            $this->setMode(FlowSyndicationMode::ALL);
         }
 
         return $this;
@@ -55,8 +53,6 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     {
         if ($set) {
             $this->setMode(FlowSyndicationMode::DEPENDENT);
-        } else {
-            $this->setMode(FlowSyndicationMode::ALL);
         }
 
         return $this;
