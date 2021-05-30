@@ -77,6 +77,9 @@ class PullOperation implements IPullOperation
      */
     public function getPoolIds()
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return [];
+        }
         return $this->dto->getPoolMachineNames();
     }
 
@@ -85,6 +88,9 @@ class PullOperation implements IPullOperation
      */
     public function getEntityTypeNamespaceMachineName()
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return $this->dto->getEntityTypeNamespaceMachineName();
+        }
         return $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName();
     }
 
@@ -93,11 +99,17 @@ class PullOperation implements IPullOperation
      */
     public function getEntityTypeMachineName()
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return $this->dto->getEntityTypeMachineName();
+        }
         return $this->dto->getEntityTypeByMachineName()->getMachineName();
     }
 
     public function getEntityTypeVersionId()
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return '';
+        }
         return $this->dto->getEntityTypeByMachineName()->getVersionId();
     }
 
@@ -122,6 +134,9 @@ class PullOperation implements IPullOperation
      */
     public function getSourceUrl()
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return NULL;
+        }
         if($this->parentPullOperation) {
             return $this->parentPullOperation->getSourceUrl();
         }
@@ -141,6 +156,9 @@ class PullOperation implements IPullOperation
      */
     public function getProperty(string $name, $language = null)
     {
+        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return NULL;
+        }
         $properties = $language ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
         foreach ($properties as $property) {
             if ($property->getName() === $name) {
@@ -358,7 +376,9 @@ class PullOperation implements IPullOperation
         // Turn objects into arrays
         $data = json_decode(json_encode($data), true);
 
-        $data['viewUrl'] = $entity_deep_link;
+        if($entity_deep_link) {
+            $data['viewUrl'] = $entity_deep_link;
+        }
 
         return $data;
     }
