@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * PullDashboardPullEntityType.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * PullDashboardPullEntityType Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'PullDashboardPullEntityType';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'namespaceMachineName' => 'string',
+        'machineName' => 'string',
+        'name' => 'string',
     ];
 
     /**
@@ -72,7 +74,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'namespaceMachineName' => null,
+        'machineName' => null,
+        'name' => null,
     ];
 
     /**
@@ -102,7 +106,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'namespaceMachineName' => 'namespaceMachineName',
+        'machineName' => 'machineName',
+        'name' => 'name',
     ];
 
     /**
@@ -111,7 +117,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'namespaceMachineName' => 'setNamespaceMachineName',
+        'machineName' => 'setMachineName',
+        'name' => 'setName',
     ];
 
     /**
@@ -120,7 +128,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'namespaceMachineName' => 'getNamespaceMachineName',
+        'machineName' => 'getMachineName',
+        'name' => 'getName',
     ];
 
     /**
@@ -179,7 +189,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['namespaceMachineName'] = $data['namespaceMachineName'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
     }
 
     /**
@@ -191,8 +203,14 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['namespaceMachineName']) {
+            $invalidProperties[] = "'namespaceMachineName' can't be null";
+        }
+        if (null === $this->container['machineName']) {
+            $invalidProperties[] = "'machineName' can't be null";
+        }
+        if (null === $this->container['name']) {
+            $invalidProperties[] = "'name' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +228,73 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets namespaceMachineName.
      *
-     * @return bool
+     * @return string
      */
-    public function getSuccess()
+    public function getNamespaceMachineName()
     {
-        return $this->container['success'];
+        return $this->container['namespaceMachineName'];
     }
 
     /**
-     * Sets success.
+     * Sets namespaceMachineName.
      *
-     * @param bool $success success
+     * @param string $namespaceMachineName namespaceMachineName
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setNamespaceMachineName($namespaceMachineName)
     {
-        $this->container['success'] = $success;
+        $this->container['namespaceMachineName'] = $namespaceMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets machineName.
+     *
+     * @return string
+     */
+    public function getMachineName()
+    {
+        return $this->container['machineName'];
+    }
+
+    /**
+     * Sets machineName.
+     *
+     * @param string $machineName machineName
+     *
+     * @return self
+     */
+    public function setMachineName($machineName)
+    {
+        $this->container['machineName'] = $machineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
+
+    /**
+     * Sets name.
+     *
+     * @param string $name name
+     *
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
         return $this;
     }

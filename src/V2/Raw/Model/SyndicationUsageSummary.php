@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * SyndicationUsageSummary.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * SyndicationUsageSummary Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'SyndicationUsageSummary';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'startedAt' => 'float',
+        'finishedAt' => 'float',
+        'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
+        'sourceSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
+        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
+        'targetSummary' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]',
     ];
 
     /**
@@ -72,7 +77,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'startedAt' => null,
+        'finishedAt' => null,
+        'thisSite' => null,
+        'sourceSite' => null,
+        'targetSite' => null,
+        'targetSummary' => null,
     ];
 
     /**
@@ -102,7 +112,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'startedAt' => 'startedAt',
+        'finishedAt' => 'finishedAt',
+        'thisSite' => 'thisSite',
+        'sourceSite' => 'sourceSite',
+        'targetSite' => 'targetSite',
+        'targetSummary' => 'targetSummary',
     ];
 
     /**
@@ -111,7 +126,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'startedAt' => 'setStartedAt',
+        'finishedAt' => 'setFinishedAt',
+        'thisSite' => 'setThisSite',
+        'sourceSite' => 'setSourceSite',
+        'targetSite' => 'setTargetSite',
+        'targetSummary' => 'setTargetSummary',
     ];
 
     /**
@@ -120,7 +140,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'startedAt' => 'getStartedAt',
+        'finishedAt' => 'getFinishedAt',
+        'thisSite' => 'getThisSite',
+        'sourceSite' => 'getSourceSite',
+        'targetSite' => 'getTargetSite',
+        'targetSummary' => 'getTargetSummary',
     ];
 
     /**
@@ -179,7 +204,12 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['startedAt'] = $data['startedAt'] ?? null;
+        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
+        $this->container['thisSite'] = $data['thisSite'] ?? null;
+        $this->container['sourceSite'] = $data['sourceSite'] ?? null;
+        $this->container['targetSite'] = $data['targetSite'] ?? null;
+        $this->container['targetSummary'] = $data['targetSummary'] ?? null;
     }
 
     /**
@@ -191,8 +221,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['startedAt']) {
+            $invalidProperties[] = "'startedAt' can't be null";
+        }
+        if (null === $this->container['thisSite']) {
+            $invalidProperties[] = "'thisSite' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +243,145 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets startedAt.
      *
-     * @return bool
+     * @return float
      */
-    public function getSuccess()
+    public function getStartedAt()
     {
-        return $this->container['success'];
+        return $this->container['startedAt'];
     }
 
     /**
-     * Sets success.
+     * Sets startedAt.
      *
-     * @param bool $success success
+     * @param float $startedAt startedAt
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setStartedAt($startedAt)
     {
-        $this->container['success'] = $success;
+        $this->container['startedAt'] = $startedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets finishedAt.
+     *
+     * @return float|null
+     */
+    public function getFinishedAt()
+    {
+        return $this->container['finishedAt'];
+    }
+
+    /**
+     * Sets finishedAt.
+     *
+     * @param float|null $finishedAt finishedAt
+     *
+     * @return self
+     */
+    public function setFinishedAt($finishedAt)
+    {
+        $this->container['finishedAt'] = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets thisSite.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl
+     */
+    public function getThisSite()
+    {
+        return $this->container['thisSite'];
+    }
+
+    /**
+     * Sets thisSite.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl $thisSite thisSite
+     *
+     * @return self
+     */
+    public function setThisSite($thisSite)
+    {
+        $this->container['thisSite'] = $thisSite;
+
+        return $this;
+    }
+
+    /**
+     * Gets sourceSite.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null
+     */
+    public function getSourceSite()
+    {
+        return $this->container['sourceSite'];
+    }
+
+    /**
+     * Sets sourceSite.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null $sourceSite sourceSite
+     *
+     * @return self
+     */
+    public function setSourceSite($sourceSite)
+    {
+        $this->container['sourceSite'] = $sourceSite;
+
+        return $this;
+    }
+
+    /**
+     * Gets targetSite.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null
+     */
+    public function getTargetSite()
+    {
+        return $this->container['targetSite'];
+    }
+
+    /**
+     * Sets targetSite.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null $targetSite targetSite
+     *
+     * @return self
+     */
+    public function setTargetSite($targetSite)
+    {
+        $this->container['targetSite'] = $targetSite;
+
+        return $this;
+    }
+
+    /**
+     * Gets targetSummary.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]|null
+     */
+    public function getTargetSummary()
+    {
+        return $this->container['targetSummary'];
+    }
+
+    /**
+     * Sets targetSummary.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]|null $targetSummary targetSummary
+     *
+     * @return self
+     */
+    public function setTargetSummary($targetSummary)
+    {
+        $this->container['targetSummary'] = $targetSummary;
 
         return $this;
     }

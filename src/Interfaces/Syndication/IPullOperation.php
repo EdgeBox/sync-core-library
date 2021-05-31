@@ -47,7 +47,7 @@ interface IPullOperation
      * But some entities like menu items in Drupal are just embedded into the content without being
      * directly referenced by it. These entities must be pulled after the main entity.
      * So put a while loop around this to and when it's NULL, cancel.
-     * 
+     *
      * @return IPullOperation|null
      */
     public function getNextUnprocessedEmbed();

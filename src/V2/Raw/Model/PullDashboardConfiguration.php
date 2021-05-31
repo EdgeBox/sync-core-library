@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * PullDashboardConfiguration.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * PullDashboardConfiguration Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'PullDashboardConfiguration';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'flows' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionFlow[]',
     ];
 
     /**
@@ -72,7 +72,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'flows' => null,
     ];
 
     /**
@@ -102,7 +102,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'flows' => 'flows',
     ];
 
     /**
@@ -111,7 +111,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'flows' => 'setFlows',
     ];
 
     /**
@@ -120,7 +120,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'flows' => 'getFlows',
     ];
 
     /**
@@ -179,7 +179,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['flows'] = $data['flows'] ?? null;
     }
 
     /**
@@ -191,8 +191,8 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['flows']) {
+            $invalidProperties[] = "'flows' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +210,25 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets flows.
      *
-     * @return bool
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionFlow[]
      */
-    public function getSuccess()
+    public function getFlows()
     {
-        return $this->container['success'];
+        return $this->container['flows'];
     }
 
     /**
-     * Sets success.
+     * Sets flows.
      *
-     * @param bool $success success
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionFlow[] $flows flows
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setFlows($flows)
     {
-        $this->container['success'] = $success;
+        $this->container['flows'] = $flows;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * SyndicationUsageSummaryListResponse.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * SyndicationUsageSummaryListResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationUsageSummaryListResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'SyndicationUsageSummaryListResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'page' => 'float',
+        'numberOfPages' => 'float',
+        'itemsPerPage' => 'float',
+        'totalNumberOfItems' => 'float',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary[]',
     ];
 
     /**
@@ -72,7 +76,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'page' => null,
+        'numberOfPages' => null,
+        'itemsPerPage' => null,
+        'totalNumberOfItems' => null,
+        'items' => null,
     ];
 
     /**
@@ -102,7 +110,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'page' => 'page',
+        'numberOfPages' => 'numberOfPages',
+        'itemsPerPage' => 'itemsPerPage',
+        'totalNumberOfItems' => 'totalNumberOfItems',
+        'items' => 'items',
     ];
 
     /**
@@ -111,7 +123,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'page' => 'setPage',
+        'numberOfPages' => 'setNumberOfPages',
+        'itemsPerPage' => 'setItemsPerPage',
+        'totalNumberOfItems' => 'setTotalNumberOfItems',
+        'items' => 'setItems',
     ];
 
     /**
@@ -120,7 +136,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'page' => 'getPage',
+        'numberOfPages' => 'getNumberOfPages',
+        'itemsPerPage' => 'getItemsPerPage',
+        'totalNumberOfItems' => 'getTotalNumberOfItems',
+        'items' => 'getItems',
     ];
 
     /**
@@ -179,7 +199,11 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['page'] = $data['page'] ?? null;
+        $this->container['numberOfPages'] = $data['numberOfPages'] ?? null;
+        $this->container['itemsPerPage'] = $data['itemsPerPage'] ?? null;
+        $this->container['totalNumberOfItems'] = $data['totalNumberOfItems'] ?? null;
+        $this->container['items'] = $data['items'] ?? null;
     }
 
     /**
@@ -191,8 +215,20 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['page']) {
+            $invalidProperties[] = "'page' can't be null";
+        }
+        if (null === $this->container['numberOfPages']) {
+            $invalidProperties[] = "'numberOfPages' can't be null";
+        }
+        if (null === $this->container['itemsPerPage']) {
+            $invalidProperties[] = "'itemsPerPage' can't be null";
+        }
+        if (null === $this->container['totalNumberOfItems']) {
+            $invalidProperties[] = "'totalNumberOfItems' can't be null";
+        }
+        if (null === $this->container['items']) {
+            $invalidProperties[] = "'items' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +246,121 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets page.
      *
-     * @return bool
+     * @return float
      */
-    public function getSuccess()
+    public function getPage()
     {
-        return $this->container['success'];
+        return $this->container['page'];
     }
 
     /**
-     * Sets success.
+     * Sets page.
      *
-     * @param bool $success success
+     * @param float $page page
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setPage($page)
     {
-        $this->container['success'] = $success;
+        $this->container['page'] = $page;
+
+        return $this;
+    }
+
+    /**
+     * Gets numberOfPages.
+     *
+     * @return float
+     */
+    public function getNumberOfPages()
+    {
+        return $this->container['numberOfPages'];
+    }
+
+    /**
+     * Sets numberOfPages.
+     *
+     * @param float $numberOfPages numberOfPages
+     *
+     * @return self
+     */
+    public function setNumberOfPages($numberOfPages)
+    {
+        $this->container['numberOfPages'] = $numberOfPages;
+
+        return $this;
+    }
+
+    /**
+     * Gets itemsPerPage.
+     *
+     * @return float
+     */
+    public function getItemsPerPage()
+    {
+        return $this->container['itemsPerPage'];
+    }
+
+    /**
+     * Sets itemsPerPage.
+     *
+     * @param float $itemsPerPage itemsPerPage
+     *
+     * @return self
+     */
+    public function setItemsPerPage($itemsPerPage)
+    {
+        $this->container['itemsPerPage'] = $itemsPerPage;
+
+        return $this;
+    }
+
+    /**
+     * Gets totalNumberOfItems.
+     *
+     * @return float
+     */
+    public function getTotalNumberOfItems()
+    {
+        return $this->container['totalNumberOfItems'];
+    }
+
+    /**
+     * Sets totalNumberOfItems.
+     *
+     * @param float $totalNumberOfItems totalNumberOfItems
+     *
+     * @return self
+     */
+    public function setTotalNumberOfItems($totalNumberOfItems)
+    {
+        $this->container['totalNumberOfItems'] = $totalNumberOfItems;
+
+        return $this;
+    }
+
+    /**
+     * Gets items.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary[]
+     */
+    public function getItems()
+    {
+        return $this->container['items'];
+    }
+
+    /**
+     * Sets items.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary[] $items items
+     *
+     * @return self
+     */
+    public function setItems($items)
+    {
+        $this->container['items'] = $items;
 
         return $this;
     }

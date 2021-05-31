@@ -28,7 +28,7 @@ class EntityStatus extends Embed implements IEmbedFeature
     {
         return $this->params;
     }
-    
+
     public function run()
     {
         return $this->render();

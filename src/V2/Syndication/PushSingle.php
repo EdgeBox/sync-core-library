@@ -11,10 +11,10 @@ use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
-use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class PushSingle implements IPushSingle
@@ -65,11 +65,13 @@ class PushSingle implements IPushSingle
         self::$serializedEntities[$namespaceMachineName][$uuid] = &$this->dto;
     }
 
-    protected function initEmptyDto(string $language, ?string $flowMachineName=NULL, ?EntityTypeVersionReference $typeReference=NULL, ?string $uuid=NULL, ?string $unique_id=NULL) {
-        if(!$uuid && $this->dto) {
+    protected function initEmptyDto(string $language, ?string $flowMachineName = null, ?EntityTypeVersionReference $typeReference = null, ?string $uuid = null, ?string $unique_id = null)
+    {
+        $has_any_id = $uuid || $unique_id;
+        if (!$uuid && !$has_any_id) {
             $uuid = $this->dto->getRemoteUuid();
         }
-        if(!$unique_id && $this->dto) {
+        if (!$unique_id && !$has_any_id) {
             $unique_id = $this->dto->getRemoteUniqueId();
         }
 
@@ -78,7 +80,7 @@ class PushSingle implements IPushSingle
         $dto->setRemoteUuid($uuid);
         $dto->setRemoteUniqueId($unique_id);
         $dto->setEntityTypeByMachineName($typeReference ?? $this->dto->getEntityTypeByMachineName());
-        $dto->setPoolMachineNames($this->dto ? $this->dto->getPoolMachineNames() : []);
+        $dto->setPoolMachineNames($has_any_id ? [] : $this->dto->getPoolMachineNames());
         $dto->setProperties([]);
         $dto->setDirectDependencies([]);
         $dto->setLanguage($language);
@@ -409,7 +411,7 @@ class PushSingle implements IPushSingle
     {
         // Will lead to a validation error if sent to the backend.
         if (null === $value) {
-            return;
+            return $this;
         }
         $dto = $language ? $this->getTranslation($language) : $this->dto;
 

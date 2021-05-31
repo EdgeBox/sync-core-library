@@ -449,10 +449,9 @@ class SyncCore implements ISyncCore
 
         // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
         // is a UUID and if it's not, the site must be re-registered first.
-        if(1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
+        if (1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
             $request = $this->client->siteControllerItemByUuidRequest($uuid);
-        }
-        else {
+        } else {
             $request = $this->client->siteControllerItemRequest($uuid);
         }
 
@@ -562,6 +561,7 @@ class SyncCore implements ISyncCore
     public function registerSite($force = false)
     {
         // TODO: Allow if a special multi-site-register JWT is provided.
+        return '';
     }
 
     public function setSiteName(string $set)

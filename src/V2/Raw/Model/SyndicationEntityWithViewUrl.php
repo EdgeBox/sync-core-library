@@ -1,6 +1,6 @@
 <?php
 /**
- * FileEntity.
+ * SyndicationEntityWithViewUrl.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * FileEntity Class Doc Comment.
+ * SyndicationEntityWithViewUrl Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationEntityWithViewUrl implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'FileEntity';
+    protected static $openAPIModelName = 'SyndicationEntityWithViewUrl';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,23 +61,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\FileType',
-        'fileName' => 'string',
-        'remoteFilePath' => 'string',
-        'remoteDownloadUrl' => 'string',
-        'uploadUrl' => 'string',
-        'downloadUrl' => 'string',
-        'mimeType' => 'string',
-        'fileSize' => 'float',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FileStatus',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType',
+        'rootEntity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]',
+        'migration' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'finishedAt' => 'float',
+        'dependsOnSyndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'dryRun' => 'bool',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
+        'viewUrl' => 'string',
     ];
 
     /**
@@ -88,23 +88,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'type' => null,
-        'fileName' => null,
-        'remoteFilePath' => null,
-        'remoteDownloadUrl' => null,
-        'uploadUrl' => null,
-        'downloadUrl' => null,
-        'mimeType' => null,
-        'fileSize' => null,
         'status' => null,
-        'customer' => null,
-        'site' => null,
-        'project' => null,
-        'entity' => null,
+        'type' => null,
+        'rootEntity' => null,
+        'targetSite' => null,
+        'pools' => null,
         'flow' => null,
+        'customer' => null,
+        'project' => null,
+        'operations' => null,
+        'migration' => null,
+        'finishedAt' => null,
+        'dependsOnSyndication' => null,
+        'dryRun' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
+        'viewUrl' => null,
     ];
 
     /**
@@ -134,23 +134,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'type' => 'type',
-        'fileName' => 'fileName',
-        'remoteFilePath' => 'remoteFilePath',
-        'remoteDownloadUrl' => 'remoteDownloadUrl',
-        'uploadUrl' => 'uploadUrl',
-        'downloadUrl' => 'downloadUrl',
-        'mimeType' => 'mimeType',
-        'fileSize' => 'fileSize',
         'status' => 'status',
-        'customer' => 'customer',
-        'site' => 'site',
-        'project' => 'project',
-        'entity' => 'entity',
+        'type' => 'type',
+        'rootEntity' => 'rootEntity',
+        'targetSite' => 'targetSite',
+        'pools' => 'pools',
         'flow' => 'flow',
+        'customer' => 'customer',
+        'project' => 'project',
+        'operations' => 'operations',
+        'migration' => 'migration',
+        'finishedAt' => 'finishedAt',
+        'dependsOnSyndication' => 'dependsOnSyndication',
+        'dryRun' => 'dryRun',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
+        'viewUrl' => 'viewUrl',
     ];
 
     /**
@@ -159,23 +159,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'type' => 'setType',
-        'fileName' => 'setFileName',
-        'remoteFilePath' => 'setRemoteFilePath',
-        'remoteDownloadUrl' => 'setRemoteDownloadUrl',
-        'uploadUrl' => 'setUploadUrl',
-        'downloadUrl' => 'setDownloadUrl',
-        'mimeType' => 'setMimeType',
-        'fileSize' => 'setFileSize',
         'status' => 'setStatus',
-        'customer' => 'setCustomer',
-        'site' => 'setSite',
-        'project' => 'setProject',
-        'entity' => 'setEntity',
+        'type' => 'setType',
+        'rootEntity' => 'setRootEntity',
+        'targetSite' => 'setTargetSite',
+        'pools' => 'setPools',
         'flow' => 'setFlow',
+        'customer' => 'setCustomer',
+        'project' => 'setProject',
+        'operations' => 'setOperations',
+        'migration' => 'setMigration',
+        'finishedAt' => 'setFinishedAt',
+        'dependsOnSyndication' => 'setDependsOnSyndication',
+        'dryRun' => 'setDryRun',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
+        'viewUrl' => 'setViewUrl',
     ];
 
     /**
@@ -184,23 +184,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'type' => 'getType',
-        'fileName' => 'getFileName',
-        'remoteFilePath' => 'getRemoteFilePath',
-        'remoteDownloadUrl' => 'getRemoteDownloadUrl',
-        'uploadUrl' => 'getUploadUrl',
-        'downloadUrl' => 'getDownloadUrl',
-        'mimeType' => 'getMimeType',
-        'fileSize' => 'getFileSize',
         'status' => 'getStatus',
-        'customer' => 'getCustomer',
-        'site' => 'getSite',
-        'project' => 'getProject',
-        'entity' => 'getEntity',
+        'type' => 'getType',
+        'rootEntity' => 'getRootEntity',
+        'targetSite' => 'getTargetSite',
+        'pools' => 'getPools',
         'flow' => 'getFlow',
+        'customer' => 'getCustomer',
+        'project' => 'getProject',
+        'operations' => 'getOperations',
+        'migration' => 'getMigration',
+        'finishedAt' => 'getFinishedAt',
+        'dependsOnSyndication' => 'getDependsOnSyndication',
+        'dryRun' => 'getDryRun',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
+        'viewUrl' => 'getViewUrl',
     ];
 
     /**
@@ -259,23 +259,23 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['fileName'] = $data['fileName'] ?? null;
-        $this->container['remoteFilePath'] = $data['remoteFilePath'] ?? null;
-        $this->container['remoteDownloadUrl'] = $data['remoteDownloadUrl'] ?? null;
-        $this->container['uploadUrl'] = $data['uploadUrl'] ?? null;
-        $this->container['downloadUrl'] = $data['downloadUrl'] ?? null;
-        $this->container['mimeType'] = $data['mimeType'] ?? null;
-        $this->container['fileSize'] = $data['fileSize'] ?? null;
         $this->container['status'] = $data['status'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['site'] = $data['site'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['entity'] = $data['entity'] ?? null;
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['rootEntity'] = $data['rootEntity'] ?? null;
+        $this->container['targetSite'] = $data['targetSite'] ?? null;
+        $this->container['pools'] = $data['pools'] ?? null;
         $this->container['flow'] = $data['flow'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['operations'] = $data['operations'] ?? null;
+        $this->container['migration'] = $data['migration'] ?? null;
+        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
+        $this->container['dependsOnSyndication'] = $data['dependsOnSyndication'] ?? null;
+        $this->container['dryRun'] = $data['dryRun'] ?? null;
         $this->container['id'] = $data['id'] ?? null;
         $this->container['createdAt'] = $data['createdAt'] ?? null;
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
     }
 
     /**
@@ -287,26 +287,26 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['type']) {
-            $invalidProperties[] = "'type' can't be null";
-        }
-        if (null === $this->container['fileName']) {
-            $invalidProperties[] = "'fileName' can't be null";
-        }
-        if (null === $this->container['mimeType']) {
-            $invalidProperties[] = "'mimeType' can't be null";
-        }
-        if (null === $this->container['fileSize']) {
-            $invalidProperties[] = "'fileSize' can't be null";
-        }
         if (null === $this->container['status']) {
             $invalidProperties[] = "'status' can't be null";
         }
+        if (null === $this->container['type']) {
+            $invalidProperties[] = "'type' can't be null";
+        }
+        if (null === $this->container['rootEntity']) {
+            $invalidProperties[] = "'rootEntity' can't be null";
+        }
+        if (null === $this->container['targetSite']) {
+            $invalidProperties[] = "'targetSite' can't be null";
+        }
+        if (null === $this->container['pools']) {
+            $invalidProperties[] = "'pools' can't be null";
+        }
+        if (null === $this->container['flow']) {
+            $invalidProperties[] = "'flow' can't be null";
+        }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
-        }
-        if (null === $this->container['site']) {
-            $invalidProperties[] = "'site' can't be null";
         }
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
@@ -333,9 +333,33 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets status.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     */
+    public function getStatus()
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     *
+     * @return self
+     */
+    public function setStatus($status)
+    {
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileType
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationType
      */
     public function getType()
     {
@@ -345,7 +369,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FileType $type type
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationType $type type
      *
      * @return self
      */
@@ -357,193 +381,97 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets fileName.
+     * Gets rootEntity.
      *
-     * @return string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
-    public function getFileName()
+    public function getRootEntity()
     {
-        return $this->container['fileName'];
+        return $this->container['rootEntity'];
     }
 
     /**
-     * Sets fileName.
+     * Sets rootEntity.
      *
-     * @param string $fileName fileName
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntity rootEntity
      *
      * @return self
      */
-    public function setFileName($fileName)
+    public function setRootEntity($rootEntity)
     {
-        $this->container['fileName'] = $fileName;
+        $this->container['rootEntity'] = $rootEntity;
 
         return $this;
     }
 
     /**
-     * Gets remoteFilePath.
+     * Gets targetSite.
      *
-     * @return string|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
-    public function getRemoteFilePath()
+    public function getTargetSite()
     {
-        return $this->container['remoteFilePath'];
+        return $this->container['targetSite'];
     }
 
     /**
-     * Sets remoteFilePath.
+     * Sets targetSite.
      *
-     * @param string|null $remoteFilePath remoteFilePath
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $targetSite targetSite
      *
      * @return self
      */
-    public function setRemoteFilePath($remoteFilePath)
+    public function setTargetSite($targetSite)
     {
-        $this->container['remoteFilePath'] = $remoteFilePath;
+        $this->container['targetSite'] = $targetSite;
 
         return $this;
     }
 
     /**
-     * Gets remoteDownloadUrl.
+     * Gets pools.
      *
-     * @return string|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
      */
-    public function getRemoteDownloadUrl()
+    public function getPools()
     {
-        return $this->container['remoteDownloadUrl'];
+        return $this->container['pools'];
     }
 
     /**
-     * Sets remoteDownloadUrl.
+     * Sets pools.
      *
-     * @param string|null $remoteDownloadUrl remoteDownloadUrl
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
      *
      * @return self
      */
-    public function setRemoteDownloadUrl($remoteDownloadUrl)
+    public function setPools($pools)
     {
-        $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
+        $this->container['pools'] = $pools;
 
         return $this;
     }
 
     /**
-     * Gets uploadUrl.
+     * Gets flow.
      *
-     * @return string|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
-    public function getUploadUrl()
+    public function getFlow()
     {
-        return $this->container['uploadUrl'];
+        return $this->container['flow'];
     }
 
     /**
-     * Sets uploadUrl.
+     * Sets flow.
      *
-     * @param string|null $uploadUrl uploadUrl
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $flow flow
      *
      * @return self
      */
-    public function setUploadUrl($uploadUrl)
+    public function setFlow($flow)
     {
-        $this->container['uploadUrl'] = $uploadUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets downloadUrl.
-     *
-     * @return string|null
-     */
-    public function getDownloadUrl()
-    {
-        return $this->container['downloadUrl'];
-    }
-
-    /**
-     * Sets downloadUrl.
-     *
-     * @param string|null $downloadUrl downloadUrl
-     *
-     * @return self
-     */
-    public function setDownloadUrl($downloadUrl)
-    {
-        $this->container['downloadUrl'] = $downloadUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets mimeType.
-     *
-     * @return string
-     */
-    public function getMimeType()
-    {
-        return $this->container['mimeType'];
-    }
-
-    /**
-     * Sets mimeType.
-     *
-     * @param string $mimeType mimeType
-     *
-     * @return self
-     */
-    public function setMimeType($mimeType)
-    {
-        $this->container['mimeType'] = $mimeType;
-
-        return $this;
-    }
-
-    /**
-     * Gets fileSize.
-     *
-     * @return float
-     */
-    public function getFileSize()
-    {
-        return $this->container['fileSize'];
-    }
-
-    /**
-     * Sets fileSize.
-     *
-     * @param float $fileSize fileSize
-     *
-     * @return self
-     */
-    public function setFileSize($fileSize)
-    {
-        $this->container['fileSize'] = $fileSize;
-
-        return $this;
-    }
-
-    /**
-     * Gets status.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileStatus
-     */
-    public function getStatus()
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FileStatus $status status
-     *
-     * @return self
-     */
-    public function setStatus($status)
-    {
-        $this->container['status'] = $status;
+        $this->container['flow'] = $flow;
 
         return $this;
     }
@@ -573,30 +501,6 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets site.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
-     */
-    public function getSite()
-    {
-        return $this->container['site'];
-    }
-
-    /**
-     * Sets site.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $site site
-     *
-     * @return self
-     */
-    public function setSite($site)
-    {
-        $this->container['site'] = $site;
-
-        return $this;
-    }
-
-    /**
      * Gets project.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
@@ -621,49 +525,121 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets entity.
+     * Gets operations.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]|null
      */
-    public function getEntity()
+    public function getOperations()
     {
-        return $this->container['entity'];
+        return $this->container['operations'];
     }
 
     /**
-     * Sets entity.
+     * Sets operations.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $entity entity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]|null $operations operations
      *
      * @return self
      */
-    public function setEntity($entity)
+    public function setOperations($operations)
     {
-        $this->container['entity'] = $entity;
+        $this->container['operations'] = $operations;
 
         return $this;
     }
 
     /**
-     * Gets flow.
+     * Gets migration.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
      */
-    public function getFlow()
+    public function getMigration()
     {
-        return $this->container['flow'];
+        return $this->container['migration'];
     }
 
     /**
-     * Sets flow.
+     * Sets migration.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $flow flow
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $migration migration
      *
      * @return self
      */
-    public function setFlow($flow)
+    public function setMigration($migration)
     {
-        $this->container['flow'] = $flow;
+        $this->container['migration'] = $migration;
+
+        return $this;
+    }
+
+    /**
+     * Gets finishedAt.
+     *
+     * @return float|null
+     */
+    public function getFinishedAt()
+    {
+        return $this->container['finishedAt'];
+    }
+
+    /**
+     * Sets finishedAt.
+     *
+     * @param float|null $finishedAt finishedAt
+     *
+     * @return self
+     */
+    public function setFinishedAt($finishedAt)
+    {
+        $this->container['finishedAt'] = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets dependsOnSyndication.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     */
+    public function getDependsOnSyndication()
+    {
+        return $this->container['dependsOnSyndication'];
+    }
+
+    /**
+     * Sets dependsOnSyndication.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $dependsOnSyndication dependsOnSyndication
+     *
+     * @return self
+     */
+    public function setDependsOnSyndication($dependsOnSyndication)
+    {
+        $this->container['dependsOnSyndication'] = $dependsOnSyndication;
+
+        return $this;
+    }
+
+    /**
+     * Gets dryRun.
+     *
+     * @return bool|null
+     */
+    public function getDryRun()
+    {
+        return $this->container['dryRun'];
+    }
+
+    /**
+     * Sets dryRun.
+     *
+     * @param bool|null $dryRun dryRun
+     *
+     * @return self
+     */
+    public function setDryRun($dryRun)
+    {
+        $this->container['dryRun'] = $dryRun;
 
         return $this;
     }
@@ -736,6 +712,30 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUpdatedAt($updatedAt)
     {
         $this->container['updatedAt'] = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return string|null
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param string|null $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        $this->container['viewUrl'] = $viewUrl;
 
         return $this;
     }

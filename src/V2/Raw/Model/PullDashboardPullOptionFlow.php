@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * PullDashboardPullOptionFlow.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * PullDashboardPullOptionFlow Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'PullDashboardPullOptionFlow';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'name' => 'string',
+        'machineName' => 'string',
+        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]',
+        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]',
     ];
 
     /**
@@ -72,7 +75,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'name' => null,
+        'machineName' => null,
+        'entityTypes' => null,
+        'pools' => null,
     ];
 
     /**
@@ -102,7 +108,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'name' => 'name',
+        'machineName' => 'machineName',
+        'entityTypes' => 'entityTypes',
+        'pools' => 'pools',
     ];
 
     /**
@@ -111,7 +120,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'name' => 'setName',
+        'machineName' => 'setMachineName',
+        'entityTypes' => 'setEntityTypes',
+        'pools' => 'setPools',
     ];
 
     /**
@@ -120,7 +132,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'name' => 'getName',
+        'machineName' => 'getMachineName',
+        'entityTypes' => 'getEntityTypes',
+        'pools' => 'getPools',
     ];
 
     /**
@@ -179,7 +194,10 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['entityTypes'] = $data['entityTypes'] ?? null;
+        $this->container['pools'] = $data['pools'] ?? null;
     }
 
     /**
@@ -191,8 +209,17 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['name']) {
+            $invalidProperties[] = "'name' can't be null";
+        }
+        if (null === $this->container['machineName']) {
+            $invalidProperties[] = "'machineName' can't be null";
+        }
+        if (null === $this->container['entityTypes']) {
+            $invalidProperties[] = "'entityTypes' can't be null";
+        }
+        if (null === $this->container['pools']) {
+            $invalidProperties[] = "'pools' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +237,97 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets name.
      *
-     * @return bool
+     * @return string
      */
-    public function getSuccess()
+    public function getName()
     {
-        return $this->container['success'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets success.
+     * Sets name.
      *
-     * @param bool $success success
+     * @param string $name name
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setName($name)
     {
-        $this->container['success'] = $success;
+        $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets machineName.
+     *
+     * @return string
+     */
+    public function getMachineName()
+    {
+        return $this->container['machineName'];
+    }
+
+    /**
+     * Sets machineName.
+     *
+     * @param string $machineName machineName
+     *
+     * @return self
+     */
+    public function setMachineName($machineName)
+    {
+        $this->container['machineName'] = $machineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypes.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]
+     */
+    public function getEntityTypes()
+    {
+        return $this->container['entityTypes'];
+    }
+
+    /**
+     * Sets entityTypes.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[] $entityTypes entityTypes
+     *
+     * @return self
+     */
+    public function setEntityTypes($entityTypes)
+    {
+        $this->container['entityTypes'] = $entityTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets pools.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]
+     */
+    public function getPools()
+    {
+        return $this->container['pools'];
+    }
+
+    /**
+     * Sets pools.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[] $pools pools
+     *
+     * @return self
+     */
+    public function setPools($pools)
+    {
+        $this->container['pools'] = $pools;
 
         return $this;
     }

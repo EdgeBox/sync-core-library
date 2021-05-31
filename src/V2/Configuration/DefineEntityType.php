@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Configuration;
 
 use EdgeBox\SyncCore\Interfaces\Configuration\IDefineEntityType;
+use EdgeBox\SyncCore\V2\Batch;
 use EdgeBox\SyncCore\V2\BatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty;

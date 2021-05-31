@@ -1,6 +1,6 @@
 <?php
 /**
- * SuccessResponse.
+ * SyndicationUsageSummaryStatusGroup.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SuccessResponse Class Doc Comment.
+ * SyndicationUsageSummaryStatusGroup Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationUsageSummaryStatusGroup implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SuccessResponse';
+    protected static $openAPIModelName = 'SyndicationUsageSummaryStatusGroup';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'success' => 'bool',
+        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'count' => 'float',
+        'progress' => 'float',
     ];
 
     /**
@@ -72,7 +74,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'success' => null,
+        'status' => null,
+        'count' => null,
+        'progress' => null,
     ];
 
     /**
@@ -102,7 +106,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'success' => 'success',
+        'status' => 'status',
+        'count' => 'count',
+        'progress' => 'progress',
     ];
 
     /**
@@ -111,7 +117,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'success' => 'setSuccess',
+        'status' => 'setStatus',
+        'count' => 'setCount',
+        'progress' => 'setProgress',
     ];
 
     /**
@@ -120,7 +128,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'success' => 'getSuccess',
+        'status' => 'getStatus',
+        'count' => 'getCount',
+        'progress' => 'getProgress',
     ];
 
     /**
@@ -179,7 +189,9 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['success'] = $data['success'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['count'] = $data['count'] ?? null;
+        $this->container['progress'] = $data['progress'] ?? null;
     }
 
     /**
@@ -191,8 +203,14 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['success']) {
-            $invalidProperties[] = "'success' can't be null";
+        if (null === $this->container['status']) {
+            $invalidProperties[] = "'status' can't be null";
+        }
+        if (null === $this->container['count']) {
+            $invalidProperties[] = "'count' can't be null";
+        }
+        if (null === $this->container['progress']) {
+            $invalidProperties[] = "'progress' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +228,73 @@ class SuccessResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets success.
+     * Gets status.
      *
-     * @return bool
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
      */
-    public function getSuccess()
+    public function getStatus()
     {
-        return $this->container['success'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets success.
+     * Sets status.
      *
-     * @param bool $success success
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
      *
      * @return self
      */
-    public function setSuccess($success)
+    public function setStatus($status)
     {
-        $this->container['success'] = $success;
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets count.
+     *
+     * @return float
+     */
+    public function getCount()
+    {
+        return $this->container['count'];
+    }
+
+    /**
+     * Sets count.
+     *
+     * @param float $count count
+     *
+     * @return self
+     */
+    public function setCount($count)
+    {
+        $this->container['count'] = $count;
+
+        return $this;
+    }
+
+    /**
+     * Gets progress.
+     *
+     * @return float
+     */
+    public function getProgress()
+    {
+        return $this->container['progress'];
+    }
+
+    /**
+     * Sets progress.
+     *
+     * @param float $progress progress
+     *
+     * @return self
+     */
+    public function setProgress($progress)
+    {
+        $this->container['progress'] = $progress;
 
         return $this;
     }

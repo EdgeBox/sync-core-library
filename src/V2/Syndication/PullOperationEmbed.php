@@ -1,13 +1,14 @@
 <?php
 
 namespace EdgeBox\SyncCore\V2\Syndication;
+
 use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
-
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class PullOperationEmbed implements IEntityReference {
+class PullOperationEmbed implements IEntityReference
+{
     /**
      * @var SyncCore
      */
@@ -51,12 +52,12 @@ class PullOperationEmbed implements IEntityReference {
          */
         $details = $this->dto->getReferenceDetails();
 
-        if(!$details) {
+        if (!$details) {
             return [];
         }
 
         // Turn objects into arrays.
-        return json_decode(json_encode($details), TRUE);
+        return json_decode(json_encode($details), true);
     }
 
     /**
@@ -129,10 +130,11 @@ class PullOperationEmbed implements IEntityReference {
     public function getEmbeddedEntity()
     {
         $this->pullOperation->embedProcessed($this->embedIndex);
+
         return new PullOperation(
         $this->core,
         $this->embed,
-        FALSE,
+        false,
         $this->pullOperation);
     }
 }

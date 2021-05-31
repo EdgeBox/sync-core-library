@@ -37,7 +37,7 @@ class PullOperation implements IPullOperation
 
     /**
      * @var int[]
-     * 
+     *
      * The indices of the embeds that were already processed during the pull operation.
      * This is used to get all non-processed entities after the root pull to also pull
      * them separately, e.g. menu items.
@@ -46,29 +46,30 @@ class PullOperation implements IPullOperation
 
     /**
      * PushSingle constructor.
-     * 
-     * @param SyncCore $core
+     *
      * @param RemoteEntityEmbed|array $body
-     * @param PullOperation|null $parentPullOperation
      */
-    public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation=NULL)
+    public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation = null)
     {
         $this->core = $core;
         $this->translations = [];
 
-        if($delete) {
+        if ($delete) {
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
             $this->dto = ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
-        }
-        elseif($body instanceof RemoteEntityEmbed) {
+        } elseif ($body instanceof RemoteEntityEmbed) {
             $this->dto = $body;
             $this->parentPullOperation = $parentPullOperation;
-        }
-        else {
+        } else {
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
-            $this->dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
+
+            /**
+             * @var CreateRemoteEntityRevisionDto $dto
+             */
+            $dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
+            $this->dto = $dto;
 
             $translations = $this->dto->getTranslations();
             if ($translations) {
@@ -85,9 +86,10 @@ class PullOperation implements IPullOperation
      */
     public function getPoolIds()
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return [];
         }
+
         return $this->dto->getPoolMachineNames();
     }
 
@@ -96,12 +98,12 @@ class PullOperation implements IPullOperation
      */
     public function getEntityTypeNamespaceMachineName()
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return $this->dto->getEntityTypeNamespaceMachineName();
+        } elseif ($this->dto instanceof RemoteEntityEmbed) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
-        else if($this->dto instanceof RemoteEntityEmbed) {
-            return $this->dto->getEntityTypeNamespaceMachineName();
-        }
+
         return $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName();
     }
 
@@ -110,20 +112,21 @@ class PullOperation implements IPullOperation
      */
     public function getEntityTypeMachineName()
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return $this->dto->getEntityTypeMachineName();
+        } elseif ($this->dto instanceof RemoteEntityEmbed) {
             return $this->dto->getEntityTypeMachineName();
         }
-        else if($this->dto instanceof RemoteEntityEmbed) {
-            return $this->dto->getEntityTypeMachineName();
-        }
+
         return $this->dto->getEntityTypeByMachineName()->getMachineName();
     }
 
     public function getEntityTypeVersionId()
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return '';
         }
+
         return $this->dto->getEntityTypeByMachineName()->getVersionId();
     }
 
@@ -148,12 +151,13 @@ class PullOperation implements IPullOperation
      */
     public function getSourceUrl()
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
-            return NULL;
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return '';
         }
-        if($this->parentPullOperation) {
+        if ($this->parentPullOperation) {
             return $this->parentPullOperation->getSourceUrl();
         }
+
         return $this->dto->getViewUrl();
     }
 
@@ -170,8 +174,8 @@ class PullOperation implements IPullOperation
      */
     public function getProperty(string $name, $language = null)
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
-            return NULL;
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return null;
         }
         $properties = $language ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
         foreach ($properties as $property) {
@@ -184,25 +188,29 @@ class PullOperation implements IPullOperation
         return null;
     }
 
-    public function embedProcessed(int $index) {
-        if($this->parentPullOperation) {
+    public function embedProcessed(int $index)
+    {
+        if ($this->parentPullOperation) {
             $this->parentPullOperation->embedProcessed($index);
+
             return;
         }
         $this->processedEmbeds[] = $index;
     }
 
-    public function getNextUnprocessedEmbed() {
-        foreach($this->dto->getEmbed() as $index=>$embed) {
-            if(in_array($index, $this->processedEmbeds)) {
+    public function getNextUnprocessedEmbed()
+    {
+        foreach ($this->dto->getEmbed() as $index => $embed) {
+            if (in_array($index, $this->processedEmbeds)) {
                 continue;
             }
 
             $this->processedEmbeds[] = $index;
-            return new PullOperation($this->core, $embed, FALSE, $this);
+
+            return new PullOperation($this->core, $embed, false, $this);
         }
 
-        return NULL;
+        return null;
     }
 
     /**
@@ -210,7 +218,7 @@ class PullOperation implements IPullOperation
      */
     public function loadReference(array $data)
     {
-        if($this->parentPullOperation) {
+        if ($this->parentPullOperation) {
             return $this->parentPullOperation->loadReference($data);
         }
 
@@ -282,7 +290,7 @@ class PullOperation implements IPullOperation
      */
     public function getResponseBody(?string $entity_deep_link)
     {
-        if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return [];
         }
 
@@ -291,7 +299,7 @@ class PullOperation implements IPullOperation
         // Turn objects into arrays
         $data = json_decode(json_encode($data), true);
 
-        if($entity_deep_link) {
+        if ($entity_deep_link) {
             $data['viewUrl'] = $entity_deep_link;
         }
 

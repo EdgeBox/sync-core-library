@@ -255,4 +255,12 @@ class PullOperation implements IPullOperation
 
         return $data;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNextUnprocessedEmbed()
+    {
+        return null;
+    }
 }
