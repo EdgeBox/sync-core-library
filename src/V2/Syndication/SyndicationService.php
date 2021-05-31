@@ -37,7 +37,7 @@ class SyndicationService implements ISyndicationService
      */
     public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
     {
-        return new TriggerPullSingle($this->core, $type, $bundle, $entity_id);
+        return new TriggerPullSingle($this->core, $type, $bundle, $entity_id, $flow_id);
     }
 
     /**

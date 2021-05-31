@@ -23,11 +23,12 @@ class TriggerPullSingle implements ITriggerPullSingle
     /**
      * TriggerPullSingle constructor.
      */
-    public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id)
+    public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id, string $flow_id)
     {
         $this->core = $core;
 
         $this->dto = new CreateSyndicationDto();
+        $this->dto->setFlowMachineName($flow_id);
         $this->dto->setPoolMachineNames([]);
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
@@ -78,7 +79,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest($this->dto);
-        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
         return $this;
     }
