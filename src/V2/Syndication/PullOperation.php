@@ -3,7 +3,6 @@
 namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
-use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullOperation;
 use EdgeBox\SyncCore\V2\Configuration\DefineEntityType;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto;
@@ -35,6 +34,15 @@ class PullOperation implements IPullOperation
      * @var CreateRemoteEntityRevisionDto[]
      */
     protected $translations;
+
+    /**
+     * @var int[]
+     * 
+     * The indices of the embeds that were already processed during the pull operation.
+     * This is used to get all non-processed entities after the root pull to also pull
+     * them separately, e.g. menu items.
+     */
+    protected $processedEmbeds = [];
 
     /**
      * PushSingle constructor.
@@ -91,6 +99,9 @@ class PullOperation implements IPullOperation
         if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
+        else if($this->dto instanceof RemoteEntityEmbed) {
+            return $this->dto->getEntityTypeNamespaceMachineName();
+        }
         return $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName();
     }
 
@@ -100,6 +111,9 @@ class PullOperation implements IPullOperation
     public function getEntityTypeMachineName()
     {
         if($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return $this->dto->getEntityTypeMachineName();
+        }
+        else if($this->dto instanceof RemoteEntityEmbed) {
             return $this->dto->getEntityTypeMachineName();
         }
         return $this->dto->getEntityTypeByMachineName()->getMachineName();
@@ -170,6 +184,27 @@ class PullOperation implements IPullOperation
         return null;
     }
 
+    public function embedProcessed(int $index) {
+        if($this->parentPullOperation) {
+            $this->parentPullOperation->embedProcessed($index);
+            return;
+        }
+        $this->processedEmbeds[] = $index;
+    }
+
+    public function getNextUnprocessedEmbed() {
+        foreach($this->dto->getEmbed() as $index=>$embed) {
+            if(in_array($index, $this->processedEmbeds)) {
+                continue;
+            }
+
+            $this->processedEmbeds[] = $index;
+            return new PullOperation($this->core, $embed, FALSE, $this);
+        }
+
+        return NULL;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -188,6 +223,7 @@ class PullOperation implements IPullOperation
 
         $embeds = $this->dto->getEmbed();
         $embed = null;
+        $embedIndex = null;
         for ($i = 0; $i < count($embeds); ++$i) {
             $candidate = $embeds[$i];
             if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName() &&
@@ -196,6 +232,7 @@ class PullOperation implements IPullOperation
           $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
           $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
                 $embed = $candidate;
+                $embedIndex = $i;
                 break;
             }
         }
@@ -204,129 +241,7 @@ class PullOperation implements IPullOperation
             throw new InternalContentSyncError("Embedded entity not found: ".$referenceDto->getEntityTypeNamespaceMachineName().".".$referenceDto->getEntityTypeMachineName()." ".$candidate->getRemoteUuid()." / ".$referenceDto->getRemoteUniqueId()." (".$referenceDto->getLanguage().")");
         }*/
 
-        return new class($this->core, $referenceDto, $this, $embed) implements IEntityReference {
-            /**
-             * @var SyncCore
-             */
-            protected $core;
-            /**
-             * @var RemoteEntityDependency
-             */
-            protected $dto;
-            /**
-             * @var PullOperation
-             */
-            protected $pullOperation;
-            /**
-             * @var RemoteEntityEmbed|null
-             */
-            protected $embed;
-
-            /**
-             * constructor.
-             */
-            public function __construct(SyncCore $core, RemoteEntityDependency $dto, PullOperation $pullOperation, ?RemoteEntityEmbed $embed = null)
-            {
-                $this->core = $core;
-                $this->dto = $dto;
-                $this->pullOperation = $pullOperation;
-                $this->embed = $embed;
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getDetails()
-            {
-                /**
-                 * @var array|null $details
-                 */
-                $details = $this->dto->getReferenceDetails();
-
-                if(!$details) {
-                    return [];
-                }
-
-                // Turn objects into arrays.
-                return json_decode(json_encode($details), TRUE);
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getId()
-            {
-                return $this->dto->getRemoteUniqueId();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getUuid()
-            {
-                return $this->dto->getRemoteUuid();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getType()
-            {
-                return $this->dto->getEntityTypeNamespaceMachineName();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getBundle()
-            {
-                return $this->dto->getEntityTypeMachineName();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getVersion()
-            {
-                return $this->dto->getEntityTypeVersion();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getName()
-            {
-                return $this->dto->getName();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getPoolIds()
-            {
-                return $this->dto->getPoolMachineNames();
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function isEmbedded()
-            {
-                return (bool) $this->embed;
-            }
-
-            /**
-             * {@inheritdoc}
-             */
-            public function getEmbeddedEntity()
-            {
-                return new PullOperation(
-                $this->core,
-                $this->embed,
-                FALSE,
-                $this->pullOperation);
-            }
-        };
+        return new PullOperationEmbed($this->core, $referenceDto, $this, $embedIndex, $embed);
     }
 
     /**
