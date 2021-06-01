@@ -37,6 +37,13 @@ interface ISyndicationService
     public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $root_language, string $entity_uuid, ?string $entity_id);
 
     /**
+     * Inform the Sync Core that the given entity was deleted locally.
+     *
+     * @return void
+     */
+    public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id);
+
+    /**
      * Get a list of all sites using the given entity from this pool.
      *
      * @return array ['SITE_ID'] => 'DEEP_LINK'

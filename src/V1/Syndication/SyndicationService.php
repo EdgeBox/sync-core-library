@@ -70,6 +70,13 @@ class SyndicationService implements ISyndicationService
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function deletedLocally(string $flow_id, string $type, string $bundle, string $root_language, string $entity_uuid, ?string $entity_id)
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getExternalUsages(string $pool_id, string $type, string $bundle, string $shared_entity_id)

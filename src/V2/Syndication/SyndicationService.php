@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
 use EdgeBox\SyncCore\V2\Helper;
+use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -64,6 +65,27 @@ class SyndicationService implements ISyndicationService
     public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $root_language, string $entity_uuid, ?string $entity_id)
     {
         return new PushSingle($this->core, $flow_id, $type, $bundle, $version_id, $root_language, $entity_uuid, $entity_id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id)
+    {
+        $dto = new DeleteRemoteEntityRevisionDto();
+        $dto->setFlowMachineName($flow_id);
+        $dto->setEntityTypeNamespaceMachineName($type);
+        $dto->setEntityTypeMachineName($bundle);
+        $dto->setLanguage($language);
+        $dto->setRemoteUuid($entity_uuid);
+        $dto->setRemoteUniqueId($entity_id);
+
+        $request = $this
+        ->core
+        ->getClient()
+        ->remoteEntityRevisionControllerDeleteRequest($dto);
+
+        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
     }
 
     /**
