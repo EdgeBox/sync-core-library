@@ -81,6 +81,18 @@ class PullOperation implements IPullOperation
         }
     }
 
+    public function isEmbedded($type, $entity_uuid)
+    {
+        $embeds = $this->dto->getEmbed();
+        foreach ($embeds as $embed) {
+            if ($embed->getEntityTypeNamespaceMachineName() === $type && $embed->getRemoteUuid() === $entity_uuid) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return string[]
      */
