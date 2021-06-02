@@ -63,9 +63,9 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $openAPITypes = [
         'startedAt' => 'float',
         'finishedAt' => 'float',
-        'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
-        'sourceSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
-        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
+        'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
+        'sourceSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
+        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
         'targetSummary' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]',
     ];
 
@@ -293,7 +293,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets thisSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
      */
     public function getThisSite()
     {
@@ -303,7 +303,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets thisSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl $thisSite thisSite
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $thisSite thisSite
      *
      * @return self
      */
@@ -317,7 +317,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets sourceSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null
      */
     public function getSourceSite()
     {
@@ -327,7 +327,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets sourceSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null $sourceSite sourceSite
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null $sourceSite sourceSite
      *
      * @return self
      */
@@ -341,7 +341,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null
      */
     public function getTargetSite()
     {
@@ -351,7 +351,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl|null $targetSite targetSite
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null $targetSite targetSite
      *
      * @return self
      */

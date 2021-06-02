@@ -1,6 +1,6 @@
 <?php
 /**
- * RemoteEntityProperty.
+ * RemoteEntityPropertyDraft.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RemoteEntityProperty Class Doc Comment.
+ * RemoteEntityPropertyDraft Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityPropertyDraft implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RemoteEntityProperty';
+    protected static $openAPIModelName = 'RemoteEntityPropertyDraft';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -63,7 +63,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPITypes = [
         'name' => 'string',
         'value' => 'mixed',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType',
     ];
 
     /**
@@ -76,7 +75,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPIFormats = [
         'name' => null,
         'value' => null,
-        'type' => null,
     ];
 
     /**
@@ -108,7 +106,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $attributeMap = [
         'name' => 'name',
         'value' => 'value',
-        'type' => 'type',
     ];
 
     /**
@@ -119,7 +116,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $setters = [
         'name' => 'setName',
         'value' => 'setValue',
-        'type' => 'setType',
     ];
 
     /**
@@ -130,7 +126,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $getters = [
         'name' => 'getName',
         'value' => 'getValue',
-        'type' => 'getType',
     ];
 
     /**
@@ -191,7 +186,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     {
         $this->container['name'] = $data['name'] ?? null;
         $this->container['value'] = $data['value'] ?? null;
-        $this->container['type'] = $data['type'] ?? null;
     }
 
     /**
@@ -208,9 +202,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
         }
         if (null === $this->container['value']) {
             $invalidProperties[] = "'value' can't be null";
-        }
-        if (null === $this->container['type']) {
-            $invalidProperties[] = "'type' can't be null";
         }
 
         return $invalidProperties;
@@ -271,30 +262,6 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setValue($value)
     {
         $this->container['value'] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Gets type.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType
-     */
-    public function getType()
-    {
-        return $this->container['type'];
-    }
-
-    /**
-     * Sets type.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType $type type
-     *
-     * @return self
-     */
-    public function setType($type)
-    {
-        $this->container['type'] = $type;
 
         return $this;
     }

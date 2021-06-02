@@ -65,7 +65,7 @@ class PagedSyndicationList implements ModelInterface, ArrayAccess, \JsonSerializ
         'numberOfPages' => 'float',
         'itemsPerPage' => 'float',
         'totalNumberOfItems' => 'float',
-        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl[]',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[]',
     ];
 
     /**
@@ -344,7 +344,7 @@ class PagedSyndicationList implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets items.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl[]
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[]
      */
     public function getItems()
     {
@@ -354,7 +354,7 @@ class PagedSyndicationList implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets items.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl[] $items items
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[] $items items
      *
      * @return self
      */

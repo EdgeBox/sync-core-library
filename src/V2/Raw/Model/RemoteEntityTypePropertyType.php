@@ -48,6 +48,7 @@ class RemoteEntityTypePropertyType
     public const FLOAT = 'float';
     public const STRING = 'string';
     public const OBJECT = 'object';
+    public const REFERENCE = 'reference';
     public const FILE = 'file';
 
     /**
@@ -63,6 +64,7 @@ class RemoteEntityTypePropertyType
             self::FLOAT,
             self::STRING,
             self::OBJECT,
+            self::REFERENCE,
             self::FILE,
         ];
     }

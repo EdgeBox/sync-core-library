@@ -65,13 +65,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUuid' => 'string',
         'remoteUniqueId' => 'string',
         'language' => 'string',
-        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]',
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
+        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
         'entityTypeByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference',
         'translationRoot' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -93,13 +93,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUuid' => null,
         'remoteUniqueId' => null,
         'language' => null,
-        'properties' => null,
         'directDependencies' => null,
         'appType' => null,
         'embed' => null,
         'poolMachineNames' => null,
         'isTranslationRoot' => null,
         'viewUrl' => null,
+        'properties' => null,
         'allDependencies' => null,
         'entityTypeByMachineName' => null,
         'translationRoot' => null,
@@ -140,13 +140,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUuid' => 'remoteUuid',
         'remoteUniqueId' => 'remoteUniqueId',
         'language' => 'language',
-        'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'appType' => 'appType',
         'embed' => 'embed',
         'poolMachineNames' => 'poolMachineNames',
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
+        'properties' => 'properties',
         'allDependencies' => 'allDependencies',
         'entityTypeByMachineName' => 'entityTypeByMachineName',
         'translationRoot' => 'translationRoot',
@@ -166,13 +166,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUuid' => 'setRemoteUuid',
         'remoteUniqueId' => 'setRemoteUniqueId',
         'language' => 'setLanguage',
-        'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'appType' => 'setAppType',
         'embed' => 'setEmbed',
         'poolMachineNames' => 'setPoolMachineNames',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
+        'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
         'entityTypeByMachineName' => 'setEntityTypeByMachineName',
         'translationRoot' => 'setTranslationRoot',
@@ -192,13 +192,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUuid' => 'getRemoteUuid',
         'remoteUniqueId' => 'getRemoteUniqueId',
         'language' => 'getLanguage',
-        'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'appType' => 'getAppType',
         'embed' => 'getEmbed',
         'poolMachineNames' => 'getPoolMachineNames',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
+        'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
         'entityTypeByMachineName' => 'getEntityTypeByMachineName',
         'translationRoot' => 'getTranslationRoot',
@@ -268,13 +268,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
         $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
         $this->container['language'] = $data['language'] ?? null;
-        $this->container['properties'] = $data['properties'] ?? null;
         $this->container['directDependencies'] = $data['directDependencies'] ?? null;
         $this->container['appType'] = $data['appType'] ?? null;
         $this->container['embed'] = $data['embed'] ?? null;
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
         $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['properties'] = $data['properties'] ?? null;
         $this->container['allDependencies'] = $data['allDependencies'] ?? null;
         $this->container['entityTypeByMachineName'] = $data['entityTypeByMachineName'] ?? null;
         $this->container['translationRoot'] = $data['translationRoot'] ?? null;
@@ -293,14 +293,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     {
         $invalidProperties = [];
 
-        if (null === $this->container['remoteUuid']) {
-            $invalidProperties[] = "'remoteUuid' can't be null";
-        }
         if (null === $this->container['language']) {
             $invalidProperties[] = "'language' can't be null";
-        }
-        if (null === $this->container['properties']) {
-            $invalidProperties[] = "'properties' can't be null";
         }
         if (null === $this->container['appType']) {
             $invalidProperties[] = "'appType' can't be null";
@@ -310,6 +304,9 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         }
         if (null === $this->container['viewUrl']) {
             $invalidProperties[] = "'viewUrl' can't be null";
+        }
+        if (null === $this->container['properties']) {
+            $invalidProperties[] = "'properties' can't be null";
         }
         if (null === $this->container['entityTypeByMachineName']) {
             $invalidProperties[] = "'entityTypeByMachineName' can't be null";
@@ -359,7 +356,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets remoteUuid.
      *
-     * @return string
+     * @return string|null
      */
     public function getRemoteUuid()
     {
@@ -369,7 +366,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets remoteUuid.
      *
-     * @param string $remoteUuid remoteUuid
+     * @param string|null $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -424,30 +421,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setLanguage($language)
     {
         $this->container['language'] = $language;
-
-        return $this;
-    }
-
-    /**
-     * Gets properties.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
-     */
-    public function getProperties()
-    {
-        return $this->container['properties'];
-    }
-
-    /**
-     * Sets properties.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
-     *
-     * @return self
-     */
-    public function setProperties($properties)
-    {
-        $this->container['properties'] = $properties;
 
         return $this;
     }
@@ -592,6 +565,30 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets properties.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     */
+    public function getProperties()
+    {
+        return $this->container['properties'];
+    }
+
+    /**
+     * Sets properties.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $properties properties
+     *
+     * @return self
+     */
+    public function setProperties($properties)
+    {
+        $this->container['properties'] = $properties;
 
         return $this;
     }

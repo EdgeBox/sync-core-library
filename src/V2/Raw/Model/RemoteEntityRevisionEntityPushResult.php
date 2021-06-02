@@ -65,13 +65,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUuid' => 'string',
         'remoteUniqueId' => 'string',
         'language' => 'string',
-        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]',
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
+        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
         'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -99,13 +99,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUuid' => null,
         'remoteUniqueId' => null,
         'language' => null,
-        'properties' => null,
         'directDependencies' => null,
         'appType' => null,
         'embed' => null,
         'poolMachineNames' => null,
         'isTranslationRoot' => null,
         'viewUrl' => null,
+        'properties' => null,
         'allDependencies' => null,
         'entityType' => null,
         'entityTypeVersion' => null,
@@ -152,13 +152,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUuid' => 'remoteUuid',
         'remoteUniqueId' => 'remoteUniqueId',
         'language' => 'language',
-        'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'appType' => 'appType',
         'embed' => 'embed',
         'poolMachineNames' => 'poolMachineNames',
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
+        'properties' => 'properties',
         'allDependencies' => 'allDependencies',
         'entityType' => 'entityType',
         'entityTypeVersion' => 'entityTypeVersion',
@@ -184,13 +184,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUuid' => 'setRemoteUuid',
         'remoteUniqueId' => 'setRemoteUniqueId',
         'language' => 'setLanguage',
-        'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'appType' => 'setAppType',
         'embed' => 'setEmbed',
         'poolMachineNames' => 'setPoolMachineNames',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
+        'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
         'entityType' => 'setEntityType',
         'entityTypeVersion' => 'setEntityTypeVersion',
@@ -216,13 +216,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUuid' => 'getRemoteUuid',
         'remoteUniqueId' => 'getRemoteUniqueId',
         'language' => 'getLanguage',
-        'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'appType' => 'getAppType',
         'embed' => 'getEmbed',
         'poolMachineNames' => 'getPoolMachineNames',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
+        'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
         'entityType' => 'getEntityType',
         'entityTypeVersion' => 'getEntityTypeVersion',
@@ -298,13 +298,13 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
         $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
         $this->container['language'] = $data['language'] ?? null;
-        $this->container['properties'] = $data['properties'] ?? null;
         $this->container['directDependencies'] = $data['directDependencies'] ?? null;
         $this->container['appType'] = $data['appType'] ?? null;
         $this->container['embed'] = $data['embed'] ?? null;
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
         $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['properties'] = $data['properties'] ?? null;
         $this->container['allDependencies'] = $data['allDependencies'] ?? null;
         $this->container['entityType'] = $data['entityType'] ?? null;
         $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
@@ -329,14 +329,8 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     {
         $invalidProperties = [];
 
-        if (null === $this->container['remoteUuid']) {
-            $invalidProperties[] = "'remoteUuid' can't be null";
-        }
         if (null === $this->container['language']) {
             $invalidProperties[] = "'language' can't be null";
-        }
-        if (null === $this->container['properties']) {
-            $invalidProperties[] = "'properties' can't be null";
         }
         if (null === $this->container['appType']) {
             $invalidProperties[] = "'appType' can't be null";
@@ -346,6 +340,9 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         }
         if (null === $this->container['viewUrl']) {
             $invalidProperties[] = "'viewUrl' can't be null";
+        }
+        if (null === $this->container['properties']) {
+            $invalidProperties[] = "'properties' can't be null";
         }
         if (null === $this->container['entityType']) {
             $invalidProperties[] = "'entityType' can't be null";
@@ -413,7 +410,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets remoteUuid.
      *
-     * @return string
+     * @return string|null
      */
     public function getRemoteUuid()
     {
@@ -423,7 +420,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets remoteUuid.
      *
-     * @param string $remoteUuid remoteUuid
+     * @param string|null $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -478,30 +475,6 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setLanguage($language)
     {
         $this->container['language'] = $language;
-
-        return $this;
-    }
-
-    /**
-     * Gets properties.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
-     */
-    public function getProperties()
-    {
-        return $this->container['properties'];
-    }
-
-    /**
-     * Sets properties.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
-     *
-     * @return self
-     */
-    public function setProperties($properties)
-    {
-        $this->container['properties'] = $properties;
 
         return $this;
     }
@@ -646,6 +619,30 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets properties.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
+     */
+    public function getProperties()
+    {
+        return $this->container['properties'];
+    }
+
+    /**
+     * Sets properties.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
+     *
+     * @return self
+     */
+    public function setProperties($properties)
+    {
+        $this->container['properties'] = $properties;
 
         return $this;
     }

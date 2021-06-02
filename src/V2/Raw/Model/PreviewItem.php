@@ -63,10 +63,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity',
         'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity',
-        'lastPull' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity',
         'previewHtml' => 'string',
-        'localViewUrl' => 'string',
-        'sourceViewUrl' => 'string',
+        'localUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity',
+        'sourceUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity',
+        'lastPull' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity',
     ];
 
     /**
@@ -79,10 +79,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPIFormats = [
         'entity' => null,
         'entityTypeVersion' => null,
-        'lastPull' => null,
         'previewHtml' => null,
-        'localViewUrl' => null,
-        'sourceViewUrl' => null,
+        'localUsage' => null,
+        'sourceUsage' => null,
+        'lastPull' => null,
     ];
 
     /**
@@ -114,10 +114,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $attributeMap = [
         'entity' => 'entity',
         'entityTypeVersion' => 'entityTypeVersion',
-        'lastPull' => 'lastPull',
         'previewHtml' => 'previewHtml',
-        'localViewUrl' => 'localViewUrl',
-        'sourceViewUrl' => 'sourceViewUrl',
+        'localUsage' => 'localUsage',
+        'sourceUsage' => 'sourceUsage',
+        'lastPull' => 'lastPull',
     ];
 
     /**
@@ -128,10 +128,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $setters = [
         'entity' => 'setEntity',
         'entityTypeVersion' => 'setEntityTypeVersion',
-        'lastPull' => 'setLastPull',
         'previewHtml' => 'setPreviewHtml',
-        'localViewUrl' => 'setLocalViewUrl',
-        'sourceViewUrl' => 'setSourceViewUrl',
+        'localUsage' => 'setLocalUsage',
+        'sourceUsage' => 'setSourceUsage',
+        'lastPull' => 'setLastPull',
     ];
 
     /**
@@ -142,10 +142,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $getters = [
         'entity' => 'getEntity',
         'entityTypeVersion' => 'getEntityTypeVersion',
-        'lastPull' => 'getLastPull',
         'previewHtml' => 'getPreviewHtml',
-        'localViewUrl' => 'getLocalViewUrl',
-        'sourceViewUrl' => 'getSourceViewUrl',
+        'localUsage' => 'getLocalUsage',
+        'sourceUsage' => 'getSourceUsage',
+        'lastPull' => 'getLastPull',
     ];
 
     /**
@@ -206,10 +206,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $this->container['entity'] = $data['entity'] ?? null;
         $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
-        $this->container['lastPull'] = $data['lastPull'] ?? null;
         $this->container['previewHtml'] = $data['previewHtml'] ?? null;
-        $this->container['localViewUrl'] = $data['localViewUrl'] ?? null;
-        $this->container['sourceViewUrl'] = $data['sourceViewUrl'] ?? null;
+        $this->container['localUsage'] = $data['localUsage'] ?? null;
+        $this->container['sourceUsage'] = $data['sourceUsage'] ?? null;
+        $this->container['lastPull'] = $data['lastPull'] ?? null;
     }
 
     /**
@@ -227,8 +227,8 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
         if (null === $this->container['entityTypeVersion']) {
             $invalidProperties[] = "'entityTypeVersion' can't be null";
         }
-        if (null === $this->container['sourceViewUrl']) {
-            $invalidProperties[] = "'sourceViewUrl' can't be null";
+        if (null === $this->container['sourceUsage']) {
+            $invalidProperties[] = "'sourceUsage' can't be null";
         }
 
         return $invalidProperties;
@@ -294,30 +294,6 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets lastPull.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null
-     */
-    public function getLastPull()
-    {
-        return $this->container['lastPull'];
-    }
-
-    /**
-     * Sets lastPull.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null $lastPull lastPull
-     *
-     * @return self
-     */
-    public function setLastPull($lastPull)
-    {
-        $this->container['lastPull'] = $lastPull;
-
-        return $this;
-    }
-
-    /**
      * Gets previewHtml.
      *
      * @return string|null
@@ -342,49 +318,73 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets localViewUrl.
+     * Gets localUsage.
      *
-     * @return string|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity|null
      */
-    public function getLocalViewUrl()
+    public function getLocalUsage()
     {
-        return $this->container['localViewUrl'];
+        return $this->container['localUsage'];
     }
 
     /**
-     * Sets localViewUrl.
+     * Sets localUsage.
      *
-     * @param string|null $localViewUrl localViewUrl
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity|null $localUsage localUsage
      *
      * @return self
      */
-    public function setLocalViewUrl($localViewUrl)
+    public function setLocalUsage($localUsage)
     {
-        $this->container['localViewUrl'] = $localViewUrl;
+        $this->container['localUsage'] = $localUsage;
 
         return $this;
     }
 
     /**
-     * Gets sourceViewUrl.
+     * Gets sourceUsage.
      *
-     * @return string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
      */
-    public function getSourceViewUrl()
+    public function getSourceUsage()
     {
-        return $this->container['sourceViewUrl'];
+        return $this->container['sourceUsage'];
     }
 
     /**
-     * Sets sourceViewUrl.
+     * Sets sourceUsage.
      *
-     * @param string $sourceViewUrl sourceViewUrl
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity $sourceUsage sourceUsage
      *
      * @return self
      */
-    public function setSourceViewUrl($sourceViewUrl)
+    public function setSourceUsage($sourceUsage)
     {
-        $this->container['sourceViewUrl'] = $sourceViewUrl;
+        $this->container['sourceUsage'] = $sourceUsage;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastPull.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null
+     */
+    public function getLastPull()
+    {
+        return $this->container['lastPull'];
+    }
+
+    /**
+     * Sets lastPull.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null $lastPull lastPull
+     *
+     * @return self
+     */
+    public function setLastPull($lastPull)
+    {
+        $this->container['lastPull'] = $lastPull;
 
         return $this;
     }

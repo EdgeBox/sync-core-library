@@ -12,8 +12,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
-use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty;
-use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -424,13 +423,7 @@ class PushSingle implements IPushSingle
             }
         }
 
-        $newProperty = new RemoteEntityProperty();
-        // TODO: Sync Core: Assign this automatically based on the entity type version.
-        /**
-         * @var RemoteEntityTypePropertyType $type
-         */
-        $type = RemoteEntityTypePropertyType::OBJECT;
-        $newProperty->setType($type);
+        $newProperty = new RemoteEntityPropertyDraft();
         $newProperty->setName($name);
         $newProperty->setValue($value);
         $properties[] = $newProperty;

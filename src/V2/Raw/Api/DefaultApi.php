@@ -6046,6 +6046,10 @@ class DefaultApi
      * Operation previewsControllerList.
      *
      * @param string $flowMachineName                 flowMachineName (required)
+     * @param string $existsLocally                   existsLocally (optional)
+     * @param string $deletedLocally                  deletedLocally (optional)
+     * @param string $deleted                         deleted (optional)
+     * @param string $sourceSiteId                    sourceSiteId (optional)
      * @param string $entityTypeMachineNames          entityTypeMachineNames (optional)
      * @param string $entityTypeNamespaceMachineNames entityTypeNamespaceMachineNames (optional)
      * @param string $publishedLatest                 publishedLatest (optional)
@@ -6060,9 +6064,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse
      */
-    public function previewsControllerList($flowMachineName, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
+    public function previewsControllerList($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
     {
-        list($response) = $this->previewsControllerListWithHttpInfo($flowMachineName, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
+        list($response) = $this->previewsControllerListWithHttpInfo($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
 
         return $response;
     }
@@ -6071,6 +6075,10 @@ class DefaultApi
      * Operation previewsControllerListWithHttpInfo.
      *
      * @param string $flowMachineName                 (required)
+     * @param string $existsLocally                   (optional)
+     * @param string $deletedLocally                  (optional)
+     * @param string $deleted                         (optional)
+     * @param string $sourceSiteId                    (optional)
      * @param string $entityTypeMachineNames          (optional)
      * @param string $entityTypeNamespaceMachineNames (optional)
      * @param string $publishedLatest                 (optional)
@@ -6085,9 +6093,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function previewsControllerListWithHttpInfo($flowMachineName, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
+    public function previewsControllerListWithHttpInfo($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
     {
-        $request = $this->previewsControllerListRequest($flowMachineName, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
+        $request = $this->previewsControllerListRequest($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
 
         try {
             $options = $this->createHttpClientOption();
@@ -6149,6 +6157,10 @@ class DefaultApi
      * Operation previewsControllerListAsync.
      *
      * @param string $flowMachineName                 (required)
+     * @param string $existsLocally                   (optional)
+     * @param string $deletedLocally                  (optional)
+     * @param string $deleted                         (optional)
+     * @param string $sourceSiteId                    (optional)
      * @param string $entityTypeMachineNames          (optional)
      * @param string $entityTypeNamespaceMachineNames (optional)
      * @param string $publishedLatest                 (optional)
@@ -6162,9 +6174,9 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function previewsControllerListAsync($flowMachineName, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
+    public function previewsControllerListAsync($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
     {
-        return $this->previewsControllerListAsyncWithHttpInfo($flowMachineName, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search)
+        return $this->previewsControllerListAsyncWithHttpInfo($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -6176,6 +6188,10 @@ class DefaultApi
      * Operation previewsControllerListAsyncWithHttpInfo.
      *
      * @param string $flowMachineName                 (required)
+     * @param string $existsLocally                   (optional)
+     * @param string $deletedLocally                  (optional)
+     * @param string $deleted                         (optional)
+     * @param string $sourceSiteId                    (optional)
      * @param string $entityTypeMachineNames          (optional)
      * @param string $entityTypeNamespaceMachineNames (optional)
      * @param string $publishedLatest                 (optional)
@@ -6189,10 +6205,10 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function previewsControllerListAsyncWithHttpInfo($flowMachineName, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
+    public function previewsControllerListAsyncWithHttpInfo($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse';
-        $request = $this->previewsControllerListRequest($flowMachineName, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
+        $request = $this->previewsControllerListRequest($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -6222,6 +6238,10 @@ class DefaultApi
      * Create request for operation 'previewsControllerList'.
      *
      * @param string $flowMachineName                 (required)
+     * @param string $existsLocally                   (optional)
+     * @param string $deletedLocally                  (optional)
+     * @param string $deleted                         (optional)
+     * @param string $sourceSiteId                    (optional)
      * @param string $entityTypeMachineNames          (optional)
      * @param string $entityTypeNamespaceMachineNames (optional)
      * @param string $publishedLatest                 (optional)
@@ -6235,7 +6255,7 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function previewsControllerListRequest($flowMachineName, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
+    public function previewsControllerListRequest($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null)
     {
         // verify the required parameter 'flowMachineName' is set
         if (null === $flowMachineName || (is_array($flowMachineName) && 0 === count($flowMachineName))) {
@@ -6249,6 +6269,46 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        if (null !== $existsLocally) {
+            if ('form' === 'form' && is_array($existsLocally)) {
+                foreach ($existsLocally as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['existsLocally'] = $existsLocally;
+            }
+        }
+        // query params
+        if (null !== $deletedLocally) {
+            if ('form' === 'form' && is_array($deletedLocally)) {
+                foreach ($deletedLocally as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['deletedLocally'] = $deletedLocally;
+            }
+        }
+        // query params
+        if (null !== $deleted) {
+            if ('form' === 'form' && is_array($deleted)) {
+                foreach ($deleted as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['deleted'] = $deleted;
+            }
+        }
+        // query params
+        if (null !== $sourceSiteId) {
+            if ('form' === 'form' && is_array($sourceSiteId)) {
+                foreach ($sourceSiteId as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['sourceSiteId'] = $sourceSiteId;
+            }
+        }
         // query params
         if (null !== $entityTypeMachineNames) {
             if ('form' === 'form' && is_array($entityTypeMachineNames)) {
@@ -9528,6 +9588,242 @@ class DefaultApi
     }
 
     /**
+     * Operation remoteEntityUsageControllerItem.
+     *
+     * @param string $id id (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
+     */
+    public function remoteEntityUsageControllerItem($id)
+    {
+        list($response) = $this->remoteEntityUsageControllerItemWithHttpInfo($id);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityUsageControllerItemWithHttpInfo.
+     *
+     * @param string $id (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function remoteEntityUsageControllerItemWithHttpInfo($id)
+    {
+        $request = $this->remoteEntityUsageControllerItemRequest($id);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityUsageControllerItemAsync.
+     *
+     * @param string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function remoteEntityUsageControllerItemAsync($id)
+    {
+        return $this->remoteEntityUsageControllerItemAsyncWithHttpInfo($id)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation remoteEntityUsageControllerItemAsyncWithHttpInfo.
+     *
+     * @param string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function remoteEntityUsageControllerItemAsyncWithHttpInfo($id)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity';
+        $request = $this->remoteEntityUsageControllerItemRequest($id);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'remoteEntityUsageControllerItem'.
+     *
+     * @param string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function remoteEntityUsageControllerItemRequest($id)
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityUsageControllerItem');
+        }
+
+        $resourcePath = '/sync-core/remote-entity-usage/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation remoteEntityUsageControllerList.
      *
      * @param string $itemsPerPage   itemsPerPage (optional)
@@ -11550,17 +11846,17 @@ class DefaultApi
     /**
      * Operation syndicationControllerItem.
      *
-     * @param string $id             id (required)
-     * @param string $includeViewUrl includeViewUrl (optional)
+     * @param string $id           id (required)
+     * @param string $includeUsage includeUsage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
      */
-    public function syndicationControllerItem($id, $includeViewUrl = null)
+    public function syndicationControllerItem($id, $includeUsage = null)
     {
-        list($response) = $this->syndicationControllerItemWithHttpInfo($id, $includeViewUrl);
+        list($response) = $this->syndicationControllerItemWithHttpInfo($id, $includeUsage);
 
         return $response;
     }
@@ -11568,17 +11864,17 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemWithHttpInfo.
      *
-     * @param string $id             (required)
-     * @param string $includeViewUrl (optional)
+     * @param string $id           (required)
+     * @param string $includeUsage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerItemWithHttpInfo($id, $includeViewUrl = null)
+    public function syndicationControllerItemWithHttpInfo($id, $includeUsage = null)
     {
-        $request = $this->syndicationControllerItemRequest($id, $includeViewUrl);
+        $request = $this->syndicationControllerItemRequest($id, $includeUsage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -11596,20 +11892,20 @@ class DefaultApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl' === '\SplFileObject') {
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl', []),
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage', []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
             }
 
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl';
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage';
             if ('\SplFileObject' === $returnType) {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -11626,7 +11922,7 @@ class DefaultApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl',
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -11639,16 +11935,16 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemAsync.
      *
-     * @param string $id             (required)
-     * @param string $includeViewUrl (optional)
+     * @param string $id           (required)
+     * @param string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerItemAsync($id, $includeViewUrl = null)
+    public function syndicationControllerItemAsync($id, $includeUsage = null)
     {
-        return $this->syndicationControllerItemAsyncWithHttpInfo($id, $includeViewUrl)
+        return $this->syndicationControllerItemAsyncWithHttpInfo($id, $includeUsage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -11659,17 +11955,17 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id             (required)
-     * @param string $includeViewUrl (optional)
+     * @param string $id           (required)
+     * @param string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerItemAsyncWithHttpInfo($id, $includeViewUrl = null)
+    public function syndicationControllerItemAsyncWithHttpInfo($id, $includeUsage = null)
     {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithViewUrl';
-        $request = $this->syndicationControllerItemRequest($id, $includeViewUrl);
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage';
+        $request = $this->syndicationControllerItemRequest($id, $includeUsage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -11698,14 +11994,14 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerItem'.
      *
-     * @param string $id             (required)
-     * @param string $includeViewUrl (optional)
+     * @param string $id           (required)
+     * @param string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerItemRequest($id, $includeViewUrl = null)
+    public function syndicationControllerItemRequest($id, $includeUsage = null)
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
@@ -11720,13 +12016,13 @@ class DefaultApi
         $multipart = false;
 
         // query params
-        if (null !== $includeViewUrl) {
-            if ('form' === 'form' && is_array($includeViewUrl)) {
-                foreach ($includeViewUrl as $key => $value) {
+        if (null !== $includeUsage) {
+            if ('form' === 'form' && is_array($includeUsage)) {
+                foreach ($includeUsage as $key => $value) {
                     $queryParams[$key] = $value;
                 }
             } else {
-                $queryParams['includeViewUrl'] = $includeViewUrl;
+                $queryParams['includeUsage'] = $includeUsage;
             }
         }
 
@@ -11802,7 +12098,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerList.
      *
-     * @param string $includeViewUrl        includeViewUrl (optional)
+     * @param string $includeUsage          includeUsage (optional)
      * @param string $sourceSyndicationId   sourceSyndicationId (optional)
      * @param string $flowMachineNames      flowMachineNames (optional)
      * @param string $flowIds               flowIds (optional)
@@ -11822,9 +12118,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList
      */
-    public function syndicationControllerList($includeViewUrl = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerList($includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
     {
-        list($response) = $this->syndicationControllerListWithHttpInfo($includeViewUrl, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        list($response) = $this->syndicationControllerListWithHttpInfo($includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
 
         return $response;
     }
@@ -11832,7 +12128,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListWithHttpInfo.
      *
-     * @param string $includeViewUrl        (optional)
+     * @param string $includeUsage          (optional)
      * @param string $sourceSyndicationId   (optional)
      * @param string $flowMachineNames      (optional)
      * @param string $flowIds               (optional)
@@ -11852,9 +12148,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerListWithHttpInfo($includeViewUrl = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListWithHttpInfo($includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
     {
-        $request = $this->syndicationControllerListRequest($includeViewUrl, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        $request = $this->syndicationControllerListRequest($includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
 
         try {
             $options = $this->createHttpClientOption();
@@ -11915,7 +12211,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsync.
      *
-     * @param string $includeViewUrl        (optional)
+     * @param string $includeUsage          (optional)
      * @param string $sourceSyndicationId   (optional)
      * @param string $flowMachineNames      (optional)
      * @param string $flowIds               (optional)
@@ -11934,9 +12230,9 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsync($includeViewUrl = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListAsync($includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
     {
-        return $this->syndicationControllerListAsyncWithHttpInfo($includeViewUrl, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page)
+        return $this->syndicationControllerListAsyncWithHttpInfo($includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -11947,7 +12243,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsyncWithHttpInfo.
      *
-     * @param string $includeViewUrl        (optional)
+     * @param string $includeUsage          (optional)
      * @param string $sourceSyndicationId   (optional)
      * @param string $flowMachineNames      (optional)
      * @param string $flowIds               (optional)
@@ -11966,10 +12262,10 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsyncWithHttpInfo($includeViewUrl = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListAsyncWithHttpInfo($includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList';
-        $request = $this->syndicationControllerListRequest($includeViewUrl, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        $request = $this->syndicationControllerListRequest($includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -11998,7 +12294,7 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerList'.
      *
-     * @param string $includeViewUrl        (optional)
+     * @param string $includeUsage          (optional)
      * @param string $sourceSyndicationId   (optional)
      * @param string $flowMachineNames      (optional)
      * @param string $flowIds               (optional)
@@ -12017,7 +12313,7 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerListRequest($includeViewUrl = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListRequest($includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
     {
         $resourcePath = '/sync-core/syndication';
         $formParams = [];
@@ -12027,13 +12323,13 @@ class DefaultApi
         $multipart = false;
 
         // query params
-        if (null !== $includeViewUrl) {
-            if ('form' === 'form' && is_array($includeViewUrl)) {
-                foreach ($includeViewUrl as $key => $value) {
+        if (null !== $includeUsage) {
+            if ('form' === 'form' && is_array($includeUsage)) {
+                foreach ($includeUsage as $key => $value) {
                     $queryParams[$key] = $value;
                 }
             } else {
-                $queryParams['includeViewUrl'] = $includeViewUrl;
+                $queryParams['includeUsage'] = $includeUsage;
             }
         }
         // query params
