@@ -24,15 +24,20 @@ abstract class Embed
     protected $config;
 
     /**
+     * @var string
+     */
+    protected $permissions;
+
+    /**
      * Embed constructor.
      */
     public function __construct(SyncCore $core, string $embed_id, string $permissions)
     {
         $this->core = $core;
         $this->url = $this->core->getCloudEmbedUrl().'/'.$embed_id;
+        $this->permissions = $permissions;
 
         $this->config = [
-            'jwt' => $permissions ? $this->core->createJwt($permissions) : '',
             'syncCoreDomain' => $this->core->getSyncCoreDomain(),
             'baseUrl' => $this->core->getApplication()->getSiteBaseUrl(),
         ];
@@ -49,10 +54,15 @@ abstract class Embed
     {
         $options = $this->getOptions();
 
+        if($this->permissions) {
+          $this->config['jwt'] = $this->permissions ? $this->core->createJwt($this->permissions) : '';
+        }
+
         $html = '<style>
   #contentSyncEmbed {
     width: 1px;
     min-width: 100%;
+    min-height: 200px;
   }
 </style>
 <iframe id="contentSyncEmbed" src="'.$this->url.'" frameborder="0">
@@ -79,7 +89,18 @@ abstract class Embed
         window.location.reload();
       }
       else if(message.type==="register-site") {
-        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE).'";
+        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE). '";
+      }
+      else if(message.type==="migration-export-pools" || message.type==="migration-export-flows") {
+        var type = message.type==="migration-export-pools" ? "pools" : "flows";
+        jQuery(`.migration-form #edit-export-${type} input`).prop("checked", false);
+        for(var i=0; i<message.machineNames.length; i++) {
+          var machineName = message.machineNames[i];
+          jQuery(`.migration-form #edit-export-${type} input[value=${machineName}]`).prop("checked", true);
+        }
+        jQuery(`.migration-form #edit-action input`).prop("checked", false);
+        jQuery(`.migration-form #edit-action input[value=export-${type}]`).prop("checked", true);
+        jQuery(`.migration-form`).submit( );
       }
     },
   }, "#contentSyncEmbed");

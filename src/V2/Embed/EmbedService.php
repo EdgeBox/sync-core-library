@@ -51,4 +51,11 @@ class EmbedService implements IEmbedService
     {
         return new EntityStatus($this->core, $params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function migrate(array $params) {
+        return new MigrateEmbed($this->core, $params);
+    }
 }

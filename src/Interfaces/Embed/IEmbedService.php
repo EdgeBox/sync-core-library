@@ -8,6 +8,7 @@ interface IEmbedService
     public const PULL_DASHBOARD = 'pull-dashboard';
     public const SITE_REGISTERED = 'site-registered';
     public const ENTITY_STATUS = 'entity-status';
+    public const MIGRATE = 'migrate';
 
     /**
      * @return IEmbedFeature
@@ -28,4 +29,9 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function entityStatus(array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function migrate(array $params);
 }
