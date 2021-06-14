@@ -91,16 +91,17 @@ abstract class Embed
       else if(message.type==="register-site") {
         window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE). '";
       }
-      else if(message.type==="migration-export-pools" || message.type==="migration-export-flows") {
-        var type = message.type==="migration-export-pools" ? "pools" : "flows";
-        jQuery(`.migration-form #edit-export-${type} input`).prop("checked", false);
+      else if(message.type==="migration-export-pools" || message.type==="migration-export-flows" || message.type==="migration-skip-flows-test" || message.type==="migration-skip-flows-migration") {
+        var type = message.type.substr(10);
+        jQuery(`.migration-form #edit-${type} input`).prop("checked", false);
         for(var i=0; i<message.machineNames.length; i++) {
           var machineName = message.machineNames[i];
-          jQuery(`.migration-form #edit-export-${type} input[value=${machineName}]`).prop("checked", true);
+          jQuery(`.migration-form #edit-${type} input[value=${machineName}]`).prop("checked", true);
         }
         jQuery(`.migration-form #edit-action input`).prop("checked", false);
-        jQuery(`.migration-form #edit-action input[value=export-${type}]`).prop("checked", true);
-        jQuery(`.migration-form`).submit( );
+        jQuery(`.migration-form #edit-action input[value=${type}]`).prop("checked", true);
+        console.log(message);
+        jQuery(`.migration-form`).submit();
       }
     },
   }, "#contentSyncEmbed");
