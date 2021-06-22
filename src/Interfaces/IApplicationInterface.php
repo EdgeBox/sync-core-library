@@ -164,7 +164,7 @@ interface IApplicationInterface
      *
      * @return string
      */
-    public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action, string $shared_entity_id = null);
+    public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action);
 
     /**
      * @return string

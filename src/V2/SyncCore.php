@@ -357,8 +357,7 @@ class SyncCore implements ISyncCore
     {
         $relative = $this->application->getRelativeReferenceForRestCall(
         self::PLACEHOLDER_FLOW_MACHINE_NAME,
-        $action,
-        self::PLACEHOLDER_ENTITY_SHARED_ID
+        $action
     );
         if ('/' !== $relative[0]) {
             throw new InternalContentSyncError('Relative reference must start with a slash /.');
