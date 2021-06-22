@@ -261,6 +261,10 @@ class PullOperation implements IPullOperation
             throw new InternalContentSyncError("Embedded entity not found: ".$referenceDto->getEntityTypeNamespaceMachineName().".".$referenceDto->getEntityTypeMachineName()." ".$candidate->getRemoteUuid()." / ".$referenceDto->getRemoteUniqueId()." (".$referenceDto->getLanguage().")");
         }*/
 
+        /**
+         * @var \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed $embed
+         */
+
         return new PullOperationEmbed($this->core, $referenceDto, $this, $embedIndex, $embed);
     }
 

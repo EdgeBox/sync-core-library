@@ -5,16 +5,16 @@ namespace EdgeBox\SyncCore\V2\Embed;
 use EdgeBox\SyncCore\Helpers\EmbedResult;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class RegisterSiteEmbed extends Embed implements IEmbedFeature
 {
     protected $params;
 
-    public function __construct(SyncCore $core, array $params, string $type='')
+    public function __construct(SyncCore $core, array $params, string $type = '')
     {
         $this->params = $params;
 
@@ -27,7 +27,8 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
     );
     }
 
-    protected function shouldRegisterSite() {
+    protected function shouldRegisterSite()
+    {
         return !empty($this->params['jwt']);
     }
 
@@ -61,7 +62,7 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         $siteDto->setName($application->getSiteName());
 
         $uuid = $application->getSiteUuid();
-        if($uuid) {
+        if ($uuid) {
             $siteDto->setUuid($uuid);
         }
 

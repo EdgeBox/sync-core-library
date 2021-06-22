@@ -119,9 +119,6 @@ class ReportingService implements IReportingService
                     'monthly' => [
                         'updateCount' => $response->getSiteMonthly(),
                     ],
-                    'daily' => [
-                        'updateCount' => $response->getSiteDaily(),
-                    ],
                     'hourly' => [
                         'updateCount' => $response->getSiteHourly(),
                     ],

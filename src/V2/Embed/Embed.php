@@ -54,8 +54,8 @@ abstract class Embed
     {
         $options = $this->getOptions();
 
-        if($this->permissions) {
-          $this->config['jwt'] = $this->permissions ? $this->core->createJwt($this->permissions) : '';
+        if ($this->permissions) {
+            $this->config['jwt'] = $this->permissions ? $this->core->createJwt($this->permissions) : '';
         }
 
         $html = '<style>
@@ -89,7 +89,7 @@ abstract class Embed
         window.location.reload();
       }
       else if(message.type==="register-site") {
-        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE). '";
+        window.location.href = "'.$this->core->getApplication()->getEmbedBaseUrl(IEmbedService::REGISTER_SITE).'";
       }
       else if(message.type==="migration-export-pools" || message.type==="migration-export-flows" || message.type==="migration-skip-flows-test" || message.type==="migration-skip-flows-push" || message.type==="migration-skip-flows-pull" || message.type==="migration-switch") {
         var type = message.type.substr(10);

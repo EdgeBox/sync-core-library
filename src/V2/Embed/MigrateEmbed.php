@@ -2,9 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
-use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class MigrateEmbed extends RegisterSiteEmbed
@@ -20,7 +18,8 @@ class MigrateEmbed extends RegisterSiteEmbed
         );
     }
 
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             'site' => parent::getOptions(),
             'pools' => $this->params['pools'],
