@@ -33,7 +33,7 @@ class EmbedService implements IEmbedService
      */
     public function siteRegistered(?array $params)
     {
-        return new SiteRegisteredEmbed($this->core);
+        return new SiteRegisteredEmbed($this->core, $params);
     }
 
     /**

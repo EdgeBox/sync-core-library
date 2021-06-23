@@ -9,13 +9,22 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 class SiteRegisteredEmbed extends Embed implements IEmbedFeature
 {
-    public function __construct(SyncCore $core)
+    protected $params;
+
+    public function __construct(SyncCore $core, ?array $params)
     {
         parent::__construct(
         $core,
             IEmbedService::SITE_REGISTERED,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
     );
+
+        $this->params = $params;
+    }
+
+    protected function getOptions()
+    {
+        return $this->params ?? [];
     }
 
     public function run()
