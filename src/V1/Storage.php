@@ -37,6 +37,11 @@ class Storage {
   }
 
   /**
+   * @var array
+   */
+  protected $cache = [];
+
+  /**
    * @param string $type
    *
    * @return \EdgeBox\SyncCore\V1\Storage\Storage
@@ -79,99 +84,90 @@ class Storage {
    * @return \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage
    */
   public function getMetaInformationConnectionStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[MetaInformationConnectionStorage::ID])) {
+      return $this->cache[MetaInformationConnectionStorage::ID];
     }
-    return $cache = new MetaInformationConnectionStorage($this->core);
+    return $this->cache[MetaInformationConnectionStorage::ID] = new MetaInformationConnectionStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\ConnectionStorage
    */
   public function getConnectionStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[ConnectionStorage::ID])) {
+      return $this->cache[ConnectionStorage::ID];
     }
-    return $cache = new ConnectionStorage($this->core);
+    return $this->cache[ConnectionStorage::ID] = new ConnectionStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\EntityTypeStorage
    */
   public function getEntityTypeStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[EntityTypeStorage::ID])) {
+      return $this->cache[EntityTypeStorage::ID];
     }
-    return $cache = new EntityTypeStorage($this->core);
+    return $this->cache[EntityTypeStorage::ID] = new EntityTypeStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage
    */
   public function getConnectionSynchronizationStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[ConnectionSynchronizationStorage::ID])) {
+      return $this->cache[ConnectionSynchronizationStorage::ID];
     }
-    return $cache = new ConnectionSynchronizationStorage($this->core);
+    return $this->cache[ConnectionSynchronizationStorage::ID] = new ConnectionSynchronizationStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\PreviewEntityStorage
    */
   public function getPreviewEntityStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[PreviewEntityStorage::ID])) {
+      return $this->cache[PreviewEntityStorage::ID];
     }
-    return $cache = new PreviewEntityStorage($this->core);
+    return $this->cache[PreviewEntityStorage::ID] = new PreviewEntityStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\InstanceStorage
    */
   public function getInstanceStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[InstanceStorage::ID])) {
+      return $this->cache[InstanceStorage::ID];
     }
-    return $cache = new InstanceStorage($this->core);
+    return $this->cache[InstanceStorage::ID] = new InstanceStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\ApiStorage
    */
   public function getApiStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[ApiStorage::ID])) {
+      return $this->cache[ApiStorage::ID];
     }
-    return $cache = new ApiStorage($this->core);
+    return $this->cache[ApiStorage::ID] = new ApiStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\ObjectStorage
    */
   public function getObjectStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[ObjectStorage::ID])) {
+      return $this->cache[ObjectStorage::ID];
     }
-    return $cache = new ObjectStorage($this->core);
+    return $this->cache[ObjectStorage::ID] = new ObjectStorage($this->core);
   }
 
   /**
    * @return \EdgeBox\SyncCore\V1\Storage\RemoteStorageStorage
    */
   public function getRemoteStorage() {
-    static $cache;
-    if (!empty($cache)) {
-      return $cache;
+    if (!empty($this->cache[RemoteStorageStorage::ID])) {
+      return $this->cache[RemoteStorageStorage::ID];
     }
-    return $cache = new RemoteStorageStorage($this->core);
+    return $this->cache[RemoteStorageStorage::ID] = new RemoteStorageStorage($this->core);
   }
 
   /**
@@ -183,13 +179,11 @@ class Storage {
    * @return \EdgeBox\SyncCore\V1\Storage\CustomStorage
    */
   public function getCustomStorage($api_id, $site_id, $entity_type_name, $bundle_name) {
-    static $cache;
-
-    if (!empty($cache[$api_id][$site_id][$entity_type_name][$bundle_name])) {
-      return $cache[$api_id][$site_id][$entity_type_name][$bundle_name];
+    if (!empty($this->cache['custom'][$api_id][$site_id][$entity_type_name][$bundle_name])) {
+      return $this->cache['custom'][$api_id][$site_id][$entity_type_name][$bundle_name];
     }
 
-    return $cache[$api_id][$site_id][$entity_type_name][$bundle_name] = new CustomStorage(
+    return $this->cache['custom'][$api_id][$site_id][$entity_type_name][$bundle_name] = new CustomStorage(
       $this->core,
       $api_id,
       $site_id,

@@ -77,37 +77,38 @@ class SyncCore implements ISyncCore {
     return $instances[$base_url] = new SyncCore($application, $base_url);
   }
 
+  protected $services = [];
+
   /**
    * @inheritdoc
    */
   public function getReportingService() {
-    static $cache = NULL;
-    if ($cache) {
-      return $cache;
+    if (!empty($this->services['reporting'])) {
+      return $this->services['reporting'];
     }
-    return $cache = new ReportingService($this);
+    return $this->services['reporting'] = new ReportingService($this);
   }
 
   /**
    * @inheritdoc
    */
-  public function getSyndicationService() {
-    static $cache = NULL;
-    if ($cache) {
-      return $cache;
+  public function getSyndicationService()
+  {
+    if (!empty($this->services['syndication'])) {
+      return $this->services['syndication'];
     }
-    return $cache = new SyndicationService($this);
+    return $this->services['syndication'] = new SyndicationService($this);
   }
 
   /**
    * @inheritdoc
    */
-  public function getConfigurationService() {
-    static $cache = NULL;
-    if ($cache) {
-      return $cache;
+  public function getConfigurationService()
+  {
+    if (!empty($this->services['configuration'])) {
+      return $this->services['configuration'];
     }
-    return $cache = new ConfigurationService($this);
+    return $this->services['configuration'] = new ConfigurationService($this);
   }
 
   /**
