@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class PullOperationEmbed implements IEntityReference
@@ -22,7 +23,7 @@ class PullOperationEmbed implements IEntityReference
      */
     protected $pullOperation;
     /**
-     * @var RemoteEntityEmbed|null
+     * @var RemoteEntityEmbed|RemoteEntityEmbedDraft|null
      */
     protected $embed;
     /**
@@ -33,7 +34,7 @@ class PullOperationEmbed implements IEntityReference
     /**
      * constructor.
      */
-    public function __construct(SyncCore $core, RemoteEntityDependency $dto, PullOperation $pullOperation, ?int $embedIndex, ?RemoteEntityEmbed $embed = null)
+    public function __construct(SyncCore $core, RemoteEntityDependency $dto, PullOperation $pullOperation, ?int $embedIndex, $embed = null)
     {
         $this->core = $core;
         $this->dto = $dto;

@@ -10,6 +10,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -47,7 +48,7 @@ class PullOperation implements IPullOperation
     /**
      * PushSingle constructor.
      *
-     * @param RemoteEntityEmbed|array $body
+     * @param RemoteEntityEmbed|RemoteEntityEmbedDraft|array $body
      */
     public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation = null)
     {
@@ -58,7 +59,7 @@ class PullOperation implements IPullOperation
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
             $this->dto = ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
-        } elseif ($body instanceof RemoteEntityEmbed) {
+        } elseif ($body instanceof RemoteEntityEmbed || $body instanceof RemoteEntityEmbedDraft) {
             $this->dto = $body;
             $this->parentPullOperation = $parentPullOperation;
         } else {
@@ -112,7 +113,7 @@ class PullOperation implements IPullOperation
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeNamespaceMachineName();
-        } elseif ($this->dto instanceof RemoteEntityEmbed) {
+        } elseif ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
 
@@ -126,7 +127,7 @@ class PullOperation implements IPullOperation
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeMachineName();
-        } elseif ($this->dto instanceof RemoteEntityEmbed) {
+        } elseif ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
             return $this->dto->getEntityTypeMachineName();
         }
 
@@ -262,7 +263,7 @@ class PullOperation implements IPullOperation
         }*/
 
         /**
-         * @var \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed $embed
+         * @var RemoteEntityEmbed|RemoteEntityEmbedDraft $embed
          */
 
         return new PullOperationEmbed($this->core, $referenceDto, $this, $embedIndex, $embed);
