@@ -100,7 +100,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         /**
          * @var FileEntity $file
          */
-        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         if (empty($file->getDownloadUrl())) {
             return null;

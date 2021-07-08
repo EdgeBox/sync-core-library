@@ -76,9 +76,11 @@ class ConfigurationService implements IConfigurationService
       ->getClient()
       ->poolControllerListRequest();
 
-        $remote_pools = $this
+        $response = $this
       ->core
       ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+      $remote_pools = json_decode($response, TRUE);
 
         $options = [];
         foreach ($remote_pools as $option) {
