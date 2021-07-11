@@ -80,7 +80,7 @@ class ConfigurationService implements IConfigurationService
       ->core
       ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
-      $remote_pools = json_decode($response, TRUE);
+        $remote_pools = json_decode($response, true);
 
         $options = [];
         foreach ($remote_pools as $option) {
@@ -105,6 +105,26 @@ class ConfigurationService implements IConfigurationService
     public function enableEntityPreviews($public_access_possible = false)
     {
         // Not configurable by sites in the new Sync Core.
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function deleteFlows(array $keep_machine_names)
+    {
+        $dto = new \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest();
+        $dto->setKeepFlowMachineNames($keep_machine_names);
+
+        $request = $this
+        ->core
+        ->getClient()
+        ->flowControllerDeleteRequest($dto);
+
+        $this
+        ->core
+        ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * DynamicReference.
+ * FlowDeleteRequest.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * DynamicReference Class Doc Comment.
+ * FlowDeleteRequest Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
+class FlowDeleteRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'DynamicReference';
+    protected static $openAPIModelName = 'FlowDeleteRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,7 +61,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'id' => 'string',
+        'keepFlowMachineNames' => 'string[]',
     ];
 
     /**
@@ -72,7 +72,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'id' => null,
+        'keepFlowMachineNames' => null,
     ];
 
     /**
@@ -102,7 +102,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
+        'keepFlowMachineNames' => 'keepFlowMachineNames',
     ];
 
     /**
@@ -111,7 +111,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
+        'keepFlowMachineNames' => 'setKeepFlowMachineNames',
     ];
 
     /**
@@ -120,7 +120,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
+        'keepFlowMachineNames' => 'getKeepFlowMachineNames',
     ];
 
     /**
@@ -179,7 +179,7 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['id'] = $data['id'] ?? null;
+        $this->container['keepFlowMachineNames'] = $data['keepFlowMachineNames'] ?? null;
     }
 
     /**
@@ -191,8 +191,8 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['id']) {
-            $invalidProperties[] = "'id' can't be null";
+        if (null === $this->container['keepFlowMachineNames']) {
+            $invalidProperties[] = "'keepFlowMachineNames' can't be null";
         }
 
         return $invalidProperties;
@@ -210,25 +210,25 @@ class DynamicReference implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets id.
+     * Gets keepFlowMachineNames.
      *
-     * @return string
+     * @return string[]
      */
-    public function getId()
+    public function getKeepFlowMachineNames()
     {
-        return $this->container['id'];
+        return $this->container['keepFlowMachineNames'];
     }
 
     /**
-     * Sets id.
+     * Sets keepFlowMachineNames.
      *
-     * @param string $id id
+     * @param string[] $keepFlowMachineNames keepFlowMachineNames
      *
      * @return self
      */
-    public function setId($id)
+    public function setKeepFlowMachineNames($keepFlowMachineNames)
     {
-        $this->container['id'] = $id;
+        $this->container['keepFlowMachineNames'] = $keepFlowMachineNames;
 
         return $this;
     }

@@ -207,4 +207,12 @@ class ConfigurationService implements IConfigurationService
 
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function deleteFlows(array $keep_machine_names)
+    {
+        return $this;
+    }
 }

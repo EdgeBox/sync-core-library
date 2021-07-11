@@ -22,7 +22,7 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var DeleteRemoteEntityRevisionDto|CreateRemoteEntityRevisionDto|RemoteEntityEmbed
+     * @var DeleteRemoteEntityRevisionDto|CreateRemoteEntityRevisionDto|RemoteEntityEmbed|RemoteEntityEmbedDraft
      */
     protected $dto;
 

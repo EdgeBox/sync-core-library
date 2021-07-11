@@ -1,6 +1,6 @@
 <?php
 /**
- * EntityRemoteStatus.
+ * FlowStatus.
  *
  * PHP version 7.2
  *
@@ -30,7 +30,7 @@
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
 /**
- * EntityRemoteStatus Class Doc Comment.
+ * FlowStatus Class Doc Comment.
  *
  * @category Class
  *
@@ -38,15 +38,13 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
  *
  * @see     https://openapi-generator.tech
  */
-class EntityRemoteStatus
+class FlowStatus
 {
     /**
      * Possible values of this enum.
      */
-    public const EXISTS = 'exists';
-    public const LOCAL_DELETION = 'local-deletion';
-    public const SYNDICATED_DELETION = 'syndicated-deletion';
-    public const FILTER_DELETION = 'filter-deletion';
+    public const _100_ACTIVE = '100-active';
+    public const _200_INACTIVE = '200-inactive';
 
     /**
      * Gets allowable values of the enum.
@@ -56,10 +54,8 @@ class EntityRemoteStatus
     public static function getAllowableEnumValues()
     {
         return [
-            self::EXISTS,
-            self::LOCAL_DELETION,
-            self::SYNDICATED_DELETION,
-            self::FILTER_DELETION,
+            self::_100_ACTIVE,
+            self::_200_INACTIVE,
         ];
     }
 }
