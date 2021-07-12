@@ -69,6 +69,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'downloadUrl' => 'string',
         'mimeType' => 'string',
         'fileSize' => 'float',
+        'maxFileSize' => 'float',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FileStatus',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -96,6 +97,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'downloadUrl' => null,
         'mimeType' => null,
         'fileSize' => null,
+        'maxFileSize' => null,
         'status' => null,
         'customer' => null,
         'site' => null,
@@ -142,6 +144,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'downloadUrl' => 'downloadUrl',
         'mimeType' => 'mimeType',
         'fileSize' => 'fileSize',
+        'maxFileSize' => 'maxFileSize',
         'status' => 'status',
         'customer' => 'customer',
         'site' => 'site',
@@ -167,6 +170,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'downloadUrl' => 'setDownloadUrl',
         'mimeType' => 'setMimeType',
         'fileSize' => 'setFileSize',
+        'maxFileSize' => 'setMaxFileSize',
         'status' => 'setStatus',
         'customer' => 'setCustomer',
         'site' => 'setSite',
@@ -192,6 +196,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'downloadUrl' => 'getDownloadUrl',
         'mimeType' => 'getMimeType',
         'fileSize' => 'getFileSize',
+        'maxFileSize' => 'getMaxFileSize',
         'status' => 'getStatus',
         'customer' => 'getCustomer',
         'site' => 'getSite',
@@ -267,6 +272,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['downloadUrl'] = $data['downloadUrl'] ?? null;
         $this->container['mimeType'] = $data['mimeType'] ?? null;
         $this->container['fileSize'] = $data['fileSize'] ?? null;
+        $this->container['maxFileSize'] = $data['maxFileSize'] ?? null;
         $this->container['status'] = $data['status'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
         $this->container['site'] = $data['site'] ?? null;
@@ -523,6 +529,30 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setFileSize($fileSize)
     {
         $this->container['fileSize'] = $fileSize;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxFileSize.
+     *
+     * @return float|null
+     */
+    public function getMaxFileSize()
+    {
+        return $this->container['maxFileSize'];
+    }
+
+    /**
+     * Sets maxFileSize.
+     *
+     * @param float|null $maxFileSize maxFileSize
+     *
+     * @return self
+     */
+    public function setMaxFileSize($maxFileSize)
+    {
+        $this->container['maxFileSize'] = $maxFileSize;
 
         return $this;
     }

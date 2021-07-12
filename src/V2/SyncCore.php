@@ -22,6 +22,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
@@ -163,6 +164,26 @@ class SyncCore implements ISyncCore
 
         if (!$file->getUploadUrl()) {
             throw new InternalContentSyncError('File has no upload URL.');
+        }
+
+        $max_size = $file->getMaxFileSize();
+        if($max_size && strlen($content)>$max_size) {
+            if($max_size<1024) {
+                $max_size_human_friendly = $max_size." Bytes";
+            } elseif ($max_size < 1024*1024) {
+                $max_size_human_friendly = round($max_size/1024) . " KB";
+            } elseif ($max_size < 1024 * 1024 * 1024) {
+                $max_size_human_friendly = round($max_size / 1024 / 1024) . " MB";
+            }
+            else {
+                $max_size_human_friendly = round($max_size / 1024 / 1024 / 1024) . " GB";
+            }
+            if($file->getType() == FileType::ENTITY_PREVIEW) {
+                throw new BadRequestException("Preview exceeds max size of $max_size_human_friendly.");
+            } elseif ($file->getType() == FileType::REMOTE_FLOW_CONFIG) {
+                throw new BadRequestException("Flow config exceeds max size of $max_size_human_friendly.");
+            }
+            throw new BadRequestException("File $file_name exceeds upload limit of $max_size_human_friendly.");
         }
 
         $httpBody = new MultipartStream([

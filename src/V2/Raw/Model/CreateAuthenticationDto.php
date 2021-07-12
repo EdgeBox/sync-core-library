@@ -64,6 +64,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
         'username' => 'string',
         'password' => 'string',
+        'sessionLifespanInSeconds' => 'float',
     ];
 
     /**
@@ -77,6 +78,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => null,
         'username' => null,
         'password' => null,
+        'sessionLifespanInSeconds' => null,
     ];
 
     /**
@@ -109,6 +111,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => 'type',
         'username' => 'username',
         'password' => 'password',
+        'sessionLifespanInSeconds' => 'sessionLifespanInSeconds',
     ];
 
     /**
@@ -120,6 +123,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => 'setType',
         'username' => 'setUsername',
         'password' => 'setPassword',
+        'sessionLifespanInSeconds' => 'setSessionLifespanInSeconds',
     ];
 
     /**
@@ -131,6 +135,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => 'getType',
         'username' => 'getUsername',
         'password' => 'getPassword',
+        'sessionLifespanInSeconds' => 'getSessionLifespanInSeconds',
     ];
 
     /**
@@ -192,6 +197,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         $this->container['type'] = $data['type'] ?? null;
         $this->container['username'] = $data['username'] ?? null;
         $this->container['password'] = $data['password'] ?? null;
+        $this->container['sessionLifespanInSeconds'] = $data['sessionLifespanInSeconds'] ?? null;
     }
 
     /**
@@ -295,6 +301,30 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     public function setPassword($password)
     {
         $this->container['password'] = $password;
+
+        return $this;
+    }
+
+    /**
+     * Gets sessionLifespanInSeconds.
+     *
+     * @return float|null
+     */
+    public function getSessionLifespanInSeconds()
+    {
+        return $this->container['sessionLifespanInSeconds'];
+    }
+
+    /**
+     * Sets sessionLifespanInSeconds.
+     *
+     * @param float|null $sessionLifespanInSeconds sessionLifespanInSeconds
+     *
+     * @return self
+     */
+    public function setSessionLifespanInSeconds($sessionLifespanInSeconds)
+    {
+        $this->container['sessionLifespanInSeconds'] = $sessionLifespanInSeconds;
 
         return $this;
     }
