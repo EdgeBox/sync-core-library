@@ -22,6 +22,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
@@ -136,6 +137,8 @@ class SyncCore implements ISyncCore
      * @param string $type
      * @param string $file_name
      * @param string $content
+     * @param bool $avoid_duplicates if set, the file hash will be sentand if an identical file already exists, it will not be uploaded again
+     * @param bool $is_configuration what permissions to set
      *
      * @return FileEntity
      *
@@ -145,12 +148,26 @@ class SyncCore implements ISyncCore
      * @throws SyncCoreException
      * @throws TimeoutException
      */
-    public function sendFile($type, $file_name, $content, $is_configuration = false)
+    public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false)
     {
-        $fileDto = new CreateFileDto([
-            'type' => $type,
-            'fileName' => $file_name,
-        ]);
+        $fileDto = new CreateFileDto();
+
+        /**
+         * @var float $file_size
+         */
+        $file_size = strlen($content);
+
+        /**
+         * @var FileType $type
+         */
+        $fileDto->setType($type);
+        $fileDto->setFileName($file_name);
+        $fileDto->setFileSize($file_size);
+
+        if ($avoid_duplicates) {
+            $hash = hash('sha1', $content);
+            $fileDto->setHash($hash);
+        }
 
         $permissions = $is_configuration
             ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
@@ -162,25 +179,34 @@ class SyncCore implements ISyncCore
          */
         $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
 
-        if (!$file->getUploadUrl()) {
-            throw new InternalContentSyncError('File has no upload URL.');
+        $upload_url = $file->getUploadUrl();
+        /**
+         * @var string $status
+         */
+        $status = $file->getStatus();
+        if (!$upload_url || FileStatus::_400_READY === $status) {
+            if (!$avoid_duplicates) {
+                throw new InternalContentSyncError('File has no upload URL.');
+            }
+
+            // File already exists and can be re-used immediately.
+            return $file;
         }
 
         $max_size = $file->getMaxFileSize();
-        if($max_size && strlen($content)>$max_size) {
-            if($max_size<1024) {
-                $max_size_human_friendly = $max_size." Bytes";
-            } elseif ($max_size < 1024*1024) {
-                $max_size_human_friendly = round($max_size/1024) . " KB";
+        if ($max_size && $file_size > $max_size) {
+            if ($max_size < 1024) {
+                $max_size_human_friendly = $max_size.' Bytes';
+            } elseif ($max_size < 1024 * 1024) {
+                $max_size_human_friendly = round($max_size / 1024).' KB';
             } elseif ($max_size < 1024 * 1024 * 1024) {
-                $max_size_human_friendly = round($max_size / 1024 / 1024) . " MB";
+                $max_size_human_friendly = round($max_size / 1024 / 1024).' MB';
+            } else {
+                $max_size_human_friendly = round($max_size / 1024 / 1024 / 1024).' GB';
             }
-            else {
-                $max_size_human_friendly = round($max_size / 1024 / 1024 / 1024) . " GB";
-            }
-            if($file->getType() == FileType::ENTITY_PREVIEW) {
+            if (FileType::ENTITY_PREVIEW == $file->getType()) {
                 throw new BadRequestException("Preview exceeds max size of $max_size_human_friendly.");
-            } elseif ($file->getType() == FileType::REMOTE_FLOW_CONFIG) {
+            } elseif (FileType::REMOTE_FLOW_CONFIG == $file->getType()) {
                 throw new BadRequestException("Flow config exceeds max size of $max_size_human_friendly.");
             }
             throw new BadRequestException("File $file_name exceeds upload limit of $max_size_human_friendly.");
@@ -194,7 +220,6 @@ class SyncCore implements ISyncCore
                 'filename' => $file_name,
             ],
         ]);
-        $upload_url = $file->getUploadUrl();
         $request = new Request('PUT', $upload_url,
             [], $httpBody);
         $this->sendRaw($request);

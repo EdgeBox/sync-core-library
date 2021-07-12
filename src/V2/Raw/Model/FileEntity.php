@@ -65,6 +65,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
+        'hash' => 'string',
         'uploadUrl' => 'string',
         'downloadUrl' => 'string',
         'mimeType' => 'string',
@@ -93,6 +94,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => null,
         'remoteFilePath' => null,
         'remoteDownloadUrl' => null,
+        'hash' => null,
         'uploadUrl' => null,
         'downloadUrl' => null,
         'mimeType' => null,
@@ -140,6 +142,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'fileName',
         'remoteFilePath' => 'remoteFilePath',
         'remoteDownloadUrl' => 'remoteDownloadUrl',
+        'hash' => 'hash',
         'uploadUrl' => 'uploadUrl',
         'downloadUrl' => 'downloadUrl',
         'mimeType' => 'mimeType',
@@ -166,6 +169,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'setFileName',
         'remoteFilePath' => 'setRemoteFilePath',
         'remoteDownloadUrl' => 'setRemoteDownloadUrl',
+        'hash' => 'setHash',
         'uploadUrl' => 'setUploadUrl',
         'downloadUrl' => 'setDownloadUrl',
         'mimeType' => 'setMimeType',
@@ -192,6 +196,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'getFileName',
         'remoteFilePath' => 'getRemoteFilePath',
         'remoteDownloadUrl' => 'getRemoteDownloadUrl',
+        'hash' => 'getHash',
         'uploadUrl' => 'getUploadUrl',
         'downloadUrl' => 'getDownloadUrl',
         'mimeType' => 'getMimeType',
@@ -268,6 +273,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['fileName'] = $data['fileName'] ?? null;
         $this->container['remoteFilePath'] = $data['remoteFilePath'] ?? null;
         $this->container['remoteDownloadUrl'] = $data['remoteDownloadUrl'] ?? null;
+        $this->container['hash'] = $data['hash'] ?? null;
         $this->container['uploadUrl'] = $data['uploadUrl'] ?? null;
         $this->container['downloadUrl'] = $data['downloadUrl'] ?? null;
         $this->container['mimeType'] = $data['mimeType'] ?? null;
@@ -433,6 +439,30 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteDownloadUrl($remoteDownloadUrl)
     {
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets hash.
+     *
+     * @return string|null
+     */
+    public function getHash()
+    {
+        return $this->container['hash'];
+    }
+
+    /**
+     * Sets hash.
+     *
+     * @param string|null $hash hash
+     *
+     * @return self
+     */
+    public function setHash($hash)
+    {
+        $this->container['hash'] = $hash;
 
         return $this;
     }

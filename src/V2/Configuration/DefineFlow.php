@@ -58,6 +58,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
                 FileType::REMOTE_FLOW_CONFIG,
                 $machine_name.'.yml',
                 $config,
+                false,
                 true
             );
             $dto->setRemoteConfigFileId($file->getId());

@@ -65,6 +65,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
+        'hash' => 'string',
+        'fileSize' => 'float',
     ];
 
     /**
@@ -79,6 +81,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => null,
         'remoteFilePath' => null,
         'remoteDownloadUrl' => null,
+        'hash' => null,
+        'fileSize' => null,
     ];
 
     /**
@@ -112,6 +116,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'fileName',
         'remoteFilePath' => 'remoteFilePath',
         'remoteDownloadUrl' => 'remoteDownloadUrl',
+        'hash' => 'hash',
+        'fileSize' => 'fileSize',
     ];
 
     /**
@@ -124,6 +130,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'setFileName',
         'remoteFilePath' => 'setRemoteFilePath',
         'remoteDownloadUrl' => 'setRemoteDownloadUrl',
+        'hash' => 'setHash',
+        'fileSize' => 'setFileSize',
     ];
 
     /**
@@ -136,6 +144,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileName' => 'getFileName',
         'remoteFilePath' => 'getRemoteFilePath',
         'remoteDownloadUrl' => 'getRemoteDownloadUrl',
+        'hash' => 'getHash',
+        'fileSize' => 'getFileSize',
     ];
 
     /**
@@ -198,6 +208,8 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['fileName'] = $data['fileName'] ?? null;
         $this->container['remoteFilePath'] = $data['remoteFilePath'] ?? null;
         $this->container['remoteDownloadUrl'] = $data['remoteDownloadUrl'] ?? null;
+        $this->container['hash'] = $data['hash'] ?? null;
+        $this->container['fileSize'] = $data['fileSize'] ?? null;
     }
 
     /**
@@ -322,6 +334,54 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteDownloadUrl($remoteDownloadUrl)
     {
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets hash.
+     *
+     * @return string|null
+     */
+    public function getHash()
+    {
+        return $this->container['hash'];
+    }
+
+    /**
+     * Sets hash.
+     *
+     * @param string|null $hash hash
+     *
+     * @return self
+     */
+    public function setHash($hash)
+    {
+        $this->container['hash'] = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Gets fileSize.
+     *
+     * @return float|null
+     */
+    public function getFileSize()
+    {
+        return $this->container['fileSize'];
+    }
+
+    /**
+     * Sets fileSize.
+     *
+     * @param float|null $fileSize fileSize
+     *
+     * @return self
+     */
+    public function setFileSize($fileSize)
+    {
+        $this->container['fileSize'] = $fileSize;
 
         return $this;
     }
