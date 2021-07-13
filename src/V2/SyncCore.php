@@ -11,7 +11,6 @@ use EdgeBox\SyncCore\Exception\TimeoutException;
 use EdgeBox\SyncCore\Exception\UnauthorizedException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
-use EdgeBox\SyncCore\V1\Helper;
 use EdgeBox\SyncCore\V2\Configuration\ConfigurationService;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
 use EdgeBox\SyncCore\V2\Raw\Api\DefaultApi;
@@ -137,8 +136,8 @@ class SyncCore implements ISyncCore
      * @param string $type
      * @param string $file_name
      * @param string $content
-     * @param bool $avoid_duplicates if set, the file hash will be sentand if an identical file already exists, it will not be uploaded again
-     * @param bool $is_configuration what permissions to set
+     * @param bool   $avoid_duplicates if set, the file hash will be sentand if an identical file already exists, it will not be uploaded again
+     * @param bool   $is_configuration what permissions to set
      *
      * @return FileEntity
      *
@@ -195,21 +194,14 @@ class SyncCore implements ISyncCore
 
         $max_size = $file->getMaxFileSize();
         if ($max_size && $file_size > $max_size) {
-            if ($max_size < 1024) {
-                $max_size_human_friendly = $max_size.' Bytes';
-            } elseif ($max_size < 1024 * 1024) {
-                $max_size_human_friendly = round($max_size / 1024).' KB';
-            } elseif ($max_size < 1024 * 1024 * 1024) {
-                $max_size_human_friendly = round($max_size / 1024 / 1024).' MB';
-            } else {
-                $max_size_human_friendly = round($max_size / 1024 / 1024 / 1024).' GB';
-            }
+            $file_size_human_friendly = Helper::formatStorageSize($file_size, true);
+            $max_size_human_friendly = Helper::formatStorageSize($max_size);
             if (FileType::ENTITY_PREVIEW == $file->getType()) {
-                throw new BadRequestException("Preview exceeds max size of $max_size_human_friendly.");
+                throw new BadRequestException("Preview of $file_size_human_friendly exceeds max size of $max_size_human_friendly.");
             } elseif (FileType::REMOTE_FLOW_CONFIG == $file->getType()) {
-                throw new BadRequestException("Flow config exceeds max size of $max_size_human_friendly.");
+                throw new BadRequestException("Flow config of $file_size_human_friendly exceeds max size of $max_size_human_friendly.");
             }
-            throw new BadRequestException("File $file_name exceeds upload limit of $max_size_human_friendly.");
+            throw new BadRequestException("File $file_name with $file_size_human_friendly exceeds upload limit of $max_size_human_friendly.");
         }
 
         $httpBody = new MultipartStream([

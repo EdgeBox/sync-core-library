@@ -14,6 +14,30 @@ class Helper
         return (bool) preg_match('/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-([89ab])[a-f0-9]{3}-[a-f0-9]{12}/', $shared_entity_id);
     }
 
+    public static function formatStorageSize($size, $round_up = false)
+    {
+        if ($round_up) {
+            if ($size < 1024) {
+                return $size.' Bytes';
+            } elseif ($size < 1024 * 1024) {
+                return ceil($size / 1024).' KB';
+            } elseif ($size < 1024 * 1024 * 1024) {
+                return ceil($size / 1024 / 1024).' MB';
+            } else {
+                return ceil($size / 1024 / 1024 / 1024).' GB';
+            }
+        }
+        if ($size < 1024) {
+            return $size.' Bytes';
+        } elseif ($size < 1024 * 1024) {
+            return round($size / 1024).' KB';
+        } elseif ($size < 1024 * 1024 * 1024) {
+            return round($size / 1024 / 1024).' MB';
+        } else {
+            return round($size / 1024 / 1024 / 1024).' GB';
+        }
+    }
+
     /**
      * Remove any information about basic auth in any URLs contained in the given messages.
      *
