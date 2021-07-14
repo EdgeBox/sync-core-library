@@ -46,6 +46,7 @@ class FileType
     public const ENTITY_FILE = 'entity-file';
     public const ENTITY_PREVIEW = 'entity-preview';
     public const REMOTE_FLOW_CONFIG = 'remote-flow-config';
+    public const REQUEST_DETAILS = 'request-details';
 
     /**
      * Gets allowable values of the enum.
@@ -58,6 +59,7 @@ class FileType
             self::ENTITY_FILE,
             self::ENTITY_PREVIEW,
             self::REMOTE_FLOW_CONFIG,
+            self::REQUEST_DETAILS,
         ];
     }
 }

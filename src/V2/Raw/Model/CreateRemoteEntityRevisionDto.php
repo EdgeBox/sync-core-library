@@ -70,6 +70,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
+        'deleted' => 'bool',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
@@ -98,6 +99,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'poolMachineNames' => null,
         'isTranslationRoot' => null,
         'viewUrl' => null,
+        'deleted' => null,
         'embed' => null,
         'properties' => null,
         'allDependencies' => null,
@@ -145,6 +147,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'poolMachineNames' => 'poolMachineNames',
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
+        'deleted' => 'deleted',
         'embed' => 'embed',
         'properties' => 'properties',
         'allDependencies' => 'allDependencies',
@@ -171,6 +174,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'poolMachineNames' => 'setPoolMachineNames',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
+        'deleted' => 'setDeleted',
         'embed' => 'setEmbed',
         'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
@@ -197,6 +201,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'poolMachineNames' => 'getPoolMachineNames',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
+        'deleted' => 'getDeleted',
         'embed' => 'getEmbed',
         'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
@@ -273,6 +278,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
         $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['deleted'] = $data['deleted'] ?? null;
         $this->container['embed'] = $data['embed'] ?? null;
         $this->container['properties'] = $data['properties'] ?? null;
         $this->container['allDependencies'] = $data['allDependencies'] ?? null;
@@ -541,6 +547,30 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleted.
+     *
+     * @return bool|null
+     */
+    public function getDeleted()
+    {
+        return $this->container['deleted'];
+    }
+
+    /**
+     * Sets deleted.
+     *
+     * @param bool|null $deleted deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        $this->container['deleted'] = $deleted;
 
         return $this;
     }

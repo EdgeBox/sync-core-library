@@ -1,6 +1,6 @@
 <?php
 /**
- * SyndicationError.
+ * SyncCoreRemoteEntityUsageEntityReference.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SyndicationError Class Doc Comment.
+ * SyncCoreRemoteEntityUsageEntityReference Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SyndicationError';
+    protected static $openAPIModelName = 'SyncCoreRemoteEntityUsageEntityReference';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,12 +61,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType',
-        'timestamp' => 'float',
-        'errorMessage' => 'string',
-        'callStack' => 'string',
-        'statusCode' => 'float',
-        'requestDetails' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'language' => 'string',
+        'isTranslationRoot' => 'bool',
+        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
     ];
 
     /**
@@ -77,12 +75,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'type' => null,
-        'timestamp' => null,
-        'errorMessage' => null,
-        'callStack' => null,
-        'statusCode' => null,
-        'requestDetails' => null,
+        'entity' => null,
+        'language' => null,
+        'isTranslationRoot' => null,
+        'status' => null,
     ];
 
     /**
@@ -112,12 +108,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'type' => 'type',
-        'timestamp' => 'timestamp',
-        'errorMessage' => 'errorMessage',
-        'callStack' => 'callStack',
-        'statusCode' => 'statusCode',
-        'requestDetails' => 'requestDetails',
+        'entity' => 'entity',
+        'language' => 'language',
+        'isTranslationRoot' => 'isTranslationRoot',
+        'status' => 'status',
     ];
 
     /**
@@ -126,12 +120,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'type' => 'setType',
-        'timestamp' => 'setTimestamp',
-        'errorMessage' => 'setErrorMessage',
-        'callStack' => 'setCallStack',
-        'statusCode' => 'setStatusCode',
-        'requestDetails' => 'setRequestDetails',
+        'entity' => 'setEntity',
+        'language' => 'setLanguage',
+        'isTranslationRoot' => 'setIsTranslationRoot',
+        'status' => 'setStatus',
     ];
 
     /**
@@ -140,12 +132,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'type' => 'getType',
-        'timestamp' => 'getTimestamp',
-        'errorMessage' => 'getErrorMessage',
-        'callStack' => 'getCallStack',
-        'statusCode' => 'getStatusCode',
-        'requestDetails' => 'getRequestDetails',
+        'entity' => 'getEntity',
+        'language' => 'getLanguage',
+        'isTranslationRoot' => 'getIsTranslationRoot',
+        'status' => 'getStatus',
     ];
 
     /**
@@ -204,12 +194,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['timestamp'] = $data['timestamp'] ?? null;
-        $this->container['errorMessage'] = $data['errorMessage'] ?? null;
-        $this->container['callStack'] = $data['callStack'] ?? null;
-        $this->container['statusCode'] = $data['statusCode'] ?? null;
-        $this->container['requestDetails'] = $data['requestDetails'] ?? null;
+        $this->container['entity'] = $data['entity'] ?? null;
+        $this->container['language'] = $data['language'] ?? null;
+        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
     }
 
     /**
@@ -221,11 +209,17 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['type']) {
-            $invalidProperties[] = "'type' can't be null";
+        if (null === $this->container['entity']) {
+            $invalidProperties[] = "'entity' can't be null";
         }
-        if (null === $this->container['timestamp']) {
-            $invalidProperties[] = "'timestamp' can't be null";
+        if (null === $this->container['language']) {
+            $invalidProperties[] = "'language' can't be null";
+        }
+        if (null === $this->container['isTranslationRoot']) {
+            $invalidProperties[] = "'isTranslationRoot' can't be null";
+        }
+        if (null === $this->container['status']) {
+            $invalidProperties[] = "'status' can't be null";
         }
 
         return $invalidProperties;
@@ -243,145 +237,97 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets type.
+     * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
-    public function getType()
+    public function getEntity()
     {
-        return $this->container['type'];
+        return $this->container['entity'];
     }
 
     /**
-     * Sets type.
+     * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType $type type
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
      *
      * @return self
      */
-    public function setType($type)
+    public function setEntity($entity)
     {
-        $this->container['type'] = $type;
+        $this->container['entity'] = $entity;
 
         return $this;
     }
 
     /**
-     * Gets timestamp.
+     * Gets language.
      *
-     * @return float
+     * @return string
      */
-    public function getTimestamp()
+    public function getLanguage()
     {
-        return $this->container['timestamp'];
+        return $this->container['language'];
     }
 
     /**
-     * Sets timestamp.
+     * Sets language.
      *
-     * @param float $timestamp timestamp
+     * @param string $language language
      *
      * @return self
      */
-    public function setTimestamp($timestamp)
+    public function setLanguage($language)
     {
-        $this->container['timestamp'] = $timestamp;
+        $this->container['language'] = $language;
 
         return $this;
     }
 
     /**
-     * Gets errorMessage.
+     * Gets isTranslationRoot.
      *
-     * @return string|null
+     * @return bool
      */
-    public function getErrorMessage()
+    public function getIsTranslationRoot()
     {
-        return $this->container['errorMessage'];
+        return $this->container['isTranslationRoot'];
     }
 
     /**
-     * Sets errorMessage.
+     * Sets isTranslationRoot.
      *
-     * @param string|null $errorMessage errorMessage
+     * @param bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
-    public function setErrorMessage($errorMessage)
+    public function setIsTranslationRoot($isTranslationRoot)
     {
-        $this->container['errorMessage'] = $errorMessage;
+        $this->container['isTranslationRoot'] = $isTranslationRoot;
 
         return $this;
     }
 
     /**
-     * Gets callStack.
+     * Gets status.
      *
-     * @return string|null
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
      */
-    public function getCallStack()
+    public function getStatus()
     {
-        return $this->container['callStack'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets callStack.
+     * Sets status.
      *
-     * @param string|null $callStack callStack
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
      *
      * @return self
      */
-    public function setCallStack($callStack)
+    public function setStatus($status)
     {
-        $this->container['callStack'] = $callStack;
-
-        return $this;
-    }
-
-    /**
-     * Gets statusCode.
-     *
-     * @return float|null
-     */
-    public function getStatusCode()
-    {
-        return $this->container['statusCode'];
-    }
-
-    /**
-     * Sets statusCode.
-     *
-     * @param float|null $statusCode statusCode
-     *
-     * @return self
-     */
-    public function setStatusCode($statusCode)
-    {
-        $this->container['statusCode'] = $statusCode;
-
-        return $this;
-    }
-
-    /**
-     * Gets requestDetails.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
-     */
-    public function getRequestDetails()
-    {
-        return $this->container['requestDetails'];
-    }
-
-    /**
-     * Sets requestDetails.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $requestDetails requestDetails
-     *
-     * @return self
-     */
-    public function setRequestDetails($requestDetails)
-    {
-        $this->container['requestDetails'] = $requestDetails;
+        $this->container['status'] = $status;
 
         return $this;
     }

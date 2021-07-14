@@ -70,6 +70,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
+        'deleted' => 'bool',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
@@ -104,6 +105,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'poolMachineNames' => null,
         'isTranslationRoot' => null,
         'viewUrl' => null,
+        'deleted' => null,
         'embed' => null,
         'properties' => null,
         'allDependencies' => null,
@@ -157,6 +159,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'poolMachineNames' => 'poolMachineNames',
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
+        'deleted' => 'deleted',
         'embed' => 'embed',
         'properties' => 'properties',
         'allDependencies' => 'allDependencies',
@@ -189,6 +192,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'poolMachineNames' => 'setPoolMachineNames',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
+        'deleted' => 'setDeleted',
         'embed' => 'setEmbed',
         'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
@@ -221,6 +225,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'poolMachineNames' => 'getPoolMachineNames',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
+        'deleted' => 'getDeleted',
         'embed' => 'getEmbed',
         'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
@@ -303,6 +308,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
         $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['deleted'] = $data['deleted'] ?? null;
         $this->container['embed'] = $data['embed'] ?? null;
         $this->container['properties'] = $data['properties'] ?? null;
         $this->container['allDependencies'] = $data['allDependencies'] ?? null;
@@ -598,6 +604,30 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleted.
+     *
+     * @return bool|null
+     */
+    public function getDeleted()
+    {
+        return $this->container['deleted'];
+    }
+
+    /**
+     * Sets deleted.
+     *
+     * @param bool|null $deleted deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        $this->container['deleted'] = $deleted;
 
         return $this;
     }

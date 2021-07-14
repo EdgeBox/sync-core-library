@@ -39,9 +39,8 @@ class ReportingService implements IReportingService
 
         if (SyndicationErrorType::BAD_RESPONSE_CODE === $type) {
             $status = $error->getStatusCode();
-            $body = $error->getResponseBody();
 
-            return $date."The site responded with status code $status and response body $body";
+            return $date."The site responded with status code $status.";
         }
 
         $message = $error->getErrorMessage();

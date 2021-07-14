@@ -65,10 +65,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
         'viewUrl' => 'string',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]',
         'poolMachineNames' => 'string[]',
         'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'language' => 'string',
         'remoteUuid' => 'string',
         'remoteUniqueId' => 'string',
         'lastPush' => 'float',
@@ -93,10 +92,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'status' => null,
         'viewUrl' => null,
         'site' => null,
+        'translations' => null,
         'poolMachineNames' => null,
         'entityType' => null,
-        'entity' => null,
-        'language' => null,
         'remoteUuid' => null,
         'remoteUniqueId' => null,
         'lastPush' => null,
@@ -140,10 +138,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'status' => 'status',
         'viewUrl' => 'viewUrl',
         'site' => 'site',
+        'translations' => 'translations',
         'poolMachineNames' => 'poolMachineNames',
         'entityType' => 'entityType',
-        'entity' => 'entity',
-        'language' => 'language',
         'remoteUuid' => 'remoteUuid',
         'remoteUniqueId' => 'remoteUniqueId',
         'lastPush' => 'lastPush',
@@ -166,10 +163,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'status' => 'setStatus',
         'viewUrl' => 'setViewUrl',
         'site' => 'setSite',
+        'translations' => 'setTranslations',
         'poolMachineNames' => 'setPoolMachineNames',
         'entityType' => 'setEntityType',
-        'entity' => 'setEntity',
-        'language' => 'setLanguage',
         'remoteUuid' => 'setRemoteUuid',
         'remoteUniqueId' => 'setRemoteUniqueId',
         'lastPush' => 'setLastPush',
@@ -192,10 +188,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'status' => 'getStatus',
         'viewUrl' => 'getViewUrl',
         'site' => 'getSite',
+        'translations' => 'getTranslations',
         'poolMachineNames' => 'getPoolMachineNames',
         'entityType' => 'getEntityType',
-        'entity' => 'getEntity',
-        'language' => 'getLanguage',
         'remoteUuid' => 'getRemoteUuid',
         'remoteUniqueId' => 'getRemoteUniqueId',
         'lastPush' => 'getLastPush',
@@ -268,10 +263,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         $this->container['status'] = $data['status'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
         $this->container['site'] = $data['site'] ?? null;
+        $this->container['translations'] = $data['translations'] ?? null;
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
         $this->container['entityType'] = $data['entityType'] ?? null;
-        $this->container['entity'] = $data['entity'] ?? null;
-        $this->container['language'] = $data['language'] ?? null;
         $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
         $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
         $this->container['lastPush'] = $data['lastPush'] ?? null;
@@ -305,17 +299,14 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         if (null === $this->container['site']) {
             $invalidProperties[] = "'site' can't be null";
         }
+        if (null === $this->container['translations']) {
+            $invalidProperties[] = "'translations' can't be null";
+        }
         if (null === $this->container['poolMachineNames']) {
             $invalidProperties[] = "'poolMachineNames' can't be null";
         }
         if (null === $this->container['entityType']) {
             $invalidProperties[] = "'entityType' can't be null";
-        }
-        if (null === $this->container['entity']) {
-            $invalidProperties[] = "'entity' can't be null";
-        }
-        if (null === $this->container['language']) {
-            $invalidProperties[] = "'language' can't be null";
         }
         if (null === $this->container['remoteUuid']) {
             $invalidProperties[] = "'remoteUuid' can't be null";
@@ -450,6 +441,30 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
+     * Gets translations.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]
+     */
+    public function getTranslations()
+    {
+        return $this->container['translations'];
+    }
+
+    /**
+     * Sets translations.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[] $translations translations
+     *
+     * @return self
+     */
+    public function setTranslations($translations)
+    {
+        $this->container['translations'] = $translations;
+
+        return $this;
+    }
+
+    /**
      * Gets poolMachineNames.
      *
      * @return string[]
@@ -493,54 +508,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     public function setEntityType($entityType)
     {
         $this->container['entityType'] = $entityType;
-
-        return $this;
-    }
-
-    /**
-     * Gets entity.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
-     */
-    public function getEntity()
-    {
-        return $this->container['entity'];
-    }
-
-    /**
-     * Sets entity.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
-     *
-     * @return self
-     */
-    public function setEntity($entity)
-    {
-        $this->container['entity'] = $entity;
-
-        return $this;
-    }
-
-    /**
-     * Gets language.
-     *
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->container['language'];
-    }
-
-    /**
-     * Sets language.
-     *
-     * @param string $language language
-     *
-     * @return self
-     */
-    public function setLanguage($language)
-    {
-        $this->container['language'] = $language;
 
         return $this;
     }

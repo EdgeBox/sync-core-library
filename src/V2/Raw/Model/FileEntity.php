@@ -77,6 +77,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -106,6 +107,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => null,
         'entity' => null,
         'flow' => null,
+        'syndication' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -154,6 +156,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => 'project',
         'entity' => 'entity',
         'flow' => 'flow',
+        'syndication' => 'syndication',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -181,6 +184,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => 'setProject',
         'entity' => 'setEntity',
         'flow' => 'setFlow',
+        'syndication' => 'setSyndication',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -208,6 +212,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => 'getProject',
         'entity' => 'getEntity',
         'flow' => 'getFlow',
+        'syndication' => 'getSyndication',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -285,6 +290,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['project'] = $data['project'] ?? null;
         $this->container['entity'] = $data['entity'] ?? null;
         $this->container['flow'] = $data['flow'] ?? null;
+        $this->container['syndication'] = $data['syndication'] ?? null;
         $this->container['id'] = $data['id'] ?? null;
         $this->container['createdAt'] = $data['createdAt'] ?? null;
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
@@ -727,6 +733,30 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setFlow($flow)
     {
         $this->container['flow'] = $flow;
+
+        return $this;
+    }
+
+    /**
+     * Gets syndication.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     */
+    public function getSyndication()
+    {
+        return $this->container['syndication'];
+    }
+
+    /**
+     * Sets syndication.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $syndication syndication
+     *
+     * @return self
+     */
+    public function setSyndication($syndication)
+    {
+        $this->container['syndication'] = $syndication;
 
         return $this;
     }
