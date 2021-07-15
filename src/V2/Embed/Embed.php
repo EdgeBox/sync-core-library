@@ -40,6 +40,7 @@ abstract class Embed
         $this->config = [
             'syncCoreDomain' => $this->core->getSyncCoreDomain(),
             'baseUrl' => $this->core->getApplication()->getSiteBaseUrl(),
+            'featureFlags' => $this->core->getApplication()->getFeatureFlags(),
         ];
     }
 
@@ -73,6 +74,7 @@ abstract class Embed
 (function() {
   iFrameResize({
     //log: true,
+    checkOrigin: false,
     onInit: function(iframe) {
       iframe.iFrameResizer.sendMessage({
         type: "config",

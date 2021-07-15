@@ -223,4 +223,13 @@ interface IApplicationInterface
      * @return array[]
      */
     public function getHttpOptions();
+
+    /**
+     * Provide what feature flags are configured. expects an array of string => number,
+     * e.g. 'previews' => 1,
+     * would indicate that previews are enabled.
+     *
+     * @return array
+     */
+    public function getFeatureFlags();
 }
