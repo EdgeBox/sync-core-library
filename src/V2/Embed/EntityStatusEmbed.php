@@ -7,7 +7,7 @@ use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class EntityStatus extends Embed implements IEmbedFeature
+class EntityStatusEmbed extends Embed implements IEmbedFeature
 {
     protected $params;
 

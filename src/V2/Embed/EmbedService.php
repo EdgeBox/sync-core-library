@@ -49,7 +49,7 @@ class EmbedService implements IEmbedService
      */
     public function entityStatus(array $params)
     {
-        return new EntityStatus($this->core, $params);
+        return new EntityStatusEmbed($this->core, $params);
     }
 
     /**
@@ -58,5 +58,13 @@ class EmbedService implements IEmbedService
     public function migrate(array $params)
     {
         return new MigrateEmbed($this->core, $params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function syndicationDashboard(array $params)
+    {
+        return new SyndicationDashboardEmbed($this->core, $params);
     }
 }
