@@ -44,9 +44,9 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
-    public function pullAll(string $flow_id, string $type, string $bundle)
+    public function pullAll(string $flow_id, string $type, string $bundle, string $version)
     {
-        return new PullAll($this->core, $type, $bundle);
+        return new PullAll($this->core, $flow_id, $type, $bundle, $version);
     }
 
     /**

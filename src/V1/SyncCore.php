@@ -60,6 +60,24 @@ class SyncCore implements ISyncCore
         $this->storage = new Storage($this);
     }
 
+    public function featureEnabled(string $name)
+    {
+        return !empty($this->getFeatures()[$name]);
+    }
+
+    public function getFeatures()
+    {
+        static $features = null;
+        if (null !== $features) {
+            return $features;
+        }
+
+        // No new features at v1.
+        $features = [];
+
+        return $features;
+    }
+
     /**
      * @param string                                             $base_url
      * @param \EdgeBox\SyncCore\Interfaces\IApplicationInterface $application
@@ -127,14 +145,6 @@ class SyncCore implements ISyncCore
     public function batch()
     {
         return new Batch($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function canHandleFlowConfigurationIndependently()
-    {
-        return false;
     }
 
     /**

@@ -458,9 +458,25 @@ class SyncCore implements ISyncCore
         return new Batch($this);
     }
 
-    public function canHandleFlowConfigurationIndependently()
+    public function featureEnabled(string $name)
     {
-        return true;
+        return !empty($this->getFeatures()[$name]);
+    }
+
+    public function getFeatures()
+    {
+        static $features = null;
+        if (null !== $features) {
+            return $features;
+        }
+
+        // TODO: Add features from the Sync Core
+        $features = [
+            ISyncCore::FEATURE_INDEPENDENT_FLOW_CONFIG => 1,
+            ISyncCore::FEATURE_PULL_ALL_WITHOUT_POOL => 1,
+        ];
+
+        return $features;
     }
 
     public function getApplication()

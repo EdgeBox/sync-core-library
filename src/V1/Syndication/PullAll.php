@@ -146,7 +146,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function getPoolMachineName()
+    public function getSourceName()
     {
         return $this->pool;
     }

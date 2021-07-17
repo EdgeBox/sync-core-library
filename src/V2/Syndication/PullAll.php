@@ -6,7 +6,9 @@ use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullAll;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
 use EdgeBox\SyncCore\V2\SerializableWithSyncCoreReference;
@@ -14,8 +16,6 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 // TODO: Provide a "Push all" action as well so Drupal doesn't push all the entities, but
 //  the Sync Core will rather pull them from the site, one after another.
-
-// TODO: Viewing the progress would be better handled by the embed frontend.
 
 class PullAll extends SerializableWithSyncCoreReference implements IPullAll
 {
@@ -28,6 +28,11 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
      * @var string
      */
     protected $machineName;
+
+    /**
+     * @var string
+     */
+    protected $versionId;
 
     /**
      * @var string
@@ -50,14 +55,21 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     protected $dto = null;
 
     /**
+     * @var MigrationSummary|null
+     */
+    protected $summaryDto;
+
+    /**
      * PullAll constructor.
      */
-    public function __construct(SyncCore $core, string $namespaceMachineName, string $machineName)
+    public function __construct(SyncCore $core, string $flow_machine_name, string $namespaceMachineName, string $machineName, string $versionId)
     {
         parent::__construct($core);
 
+        $this->flow = $flow_machine_name;
         $this->namespaceMachineName = $namespaceMachineName;
         $this->machineName = $machineName;
+        $this->versionId = $versionId;
     }
 
     /**
@@ -65,19 +77,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
      */
     public function fromPool(string $pool_id)
     {
-        throw new InternalContentSyncError('Must use Flow instead of Pool.');
-    }
-
-    // TODO: Drupal/Library: V2 pulls from Flows, not from Pools. So we need a switch in the module.
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fromFlow($flow_id)
-    {
-        $this->flow = $flow_id;
-
-        return $this;
+        throw new InternalContentSyncError("The Sync Core v2 doesn't distinguish between pools for Pull All operations.");
     }
 
     /**
@@ -109,9 +109,27 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     /**
      * {@inheritdoc}
      */
-    public function total()
+    public function total($clearCache = false)
     {
-        return $this->getDto()->getTotalNumberOfSyndications();
+        $summary = $this->getSummaryDto(!$clearCache);
+        $total = 0;
+        foreach ($summary->getByStatus() as $status) {
+            $total += $status->getCount();
+        }
+
+        return $total;
+    }
+
+    protected function getSummaryDto($clearCache = false)
+    {
+        if ($this->summaryDto && !$clearCache) {
+            return $this->summaryDto;
+        }
+
+        $request = $this->core->getClient()->migrationControllerSummaryRequest($this->migrationId);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $this->summaryDto = $response;
     }
 
     protected function getDto()
@@ -135,17 +153,27 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
             throw new InternalContentSyncError("Can't get syndication progress before executing the pull all operation.");
         }
 
-        $migration = $this->getDto();
+        $summary = $this->getSummaryDto(!$fromCache);
+        $total = 0;
+        foreach ($summary->getByStatus() as $statusSummary) {
+            /**
+             * @var string $status
+             */
+            $status = $statusSummary->getStatus();
+            if (!in_array($status, [SyndicationStatus::_100_INITIALIZING, SyndicationStatus::_200_RUNNING, SyndicationStatus::_300_RETRYING])) {
+                $total += $statusSummary->getCount();
+            }
+        }
 
-        return $migration->getSuccessfulSyndications() + $migration->getFailedSyndications();
+        return $total;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPoolMachineName()
+    public function getSourceName()
     {
-        throw new InternalContentSyncError('Must use Flow instead of Pool.');
+        return $this->flow;
     }
 
     /**
@@ -179,6 +207,11 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $migrationDto->setType($type);
         $migrationDto->setInitialSetup(false);
         $migrationDto->setFlowMachineName($this->flow);
+        $entityType = new EntityTypeVersionReference();
+        $entityType->setNamespaceMachineName($this->namespaceMachineName);
+        $entityType->setMachineName($this->machineName);
+        $entityType->setVersionId($this->versionId);
+        $migrationDto->setEntityTypeReference($entityType);
 
         $request = $this->core->getClient()->migrationControllerCreateRequest($migrationDto);
         $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);

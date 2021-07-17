@@ -15,6 +15,9 @@ use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
  */
 interface ISyncCore
 {
+    public const FEATURE_INDEPENDENT_FLOW_CONFIG = 'flow.independent-config';
+    public const FEATURE_PULL_ALL_WITHOUT_POOL = 'migration.no-pool';
+
     /**
      * @return IReportingService
      */
@@ -39,11 +42,6 @@ interface ISyncCore
      * @return IBatch
      */
     public function batch();
-
-    /**
-     * @return bool
-     */
-    public function canHandleFlowConfigurationIndependently();
 
     /**
      * Whether the Sync Core allows to be called by clients directly for the pull
@@ -104,4 +102,14 @@ interface ISyncCore
      * @return string[]
      */
     public function getReservedPropertyNames();
+
+    /**
+     * @return bool
+     */
+    public function featureEnabled(string $name);
+
+    /**
+     * @return float[]
+     */
+    public function getFeatures();
 }

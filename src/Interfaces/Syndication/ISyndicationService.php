@@ -19,7 +19,7 @@ interface ISyndicationService
     /**
      * @return IPullAll
      */
-    public function pullAll(string $flow_id, string $type, string $bundle);
+    public function pullAll(string $flow_id, string $type, string $bundle, string $version);
 
     /**
      * @return IPullOperation

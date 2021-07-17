@@ -45,7 +45,7 @@ interface IPullAll extends IProgress
     /**
      * @return string
      */
-    public function getPoolMachineName();
+    public function getSourceName();
 
     /**
      * @return $this
