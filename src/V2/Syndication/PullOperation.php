@@ -66,10 +66,12 @@ class PullOperation implements IPullOperation
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
 
+            // Must call with @ as otherwise it will produce a notice
+            // Warning: settype(): Invalid type in EdgeBox\SyncCore\V2\Raw\ObjectSerializer::deserialize() (line 341 of /opt/library/src/V2/Raw/ObjectSerializer.php)
             /**
              * @var CreateRemoteEntityRevisionDto $dto
              */
-            $dto = ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
+            $dto = @ObjectSerializer::deserialize($body, CreateRemoteEntityRevisionDto::class, []);
             $this->dto = $dto;
 
             $translations = $this->dto->getTranslations();
@@ -213,14 +215,17 @@ class PullOperation implements IPullOperation
 
     public function getNextUnprocessedEmbed()
     {
-        foreach ($this->dto->getEmbed() as $index => $embed) {
-            if (in_array($index, $this->processedEmbeds)) {
-                continue;
+        $embedded = $this->dto->getEmbed();
+        if (is_array($embedded)) {
+            foreach ($embedded as $index => $embed) {
+                if (in_array($index, $this->processedEmbeds)) {
+                    continue;
+                }
+
+                $this->processedEmbeds[] = $index;
+
+                return new PullOperation($this->core, $embed, false, $this);
             }
-
-            $this->processedEmbeds[] = $index;
-
-            return new PullOperation($this->core, $embed, false, $this);
         }
 
         return null;
@@ -245,16 +250,18 @@ class PullOperation implements IPullOperation
         $embeds = $this->dto->getEmbed();
         $embed = null;
         $embedIndex = null;
-        for ($i = 0; $i < count($embeds); ++$i) {
-            $candidate = $embeds[$i];
-            if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName() &&
-                $candidate->getLanguage() === $referenceDto->getLanguage() &&
-          $candidate->getEntityTypeMachineName() === $referenceDto->getEntityTypeMachineName() &&
-          $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
-          $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
-                $embed = $candidate;
-                $embedIndex = $i;
-                break;
+        if (is_array($embeds)) {
+            for ($i = 0; $i < count($embeds); ++$i) {
+                $candidate = $embeds[$i];
+                if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName() &&
+                    $candidate->getLanguage() === $referenceDto->getLanguage() &&
+            $candidate->getEntityTypeMachineName() === $referenceDto->getEntityTypeMachineName() &&
+            $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
+            $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
+                    $embed = $candidate;
+                    $embedIndex = $i;
+                    break;
+                }
             }
         }
 
