@@ -438,7 +438,7 @@ class PushSingle implements IPushSingle
     public function setName(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
-        $dto->setName($value);
+        $dto->setName(substr($value, 0, 100));
 
         return $this;
     }
