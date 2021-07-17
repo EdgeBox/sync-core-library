@@ -215,6 +215,10 @@ class PullOperation implements IPullOperation
 
     public function getNextUnprocessedEmbed()
     {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return null;
+        }
+
         $embedded = $this->dto->getEmbed();
         if (is_array($embedded)) {
             foreach ($embedded as $index => $embed) {
