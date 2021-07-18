@@ -193,9 +193,4 @@ class SyndicationService implements ISyndicationService
 
         return $result;
     }
-
-    public function canRefreshAuthentication()
-    {
-        return true;
-    }
 }

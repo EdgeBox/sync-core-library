@@ -59,11 +59,4 @@ interface ISyndicationService
      * @throws SyncCoreException
      */
     public function refreshAuthentication();
-
-    /**
-     * Whether or not the `$this->refreshAuthentication()` method is supported.
-     *
-     * @return bool
-     */
-    public function canRefreshAuthentication();
 }

@@ -460,7 +460,7 @@ class SyncCore implements ISyncCore
 
     public function featureEnabled(string $name)
     {
-        return !empty($this->getFeatures()[$name]);
+        return !empty($this->getFeatures()[$name]) && (bool) $this->getFeatures()[$name];
     }
 
     public function getFeatures()
@@ -472,6 +472,7 @@ class SyncCore implements ISyncCore
 
         // TODO: Add features from the Sync Core
         $features = [
+            ISyncCore::FEATURE_REFRESH_AUTHENTICATION => 0,
             ISyncCore::FEATURE_INDEPENDENT_FLOW_CONFIG => 1,
             ISyncCore::FEATURE_PULL_ALL_WITHOUT_POOL => 1,
         ];

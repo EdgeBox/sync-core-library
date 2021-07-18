@@ -140,9 +140,4 @@ class SyndicationService implements ISyndicationService
         // is not supported in Sync Core V2.
         return true;
     }
-
-    public function canRefreshAuthentication()
-    {
-        return false;
-    }
 }

@@ -15,6 +15,7 @@ use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
  */
 interface ISyncCore
 {
+    public const FEATURE_REFRESH_AUTHENTICATION = 'site-authentication.refresh';
     public const FEATURE_INDEPENDENT_FLOW_CONFIG = 'flow.independent-config';
     public const FEATURE_PULL_ALL_WITHOUT_POOL = 'migration.no-pool';
 
