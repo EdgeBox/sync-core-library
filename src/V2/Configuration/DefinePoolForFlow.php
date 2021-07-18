@@ -69,16 +69,16 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     }
 
     /**
-     * @return $this
+     * @return FlowPushConfiguration
      */
     public function enablePush(IDefineEntityType $entity_type)
     {
         /**
          * @var DefineEntityType $entity_type
          */
-        $this->flow->enablePush($entity_type, $this->poolMachineName);
+        $dto = $this->flow->enablePush($entity_type, $this->poolMachineName);
 
-        return $this;
+        return new FlowPushConfiguration($this->core, $dto);
     }
 
     /**

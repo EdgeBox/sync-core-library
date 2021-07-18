@@ -25,4 +25,14 @@ interface IFlowPullConfiguration extends IBatchOperation
      * @return IFlowPullConfiguration|null
      */
     public function configureOverride(string $flow_id);
+
+    /**
+     * @return $this
+     */
+    public function manually(bool $set);
+
+    /**
+     * @return $this
+     */
+    public function asDependency(bool $set);
 }

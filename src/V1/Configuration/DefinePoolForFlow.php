@@ -184,7 +184,7 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
       ]
     );
 
-        return $this;
+        return null;
     }
 
     /**
