@@ -55,4 +55,12 @@ interface IDefineEntityType extends IBatchOperation
      * @return $this
      */
     public function addObjectProperty(string $machine_name, string $name, $multiple = false, $required = false);
+
+    /**
+     * @param bool $multiple
+     * @param bool $required
+     *
+     * @return $this
+     */
+    public function addReferenceProperty(string $machine_name, string $name, $multiple = false, $required = false);
 }

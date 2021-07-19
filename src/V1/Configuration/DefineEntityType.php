@@ -308,6 +308,14 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
+    public function addReferenceProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    {
+        return $this->addObjectProperty($machine_name, $name, $multiple, $required);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addBooleanProperty(string $machine_name, string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'boolean', $multiple, $required);

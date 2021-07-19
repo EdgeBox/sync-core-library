@@ -193,4 +193,14 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addReferenceProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    {
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required);
+
+        return $this;
+    }
 }
