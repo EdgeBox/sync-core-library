@@ -58,7 +58,7 @@ class PullOperation implements IPullOperation
         if ($delete) {
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
-            $this->dto = ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
+            $this->dto = @ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
         } elseif ($body instanceof RemoteEntityEmbed || $body instanceof RemoteEntityEmbedDraft) {
             $this->dto = $body;
             $this->parentPullOperation = $parentPullOperation;
@@ -249,7 +249,7 @@ class PullOperation implements IPullOperation
         /**
          * @var RemoteEntityDependency $referenceDto
          */
-        $referenceDto = ObjectSerializer::deserialize($data, RemoteEntityDependency::class);
+        $referenceDto = @ObjectSerializer::deserialize($data, RemoteEntityDependency::class);
 
         $embeds = $this->dto->getEmbed();
         $embed = null;

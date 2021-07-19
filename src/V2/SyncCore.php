@@ -316,7 +316,7 @@ class SyncCore implements ISyncCore
     {
         $response = $this->sendToSyncCoreWithJwt($request, $jwt);
 
-        return ObjectSerializer::deserialize($response, $class, []);
+        return @ObjectSerializer::deserialize($response, $class, []);
     }
 
     /**
@@ -332,7 +332,7 @@ class SyncCore implements ISyncCore
     {
         $response = $this->sendToSyncCore($request, $permissions);
 
-        return ObjectSerializer::deserialize($response, $class, []);
+        return @ObjectSerializer::deserialize($response, $class, []);
     }
 
     protected function hasValidV2SiteId()

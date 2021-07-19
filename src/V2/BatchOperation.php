@@ -102,7 +102,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         $this->requestMethod = $data['requestMethod'];
 
         if ($data['dtoClass'] && $data['dtoSerialized']) {
-            $this->dto = ObjectSerializer::deserialize($data['dtoSerialized'], $data['dtoClass'], []);
+            $this->dto = @ObjectSerializer::deserialize($data['dtoSerialized'], $data['dtoClass'], []);
         } else {
             $this->dto = null;
         }
