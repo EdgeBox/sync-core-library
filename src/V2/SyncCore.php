@@ -30,6 +30,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Exception;
 use Firebase\JWT\JWT;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\MultipartStream;
@@ -132,6 +133,16 @@ class SyncCore implements ISyncCore
         return $instances[$base_url] = new SyncCore($application, $base_url);
     }
 
+    public function getPublicClient()
+    {
+        static $client = null;
+        if (!$client) {
+            $client = new Client();
+        }
+
+        return $client;
+    }
+
     /**
      * @param string $type
      * @param string $file_name
@@ -204,17 +215,31 @@ class SyncCore implements ISyncCore
             throw new BadRequestException("File $file_name with $file_size_human_friendly exceeds upload limit of $max_size_human_friendly.");
         }
 
-        $httpBody = new MultipartStream([
-            [
-                'name' => 'file',
-                'contents' => $content,
-                // The Sync Core won't accept requests that don't contain a filename.
-                'filename' => $file_name,
-            ],
-        ]);
-        $request = new Request('PUT', $upload_url,
-            [], $httpBody);
-        $this->sendRaw($request);
+        // Raw body upload
+        if ('https://s3.amazonaws.com/' === substr($upload_url, 0, 25)) {
+            $response = $this->getPublicClient()->request('PUT', $upload_url, [
+                RequestOptions::TIMEOUT => $this->default_timeout,
+                RequestOptions::BODY => $content,
+                RequestOptions::HEADERS => [
+                    'Content-Type' => 'application/octet-stream',
+                    'Accept' => '*/*',
+                ],
+            ]);
+        }
+        // Multipart upload
+        else {
+            $httpBody = new MultipartStream([
+                [
+                    'name' => 'file',
+                    'contents' => $content,
+                    // The Sync Core won't accept requests that don't contain a filename.
+                    'filename' => $file_name,
+                ],
+            ]);
+            $request = new Request('PUT', $upload_url,
+                [], $httpBody);
+            $this->sendRaw($request, []);
+        }
 
         $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
         $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
