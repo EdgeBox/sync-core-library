@@ -14,21 +14,21 @@ class SiteRegisteredEmbed extends Embed implements IEmbedFeature
     public function __construct(SyncCore $core, ?array $params)
     {
         parent::__construct(
-        $core,
+            $core,
             IEmbedService::SITE_REGISTERED,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
-    );
+        );
 
         $this->params = $params;
-    }
-
-    protected function getOptions()
-    {
-        return $this->params ?? [];
     }
 
     public function run()
     {
         return $this->render();
+    }
+
+    protected function getOptions()
+    {
+        return $this->params ?? [];
     }
 }

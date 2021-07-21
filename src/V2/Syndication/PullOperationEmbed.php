@@ -23,16 +23,18 @@ class PullOperationEmbed implements IEntityReference
      */
     protected $pullOperation;
     /**
-     * @var RemoteEntityEmbed|RemoteEntityEmbedDraft|null
+     * @var null|RemoteEntityEmbed|RemoteEntityEmbedDraft
      */
     protected $embed;
     /**
-     * @var int|null
+     * @var null|int
      */
     protected $embedIndex;
 
     /**
      * constructor.
+     *
+     * @param null|mixed $embed
      */
     public function __construct(SyncCore $core, RemoteEntityDependency $dto, PullOperation $pullOperation, ?int $embedIndex, $embed = null)
     {
@@ -49,7 +51,7 @@ class PullOperationEmbed implements IEntityReference
     public function getDetails()
     {
         /**
-         * @var array|null $details
+         * @var null|array $details
          */
         $details = $this->dto->getReferenceDetails();
 
@@ -133,9 +135,10 @@ class PullOperationEmbed implements IEntityReference
         $this->pullOperation->embedProcessed($this->embedIndex);
 
         return new PullOperation(
-        $this->core,
-        $this->embed,
-        false,
-        $this->pullOperation);
+            $this->core,
+            $this->embed,
+            false,
+            $this->pullOperation
+        );
     }
 }

@@ -66,38 +66,32 @@ interface IApplicationInterface
      * Abort all operations unless the ID is valid!
      * May return NULL in case the site isn't registered yet.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getSiteId();
 
     /**
      * After registering this site, save the default Sync Core URL to be assigned when creating
      * a pool.
-     *
-     * @return void
      */
     public function setSyncCoreUrl(string $set);
 
     /**
      * Get the default Sync Core URL of the site.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getSyncCoreUrl();
 
     /**
      * After registering this site, save the ID of this site locally for later
      * access.
-     *
-     * @return void
      */
     public function setSiteId(string $set);
 
     /**
      * Set the globally unique identifier for this site. This identifier will be the same
      * across all Content Sync services and Sync Cores.
-     *
-     * @return void
      */
     public function setSiteUuid(string $set);
 
@@ -120,15 +114,13 @@ interface IApplicationInterface
      * A unique identifier for this site, but human readable. Will be removed in
      * a future release and is there for legacy reasons only.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getSiteMachineName();
 
     /**
      * A unique identifier for this site, but human readable. Will be removed in
      * a future release and is there for legacy reasons only.
-     *
-     * @return void
      */
     public function setSiteMachineName(string $set);
 
@@ -145,10 +137,10 @@ interface IApplicationInterface
      *
      * Used by the Sync Core v1.
      *
-     * @param string|null $entity_uuid
-     * @param string|null $manually
+     * @param null|string $entity_uuid
+     * @param null|string $manually
      *                                   Will be "true" or "false" (string!)
-     * @param string|null $as_dependency
+     * @param null|string $as_dependency
      *                                   Will be "true" or "false" (string!)
      *
      * @return string

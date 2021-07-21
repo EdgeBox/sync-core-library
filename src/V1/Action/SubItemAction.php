@@ -9,7 +9,7 @@ namespace EdgeBox\SyncCore\V1\Action;
  */
 class SubItemAction extends ItemAction
 {
-    protected $itemId = null;
+    protected $itemId;
 
     /**
      * {@inheritdoc}

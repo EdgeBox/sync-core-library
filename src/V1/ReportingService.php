@@ -34,8 +34,8 @@ class ReportingService implements IReportingService
 
         $items = SimpleQuery
       ::create($this->core, SyncCoreClient::LOG_PATH, $arguments)
-      ->execute()
-      ->getResult()['items'];
+          ->execute()
+          ->getResult()['items'];
 
         $items = Helper::obfuscateCredentials($items);
 
@@ -55,8 +55,9 @@ class ReportingService implements IReportingService
     {
         $result = SimpleQuery
       ::create($this->core, SyncCoreClient::STATUS_PATH)
-      ->execute()
-      ->getResult();
+          ->execute()
+          ->getResult()
+        ;
 
         return [
             'version' => $result['version'],

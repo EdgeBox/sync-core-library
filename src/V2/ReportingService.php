@@ -24,33 +24,6 @@ class ReportingService implements IReportingService
         $this->core = $core;
     }
 
-    protected function getOperationErrorMessage(SyndicationError $error)
-    {
-        /**
-         * @var string $type
-         */
-        $type = $error->getType();
-        $timestamp = $error->getTimestamp();
-        $date = date('Y-m-d--H-i-s', (int) $timestamp).': ';
-
-        if (SyndicationErrorType::TIMEOUT === $type) {
-            return $date.'The request timed out.';
-        }
-
-        if (SyndicationErrorType::BAD_RESPONSE_CODE === $type) {
-            $status = $error->getStatusCode();
-
-            return $date."The site responded with status code $status.";
-        }
-
-        $message = $error->getErrorMessage();
-        if (SyndicationErrorType::INVALID_DEPENDENCY === $type) {
-            return $date."Invalid dependency: $message";
-        }
-
-        return $date."Unexpected error: $message";
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -74,7 +47,7 @@ class ReportingService implements IReportingService
              * @var string $status
              */
             $status = $item->getStatus();
-            $message = "Syndication error (now in status $status).";
+            $message = "Syndication error (now in status {$status}).";
 
             foreach ($item->getOperationErrors() as $operation) {
                 /**
@@ -90,7 +63,7 @@ class ReportingService implements IReportingService
                 $errors = $operation->getErrors();
                 $mostRecent = $errors[0];
                 $error = $this->getOperationErrorMessage($mostRecent);
-                $message .= "\nOperation $index (now in status $status) failed to syndicate $type.$bundle $name $uuid $uniqueId. Most recent error: $error";
+                $message .= "\nOperation {$index} (now in status {$status}) failed to syndicate {$type}.{$bundle} {$name} {$uuid} {$uniqueId}. Most recent error: {$error}";
             }
 
             $messages[] = $message;
@@ -129,5 +102,32 @@ class ReportingService implements IReportingService
                 ],
             ],
         ];
+    }
+
+    protected function getOperationErrorMessage(SyndicationError $error)
+    {
+        /**
+         * @var string $type
+         */
+        $type = $error->getType();
+        $timestamp = $error->getTimestamp();
+        $date = date('Y-m-d--H-i-s', (int) $timestamp).': ';
+
+        if (SyndicationErrorType::TIMEOUT === $type) {
+            return $date.'The request timed out.';
+        }
+
+        if (SyndicationErrorType::BAD_RESPONSE_CODE === $type) {
+            $status = $error->getStatusCode();
+
+            return $date."The site responded with status code {$status}.";
+        }
+
+        $message = $error->getErrorMessage();
+        if (SyndicationErrorType::INVALID_DEPENDENCY === $type) {
+            return $date."Invalid dependency: {$message}";
+        }
+
+        return $date."Unexpected error: {$message}";
     }
 }

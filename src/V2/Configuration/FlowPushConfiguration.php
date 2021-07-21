@@ -23,14 +23,6 @@ class FlowPushConfiguration extends BatchOperation implements IFlowPushConfigura
         parent::__construct($core, null, $dto);
     }
 
-    protected function setMode(string $mode)
-    {
-        /**
-         * @var FlowSyndicationMode $mode
-         */
-        $this->dto->setMode($mode);
-    }
-
     /**
      * @return $this
      */
@@ -63,5 +55,13 @@ class FlowPushConfiguration extends BatchOperation implements IFlowPushConfigura
         $this->dto->setSyndicateDeletions($set);
 
         return $this;
+    }
+
+    protected function setMode(string $mode)
+    {
+        /**
+         * @var FlowSyndicationMode $mode
+         */
+        $this->dto->setMode($mode);
     }
 }

@@ -39,7 +39,7 @@ interface IConfigurePullDashboard
     /**
      * @param bool     $order_by_title
      * @param bool     $order_ascending
-     * @param int|null $page
+     * @param null|int $page
      *
      * @return IPullDashboardSearchResult
      */

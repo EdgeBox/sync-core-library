@@ -104,26 +104,6 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -194,6 +174,71 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['minProdSites'] = $data['minProdSites'] ?? null;
+        $this->container['maxProdSites'] = $data['maxProdSites'] ?? null;
+        $this->container['licensedSites'] = $data['licensedSites'] ?? null;
+        $this->container['currentProductionSites'] = $data['currentProductionSites'] ?? null;
+        $this->container['currentStagingSites'] = $data['currentStagingSites'] ?? null;
+        $this->container['currentTestingSites'] = $data['currentTestingSites'] ?? null;
+        $this->container['autoScaleLicenses'] = $data['autoScaleLicenses'] ?? null;
+        $this->container['region'] = $data['region'] ?? null;
+        $this->container['startDate'] = $data['startDate'] ?? null;
+        $this->container['endDate'] = $data['endDate'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['uuid'] = $data['uuid'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -232,38 +277,6 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['minProdSites'] = $data['minProdSites'] ?? null;
-        $this->container['maxProdSites'] = $data['maxProdSites'] ?? null;
-        $this->container['licensedSites'] = $data['licensedSites'] ?? null;
-        $this->container['currentProductionSites'] = $data['currentProductionSites'] ?? null;
-        $this->container['currentStagingSites'] = $data['currentStagingSites'] ?? null;
-        $this->container['currentTestingSites'] = $data['currentTestingSites'] ?? null;
-        $this->container['autoScaleLicenses'] = $data['autoScaleLicenses'] ?? null;
-        $this->container['region'] = $data['region'] ?? null;
-        $this->container['startDate'] = $data['startDate'] ?? null;
-        $this->container['endDate'] = $data['endDate'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['uuid'] = $data['uuid'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -329,7 +342,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets minProdSites.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMinProdSites()
     {
@@ -339,7 +352,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets minProdSites.
      *
-     * @param float|null $minProdSites minProdSites
+     * @param null|float $minProdSites minProdSites
      *
      * @return self
      */
@@ -353,7 +366,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets maxProdSites.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMaxProdSites()
     {
@@ -363,7 +376,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets maxProdSites.
      *
-     * @param float|null $maxProdSites maxProdSites
+     * @param null|float $maxProdSites maxProdSites
      *
      * @return self
      */
@@ -545,7 +558,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets endDate.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getEndDate()
     {
@@ -555,7 +568,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets endDate.
      *
-     * @param float|null $endDate endDate
+     * @param null|float $endDate endDate
      *
      * @return self
      */
@@ -703,7 +716,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -713,10 +726,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -731,8 +742,6 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -750,19 +759,6 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

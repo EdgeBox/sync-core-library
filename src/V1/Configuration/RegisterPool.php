@@ -33,14 +33,14 @@ class RegisterPool extends BatchOperation implements IRegisterPool
     public function __construct($core, $pool_id, $pool_name)
     {
         parent::__construct(
-      $core,
-      ApiStorage::ID,
-      [
-          'id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
-          'name' => $pool_name,
-          'version' => ApiStorage::CUSTOM_API_VERSION,
-          'parent_id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
-      ]
-    );
+            $core,
+            ApiStorage::ID,
+            [
+                'id' => $pool_id.'-'.ApiStorage::CUSTOM_API_VERSION,
+                'name' => $pool_name,
+                'version' => ApiStorage::CUSTOM_API_VERSION,
+                'parent_id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
+            ]
+        );
     }
 }

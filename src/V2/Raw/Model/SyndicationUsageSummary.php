@@ -86,26 +86,6 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -149,6 +129,62 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['startedAt'] = $data['startedAt'] ?? null;
+        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
+        $this->container['thisSite'] = $data['thisSite'] ?? null;
+        $this->container['sourceSite'] = $data['sourceSite'] ?? null;
+        $this->container['targetSite'] = $data['targetSite'] ?? null;
+        $this->container['targetSummary'] = $data['targetSummary'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -187,29 +223,6 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['startedAt'] = $data['startedAt'] ?? null;
-        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
-        $this->container['thisSite'] = $data['thisSite'] ?? null;
-        $this->container['sourceSite'] = $data['sourceSite'] ?? null;
-        $this->container['targetSite'] = $data['targetSite'] ?? null;
-        $this->container['targetSummary'] = $data['targetSummary'] ?? null;
     }
 
     /**
@@ -269,7 +282,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets finishedAt.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getFinishedAt()
     {
@@ -279,7 +292,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets finishedAt.
      *
-     * @param float|null $finishedAt finishedAt
+     * @param null|float $finishedAt finishedAt
      *
      * @return self
      */
@@ -317,7 +330,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets sourceSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
      */
     public function getSourceSite()
     {
@@ -327,7 +340,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets sourceSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null $sourceSite sourceSite
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $sourceSite sourceSite
      *
      * @return self
      */
@@ -341,7 +354,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
      */
     public function getTargetSite()
     {
@@ -351,7 +364,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage|null $targetSite targetSite
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $targetSite targetSite
      *
      * @return self
      */
@@ -365,7 +378,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSummary.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]
      */
     public function getTargetSummary()
     {
@@ -375,7 +388,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSummary.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]|null $targetSummary targetSummary
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[] $targetSummary targetSummary
      *
      * @return self
      */
@@ -403,7 +416,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -413,10 +426,8 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -431,8 +442,6 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -450,19 +459,6 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

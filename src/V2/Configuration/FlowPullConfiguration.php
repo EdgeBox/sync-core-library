@@ -26,14 +26,6 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
         parent::__construct($core, null, $dto);
     }
 
-    protected function setMode(string $mode)
-    {
-        /**
-         * @var FlowSyndicationMode $mode
-         */
-        $this->dto->setMode($mode);
-    }
-
     /**
      * @return $this
      */
@@ -97,12 +89,20 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @return IFlowPullConfiguration|void
-     *
      * @throws InternalContentSyncError
+     *
+     * @return IFlowPullConfiguration|void
      */
     public function configureOverride(string $flow_id)
     {
         throw new InternalContentSyncError("Sync Core v2 doesn't need flow overrides.");
+    }
+
+    protected function setMode(string $mode)
+    {
+        /**
+         * @var FlowSyndicationMode $mode
+         */
+        $this->dto->setMode($mode);
     }
 }

@@ -22,7 +22,7 @@ interface IFlowPullConfiguration extends IBatchOperation
     public function pullDeletions(bool $set);
 
     /**
-     * @return IFlowPullConfiguration|null
+     * @return null|IFlowPullConfiguration
      */
     public function configureOverride(string $flow_id);
 

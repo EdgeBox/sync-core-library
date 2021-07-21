@@ -11,13 +11,15 @@ interface IReportingService
     public const LOG_LEVEL_WARNING = 'warn';
 
     /**
-     * @param string[]|string|null $level See self::LOG_LEVEL*
+     * @param null|string|string[] $level See self::LOG_LEVEL*
      *
-     * @return array|null
+     * @return null|array
      */
     public function getLog($level = null);
 
     /**
+     * @throws SyncCoreException
+     *
      * @return array
      *
      * Structure is:
@@ -25,8 +27,6 @@ interface IReportingService
      * ['usage']['site']['monthly'|'daily'|'hourly']['updateCount'] => int,
      * ['usage']['contract']['monthly']['updateCount'] => int,
      * All usage items are optional and may not be defined
-     *
-     * @throws SyncCoreException
      */
     public function getStatus();
 }

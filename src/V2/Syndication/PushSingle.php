@@ -20,6 +20,20 @@ class PushSingle implements IPushSingle
 {
     public const RESERVED_PROPERTY_NAMES = [];
 
+    public const DEPENDENCY_TYPE_OPTIONAL = 0;
+    public const DEPENDENCY_TYPE_REQUIRED = 1;
+    public const DEPENDENCY_TYPE_EMBED = 2;
+
+    /**
+     * @var array
+     *            A list of all entities that were pushed in the current request
+     *            and a unique hash of their current value. Used in serialized reference
+     *            fields to ensure that even if only a child entity has changed, the parent
+     *            entity is also syndicated. Format:
+     *            [$entity_type][$entity_uuid] = (string)$hash.
+     */
+    public static $serializedEntities = [];
+
     /**
      * @var CreateRemoteEntityRevisionDto
      */
@@ -64,71 +78,15 @@ class PushSingle implements IPushSingle
         self::$serializedEntities[$namespaceMachineName][$uuid] = &$this->dto;
     }
 
-    protected function initEmptyDto(string $language, ?string $flowMachineName = null, ?EntityTypeVersionReference $typeReference = null, ?string $uuid = null, ?string $unique_id = null)
-    {
-        $has_any_id = $uuid || $unique_id;
-        if (!$uuid && !$has_any_id) {
-            $uuid = $this->dto->getRemoteUuid();
-        }
-        if (!$unique_id && !$has_any_id) {
-            $unique_id = $this->dto->getRemoteUniqueId();
-        }
-
-        $dto = new CreateRemoteEntityRevisionDto();
-        $dto->setFlowMachineName($flowMachineName ?? $this->dto->getFlowMachineName());
-        $dto->setRemoteUuid($uuid);
-        $dto->setRemoteUniqueId($unique_id);
-        $dto->setEntityTypeByMachineName($typeReference ?? $this->dto->getEntityTypeByMachineName());
-        $dto->setPoolMachineNames($has_any_id ? [] : $this->dto->getPoolMachineNames());
-        $dto->setProperties([]);
-        $dto->setDirectDependencies([]);
-        $dto->setLanguage($language);
-
-        /**
-         * @var SiteApplicationType $type
-         */
-        $type = $this->core->getApplication()->getApplicationId();
-        $dto->setAppType($type);
-
-        return $dto;
-    }
-
-    protected function getTranslation($language)
-    {
-        foreach ($this->translations as $translation) {
-            if ($translation->getLanguage() === $language) {
-                return $translation;
-            }
-        }
-
-        $translation = $this->initEmptyDto($language);
-
-        $this->translations[$language] = $translation;
-
-        $this->dto->setTranslations(array_values($this->translations));
-
-        return $translation;
-    }
-
-    /**
-     * @var array
-     *            A list of all entities that were pushed in the current request
-     *            and a unique hash of their current value. Used in serialized reference
-     *            fields to ensure that even if only a child entity has changed, the parent
-     *            entity is also syndicated. Format:
-     *            [$entity_type][$entity_uuid] = (string)$hash.
-     */
-    public static $serializedEntities = [];
-
     /**
      * {@inheritdoc}
      */
     public function getEntityHash()
     {
         return self::getReferencedEntityHash(
-        $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName(),
-        $this->dto->getRemoteUuid()
-    );
+            $this->dto->getEntityTypeByMachineName()->getNamespaceMachineName(),
+            $this->dto->getRemoteUuid()
+        );
     }
 
     /**
@@ -201,7 +159,7 @@ class PushSingle implements IPushSingle
      * @param string[]   $pool_machine_names
      *                                       The pool ID to add the entity for. Can be different to the current pool
      *                                       ID.
-     * @param array|null $details
+     * @param null|array $details
      *                                       Additional details you would like to push
      *
      * @return array|object the definition to be pushed
@@ -257,15 +215,17 @@ class PushSingle implements IPushSingle
      * @see SyncIntent::getEmbedEntityDefinition
      * @see SyncIntent::embedEntity
      */
-    public function addDirectDependency(string $type,
-                                      string $bundle,
-                                      ?string $uuid,
-                                      ?string $id,
-                                      string $version,
-                                      array $pool_machine_names,
-                                      string $language,
-                                      ?string $name,
-                                      $details = null)
+    public function addDirectDependency(
+        string $type,
+        string $bundle,
+        ?string $uuid,
+        ?string $id,
+        string $version,
+        array $pool_machine_names,
+        string $language,
+        ?string $name,
+        $details = null
+    )
     {
         $direct_dependencies = $this->dto->getEmbed();
 
@@ -276,15 +236,31 @@ class PushSingle implements IPushSingle
             foreach ($direct_dependencies as $definition) {
                 if ($definition->getEntityTypeNamespaceMachineName() === $type && $definition->getEntityTypeMachineName() === $bundle && $definition->getRemoteUuid() == $uuid && $definition->getRemoteUniqueId() == $id) {
                     return $this->getEntityReferenceDto(
-              $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
-          );
+                        $type,
+                        $bundle,
+                        $uuid,
+                        $id,
+                        $version,
+                        $pool_machine_names,
+                        $language,
+                        $name,
+                        $details
+                    );
                 }
             }
         }
 
         $dto = $this->getEntityReferenceDto(
-        $type, $bundle, $uuid, $id, $version, $pool_machine_names, $language, $name, $details
-    );
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            $version,
+            $pool_machine_names,
+            $language,
+            $name,
+            $details
+        );
 
         $direct_dependencies[] = $dto;
 
@@ -292,10 +268,6 @@ class PushSingle implements IPushSingle
 
         return $dto;
     }
-
-    public const DEPENDENCY_TYPE_OPTIONAL = 0;
-    public const DEPENDENCY_TYPE_REQUIRED = 1;
-    public const DEPENDENCY_TYPE_EMBED = 2;
 
     public function getDto()
     {
@@ -317,16 +289,16 @@ class PushSingle implements IPushSingle
         // be missing on the remote site.
         foreach ($embed_entity->getDto()->getDirectDependencies() as $dependency) {
             $this->addDirectDependency(
-          $dependency->getEntityTypeNamespaceMachineName(),
-          $dependency->getEntityTypeMachineName(),
-          $dependency->getRemoteUuid(),
-          $dependency->getRemoteUniqueId(),
-          $dependency->getEntityTypeVersion(),
-          $dependency->getPoolMachineNames(),
-          $dependency->getLanguage(),
-          $dependency->getName(),
-          $dependency->getReferenceDetails()
-      );
+                $dependency->getEntityTypeNamespaceMachineName(),
+                $dependency->getEntityTypeMachineName(),
+                $dependency->getRemoteUuid(),
+                $dependency->getRemoteUniqueId(),
+                $dependency->getEntityTypeVersion(),
+                $dependency->getPoolMachineNames(),
+                $dependency->getLanguage(),
+                $dependency->getName(),
+                $dependency->getReferenceDetails()
+            );
         }
 
         $embeds = $this->dto->getEmbed();
@@ -363,7 +335,15 @@ class PushSingle implements IPushSingle
         $this->dto->setEmbed($embeds);
 
         return $this->getEntityReferenceDto(
-            $type, $bundle, $uuid, $id, $version, $embed_entity->getDto()->getPoolMachineNames(), $embed_entity->getDto()->getLanguage(), $embed_entity->getDto()->getName(), $details
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            $version,
+            $embed_entity->getDto()->getPoolMachineNames(),
+            $embed_entity->getDto()->getLanguage(),
+            $embed_entity->getDto()->getName(),
+            $details
         );
     }
 
@@ -373,16 +353,16 @@ class PushSingle implements IPushSingle
     public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->addDirectDependency(
-      $type,
-      $bundle,
-      $uuid,
-      $id,
-      $version,
-      $pool_machine_names,
-      $language,
-      $name,
-      $details
-    );
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            $version,
+            $pool_machine_names,
+            $language,
+            $name,
+            $details
+        );
     }
 
     /**
@@ -391,16 +371,16 @@ class PushSingle implements IPushSingle
     public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->getEntityReferenceDto(
-      $type,
-      $bundle,
-      $uuid,
-      $id,
-      $version,
-      $pool_machine_names,
-      $language,
-      $name,
-      $details
-    );
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            $version,
+            $pool_machine_names,
+            $language,
+            $name,
+            $details
+        );
     }
 
     /**
@@ -501,23 +481,25 @@ class PushSingle implements IPushSingle
             $dto->setRemoteUniqueId($this->dto->getRemoteUniqueId());
 
             $request = $this
-          ->core
-          ->getClient()
-          ->remoteEntityRevisionControllerDeleteRequest($dto);
+                ->core
+                ->getClient()
+                ->remoteEntityRevisionControllerDeleteRequest($dto)
+            ;
 
             $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
 
             return $this;
-        } else {
-            $request = $this
-          ->core
-          ->getClient()
-          ->remoteEntityRevisionControllerCreateRequest($this->dto);
-
-            $this
-        ->core
-        ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
         }
+        $request = $this
+            ->core
+            ->getClient()
+            ->remoteEntityRevisionControllerCreateRequest($this->dto)
+        ;
+
+        $this
+            ->core
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT)
+        ;
 
         return $this;
     }
@@ -540,5 +522,51 @@ class PushSingle implements IPushSingle
         ]);
 
         return $this;
+    }
+
+    protected function initEmptyDto(string $language, ?string $flowMachineName = null, ?EntityTypeVersionReference $typeReference = null, ?string $uuid = null, ?string $unique_id = null)
+    {
+        $has_any_id = $uuid || $unique_id;
+        if (!$uuid && !$has_any_id) {
+            $uuid = $this->dto->getRemoteUuid();
+        }
+        if (!$unique_id && !$has_any_id) {
+            $unique_id = $this->dto->getRemoteUniqueId();
+        }
+
+        $dto = new CreateRemoteEntityRevisionDto();
+        $dto->setFlowMachineName($flowMachineName ?? $this->dto->getFlowMachineName());
+        $dto->setRemoteUuid($uuid);
+        $dto->setRemoteUniqueId($unique_id);
+        $dto->setEntityTypeByMachineName($typeReference ?? $this->dto->getEntityTypeByMachineName());
+        $dto->setPoolMachineNames($has_any_id ? [] : $this->dto->getPoolMachineNames());
+        $dto->setProperties([]);
+        $dto->setDirectDependencies([]);
+        $dto->setLanguage($language);
+
+        /**
+         * @var SiteApplicationType $type
+         */
+        $type = $this->core->getApplication()->getApplicationId();
+        $dto->setAppType($type);
+
+        return $dto;
+    }
+
+    protected function getTranslation($language)
+    {
+        foreach ($this->translations as $translation) {
+            if ($translation->getLanguage() === $language) {
+                return $translation;
+            }
+        }
+
+        $translation = $this->initEmptyDto($language);
+
+        $this->translations[$language] = $translation;
+
+        $this->dto->setTranslations(array_values($this->translations));
+
+        return $translation;
     }
 }

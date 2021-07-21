@@ -122,26 +122,6 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -239,47 +219,6 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     ];
 
     /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name.
-     *
-     * @return array
-     */
-    public static function attributeMap()
-    {
-        return self::$attributeMap;
-    }
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses).
-     *
-     * @return array
-     */
-    public static function setters()
-    {
-        return self::$setters;
-    }
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests).
-     *
-     * @return array
-     */
-    public static function getters()
-    {
-        return self::$getters;
-    }
-
-    /**
-     * The original name of the model.
-     *
-     * @return string
-     */
-    public function getModelName()
-    {
-        return self::$openAPIModelName;
-    }
-
-    /**
      * Associative array for storing property values.
      *
      * @var mixed[]
@@ -318,6 +257,80 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         $this->container['createdAt'] = $data['createdAt'] ?? null;
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
         $this->container['versionId'] = $data['versionId'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name.
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses).
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests).
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
+
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$openAPIModelName;
     }
 
     /**
@@ -389,7 +402,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets name.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getName()
     {
@@ -399,7 +412,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets name.
      *
-     * @param string|null $name name
+     * @param null|string $name name
      *
      * @return self
      */
@@ -413,7 +426,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets remoteUuid.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUuid()
     {
@@ -423,7 +436,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets remoteUuid.
      *
-     * @param string|null $remoteUuid remoteUuid
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -437,7 +450,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -447,7 +460,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -485,7 +498,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets directDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -495,7 +508,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets directDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null $directDependencies directDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -557,7 +570,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets isTranslationRoot.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getIsTranslationRoot()
     {
@@ -567,7 +580,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets isTranslationRoot.
      *
-     * @param bool|null $isTranslationRoot isTranslationRoot
+     * @param null|bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
@@ -605,7 +618,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets deleted.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getDeleted()
     {
@@ -615,7 +628,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets deleted.
      *
-     * @param bool|null $deleted deleted
+     * @param null|bool $deleted deleted
      *
      * @return self
      */
@@ -629,7 +642,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets embed.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]
      */
     public function getEmbed()
     {
@@ -639,7 +652,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets embed.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]|null $embed embed
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[] $embed embed
      *
      * @return self
      */
@@ -677,7 +690,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets allDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -687,7 +700,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets allDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null $allDependencies allDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -821,7 +834,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets translationRoot.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getTranslationRoot()
     {
@@ -831,7 +844,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets translationRoot.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $translationRoot translationRoot
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
@@ -845,7 +858,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets previewHtml.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getPreviewHtml()
     {
@@ -855,7 +868,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets previewHtml.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $previewHtml previewHtml
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
      *
      * @return self
      */
@@ -979,7 +992,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -989,10 +1002,8 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -1007,8 +1018,6 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -1026,19 +1035,6 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

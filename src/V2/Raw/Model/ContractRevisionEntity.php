@@ -102,26 +102,6 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -189,6 +169,70 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['hostingType'] = $data['hostingType'] ?? null;
+        $this->container['product'] = $data['product'] ?? null;
+        $this->container['packageType'] = $data['packageType'] ?? null;
+        $this->container['revisionTransition'] = $data['revisionTransition'] ?? null;
+        $this->container['maxUpdatesPerMonth'] = $data['maxUpdatesPerMonth'] ?? null;
+        $this->container['startDate'] = $data['startDate'] ?? null;
+        $this->container['endDate'] = $data['endDate'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['contract'] = $data['contract'] ?? null;
+        $this->container['previousContractRevision'] = $data['previousContractRevision'] ?? null;
+        $this->container['uuid'] = $data['uuid'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -227,37 +271,6 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['hostingType'] = $data['hostingType'] ?? null;
-        $this->container['product'] = $data['product'] ?? null;
-        $this->container['packageType'] = $data['packageType'] ?? null;
-        $this->container['revisionTransition'] = $data['revisionTransition'] ?? null;
-        $this->container['maxUpdatesPerMonth'] = $data['maxUpdatesPerMonth'] ?? null;
-        $this->container['startDate'] = $data['startDate'] ?? null;
-        $this->container['endDate'] = $data['endDate'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['contract'] = $data['contract'] ?? null;
-        $this->container['previousContractRevision'] = $data['previousContractRevision'] ?? null;
-        $this->container['uuid'] = $data['uuid'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -419,7 +432,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets maxUpdatesPerMonth.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMaxUpdatesPerMonth()
     {
@@ -429,7 +442,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets maxUpdatesPerMonth.
      *
-     * @param float|null $maxUpdatesPerMonth maxUpdatesPerMonth
+     * @param null|float $maxUpdatesPerMonth maxUpdatesPerMonth
      *
      * @return self
      */
@@ -539,7 +552,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets previousContractRevision.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getPreviousContractRevision()
     {
@@ -549,7 +562,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets previousContractRevision.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $previousContractRevision previousContractRevision
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previousContractRevision previousContractRevision
      *
      * @return self
      */
@@ -673,7 +686,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -683,10 +696,8 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -701,8 +712,6 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -720,19 +729,6 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

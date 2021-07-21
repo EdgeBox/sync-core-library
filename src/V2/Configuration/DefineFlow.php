@@ -46,10 +46,10 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $dto->setSitePushesByMachineName([]);
 
         parent::__construct(
-      $core,
-      BatchOperation::REQUEST_FLOW_CREATE,
-      $dto
-    );
+            $core,
+            BatchOperation::REQUEST_FLOW_CREATE,
+            $dto
+        );
 
         $this->machineName = $machine_name;
 

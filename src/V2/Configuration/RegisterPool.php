@@ -24,9 +24,9 @@ class RegisterPool extends BatchOperation implements IRegisterPool
         $dto->setMachineName($pool_machine_name);
 
         parent::__construct(
-      $core,
-      BatchOperation::REQUEST_POOL_CREATE,
-      $dto
-    );
+            $core,
+            BatchOperation::REQUEST_POOL_CREATE,
+            $dto
+        );
     }
 }

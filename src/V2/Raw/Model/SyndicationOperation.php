@@ -88,26 +88,6 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -154,6 +134,63 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['page'] = $data['page'] ?? null;
+        $this->container['errors'] = $data['errors'] ?? null;
+        $this->container['entity'] = $data['entity'] ?? null;
+        $this->container['file'] = $data['file'] ?? null;
+        $this->container['pools'] = $data['pools'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -192,30 +229,6 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['page'] = $data['page'] ?? null;
-        $this->container['errors'] = $data['errors'] ?? null;
-        $this->container['entity'] = $data['entity'] ?? null;
-        $this->container['file'] = $data['file'] ?? null;
-        $this->container['pools'] = $data['pools'] ?? null;
     }
 
     /**
@@ -299,7 +312,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets page.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getPage()
     {
@@ -309,7 +322,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets page.
      *
-     * @param float|null $page page
+     * @param null|float $page page
      *
      * @return self
      */
@@ -323,7 +336,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets errors.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]
      */
     public function getErrors()
     {
@@ -333,7 +346,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets errors.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]|null $errors errors
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[] $errors errors
      *
      * @return self
      */
@@ -347,7 +360,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getEntity()
     {
@@ -357,7 +370,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $entity entity
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
      *
      * @return self
      */
@@ -371,7 +384,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets file.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getFile()
     {
@@ -381,7 +394,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets file.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $file file
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $file file
      *
      * @return self
      */
@@ -395,7 +408,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
      */
     public function getPools()
     {
@@ -405,7 +418,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]|null $pools pools
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
      *
      * @return self
      */
@@ -433,7 +446,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -443,10 +456,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -461,8 +472,6 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -480,19 +489,6 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

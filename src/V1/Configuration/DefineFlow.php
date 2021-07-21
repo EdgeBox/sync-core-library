@@ -19,28 +19,28 @@ class DefineFlow extends BatchOperation implements IDefineFlow
      * @param \EdgeBox\SyncCore\V1\SyncCore $core
      * @param string                        $machine_name
      * @param string                        $name
-     * @param string|null                   $config
+     * @param null|string                   $config
      */
     public function __construct($core, $machine_name, $name, $config)
     {
         $app = $core->getApplication();
 
         parent::__construct(
-      $core,
-      ObjectStorage::ID,
-      [
-          'id' => ConfigurationService::OBJECT_STORAGE_TYPE.'-'.$app->getSiteId().'-'.$machine_name,
-          'type' => ConfigurationService::OBJECT_STORAGE_TYPE,
-          'properties' => [
-              'module_version' => $app->getApplicationModuleVersion(),
-              'pools' => [],
-              'id' => $machine_name,
-              'name' => $name,
-              'site' => $app->getSiteId(),
-              'config' => $config ?? '',
-          ],
-      ]
-    );
+            $core,
+            ObjectStorage::ID,
+            [
+                'id' => ConfigurationService::OBJECT_STORAGE_TYPE.'-'.$app->getSiteId().'-'.$machine_name,
+                'type' => ConfigurationService::OBJECT_STORAGE_TYPE,
+                'properties' => [
+                    'module_version' => $app->getApplicationModuleVersion(),
+                    'pools' => [],
+                    'id' => $machine_name,
+                    'name' => $name,
+                    'site' => $app->getSiteId(),
+                    'config' => $config ?? '',
+                ],
+            ]
+        );
 
         $this->machine_name = $machine_name;
     }

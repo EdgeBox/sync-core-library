@@ -86,26 +86,6 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -149,6 +129,62 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['timestamp'] = $data['timestamp'] ?? null;
+        $this->container['errorMessage'] = $data['errorMessage'] ?? null;
+        $this->container['callStack'] = $data['callStack'] ?? null;
+        $this->container['statusCode'] = $data['statusCode'] ?? null;
+        $this->container['requestDetails'] = $data['requestDetails'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -187,29 +223,6 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['timestamp'] = $data['timestamp'] ?? null;
-        $this->container['errorMessage'] = $data['errorMessage'] ?? null;
-        $this->container['callStack'] = $data['callStack'] ?? null;
-        $this->container['statusCode'] = $data['statusCode'] ?? null;
-        $this->container['requestDetails'] = $data['requestDetails'] ?? null;
     }
 
     /**
@@ -293,7 +306,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets errorMessage.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getErrorMessage()
     {
@@ -303,7 +316,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets errorMessage.
      *
-     * @param string|null $errorMessage errorMessage
+     * @param null|string $errorMessage errorMessage
      *
      * @return self
      */
@@ -317,7 +330,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets callStack.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getCallStack()
     {
@@ -327,7 +340,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets callStack.
      *
-     * @param string|null $callStack callStack
+     * @param null|string $callStack callStack
      *
      * @return self
      */
@@ -341,7 +354,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets statusCode.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getStatusCode()
     {
@@ -351,7 +364,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets statusCode.
      *
-     * @param float|null $statusCode statusCode
+     * @param null|float $statusCode statusCode
      *
      * @return self
      */
@@ -365,7 +378,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets requestDetails.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getRequestDetails()
     {
@@ -375,7 +388,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets requestDetails.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $requestDetails requestDetails
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $requestDetails requestDetails
      *
      * @return self
      */
@@ -403,7 +416,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -413,10 +426,8 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -431,8 +442,6 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -450,19 +459,6 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

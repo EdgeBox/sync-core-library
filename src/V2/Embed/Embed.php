@@ -44,19 +44,19 @@ abstract class Embed
         ];
     }
 
+    abstract public function run();
+
     protected function getOptions()
     {
         return [];
     }
-
-    abstract public function run();
 
     protected function render()
     {
         $options = $this->getOptions();
 
         if ($this->permissions) {
-            $this->config['jwt'] = $this->permissions ? $this->core->createJwt($this->permissions) : '';
+            $this->config['jwt'] = $this->permissions;
         }
 
         $html = '<style>

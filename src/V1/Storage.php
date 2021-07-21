@@ -38,9 +38,9 @@ class Storage
     /**
      * @param string $type
      *
-     * @return \EdgeBox\SyncCore\V1\Storage\Storage
-     *
      * @throws \Exception
+     *
+     * @return \EdgeBox\SyncCore\V1\Storage\Storage
      */
     public function getStorageById($type)
     {
@@ -72,7 +72,7 @@ class Storage
             return $this->getRemoteStorage();
         }
 
-        throw new \Exception("Unknown storage type $type.");
+        throw new \Exception("Unknown storage type {$type}.");
     }
 
     /**
@@ -209,11 +209,11 @@ class Storage
         }
 
         return $cache[$api_id][$site_id][$entity_type_name][$bundle_name] = new CustomStorage(
-      $this->core,
-      $api_id,
-      $site_id,
-      $entity_type_name,
-      $bundle_name
-    );
+            $this->core,
+            $api_id,
+            $site_id,
+            $entity_type_name,
+            $bundle_name
+        );
     }
 }

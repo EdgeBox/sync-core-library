@@ -30,9 +30,9 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     protected $is_force;
 
     /**
-     * @var int|null
+     * @var null|int
      */
-    protected $total = null;
+    protected $total;
 
     /**
      * @var int
@@ -40,9 +40,9 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     protected $progress = 0;
 
     /**
-     * @var string|null
+     * @var null|string
      */
-    protected $sync_id = null;
+    protected $sync_id;
 
     public function __construct($core, $type, $bundle)
     {
@@ -96,9 +96,10 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $synchronization = $this->getSyncEntity();
 
         $body = $synchronization
-      ->synchronizeAllStatus($this->sync_id)
-      ->execute()
-      ->getResult();
+            ->synchronizeAllStatus($this->sync_id)
+            ->execute()
+            ->getResult()
+        ;
 
         return $this->progress = (int) $body['processed'];
     }
@@ -125,22 +126,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     public function wasAborted()
     {
         return false;
-    }
-
-    /**
-     * @return \EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization
-     */
-    protected function getSyncEntity()
-    {
-        $api = $this->pool;
-        $site_id = $this->core->getApplication()->getSiteMachineName();
-
-        $local_connection_id = CustomStorage::getCustomId($api, $site_id, $this->type, $this->bundle);
-        $sync_id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, false);
-
-        return $this->core
-      ->storage->getConnectionSynchronizationStorage()
-      ->getEntity($sync_id);
     }
 
     /**
@@ -173,11 +158,12 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     public function execute()
     {
         $response = $this
-      ->getSyncEntity()
-      ->synchronizeAll()
-      ->force($this->is_force)
-      ->execute()
-      ->getResult();
+            ->getSyncEntity()
+            ->synchronizeAll()
+            ->force($this->is_force)
+            ->execute()
+            ->getResult()
+        ;
 
         $this->total = (int) $response['total'];
         $this->sync_id = isset($response['id']) ? $response['id'] : null;
@@ -216,5 +202,22 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $this->total = $data[4];
         $this->progress = $data[5];
         $this->sync_id = $data[6];
+    }
+
+    /**
+     * @return \EdgeBox\SyncCore\V1\Entity\ConnectionSynchronization
+     */
+    protected function getSyncEntity()
+    {
+        $api = $this->pool;
+        $site_id = $this->core->getApplication()->getSiteMachineName();
+
+        $local_connection_id = CustomStorage::getCustomId($api, $site_id, $this->type, $this->bundle);
+        $sync_id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, false);
+
+        return $this->core
+            ->storage->getConnectionSynchronizationStorage()
+            ->getEntity($sync_id)
+        ;
     }
 }

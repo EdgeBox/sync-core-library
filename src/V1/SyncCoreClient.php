@@ -96,13 +96,13 @@ class SyncCoreClient
      *
      * @param \EdgeBox\SyncCore\V1\Query\Query $query
      *
-     * @return mixed
-     *
      * @throws \EdgeBox\SyncCore\Exception\TimeoutException
      * @throws \EdgeBox\SyncCore\Exception\BadRequestException
      * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
      * @throws \EdgeBox\SyncCore\Exception\NotFoundException
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return mixed
      */
     public function request($query)
     {
@@ -127,10 +127,10 @@ class SyncCoreClient
             }
 
             $response = $this->client->request(
-        $method,
-        $url,
-        $options
-      );
+                $method,
+                $url,
+                $options
+            );
         } catch (ConnectException $e) {
             throw new TimeoutException('The Sync Core did not respond in time for '.$method.' '.Helper::obfuscateCredentials($url));
         } catch (GuzzleException $e) {
@@ -152,11 +152,14 @@ class SyncCoreClient
 
         if (400 === $status) {
             throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$method.' '.Helper::obfuscateCredentials($url).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (403 === $status) {
+        }
+        if (403 === $status) {
             throw new ForbiddenException('The Sync Core responded with 403 Forbidden for '.$method.' '.Helper::obfuscateCredentials($url).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (404 === $status) {
+        }
+        if (404 === $status) {
             throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$method.' '.Helper::obfuscateCredentials($url).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-        } elseif (200 !== $status && 201 !== $status) {
+        }
+        if (200 !== $status && 201 !== $status) {
             throw new SyncCoreException('The Sync Core responded with a non-OK status code for '.$method.' '.Helper::obfuscateCredentials($url).' '.$message, $status, $response->getReasonPhrase(), $response_body);
         }
 

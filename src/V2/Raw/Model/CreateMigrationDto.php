@@ -92,26 +92,6 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -164,6 +144,65 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['entityTypeReference'] = $data['entityTypeReference'] ?? null;
+        $this->container['entityReferences'] = $data['entityReferences'] ?? null;
+        $this->container['previousMigration'] = $data['previousMigration'] ?? null;
+        $this->container['initialSetup'] = $data['initialSetup'] ?? null;
+        $this->container['changedAfter'] = $data['changedAfter'] ?? null;
+        $this->container['dryRun'] = $data['dryRun'] ?? null;
+        $this->container['skipSyndication'] = $data['skipSyndication'] ?? null;
+        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -202,32 +241,6 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['entityTypeReference'] = $data['entityTypeReference'] ?? null;
-        $this->container['entityReferences'] = $data['entityReferences'] ?? null;
-        $this->container['previousMigration'] = $data['previousMigration'] ?? null;
-        $this->container['initialSetup'] = $data['initialSetup'] ?? null;
-        $this->container['changedAfter'] = $data['changedAfter'] ?? null;
-        $this->container['dryRun'] = $data['dryRun'] ?? null;
-        $this->container['skipSyndication'] = $data['skipSyndication'] ?? null;
-        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
     }
 
     /**
@@ -284,7 +297,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityTypeReference.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference
      */
     public function getEntityTypeReference()
     {
@@ -294,7 +307,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityTypeReference.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference|null $entityTypeReference entityTypeReference
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference $entityTypeReference entityTypeReference
      *
      * @return self
      */
@@ -308,7 +321,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityReferences.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]
      */
     public function getEntityReferences()
     {
@@ -318,7 +331,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityReferences.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]|null $entityReferences entityReferences
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[] $entityReferences entityReferences
      *
      * @return self
      */
@@ -332,7 +345,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets previousMigration.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getPreviousMigration()
     {
@@ -342,7 +355,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets previousMigration.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $previousMigration previousMigration
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previousMigration previousMigration
      *
      * @return self
      */
@@ -356,7 +369,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets initialSetup.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getInitialSetup()
     {
@@ -366,7 +379,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets initialSetup.
      *
-     * @param bool|null $initialSetup initialSetup
+     * @param null|bool $initialSetup initialSetup
      *
      * @return self
      */
@@ -380,7 +393,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets changedAfter.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getChangedAfter()
     {
@@ -390,7 +403,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets changedAfter.
      *
-     * @param float|null $changedAfter changedAfter
+     * @param null|float $changedAfter changedAfter
      *
      * @return self
      */
@@ -404,7 +417,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets dryRun.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getDryRun()
     {
@@ -414,7 +427,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets dryRun.
      *
-     * @param bool|null $dryRun dryRun
+     * @param null|bool $dryRun dryRun
      *
      * @return self
      */
@@ -428,7 +441,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets skipSyndication.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getSkipSyndication()
     {
@@ -438,7 +451,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets skipSyndication.
      *
-     * @param bool|null $skipSyndication skipSyndication
+     * @param null|bool $skipSyndication skipSyndication
      *
      * @return self
      */
@@ -452,7 +465,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets flowMachineName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getFlowMachineName()
     {
@@ -462,7 +475,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets flowMachineName.
      *
-     * @param string|null $flowMachineName flowMachineName
+     * @param null|string $flowMachineName flowMachineName
      *
      * @return self
      */
@@ -490,7 +503,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -500,10 +513,8 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -518,8 +529,6 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -537,19 +546,6 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

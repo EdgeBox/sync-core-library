@@ -39,7 +39,7 @@ interface IPushSingle
     /**
      * @param array      $pool_machine_names
      *                                       Can be any pool if it's not syndicated like Drupal config entities
-     * @param array|null $details
+     * @param null|array $details
      *                                       Any additional properties you may want to add
      *
      * @return array|object
@@ -47,7 +47,7 @@ interface IPushSingle
     public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null);
 
     /**
-     * @param array|null $details
+     * @param null|array $details
      *                            Any additional properties you may want to add
      *
      * @return array|object
@@ -57,7 +57,7 @@ interface IPushSingle
     /**
      * @param IPushSingle $embed_entity
      *                                  The definition of the whole entity
-     * @param array|null  $details
+     * @param null|array  $details
      *                                  Any additional properties you may want to add
      *
      * @return array|object
@@ -66,44 +66,44 @@ interface IPushSingle
 
     /**
      * @param mixed       $value
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return $this
      */
     public function setProperty(string $name, $value, $language = null);
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return $this
      */
     public function setName(string $value, $language = null);
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return $this
      */
     public function setPreviewHtml(string $value, $language = null);
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return $this
      */
     public function setSourceDeepLink(string $value, $language = null);
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getProperty(string $name, $language = null);
 
     /**
-     * @return $this
-     *
      * @throws SyncCoreException
+     *
+     * @return $this
      */
     public function execute();
 

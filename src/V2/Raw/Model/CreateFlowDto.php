@@ -88,26 +88,6 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -154,6 +134,63 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['containsPreviews'] = $data['containsPreviews'] ?? null;
+        $this->container['sitePushesByMachineName'] = $data['sitePushesByMachineName'] ?? null;
+        $this->container['sitePullsByMachineName'] = $data['sitePullsByMachineName'] ?? null;
+        $this->container['remoteConfigFileId'] = $data['remoteConfigFileId'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -192,30 +229,6 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['containsPreviews'] = $data['containsPreviews'] ?? null;
-        $this->container['sitePushesByMachineName'] = $data['sitePushesByMachineName'] ?? null;
-        $this->container['sitePullsByMachineName'] = $data['sitePullsByMachineName'] ?? null;
-        $this->container['remoteConfigFileId'] = $data['remoteConfigFileId'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
     }
 
     /**
@@ -305,7 +318,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets containsPreviews.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getContainsPreviews()
     {
@@ -315,7 +328,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets containsPreviews.
      *
-     * @param bool|null $containsPreviews containsPreviews
+     * @param null|bool $containsPreviews containsPreviews
      *
      * @return self
      */
@@ -377,7 +390,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets remoteConfigFileId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteConfigFileId()
     {
@@ -387,7 +400,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets remoteConfigFileId.
      *
-     * @param string|null $remoteConfigFileId remoteConfigFileId
+     * @param null|string $remoteConfigFileId remoteConfigFileId
      *
      * @return self
      */
@@ -401,7 +414,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowStatus|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus
      */
     public function getStatus()
     {
@@ -411,7 +424,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowStatus|null $status status
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus $status status
      *
      * @return self
      */
@@ -439,7 +452,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -449,10 +462,8 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -467,8 +478,6 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -486,19 +495,6 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

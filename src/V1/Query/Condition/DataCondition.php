@@ -112,7 +112,7 @@ class DataCondition extends Condition
 
     /**
      * @param string                     $field
-     * @param bool|int|float|string|null $value
+     * @param null|bool|float|int|string $value
      *
      * @return DataCondition
      */
@@ -123,7 +123,7 @@ class DataCondition extends Condition
 
     /**
      * @param string                     $field
-     * @param bool|int|float|string|null $value
+     * @param null|bool|float|int|string $value
      *
      * @return DataCondition
      */
@@ -134,7 +134,7 @@ class DataCondition extends Condition
 
     /**
      * @param string    $field
-     * @param int|float $value
+     * @param float|int $value
      *
      * @return DataCondition
      */
@@ -145,7 +145,7 @@ class DataCondition extends Condition
 
     /**
      * @param string    $field
-     * @param int|float $value
+     * @param float|int $value
      *
      * @return DataCondition
      */
@@ -156,7 +156,7 @@ class DataCondition extends Condition
 
     /**
      * @param string    $field
-     * @param int|float $value
+     * @param float|int $value
      *
      * @return DataCondition
      */
@@ -167,7 +167,7 @@ class DataCondition extends Condition
 
     /**
      * @param string    $field
-     * @param int|float $value
+     * @param float|int $value
      *
      * @return DataCondition
      */

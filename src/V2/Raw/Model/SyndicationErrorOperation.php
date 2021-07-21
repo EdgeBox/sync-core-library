@@ -94,26 +94,6 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -169,6 +149,66 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['operationIndex'] = $data['operationIndex'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['errors'] = $data['errors'] ?? null;
+        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
+        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
+        $this->container['entityName'] = $data['entityName'] ?? null;
+        $this->container['entityRemoteUuid'] = $data['entityRemoteUuid'] ?? null;
+        $this->container['entityRemoteUniqueId'] = $data['entityRemoteUniqueId'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -207,33 +247,6 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['operationIndex'] = $data['operationIndex'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['errors'] = $data['errors'] ?? null;
-        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
-        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
-        $this->container['entityName'] = $data['entityName'] ?? null;
-        $this->container['entityRemoteUuid'] = $data['entityRemoteUuid'] ?? null;
-        $this->container['entityRemoteUniqueId'] = $data['entityRemoteUniqueId'] ?? null;
-        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
     }
 
     /**
@@ -347,7 +360,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets errors.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]
      */
     public function getErrors()
     {
@@ -357,7 +370,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets errors.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]|null $errors errors
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[] $errors errors
      *
      * @return self
      */
@@ -371,7 +384,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets entityTypeNamespaceMachineName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEntityTypeNamespaceMachineName()
     {
@@ -381,7 +394,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets entityTypeNamespaceMachineName.
      *
-     * @param string|null $entityTypeNamespaceMachineName entityTypeNamespaceMachineName
+     * @param null|string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName
      *
      * @return self
      */
@@ -395,7 +408,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets entityTypeMachineName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEntityTypeMachineName()
     {
@@ -405,7 +418,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets entityTypeMachineName.
      *
-     * @param string|null $entityTypeMachineName entityTypeMachineName
+     * @param null|string $entityTypeMachineName entityTypeMachineName
      *
      * @return self
      */
@@ -419,7 +432,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets entityName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEntityName()
     {
@@ -429,7 +442,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets entityName.
      *
-     * @param string|null $entityName entityName
+     * @param null|string $entityName entityName
      *
      * @return self
      */
@@ -443,7 +456,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets entityRemoteUuid.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEntityRemoteUuid()
     {
@@ -453,7 +466,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets entityRemoteUuid.
      *
-     * @param string|null $entityRemoteUuid entityRemoteUuid
+     * @param null|string $entityRemoteUuid entityRemoteUuid
      *
      * @return self
      */
@@ -467,7 +480,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets entityRemoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getEntityRemoteUniqueId()
     {
@@ -477,7 +490,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets entityRemoteUniqueId.
      *
-     * @param string|null $entityRemoteUniqueId entityRemoteUniqueId
+     * @param null|string $entityRemoteUniqueId entityRemoteUniqueId
      *
      * @return self
      */
@@ -529,7 +542,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -539,10 +552,8 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -557,8 +568,6 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -576,19 +585,6 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

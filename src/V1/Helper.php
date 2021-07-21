@@ -13,9 +13,9 @@ class Helper
      * Remove any information about basic auth in any URLs contained in the given
      * messages.
      *
-     * @param string|array $message
+     * @param array|string $message
      *
-     * @return array|string|string[]|null
+     * @return null|array|string|string[]
      */
     public static function obfuscateCredentials($message)
     {
@@ -25,9 +25,7 @@ class Helper
             } elseif (isset($message['err']['message'])) {
                 $message['err']['message'] = self::obfuscateCredentials($message['err']['message']);
             }
-            /*
-             * Ignore other associative arrays.
-             */
+            // Ignore other associative arrays.
             elseif (isset($message[0])) {
                 for ($i = 0; $i < count($message); ++$i) {
                     $message[$i] = self::obfuscateCredentials($message[$i]);
@@ -38,9 +36,8 @@ class Helper
         }
 
         $message = preg_replace('@https://([^:]+):([^\@]+)\@@i', 'https://$1:****@', $message);
-        $message = preg_replace('@http://([^:]+):([^\@]+)\@@i', 'http://$1:****@', $message);
 
-        return $message;
+        return preg_replace('@http://([^:]+):([^\@]+)\@@i', 'http://$1:****@', $message);
     }
 
     /**

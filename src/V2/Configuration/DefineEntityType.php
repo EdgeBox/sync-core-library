@@ -12,6 +12,7 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 class DefineEntityType extends BatchOperation implements IDefineEntityType
 {
+    public const FILE_PROPERTY_NAME = '__file__';
     /**
      * @var SyncCore
      */
@@ -22,25 +23,10 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
      */
     protected $dto;
 
-    public const FILE_PROPERTY_NAME = '__file__';
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addToBatch($batch)
-    {
-        /**
-         * @var Batch $batch
-         */
-        $batch->prependOperation($this);
-
-        return $this;
-    }
-
     /**
      * DefineEntityType constructor.
      *
-     * @param string|null $name
+     * @param null|string $name
      */
     public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $version_id, $name = null)
     {
@@ -55,10 +41,23 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         $dto->setProperties([]);
 
         parent::__construct(
-        $core,
-        BatchOperation::REQUEST_ENTITY_TYPE_CREATE,
-        $dto
-    );
+            $core,
+            BatchOperation::REQUEST_ENTITY_TYPE_CREATE,
+            $dto
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addToBatch($batch)
+    {
+        /**
+         * @var Batch $batch
+         */
+        $batch->prependOperation($this);
+
+        return $this;
     }
 
     /**
@@ -104,44 +103,15 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     {
         if ($set) {
             $this->addProperty(
-          self::FILE_PROPERTY_NAME,
-          'File content',
-          RemoteEntityTypePropertyType::FILE,
-          false,
-          true
-      );
+                self::FILE_PROPERTY_NAME,
+                'File content',
+                RemoteEntityTypePropertyType::FILE,
+                false,
+                true
+            );
         }
 
         return $this;
-    }
-
-    protected function addProperty(string $machine_name, string $name, string $type, bool $multiple, bool $required)
-    {
-        $newProperty = new RemoteEntityTypeProperty([
-            'machineName' => $machine_name,
-            'name' => $name ?? $machine_name,
-            'type' => $type,
-            'required' => $required,
-            'multiple' => $multiple,
-        ]);
-
-        /**
-         * @var RemoteEntityTypeProperty[] $properties
-         */
-        $properties = $this->dto->getProperties();
-        foreach ($properties as $i => $property) {
-            if ($property->getMachineName() === $machine_name) {
-                $properties[$i] = $newProperty;
-                $newProperty = null;
-                break;
-            }
-        }
-
-        if ($newProperty) {
-            $properties[] = $newProperty;
-        }
-
-        $this->dto->setProperties($properties);
     }
 
     /**
@@ -202,5 +172,35 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required);
 
         return $this;
+    }
+
+    protected function addProperty(string $machine_name, string $name, string $type, bool $multiple, bool $required)
+    {
+        $newProperty = new RemoteEntityTypeProperty([
+            'machineName' => $machine_name,
+            'name' => $name ?? $machine_name,
+            'type' => $type,
+            'required' => $required,
+            'multiple' => $multiple,
+        ]);
+
+        /**
+         * @var RemoteEntityTypeProperty[] $properties
+         */
+        $properties = $this->dto->getProperties();
+        foreach ($properties as $i => $property) {
+            if ($property->getMachineName() === $machine_name) {
+                $properties[$i] = $newProperty;
+                $newProperty = null;
+
+                break;
+            }
+        }
+
+        if ($newProperty) {
+            $properties[] = $newProperty;
+        }
+
+        $this->dto->setProperties($properties);
     }
 }

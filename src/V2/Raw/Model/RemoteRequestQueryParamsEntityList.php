@@ -88,26 +88,6 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -154,6 +134,63 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['page'] = $data['page'] ?? null;
+        $this->container['itemsPerPage'] = $data['itemsPerPage'] ?? null;
+        $this->container['mode'] = $data['mode'] ?? null;
+        $this->container['changedAfter'] = $data['changedAfter'] ?? null;
+        $this->container['namespaceMachineName'] = $data['namespaceMachineName'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['versionId'] = $data['versionId'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -195,30 +232,6 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['page'] = $data['page'] ?? null;
-        $this->container['itemsPerPage'] = $data['itemsPerPage'] ?? null;
-        $this->container['mode'] = $data['mode'] ?? null;
-        $this->container['changedAfter'] = $data['changedAfter'] ?? null;
-        $this->container['namespaceMachineName'] = $data['namespaceMachineName'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['versionId'] = $data['versionId'] ?? null;
-    }
-
-    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
@@ -248,7 +261,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets page.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getPage()
     {
@@ -258,7 +271,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets page.
      *
-     * @param float|null $page page
+     * @param null|float $page page
      *
      * @return self
      */
@@ -272,7 +285,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets itemsPerPage.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getItemsPerPage()
     {
@@ -282,7 +295,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets itemsPerPage.
      *
-     * @param float|null $itemsPerPage itemsPerPage
+     * @param null|float $itemsPerPage itemsPerPage
      *
      * @return self
      */
@@ -320,7 +333,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets changedAfter.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getChangedAfter()
     {
@@ -330,7 +343,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets changedAfter.
      *
-     * @param float|null $changedAfter changedAfter
+     * @param null|float $changedAfter changedAfter
      *
      * @return self
      */
@@ -344,7 +357,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets namespaceMachineName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getNamespaceMachineName()
     {
@@ -354,7 +367,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets namespaceMachineName.
      *
-     * @param string|null $namespaceMachineName namespaceMachineName
+     * @param null|string $namespaceMachineName namespaceMachineName
      *
      * @return self
      */
@@ -368,7 +381,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets machineName.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMachineName()
     {
@@ -378,7 +391,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets machineName.
      *
-     * @param string|null $machineName machineName
+     * @param null|string $machineName machineName
      *
      * @return self
      */
@@ -392,7 +405,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets versionId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getVersionId()
     {
@@ -402,7 +415,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets versionId.
      *
-     * @param string|null $versionId versionId
+     * @param null|string $versionId versionId
      *
      * @return self
      */
@@ -430,7 +443,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -440,10 +453,8 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -458,8 +469,6 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -477,19 +486,6 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

@@ -114,26 +114,6 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -219,6 +199,76 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['fileName'] = $data['fileName'] ?? null;
+        $this->container['remoteFilePath'] = $data['remoteFilePath'] ?? null;
+        $this->container['remoteDownloadUrl'] = $data['remoteDownloadUrl'] ?? null;
+        $this->container['hash'] = $data['hash'] ?? null;
+        $this->container['uploadUrl'] = $data['uploadUrl'] ?? null;
+        $this->container['downloadUrl'] = $data['downloadUrl'] ?? null;
+        $this->container['mimeType'] = $data['mimeType'] ?? null;
+        $this->container['fileSize'] = $data['fileSize'] ?? null;
+        $this->container['maxFileSize'] = $data['maxFileSize'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['site'] = $data['site'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['entity'] = $data['entity'] ?? null;
+        $this->container['flow'] = $data['flow'] ?? null;
+        $this->container['syndication'] = $data['syndication'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -257,43 +307,6 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['fileName'] = $data['fileName'] ?? null;
-        $this->container['remoteFilePath'] = $data['remoteFilePath'] ?? null;
-        $this->container['remoteDownloadUrl'] = $data['remoteDownloadUrl'] ?? null;
-        $this->container['hash'] = $data['hash'] ?? null;
-        $this->container['uploadUrl'] = $data['uploadUrl'] ?? null;
-        $this->container['downloadUrl'] = $data['downloadUrl'] ?? null;
-        $this->container['mimeType'] = $data['mimeType'] ?? null;
-        $this->container['fileSize'] = $data['fileSize'] ?? null;
-        $this->container['maxFileSize'] = $data['maxFileSize'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['site'] = $data['site'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['entity'] = $data['entity'] ?? null;
-        $this->container['flow'] = $data['flow'] ?? null;
-        $this->container['syndication'] = $data['syndication'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -404,7 +417,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets remoteFilePath.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteFilePath()
     {
@@ -414,7 +427,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets remoteFilePath.
      *
-     * @param string|null $remoteFilePath remoteFilePath
+     * @param null|string $remoteFilePath remoteFilePath
      *
      * @return self
      */
@@ -428,7 +441,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets remoteDownloadUrl.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteDownloadUrl()
     {
@@ -438,7 +451,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets remoteDownloadUrl.
      *
-     * @param string|null $remoteDownloadUrl remoteDownloadUrl
+     * @param null|string $remoteDownloadUrl remoteDownloadUrl
      *
      * @return self
      */
@@ -452,7 +465,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets hash.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getHash()
     {
@@ -462,7 +475,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets hash.
      *
-     * @param string|null $hash hash
+     * @param null|string $hash hash
      *
      * @return self
      */
@@ -476,7 +489,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets uploadUrl.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getUploadUrl()
     {
@@ -486,7 +499,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets uploadUrl.
      *
-     * @param string|null $uploadUrl uploadUrl
+     * @param null|string $uploadUrl uploadUrl
      *
      * @return self
      */
@@ -500,7 +513,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets downloadUrl.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getDownloadUrl()
     {
@@ -510,7 +523,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets downloadUrl.
      *
-     * @param string|null $downloadUrl downloadUrl
+     * @param null|string $downloadUrl downloadUrl
      *
      * @return self
      */
@@ -572,7 +585,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets maxFileSize.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMaxFileSize()
     {
@@ -582,7 +595,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets maxFileSize.
      *
-     * @param float|null $maxFileSize maxFileSize
+     * @param null|float $maxFileSize maxFileSize
      *
      * @return self
      */
@@ -692,7 +705,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getEntity()
     {
@@ -702,7 +715,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $entity entity
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
      *
      * @return self
      */
@@ -716,7 +729,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets flow.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getFlow()
     {
@@ -726,7 +739,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets flow.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $flow flow
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $flow flow
      *
      * @return self
      */
@@ -740,7 +753,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets syndication.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getSyndication()
     {
@@ -750,7 +763,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets syndication.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $syndication syndication
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $syndication syndication
      *
      * @return self
      */
@@ -850,7 +863,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -860,10 +873,8 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -878,8 +889,6 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -897,19 +906,6 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

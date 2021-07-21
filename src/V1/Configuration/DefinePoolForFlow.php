@@ -46,27 +46,27 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
         $authentication['base_url'] = $app->getSiteBaseUrl();
 
         parent::__construct(
-      $core,
-      RemoteStorageStorage::ID,
-      [
-          'id' => RemoteStorageStorage::getStorageId($pool_id, $app->getSiteId()),
-          'name' => 'Drupal connection on '.$app->getSiteId().' for '.$pool_id,
-          'status' => 'READY',
-          'instance_id' => $app->getSiteId(),
-          'api_id' => $pool_id,
-          'entity_type_ids' => [],
-          'connection_id_pattern' => CustomStorage::getCustomId('[api.id]', '[instance.id]', '[entity_type.name_space]', '[entity_type.name]'),
-          'connection_name_pattern' => 'Drupal connection on [instance.id] for [entity_type.name_space].[entity_type.name]:[entity_type.version]',
-          'connection_path_pattern' => CustomStorage::getCustomPath('[api.id]', '[instance.id]', '[entity_type.name_space]', '[entity_type.name]'),
-          'connection_options' => [
-              'list_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', null, '[is_manual]', '[is_dependency]'),
-              'item_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', '[id]', '[is_manual]', '[is_dependency]'),
-              'authentication' => $authentication,
-              // $cms_content_sync_disable_optimization,
-              'update_all' => false,
-          ],
-      ]
-    );
+            $core,
+            RemoteStorageStorage::ID,
+            [
+                'id' => RemoteStorageStorage::getStorageId($pool_id, $app->getSiteId()),
+                'name' => 'Drupal connection on '.$app->getSiteId().' for '.$pool_id,
+                'status' => 'READY',
+                'instance_id' => $app->getSiteId(),
+                'api_id' => $pool_id,
+                'entity_type_ids' => [],
+                'connection_id_pattern' => CustomStorage::getCustomId('[api.id]', '[instance.id]', '[entity_type.name_space]', '[entity_type.name]'),
+                'connection_name_pattern' => 'Drupal connection on [instance.id] for [entity_type.name_space].[entity_type.name]:[entity_type.version]',
+                'connection_path_pattern' => CustomStorage::getCustomPath('[api.id]', '[instance.id]', '[entity_type.name_space]', '[entity_type.name]'),
+                'connection_options' => [
+                    'list_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', null, '[is_manual]', '[is_dependency]'),
+                    'item_url' => $app->getRestUrl('[api.id]', '[entity_type.name_space]', '[entity_type.name]', '[entity_type.version]', '[id]', '[is_manual]', '[is_dependency]'),
+                    'authentication' => $authentication,
+                    // $cms_content_sync_disable_optimization,
+                    'update_all' => false,
+                ],
+            ]
+        );
 
         $this->flow = $flow;
         $this->pool_id = $pool_id;
@@ -97,31 +97,31 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
          * @var DefineEntityType $entity_type
          */
         $pool_connection_id = CustomStorage::getCustomId(
-      $this->pool_id,
-      InstanceStorage::POOL_SITE_ID,
-      $entity_type->getTypeMachineName(),
-      $entity_type->getBundleMachineName()
-    );
+            $this->pool_id,
+            InstanceStorage::POOL_SITE_ID,
+            $entity_type->getTypeMachineName(),
+            $entity_type->getBundleMachineName()
+        );
 
         $this->addDownstream(
-      ConnectionSynchronizationStorage::ID,
-      [
-          'id' => $pool_connection_id.'--to--preview',
-          'name' => 'Synchronization Pool '.$entity_type->getTypeMachineName().'-'.$entity_type->getBundleMachineName().' -> Preview',
-          'options' => [
-              'create_entities' => true,
-              'update_entities' => true,
-              'delete_entities' => true,
-              'update_none_when_loading' => true,
-              'exclude_reference_properties' => [
-                  'pSource',
-              ],
-          ],
-          'status' => 'READY',
-          'source_connection_id' => $pool_connection_id,
-          'destination_connection_id' => PreviewEntityStorage::ID,
-      ]
-    );
+            ConnectionSynchronizationStorage::ID,
+            [
+                'id' => $pool_connection_id.'--to--preview',
+                'name' => 'Synchronization Pool '.$entity_type->getTypeMachineName().'-'.$entity_type->getBundleMachineName().' -> Preview',
+                'options' => [
+                    'create_entities' => true,
+                    'update_entities' => true,
+                    'delete_entities' => true,
+                    'update_none_when_loading' => true,
+                    'exclude_reference_properties' => [
+                        'pSource',
+                    ],
+                ],
+                'status' => 'READY',
+                'source_connection_id' => $pool_connection_id,
+                'destination_connection_id' => PreviewEntityStorage::ID,
+            ]
+        );
 
         return $this;
     }
@@ -158,31 +158,31 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
         $pool_connection_id = CustomStorage::getCustomId($this->pool_id, InstanceStorage::POOL_SITE_ID, $entity_type->getTypeMachineName(), $entity_type->getBundleMachineName());
 
         $this->addDownstream(
-      ConnectionSynchronizationStorage::ID,
-      [
-          'id' => ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, true),
-          'name' => 'Synchronization for '.$entity_type->getTypeMachineName().'/'.$entity_type->getBundleMachineName().'/'.$entity_type->getVersionId().' from '.$app->getSiteId().' -> Pool',
-          'options' => [
-              'dependency_connection_id' => CustomStorage::POOL_DEPENDENCY_CONNECTION_ID,
-              // As entities will only be sent to Sync Core if the sync config
-              // allows it, the synchronization entity doesn't need to filter
-              // any further.
-              'create_entities' => true,
-              'update_entities' => true,
-              'delete_entities' => true,
-              // $cms_content_sync_disable_optimization,
-              'force_updates' => false,
-              'dependent_entities_only' => false,
-              'update_none_when_loading' => true,
-              'exclude_reference_properties' => [
-                  'pSource',
-              ],
-          ],
-          'status' => 'READY',
-          'source_connection_id' => $local_connection_id,
-          'destination_connection_id' => $pool_connection_id,
-      ]
-    );
+            ConnectionSynchronizationStorage::ID,
+            [
+                'id' => ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($local_connection_id, true),
+                'name' => 'Synchronization for '.$entity_type->getTypeMachineName().'/'.$entity_type->getBundleMachineName().'/'.$entity_type->getVersionId().' from '.$app->getSiteId().' -> Pool',
+                'options' => [
+                    'dependency_connection_id' => CustomStorage::POOL_DEPENDENCY_CONNECTION_ID,
+                    // As entities will only be sent to Sync Core if the sync config
+                    // allows it, the synchronization entity doesn't need to filter
+                    // any further.
+                    'create_entities' => true,
+                    'update_entities' => true,
+                    'delete_entities' => true,
+                    // $cms_content_sync_disable_optimization,
+                    'force_updates' => false,
+                    'dependent_entities_only' => false,
+                    'update_none_when_loading' => true,
+                    'exclude_reference_properties' => [
+                        'pSource',
+                    ],
+                ],
+                'status' => 'READY',
+                'source_connection_id' => $local_connection_id,
+                'destination_connection_id' => $pool_connection_id,
+            ]
+        );
 
         return null;
     }

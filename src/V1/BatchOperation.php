@@ -77,11 +77,12 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
 
         foreach ($operations as $op) {
             $this
-        ->core
-        ->storage
-        ->getStorageById($op['type'])
-        ->createItem($op['body'])
-        ->execute();
+                ->core
+                ->storage
+                ->getStorageById($op['type'])
+                ->createItem($op['body'])
+                ->execute()
+            ;
         }
     }
 

@@ -89,12 +89,13 @@ class CustomStorage extends Storage
      */
     public static function getCustomId($api_id, $site_id, $entity_type_name, $bundle_name)
     {
-        return sprintf('drupal-%s-%s-%s-%s',
-      $api_id,
-      $site_id,
-      $entity_type_name,
-      $bundle_name
-    );
+        return sprintf(
+            'drupal-%s-%s-%s-%s',
+            $api_id,
+            $site_id,
+            $entity_type_name,
+            $bundle_name
+        );
     }
 
     /**
@@ -121,11 +122,12 @@ class CustomStorage extends Storage
      */
     public static function getCustomPath($api_id, $site_id, $entity_type_name, $bundle_name)
     {
-        return sprintf('drupal/%s/%s/%s/%s',
-      $api_id,
-      $site_id,
-      $entity_type_name,
-      $bundle_name
-    );
+        return sprintf(
+            'drupal/%s/%s/%s/%s',
+            $api_id,
+            $site_id,
+            $entity_type_name,
+            $bundle_name
+        );
     }
 }

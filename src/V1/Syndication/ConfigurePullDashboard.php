@@ -50,12 +50,12 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
             $authentication = $this->core->getApplication()->getAuthentication();
             $hash = md5($time.':'.$authentication['password']);
             $token = base64_encode(
-        json_encode([
-            't' => $time,
-            'h' => $hash,
-            's' => $this->core->getApplication()->getSiteMachineName(),
-        ])
-      );
+                json_encode([
+                    't' => $time,
+                    'h' => $hash,
+                    's' => $this->core->getApplication()->getSiteMachineName(),
+                ])
+            );
             $this->config['syncCoreUrl'] = $core->getBaseUrl(true);
             $this->config['syncCoreToken'] = $token;
         }
@@ -67,17 +67,18 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     public function ifTaggedWith(string $pool_id, string $type, string $bundle, string $property, array $uuids)
     {
         $id = EntityTypeStorage::getExternalEntityTypeId(
-      $pool_id,
-      $type,
-      $bundle
-    );
+            $pool_id,
+            $type,
+            $bundle
+        );
 
         $this->filters[] = ParentCondition::any()
-      ->add(
-        ParentCondition::none()
-          ->add(DataCondition::equal(PreviewEntityStorage::PROPERTY_ENTITY_TYPE_UNVERSIONED, $id))
-      )
-      ->add(DataCondition::in(PreviewEntityStorage::PROPERTY_CUSTOM_PROPERTIES.'.'.$property.'.'.Entity::UUID_KEY, $uuids));
+            ->add(
+                ParentCondition::none()
+            ->add(DataCondition::equal(PreviewEntityStorage::PROPERTY_ENTITY_TYPE_UNVERSIONED, $id))
+            )
+            ->add(DataCondition::in(PreviewEntityStorage::PROPERTY_CUSTOM_PROPERTIES.'.'.$property.'.'.Entity::UUID_KEY, $uuids))
+        ;
 
         return $this;
     }
@@ -93,7 +94,8 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
             $config['syncCoreCondition'] = $this->filters[0]->serialize();
         } elseif (count($this->filters) > 1) {
             $config['syncCoreCondition'] = ParentCondition::all($this->filters)
-        ->serialize();
+                ->serialize()
+            ;
         }
 
         return $config;
@@ -105,10 +107,10 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
     public function forEntityType(string $pool_id, string $type, string $bundle)
     {
         $id = EntityTypeStorage::getExternalEntityTypeId(
-      $pool_id,
-      $type,
-      $bundle
-    );
+            $pool_id,
+            $type,
+            $bundle
+        );
 
         $this->entity_type_ids[] = $id;
 
@@ -160,27 +162,29 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
 
         if (count($this->filters)) {
             $condition = ParentCondition::all(array_merge(
-        $this->filters,
-        [$condition]
-      ));
+                $this->filters,
+                [$condition]
+            ));
         }
 
         $order_field = $order_by_title ? 'title' : 'published_date';
 
         $response = $this->core
-      ->storage->getPreviewEntityStorage()
-      ->listItems()
-      ->setItemsPerPage(10)
-      ->getDetails()
-      ->setCondition($condition)
-      ->orderBy($order_field,
-        $order_ascending ?
+            ->storage->getPreviewEntityStorage()
+            ->listItems()
+            ->setItemsPerPage(10)
+            ->getDetails()
+            ->setCondition($condition)
+            ->orderBy(
+                $order_field,
+                $order_ascending ?
           ListQuery::ORDER_ASCENDING :
           ListQuery::ORDER_DESCENDING
-      )
-      ->setPage($page ? $page : 1)
-      ->execute()
-      ->getRaw();
+            )
+            ->setPage($page ? $page : 1)
+            ->execute()
+            ->getRaw()
+        ;
 
         return new class($response) implements IPullDashboardSearchResult {
             /**

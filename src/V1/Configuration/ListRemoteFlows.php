@@ -55,11 +55,12 @@ class ListRemoteFlows implements IListRemoteFlows
         }
 
         $items = $object_storage
-      ->listItems()
-      ->setCondition($conditions)
-      ->getDetails()
-      ->execute()
-      ->getAll();
+            ->listItems()
+            ->setCondition($conditions)
+            ->getDetails()
+            ->execute()
+            ->getAll()
+        ;
 
         $result = [];
 

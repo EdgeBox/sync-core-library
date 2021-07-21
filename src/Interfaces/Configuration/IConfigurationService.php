@@ -17,16 +17,16 @@ interface IConfigurationService
     public function getRemoteFlow(string $id);
 
     /**
-     * @return array pool ID => pool name
-     *
      * @throws SyncCoreException
+     *
+     * @return array pool ID => pool name
      */
     public function listRemotePools();
 
     /**
-     * @return IRegisterPool
-     *
      * @throws SyncCoreException
+     *
+     * @return IRegisterPool
      */
     public function usePool(string $pool_id, string $pool_name);
 

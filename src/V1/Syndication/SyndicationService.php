@@ -85,22 +85,23 @@ class SyndicationService implements ISyndicationService
          * @var \EdgeBox\SyncCore\V1\Storage\MetaInformationConnectionStorage $storage
          */
         $storage = $this
-      ->core
-      ->storage->getMetaInformationConnectionStorage();
+            ->core
+            ->storage->getMetaInformationConnectionStorage();
 
         $application = $this->core->getApplication();
 
         $items = $storage->listItems()
-      ->orderBy('connection_id')
-      ->setCondition(
-        ParentCondition::all()
-          ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
-          ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
-          ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$type.'-'.$bundle))
-      )
-      ->getDetails()
-      ->execute()
-      ->getAll();
+            ->orderBy('connection_id')
+            ->setCondition(
+                ParentCondition::all()
+            ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
+            ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
+            ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$type.'-'.$bundle))
+            )
+            ->getDetails()
+            ->execute()
+            ->getAll()
+        ;
 
         $result = [];
 
@@ -122,22 +123,24 @@ class SyndicationService implements ISyndicationService
             if (!empty($item['entity']['_resource_url'])) {
                 $entity = SimpleQuery
           ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
-          ->execute()
-          ->getResult();
+              ->execute()
+              ->getResult()
+                ;
             } else {
                 $storage = new CustomStorage(
-          $this->core,
-          $pool_id,
-          $site_id,
-          $type,
-          $bundle
-        );
+                    $this->core,
+                    $pool_id,
+                    $site_id,
+                    $type,
+                    $bundle
+                );
 
                 try {
                     $entity = $storage
-            ->getItem($shared_entity_id)
-            ->execute()
-            ->getItem();
+                        ->getItem($shared_entity_id)
+                        ->execute()
+                        ->getItem()
+                    ;
                 } catch (SyncCoreException $e) {
                     continue;
                 }
@@ -160,9 +163,10 @@ class SyndicationService implements ISyndicationService
 
         foreach ($connections as $connection) {
             $result &= $connection
-        ->login()
-        ->execute()
-        ->succeeded();
+                ->login()
+                ->execute()
+                ->succeeded()
+            ;
         }
 
         return $result;
@@ -171,9 +175,9 @@ class SyndicationService implements ISyndicationService
     /**
      * Get a list of all Sync Core connections as resource URLs.
      *
-     * @return \EdgeBox\SyncCore\V1\Entity\Connection[]
-     *
      * @throws \Exception
+     *
+     * @return \EdgeBox\SyncCore\V1\Entity\Connection[]
      */
     protected function getConnectionEntities()
     {
@@ -181,11 +185,12 @@ class SyndicationService implements ISyndicationService
         $result = [];
 
         $items = $storage
-      ->listItems()
-      ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()
-        ->getSiteId()))
-      ->execute()
-      ->getAll();
+            ->listItems()
+            ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()
+            ->getSiteId()))
+            ->execute()
+            ->getAll()
+        ;
 
         foreach ($items as $item) {
             $result[] = $storage->getEntity($item['id']);

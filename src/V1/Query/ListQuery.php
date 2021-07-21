@@ -80,9 +80,9 @@ class ListQuery extends StorageQuery
      * @param string $field
      * @param string $direction
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function orderBy($field, $direction = self::ORDER_ASCENDING)
     {

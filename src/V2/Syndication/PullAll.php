@@ -45,17 +45,17 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     protected $pullAll;
 
     /**
-     * @var string|null
+     * @var null|string
      */
-    protected $migrationId = null;
+    protected $migrationId;
 
     /**
-     * @var MigrationEntity|null
+     * @var null|MigrationEntity
      */
-    protected $dto = null;
+    protected $dto;
 
     /**
-     * @var MigrationSummary|null
+     * @var null|MigrationSummary
      */
     protected $summaryDto;
 
@@ -118,30 +118,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         }
 
         return $total;
-    }
-
-    protected function getSummaryDto($clearCache = false)
-    {
-        if ($this->summaryDto && !$clearCache) {
-            return $this->summaryDto;
-        }
-
-        $request = $this->core->getClient()->migrationControllerSummaryRequest($this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
-
-        return $this->summaryDto = $response;
-    }
-
-    protected function getDto()
-    {
-        if ($this->dto) {
-            return $this->dto;
-        }
-
-        $request = $this->core->getClient()->migrationControllerItemRequest($this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
-
-        return $this->dto = $response;
     }
 
     /**
@@ -247,5 +223,29 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $this->namespaceMachineName = $data['namespaceMachineName'];
         $this->machineName = $data['machineName'];
         $this->migrationId = $data['migrationId'];
+    }
+
+    protected function getSummaryDto($clearCache = false)
+    {
+        if ($this->summaryDto && !$clearCache) {
+            return $this->summaryDto;
+        }
+
+        $request = $this->core->getClient()->migrationControllerSummaryRequest($this->migrationId);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $this->summaryDto = $response;
+    }
+
+    protected function getDto()
+    {
+        if ($this->dto) {
+            return $this->dto;
+        }
+
+        $request = $this->core->getClient()->migrationControllerItemRequest($this->migrationId);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $this->dto = $response;
     }
 }

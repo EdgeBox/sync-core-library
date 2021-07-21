@@ -25,10 +25,10 @@ class DefinePoolForFlow extends BatchOperation implements IDefinePoolForFlow
     public function __construct(SyncCore $core, DefineFlow $flow, string $pool_machine_name)
     {
         parent::__construct(
-      $core,
-      null,
-      null
-    );
+            $core,
+            null,
+            null
+        );
 
         $this->flow = $flow;
         $this->poolMachineName = $pool_machine_name;

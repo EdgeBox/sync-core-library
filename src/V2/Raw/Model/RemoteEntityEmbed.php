@@ -98,26 +98,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -179,6 +159,68 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
+        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
+        $this->container['language'] = $data['language'] ?? null;
+        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
+        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
+        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+        $this->container['referenceDetails'] = $data['referenceDetails'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['properties'] = $data['properties'] ?? null;
+        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
+        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -217,35 +259,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
-        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
-        $this->container['language'] = $data['language'] ?? null;
-        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
-        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
-        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
-        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
-        $this->container['referenceDetails'] = $data['referenceDetails'] ?? null;
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['properties'] = $data['properties'] ?? null;
-        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
-        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
     }
 
     /**
@@ -323,7 +336,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -333,7 +346,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -467,7 +480,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets referenceDetails.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getReferenceDetails()
     {
@@ -477,7 +490,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets referenceDetails.
      *
-     * @param mixed|null $referenceDetails referenceDetails
+     * @param null|mixed $referenceDetails referenceDetails
      *
      * @return self
      */
@@ -491,7 +504,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets name.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getName()
     {
@@ -501,7 +514,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets name.
      *
-     * @param string|null $name name
+     * @param null|string $name name
      *
      * @return self
      */
@@ -563,7 +576,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets isTranslationRoot.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getIsTranslationRoot()
     {
@@ -573,7 +586,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets isTranslationRoot.
      *
-     * @param bool|null $isTranslationRoot isTranslationRoot
+     * @param null|bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
@@ -601,7 +614,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -611,10 +624,8 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -629,8 +640,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -648,19 +657,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

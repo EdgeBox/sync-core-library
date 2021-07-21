@@ -86,26 +86,6 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -149,6 +129,62 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['entity'] = $data['entity'] ?? null;
+        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
+        $this->container['previewHtml'] = $data['previewHtml'] ?? null;
+        $this->container['localUsage'] = $data['localUsage'] ?? null;
+        $this->container['sourceUsage'] = $data['sourceUsage'] ?? null;
+        $this->container['lastPull'] = $data['lastPull'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -187,29 +223,6 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['entity'] = $data['entity'] ?? null;
-        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
-        $this->container['previewHtml'] = $data['previewHtml'] ?? null;
-        $this->container['localUsage'] = $data['localUsage'] ?? null;
-        $this->container['sourceUsage'] = $data['sourceUsage'] ?? null;
-        $this->container['lastPull'] = $data['lastPull'] ?? null;
     }
 
     /**
@@ -296,7 +309,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets previewHtml.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPreviewHtml()
     {
@@ -306,7 +319,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets previewHtml.
      *
-     * @param string|null $previewHtml previewHtml
+     * @param null|string $previewHtml previewHtml
      *
      * @return self
      */
@@ -320,7 +333,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets localUsage.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
      */
     public function getLocalUsage()
     {
@@ -330,7 +343,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets localUsage.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity|null $localUsage localUsage
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity $localUsage localUsage
      *
      * @return self
      */
@@ -368,7 +381,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets lastPull.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
      */
     public function getLastPull()
     {
@@ -378,7 +391,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets lastPull.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity|null $lastPull lastPull
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity $lastPull lastPull
      *
      * @return self
      */
@@ -406,7 +419,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -416,10 +429,8 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -434,8 +445,6 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -453,19 +462,6 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

@@ -50,20 +50,22 @@ class ListRemoteFlows implements IListRemoteFlows
 
         do {
             $request = $this
-          ->core
-          ->getClient()
-          ->flowControllerListRequest(
-              count($this->pools) ? $this->pools : null,
-              '100',
-              $page.''
-          );
+                ->core
+                ->getClient()
+                ->flowControllerListRequest(
+                    count($this->pools) ? $this->pools : null,
+                    '100',
+                    $page.''
+                )
+            ;
 
             /**
              * @var PagedFlowList $response
              */
             $response = $this
-          ->core
-          ->sendToSyncCoreAndExpect($request, PagedFlowList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+                ->core
+                ->sendToSyncCoreAndExpect($request, PagedFlowList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ;
 
             foreach ($response->getItems() as $item) {
                 $result[] = new RemoteFlowItem($this->core, $item);

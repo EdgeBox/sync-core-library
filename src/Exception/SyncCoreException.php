@@ -11,17 +11,17 @@ use Exception;
 class SyncCoreException extends Exception
 {
     /**
-     * @var int|null
+     * @var null|int
      */
     protected $statusCode;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $reasonPhrase;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $responseBody;
 
@@ -30,11 +30,11 @@ class SyncCoreException extends Exception
      *
      * @param string      $message
      *                                  Error message
-     * @param int|null    $statusCode
+     * @param null|int    $statusCode
      *                                  HTTP Status Code
-     * @param string|null $reasonPhrase
+     * @param null|string $reasonPhrase
      *                                  HTTP Reason Phrase
-     * @param string|null $responseBody
+     * @param null|string $responseBody
      *                                  HTTP Body
      */
     public function __construct($message = '', $statusCode = null, $reasonPhrase = null, $responseBody = null)
@@ -47,7 +47,7 @@ class SyncCoreException extends Exception
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getStatusCode()
     {
@@ -55,7 +55,7 @@ class SyncCoreException extends Exception
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getReasonPhrase()
     {
@@ -63,7 +63,7 @@ class SyncCoreException extends Exception
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getResponseBody()
     {

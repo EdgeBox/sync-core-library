@@ -22,10 +22,11 @@ class RemoteStorageStorage extends Storage
      */
     public static function getStorageId($api_id, $site_id)
     {
-        return sprintf('drupal-%s-%s',
-      $api_id,
-      $site_id
-    );
+        return sprintf(
+            'drupal-%s-%s',
+            $api_id,
+            $site_id
+        );
     }
 
     /**

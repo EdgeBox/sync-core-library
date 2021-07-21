@@ -82,26 +82,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -137,6 +117,60 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
         'error' => 'getError',
         'details' => 'getDetails',
     ];
+
+    /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['info'] = $data['info'] ?? null;
+        $this->container['error'] = $data['error'] ?? null;
+        $this->container['details'] = $data['details'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
 
     /**
      * Array of attributes where the key is the local name,
@@ -180,36 +214,13 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['info'] = $data['info'] ?? null;
-        $this->container['error'] = $data['error'] ?? null;
-        $this->container['details'] = $data['details'] ?? null;
-    }
-
-    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -226,7 +237,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets status.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getStatus()
     {
@@ -236,7 +247,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets status.
      *
-     * @param string|null $status status
+     * @param null|string $status status
      *
      * @return self
      */
@@ -250,7 +261,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets info.
      *
-     * @return array<string,array<string,string>>|null
+     * @return null|array<string,array<string,string>>
      */
     public function getInfo()
     {
@@ -260,7 +271,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets info.
      *
-     * @param array<string,array<string,string>>|null $info info
+     * @param null|array<string,array<string,string>> $info info
      *
      * @return self
      */
@@ -274,7 +285,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets error.
      *
-     * @return array<string,array<string,string>>|null
+     * @return null|array<string,array<string,string>>
      */
     public function getError()
     {
@@ -284,7 +295,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets error.
      *
-     * @param array<string,array<string,string>>|null $error error
+     * @param null|array<string,array<string,string>> $error error
      *
      * @return self
      */
@@ -298,7 +309,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets details.
      *
-     * @return array<string,array<string,string>>|null
+     * @return null|array<string,array<string,string>>
      */
     public function getDetails()
     {
@@ -308,7 +319,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets details.
      *
-     * @param array<string,array<string,string>>|null $details details
+     * @param null|array<string,array<string,string>> $details details
      *
      * @return self
      */
@@ -336,7 +347,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -346,10 +357,8 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -364,8 +373,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -383,19 +390,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

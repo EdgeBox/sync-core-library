@@ -7,7 +7,7 @@ use EdgeBox\SyncCore\Exception\SyncCoreException;
 interface ISyndicationService
 {
     /**
-     * @return IConfigurePullDashboard|null
+     * @return null|IConfigurePullDashboard
      */
     public function configurePullDashboard();
 
@@ -29,7 +29,7 @@ interface ISyndicationService
     /**
      * @param string      $entity_uuid
      *                                 The UUID of the entity as shared across all sites
-     * @param string|null $entity_id
+     * @param null|string $entity_id
      *                                 The ID of the entity **if it should be kept**
      *
      * @return IPushSingle
@@ -38,8 +38,6 @@ interface ISyndicationService
 
     /**
      * Inform the Sync Core that the given entity was deleted locally.
-     *
-     * @return void
      */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id);
 
@@ -54,9 +52,9 @@ interface ISyndicationService
      * Trigger the login procedure from the Sync Core to the site. Only relevant
      * for cookie authentication e.g. when you cleared all sessions.
      *
-     * @return bool
-     *
      * @throws SyncCoreException
+     *
+     * @return bool
      */
     public function refreshAuthentication();
 }

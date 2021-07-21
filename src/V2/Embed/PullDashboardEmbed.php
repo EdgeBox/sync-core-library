@@ -19,19 +19,19 @@ class PullDashboardEmbed extends Embed implements IEmbedFeature
         $this->options = $params;
 
         parent::__construct(
-        $core,
+            $core,
             IEmbedService::PULL_DASHBOARD,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
-    );
-    }
-
-    protected function getOptions()
-    {
-        return $this->options;
+        );
     }
 
     public function run()
     {
         return $this->render();
+    }
+
+    protected function getOptions()
+    {
+        return $this->options;
     }
 }

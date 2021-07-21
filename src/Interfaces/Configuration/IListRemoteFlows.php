@@ -12,10 +12,10 @@ interface IListRemoteFlows
     public function thatUsePool(string $pool_id);
 
     /**
+     * @throws SyncCoreException
+     *
      * @return IRemoteFlowListItem[] the properties the remote site saved for
      *                               this Flow
-     *
-     * @throws SyncCoreException
      */
     public function execute();
 }

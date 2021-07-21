@@ -12,21 +12,21 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class ListResult extends Result
 {
     /**
-     * @var int|null
+     * @var null|int
      *               Cache how many pages can be returned eventually
      */
-    protected $numberOfPages = null;
+    protected $numberOfPages;
 
     /**
-     * @var int|null
+     * @var null|int
      *               Cache how many items will be provided in total
      */
-    protected $totalNumberOfItems = null;
+    protected $totalNumberOfItems;
 
     /**
-     * @return int
-     *
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return int
      */
     public function getNumberOfItems()
     {
@@ -43,9 +43,9 @@ class ListResult extends Result
      * @param int $page
      *                  The page to retrieve
      *
-     * @return array the entities as an array
-     *
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return array the entities as an array
      */
     public function getPage($page = 1)
     {
@@ -75,9 +75,9 @@ class ListResult extends Result
      * You should only use this if you provide it to other Sync Core
      * applications, e.g. the Pull dashboard.
      *
-     * @return array
-     *
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return array
      */
     public function getRaw()
     {
@@ -98,9 +98,9 @@ class ListResult extends Result
     /**
      * Get all remote entities at once.
      *
-     * @return array all entities for the given Query as an array
-     *
      * @throws \Exception
+     *
+     * @return array all entities for the given Query as an array
      */
     public function getAll()
     {

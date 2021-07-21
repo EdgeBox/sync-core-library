@@ -35,7 +35,7 @@ interface ISyncCore
     public function getConfigurationService();
 
     /**
-     * @return IEmbedService|null
+     * @return null|IEmbedService
      */
     public function getEmbedService();
 
@@ -48,27 +48,27 @@ interface ISyncCore
      * Whether the Sync Core allows to be called by clients directly for the pull
      * dashboard.
      *
-     * @param bool|null $set
+     * @param null|bool $set
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function isDirectUserAccessEnabled($set = null);
 
     /**
-     * @param string|null $id
+     * @param null|string $id
      *                        Optional ID of the site. Defaults to the ID of the
      *                        current site.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getSiteName($id = null);
 
     public function setSiteName(string $set);
 
     /**
-     * @return array|null
-     *
      * @throws NotFoundException
+     *
+     * @return null|array
      */
     public function verifySiteId();
 
@@ -82,9 +82,9 @@ interface ISyncCore
      *                    Force updating any existing configuration (skip
      *                    verification from above)
      *
-     * @return string
-     *
      * @throws SiteVerificationFailedException
+     *
+     * @return string
      */
     public function registerSite($force = false);
 

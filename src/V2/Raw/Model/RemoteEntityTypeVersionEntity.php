@@ -100,26 +100,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -184,6 +164,69 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['appType'] = $data['appType'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['namespaceMachineName'] = $data['namespaceMachineName'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['versionId'] = $data['versionId'] ?? null;
+        $this->container['translatable'] = $data['translatable'] ?? null;
+        $this->container['properties'] = $data['properties'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['entityType'] = $data['entityType'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -222,36 +265,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['appType'] = $data['appType'] ?? null;
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['namespaceMachineName'] = $data['namespaceMachineName'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['versionId'] = $data['versionId'] ?? null;
-        $this->container['translatable'] = $data['translatable'] ?? null;
-        $this->container['properties'] = $data['properties'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['entityType'] = $data['entityType'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -437,7 +450,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translatable.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getTranslatable()
     {
@@ -447,7 +460,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translatable.
      *
-     * @param bool|null $translatable translatable
+     * @param null|bool $translatable translatable
      *
      * @return self
      */
@@ -643,7 +656,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -653,10 +666,8 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -671,8 +682,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -690,19 +699,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

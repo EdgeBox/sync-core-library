@@ -22,14 +22,14 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
-     * @return $this
-     *
      * @throws SyncCoreException
+     *
+     * @return $this
      */
     public function execute();
 
     /**
-     * @return IPullDashboardSearchResultItem|null
+     * @return null|IPullDashboardSearchResultItem
      */
     public function getPullDashboardSearchResultItem();
 }

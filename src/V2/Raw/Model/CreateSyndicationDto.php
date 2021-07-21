@@ -90,26 +90,6 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -159,6 +139,64 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
+        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
+        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
+        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
+        $this->container['asDependency'] = $data['asDependency'] ?? null;
+        $this->container['manually'] = $data['manually'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -200,31 +238,6 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     }
 
     /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
-        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
-        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
-        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
-        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
-        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
-        $this->container['asDependency'] = $data['asDependency'] ?? null;
-        $this->container['manually'] = $data['manually'] ?? null;
-    }
-
-    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
@@ -260,7 +273,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets remoteUuid.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUuid()
     {
@@ -270,7 +283,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets remoteUuid.
      *
-     * @param string|null $remoteUuid remoteUuid
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -284,7 +297,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -294,7 +307,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -356,7 +369,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets poolMachineNames.
      *
-     * @return string[]|null
+     * @return null|string[]
      */
     public function getPoolMachineNames()
     {
@@ -366,7 +379,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets poolMachineNames.
      *
-     * @param string[]|null $poolMachineNames poolMachineNames
+     * @param null|string[] $poolMachineNames poolMachineNames
      *
      * @return self
      */
@@ -404,7 +417,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets asDependency.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getAsDependency()
     {
@@ -414,7 +427,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets asDependency.
      *
-     * @param bool|null $asDependency asDependency
+     * @param null|bool $asDependency asDependency
      *
      * @return self
      */
@@ -428,7 +441,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets manually.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getManually()
     {
@@ -438,7 +451,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets manually.
      *
-     * @param bool|null $manually manually
+     * @param null|bool $manually manually
      *
      * @return self
      */
@@ -466,7 +479,7 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -476,10 +489,8 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -494,8 +505,6 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -513,19 +522,6 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

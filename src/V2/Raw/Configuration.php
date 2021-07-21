@@ -41,11 +41,6 @@ namespace EdgeBox\SyncCore\V2\Raw;
 class Configuration
 {
     /**
-     * @var Configuration
-     */
-    private static $defaultConfiguration;
-
-    /**
      * Associate array to store API key(s).
      *
      * @var string[]
@@ -114,6 +109,10 @@ class Configuration
      * @var string
      */
     protected $tempFolderPath;
+    /**
+     * @var Configuration
+     */
+    private static $defaultConfiguration;
 
     /**
      * Constructor.
@@ -143,7 +142,7 @@ class Configuration
      *
      * @param string $apiKeyIdentifier API key identifier (authentication scheme)
      *
-     * @return string|null API key or token
+     * @return null|string API key or token
      */
     public function getApiKey($apiKeyIdentifier)
     {
@@ -170,7 +169,7 @@ class Configuration
      *
      * @param string $apiKeyIdentifier API key identifier (authentication scheme)
      *
-     * @return string|null
+     * @return null|string
      */
     public function getApiKeyPrefix($apiKeyIdentifier)
     {
@@ -393,8 +392,6 @@ class Configuration
      * Sets the detault configuration instance.
      *
      * @param Configuration $config An instance of the Configuration Object
-     *
-     * @return void
      */
     public static function setDefaultConfiguration(Configuration $config)
     {
@@ -422,7 +419,7 @@ class Configuration
      *
      * @param string $apiKeyIdentifier name of apikey
      *
-     * @return string|null API key with the prefix
+     * @return null|string API key with the prefix
      */
     public function getApiKeyWithPrefix($apiKeyIdentifier)
     {
@@ -461,7 +458,7 @@ class Configuration
      * Returns URL based on the index and variables.
      *
      * @param int        $index     index of the host settings
-     * @param array|null $variables hash of variable and the corresponding value (optional)
+     * @param null|array $variables hash of variable and the corresponding value (optional)
      *
      * @return string URL based on host settings
      */
@@ -475,7 +472,7 @@ class Configuration
 
         // check array index out of bound
         if ($index < 0 || $index >= sizeof($hosts)) {
-            throw new \InvalidArgumentException("Invalid index $index when selecting the host. Must be less than ".sizeof($hosts));
+            throw new \InvalidArgumentException("Invalid index {$index} when selecting the host. Must be less than ".sizeof($hosts));
         }
 
         $host = $hosts[$index];
@@ -487,7 +484,7 @@ class Configuration
                 if (in_array($variables[$name], $variable['enum_values'], true)) { // check to see if the value is in the enum
                     $url = str_replace('{'.$name.'}', $variables[$name], $url);
                 } else {
-                    throw new \InvalidArgumentException("The variable `$name` in the host URL has invalid value ".$variables[$name].'. Must be '.join(',', $variable['enum_values']).'.');
+                    throw new \InvalidArgumentException("The variable `{$name}` in the host URL has invalid value ".$variables[$name].'. Must be '.join(',', $variable['enum_values']).'.');
                 }
             } else {
                 // use default value

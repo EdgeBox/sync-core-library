@@ -26,6 +26,16 @@ class Batch implements IBatch
     }
 
     /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [
+            'operations',
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function add(IBatchOperation $operation)
@@ -70,9 +80,9 @@ class Batch implements IBatch
          * @var Batch $other
          */
         $this->operations = array_merge(
-      $other->getOperations(),
-      $this->operations
-    );
+            $other->getOperations(),
+            $this->operations
+        );
     }
 
     public function prependOperation(IBatchOperation $operation)
@@ -83,7 +93,7 @@ class Batch implements IBatch
         $this->operations = array_merge(
             [$operation],
             $this->operations
-          );
+        );
 
         return $this;
     }
@@ -94,15 +104,5 @@ class Batch implements IBatch
     public function getOperations()
     {
         return $this->operations;
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return [
-            'operations',
-        ];
     }
 }

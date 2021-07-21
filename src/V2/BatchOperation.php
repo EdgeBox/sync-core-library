@@ -14,20 +14,23 @@ use JsonSerializable;
 
 class BatchOperation extends SerializableWithSyncCoreReference implements IBatchOperation
 {
+    public const REQUEST_FLOW_CREATE = 'flowControllerCreateRequest';
+    public const REQUEST_POOL_CREATE = 'poolControllerCreateRequest';
+    public const REQUEST_ENTITY_TYPE_CREATE = 'remoteEntityTypeVersionControllerCreateRequest';
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $requestMethod;
 
     /**
-     * @var ModelInterface|ArrayAccess|JsonSerializable|null
+     * @var null|ArrayAccess|JsonSerializable|ModelInterface
      */
     protected $dto;
 
     /**
      * Batchable constructor.
      *
-     * @param ModelInterface|ArrayAccess|JsonSerializable|null $dto
+     * @param null|ArrayAccess|JsonSerializable|ModelInterface $dto
      */
     public function __construct(SyncCore $core, ?string $requestMethod, $dto)
     {
@@ -47,10 +50,6 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         return $this;
     }
 
-    public const REQUEST_FLOW_CREATE = 'flowControllerCreateRequest';
-    public const REQUEST_POOL_CREATE = 'poolControllerCreateRequest';
-    public const REQUEST_ENTITY_TYPE_CREATE = 'remoteEntityTypeVersionControllerCreateRequest';
-
     /**
      * @throws SyncCoreException
      */
@@ -69,12 +68,13 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         } elseif (self::REQUEST_ENTITY_TYPE_CREATE === $request_method) {
             $request = $this->core->getClient()->remoteEntityTypeVersionControllerCreateRequest($dto);
         } else {
-            throw new InternalContentSyncError("Using unknown request method $request_method.");
+            throw new InternalContentSyncError("Using unknown request method {$request_method}.");
         }
 
         $this
-      ->core
-      ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            ->core
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+        ;
     }
 
     /**

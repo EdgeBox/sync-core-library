@@ -17,20 +17,21 @@ class SimpleResult extends Result
     /**
      * Execute the query and store the result.
      *
-     * @return $this
-     *
      * @throws \EdgeBox\SyncCore\Exception\TimeoutException
      * @throws \EdgeBox\SyncCore\Exception\BadRequestException
      * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
      * @throws \EdgeBox\SyncCore\Exception\NotFoundException
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return $this
      */
     public function execute()
     {
         $this->result = $this->query
-      ->getCore()
-      ->getClient()
-      ->request($this->query);
+            ->getCore()
+            ->getClient()
+            ->request($this->query)
+        ;
 
         return $this;
     }

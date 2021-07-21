@@ -54,13 +54,15 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         $id = $this->item->getSite()->getId();
 
         $request = $this
-        ->core
-        ->getClient()
-        ->siteControllerItemRequest($id);
+            ->core
+            ->getClient()
+            ->siteControllerItemRequest($id)
+        ;
 
         $response = $this
-        ->core
-        ->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+            ->core
+            ->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT)
+        ;
 
         return $response['name'];
     }
@@ -74,16 +76,18 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
             $item = $this->item;
         } else {
             $request = $this
-          ->core
-          ->getClient()
-          ->flowControllerItemRequest($this->item->getId());
+                ->core
+                ->getClient()
+                ->flowControllerItemRequest($this->item->getId())
+            ;
 
             /**
              * @var FlowEntity $item
              */
             $item = $this
-          ->core
-          ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+                ->core
+                ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ;
         }
 
         $config_file = $item->getRemoteConfigAsFile();

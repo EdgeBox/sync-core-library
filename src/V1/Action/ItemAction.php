@@ -12,9 +12,9 @@ use EdgeBox\SyncCore\V1\Storage\Storage;
  */
 class ItemAction extends ItemQuery
 {
-    protected $actionPath = null;
+    protected $actionPath;
 
-    protected $method = null;
+    protected $method;
 
     /**
      * ItemAction constructor.

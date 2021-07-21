@@ -9,7 +9,7 @@ interface IEntityReference
      * {@see IPushSingle::embed}, {@see IPushSingle::addReference} or
      * {@see IPushSingle::addDependency}.
      *
-     * @return array|null
+     * @return null|array
      */
     public function getDetails();
 
@@ -49,17 +49,17 @@ interface IEntityReference
     public function isEmbedded();
 
     /**
-     * @return IPullOperation|null
+     * @return null|IPullOperation
      */
     public function getEmbeddedEntity();
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getName();
 
     /**
-     * @return string[]|null
+     * @return null|string[]
      */
     // TODO: Drupal: Expect multiple
     public function getPoolIds();

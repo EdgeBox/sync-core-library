@@ -22,13 +22,13 @@ class SyndicationDashboardEmbed extends Embed implements IEmbedFeature
         $this->params = $params;
     }
 
-    protected function getOptions()
-    {
-        return $this->params;
-    }
-
     public function run()
     {
         return $this->render();
+    }
+
+    protected function getOptions()
+    {
+        return $this->params;
     }
 }

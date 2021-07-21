@@ -100,26 +100,6 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -184,6 +164,69 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['containsPreviews'] = $data['containsPreviews'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['site'] = $data['site'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['sitePushes'] = $data['sitePushes'] ?? null;
+        $this->container['sitePulls'] = $data['sitePulls'] ?? null;
+        $this->container['remoteConfigAsFile'] = $data['remoteConfigAsFile'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -222,36 +265,6 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['containsPreviews'] = $data['containsPreviews'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['site'] = $data['site'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['sitePushes'] = $data['sitePushes'] ?? null;
-        $this->container['sitePulls'] = $data['sitePulls'] ?? null;
-        $this->container['remoteConfigAsFile'] = $data['remoteConfigAsFile'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -362,7 +375,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets containsPreviews.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getContainsPreviews()
     {
@@ -372,7 +385,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets containsPreviews.
      *
-     * @param bool|null $containsPreviews containsPreviews
+     * @param null|bool $containsPreviews containsPreviews
      *
      * @return self
      */
@@ -530,7 +543,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets remoteConfigAsFile.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getRemoteConfigAsFile()
     {
@@ -540,7 +553,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets remoteConfigAsFile.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $remoteConfigAsFile remoteConfigAsFile
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $remoteConfigAsFile remoteConfigAsFile
      *
      * @return self
      */
@@ -640,7 +653,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -650,10 +663,8 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -668,8 +679,6 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -687,19 +696,6 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

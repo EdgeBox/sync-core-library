@@ -11,9 +11,9 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class CreateItemQuery extends ItemQuery
 {
     /**
-     * @var array|null
+     * @var null|array
      */
-    protected $item = null;
+    protected $item;
 
     /**
      * {@inheritdoc}

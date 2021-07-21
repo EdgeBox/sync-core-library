@@ -112,26 +112,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -214,6 +194,75 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
+        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
+        $this->container['language'] = $data['language'] ?? null;
+        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
+        $this->container['appType'] = $data['appType'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
+        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['deleted'] = $data['deleted'] ?? null;
+        $this->container['embed'] = $data['embed'] ?? null;
+        $this->container['properties'] = $data['properties'] ?? null;
+        $this->container['allDependencies'] = $data['allDependencies'] ?? null;
+        $this->container['entityTypeByMachineName'] = $data['entityTypeByMachineName'] ?? null;
+        $this->container['translationRoot'] = $data['translationRoot'] ?? null;
+        $this->container['previewHtmlFileId'] = $data['previewHtmlFileId'] ?? null;
+        $this->container['translations'] = $data['translations'] ?? null;
+        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
+        $this->container['previewHtml'] = $data['previewHtml'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -252,42 +301,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
-        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
-        $this->container['language'] = $data['language'] ?? null;
-        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
-        $this->container['appType'] = $data['appType'] ?? null;
-        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
-        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
-        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
-        $this->container['deleted'] = $data['deleted'] ?? null;
-        $this->container['embed'] = $data['embed'] ?? null;
-        $this->container['properties'] = $data['properties'] ?? null;
-        $this->container['allDependencies'] = $data['allDependencies'] ?? null;
-        $this->container['entityTypeByMachineName'] = $data['entityTypeByMachineName'] ?? null;
-        $this->container['translationRoot'] = $data['translationRoot'] ?? null;
-        $this->container['previewHtmlFileId'] = $data['previewHtmlFileId'] ?? null;
-        $this->container['translations'] = $data['translations'] ?? null;
-        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
-        $this->container['previewHtml'] = $data['previewHtml'] ?? null;
     }
 
     /**
@@ -338,7 +351,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets name.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getName()
     {
@@ -348,7 +361,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets name.
      *
-     * @param string|null $name name
+     * @param null|string $name name
      *
      * @return self
      */
@@ -362,7 +375,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets remoteUuid.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUuid()
     {
@@ -372,7 +385,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets remoteUuid.
      *
-     * @param string|null $remoteUuid remoteUuid
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -386,7 +399,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -396,7 +409,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -434,7 +447,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets directDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -444,7 +457,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets directDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null $directDependencies directDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -506,7 +519,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets isTranslationRoot.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getIsTranslationRoot()
     {
@@ -516,7 +529,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets isTranslationRoot.
      *
-     * @param bool|null $isTranslationRoot isTranslationRoot
+     * @param null|bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
@@ -554,7 +567,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets deleted.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getDeleted()
     {
@@ -564,7 +577,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets deleted.
      *
-     * @param bool|null $deleted deleted
+     * @param null|bool $deleted deleted
      *
      * @return self
      */
@@ -578,7 +591,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets embed.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]
      */
     public function getEmbed()
     {
@@ -588,7 +601,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets embed.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]|null $embed embed
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[] $embed embed
      *
      * @return self
      */
@@ -626,7 +639,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets allDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -636,7 +649,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets allDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null $allDependencies allDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -674,7 +687,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translationRoot.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getTranslationRoot()
     {
@@ -684,7 +697,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translationRoot.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $translationRoot translationRoot
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
@@ -698,7 +711,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets previewHtmlFileId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPreviewHtmlFileId()
     {
@@ -708,7 +721,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets previewHtmlFileId.
      *
-     * @param string|null $previewHtmlFileId previewHtmlFileId
+     * @param null|string $previewHtmlFileId previewHtmlFileId
      *
      * @return self
      */
@@ -722,7 +735,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translations.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]
      */
     public function getTranslations()
     {
@@ -732,7 +745,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translations.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]|null $translations translations
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[] $translations translations
      *
      * @return self
      */
@@ -770,7 +783,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets previewHtml.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getPreviewHtml()
     {
@@ -780,7 +793,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets previewHtml.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $previewHtml previewHtml
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
      *
      * @return self
      */
@@ -808,7 +821,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -818,10 +831,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -836,8 +847,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -855,19 +864,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

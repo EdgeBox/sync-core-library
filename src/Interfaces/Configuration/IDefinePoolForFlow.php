@@ -17,7 +17,7 @@ interface IDefinePoolForFlow extends IBatchOperation
     public function enablePreview(IDefineEntityType $entity_type);
 
     /**
-     * @return IFlowPushConfiguration|null
+     * @return null|IFlowPushConfiguration
      */
     public function enablePush(IDefineEntityType $entity_type);
 

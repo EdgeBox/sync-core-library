@@ -124,26 +124,6 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -244,47 +224,6 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     ];
 
     /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name.
-     *
-     * @return array
-     */
-    public static function attributeMap()
-    {
-        return self::$attributeMap;
-    }
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses).
-     *
-     * @return array
-     */
-    public static function setters()
-    {
-        return self::$setters;
-    }
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests).
-     *
-     * @return array
-     */
-    public static function getters()
-    {
-        return self::$getters;
-    }
-
-    /**
-     * The original name of the model.
-     *
-     * @return string
-     */
-    public function getModelName()
-    {
-        return self::$openAPIModelName;
-    }
-
-    /**
      * Associative array for storing property values.
      *
      * @var mixed[]
@@ -324,6 +263,80 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
         $this->container['versionId'] = $data['versionId'] ?? null;
         $this->container['syndication'] = $data['syndication'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name.
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses).
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests).
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
+
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$openAPIModelName;
     }
 
     /**
@@ -395,7 +408,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets name.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getName()
     {
@@ -405,7 +418,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets name.
      *
-     * @param string|null $name name
+     * @param null|string $name name
      *
      * @return self
      */
@@ -419,7 +432,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets remoteUuid.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUuid()
     {
@@ -429,7 +442,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets remoteUuid.
      *
-     * @param string|null $remoteUuid remoteUuid
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -443,7 +456,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -453,7 +466,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -491,7 +504,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets directDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -501,7 +514,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets directDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]|null $directDependencies directDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -563,7 +576,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets isTranslationRoot.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getIsTranslationRoot()
     {
@@ -573,7 +586,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets isTranslationRoot.
      *
-     * @param bool|null $isTranslationRoot isTranslationRoot
+     * @param null|bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
@@ -611,7 +624,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets deleted.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getDeleted()
     {
@@ -621,7 +634,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets deleted.
      *
-     * @param bool|null $deleted deleted
+     * @param null|bool $deleted deleted
      *
      * @return self
      */
@@ -635,7 +648,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets embed.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]
      */
     public function getEmbed()
     {
@@ -645,7 +658,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets embed.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]|null $embed embed
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[] $embed embed
      *
      * @return self
      */
@@ -683,7 +696,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets allDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -693,7 +706,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets allDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]|null $allDependencies allDependencies
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -827,7 +840,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets translationRoot.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getTranslationRoot()
     {
@@ -837,7 +850,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets translationRoot.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $translationRoot translationRoot
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
@@ -851,7 +864,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets previewHtml.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getPreviewHtml()
     {
@@ -861,7 +874,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets previewHtml.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $previewHtml previewHtml
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
      *
      * @return self
      */
@@ -971,7 +984,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets syndication.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getSyndication()
     {
@@ -981,7 +994,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets syndication.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $syndication syndication
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $syndication syndication
      *
      * @return self
      */
@@ -1009,7 +1022,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -1019,10 +1032,8 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -1037,8 +1048,6 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -1056,19 +1065,6 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

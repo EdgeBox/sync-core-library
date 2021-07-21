@@ -100,26 +100,6 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -184,6 +164,69 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['requestUrl'] = $data['requestUrl'] ?? null;
+        $this->container['requestBody'] = $data['requestBody'] ?? null;
+        $this->container['requestHeaders'] = $data['requestHeaders'] ?? null;
+        $this->container['requestMethod'] = $data['requestMethod'] ?? null;
+        $this->container['requestMaxFollow'] = $data['requestMaxFollow'] ?? null;
+        $this->container['requestMaxSize'] = $data['requestMaxSize'] ?? null;
+        $this->container['requestTimeout'] = $data['requestTimeout'] ?? null;
+        $this->container['requestStart'] = $data['requestStart'] ?? null;
+        $this->container['requestEnd'] = $data['requestEnd'] ?? null;
+        $this->container['responseBody'] = $data['responseBody'] ?? null;
+        $this->container['responseHeaders'] = $data['responseHeaders'] ?? null;
+        $this->container['responseStatusCode'] = $data['responseStatusCode'] ?? null;
+        $this->container['responseStatusText'] = $data['responseStatusText'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -225,45 +268,13 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['requestUrl'] = $data['requestUrl'] ?? null;
-        $this->container['requestBody'] = $data['requestBody'] ?? null;
-        $this->container['requestHeaders'] = $data['requestHeaders'] ?? null;
-        $this->container['requestMethod'] = $data['requestMethod'] ?? null;
-        $this->container['requestMaxFollow'] = $data['requestMaxFollow'] ?? null;
-        $this->container['requestMaxSize'] = $data['requestMaxSize'] ?? null;
-        $this->container['requestTimeout'] = $data['requestTimeout'] ?? null;
-        $this->container['requestStart'] = $data['requestStart'] ?? null;
-        $this->container['requestEnd'] = $data['requestEnd'] ?? null;
-        $this->container['responseBody'] = $data['responseBody'] ?? null;
-        $this->container['responseHeaders'] = $data['responseHeaders'] ?? null;
-        $this->container['responseStatusCode'] = $data['responseStatusCode'] ?? null;
-        $this->container['responseStatusText'] = $data['responseStatusText'] ?? null;
-    }
-
-    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -280,7 +291,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestUrl.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRequestUrl()
     {
@@ -290,7 +301,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestUrl.
      *
-     * @param string|null $requestUrl requestUrl
+     * @param null|string $requestUrl requestUrl
      *
      * @return self
      */
@@ -304,7 +315,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestBody.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRequestBody()
     {
@@ -314,7 +325,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestBody.
      *
-     * @param string|null $requestBody requestBody
+     * @param null|string $requestBody requestBody
      *
      * @return self
      */
@@ -328,7 +339,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestHeaders.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getRequestHeaders()
     {
@@ -338,7 +349,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestHeaders.
      *
-     * @param mixed|null $requestHeaders requestHeaders
+     * @param null|mixed $requestHeaders requestHeaders
      *
      * @return self
      */
@@ -352,7 +363,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestMethod.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRequestMethod()
     {
@@ -362,7 +373,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestMethod.
      *
-     * @param string|null $requestMethod requestMethod
+     * @param null|string $requestMethod requestMethod
      *
      * @return self
      */
@@ -376,7 +387,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestMaxFollow.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getRequestMaxFollow()
     {
@@ -386,7 +397,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestMaxFollow.
      *
-     * @param float|null $requestMaxFollow requestMaxFollow
+     * @param null|float $requestMaxFollow requestMaxFollow
      *
      * @return self
      */
@@ -400,7 +411,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestMaxSize.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getRequestMaxSize()
     {
@@ -410,7 +421,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestMaxSize.
      *
-     * @param float|null $requestMaxSize requestMaxSize
+     * @param null|float $requestMaxSize requestMaxSize
      *
      * @return self
      */
@@ -424,7 +435,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestTimeout.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getRequestTimeout()
     {
@@ -434,7 +445,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestTimeout.
      *
-     * @param float|null $requestTimeout requestTimeout
+     * @param null|float $requestTimeout requestTimeout
      *
      * @return self
      */
@@ -448,7 +459,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestStart.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getRequestStart()
     {
@@ -458,7 +469,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestStart.
      *
-     * @param float|null $requestStart requestStart
+     * @param null|float $requestStart requestStart
      *
      * @return self
      */
@@ -472,7 +483,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets requestEnd.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getRequestEnd()
     {
@@ -482,7 +493,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets requestEnd.
      *
-     * @param float|null $requestEnd requestEnd
+     * @param null|float $requestEnd requestEnd
      *
      * @return self
      */
@@ -496,7 +507,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets responseBody.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getResponseBody()
     {
@@ -506,7 +517,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets responseBody.
      *
-     * @param string|null $responseBody responseBody
+     * @param null|string $responseBody responseBody
      *
      * @return self
      */
@@ -520,7 +531,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets responseHeaders.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getResponseHeaders()
     {
@@ -530,7 +541,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets responseHeaders.
      *
-     * @param mixed|null $responseHeaders responseHeaders
+     * @param null|mixed $responseHeaders responseHeaders
      *
      * @return self
      */
@@ -544,7 +555,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets responseStatusCode.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getResponseStatusCode()
     {
@@ -554,7 +565,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets responseStatusCode.
      *
-     * @param float|null $responseStatusCode responseStatusCode
+     * @param null|float $responseStatusCode responseStatusCode
      *
      * @return self
      */
@@ -568,7 +579,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets responseStatusText.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getResponseStatusText()
     {
@@ -578,7 +589,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets responseStatusText.
      *
-     * @param string|null $responseStatusText responseStatusText
+     * @param null|string $responseStatusText responseStatusText
      *
      * @return self
      */
@@ -606,7 +617,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -616,10 +627,8 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -634,8 +643,6 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -653,19 +660,6 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

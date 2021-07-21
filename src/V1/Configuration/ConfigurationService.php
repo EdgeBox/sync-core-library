@@ -53,9 +53,10 @@ class ConfigurationService implements IConfigurationService
         $object_storage = new ObjectStorage($this->core);
 
         $item = $object_storage
-      ->getItem($id)
-      ->execute()
-      ->getItem();
+            ->getItem($id)
+            ->execute()
+            ->getItem()
+        ;
 
         return new class($item) implements IRemoteFlow {
             protected $item;
@@ -105,15 +106,16 @@ class ConfigurationService implements IConfigurationService
     {
         $api_storage = new ApiStorage($this->core);
         $remote_pools = $api_storage
-      ->listItems()
-      ->setCondition(
-        ParentCondition::all()
-          ->add(DataCondition::equal(ApiStorage::PROPERTY_VERSION, ApiStorage::CUSTOM_API_VERSION))
-          ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()
-              ->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION))
-      )
-      ->execute()
-      ->getAll();
+            ->listItems()
+            ->setCondition(
+                ParentCondition::all()
+            ->add(DataCondition::equal(ApiStorage::PROPERTY_VERSION, ApiStorage::CUSTOM_API_VERSION))
+            ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()
+            ->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION))
+            )
+            ->execute()
+            ->getAll()
+        ;
 
         $options = [];
         foreach ($remote_pools as $option) {
@@ -133,33 +135,6 @@ class ConfigurationService implements IConfigurationService
         $this->registerDrupalApi();
 
         return new RegisterPool($this->core, $pool_id, $pool_name);
-    }
-
-    /**
-     * Create API entity for Drupal that the other types inherit from.
-     *
-     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
-     */
-    protected function registerDrupalApi()
-    {
-        // Only do it once (performance).
-        static $done = false;
-        if ($done) {
-            return;
-        }
-        $done = true;
-
-        $body = [
-            'id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
-            'name' => 'drupal',
-            'version' => ApiStorage::CUSTOM_API_VERSION,
-        ];
-
-        $this
-      ->core
-      ->storage->getApiStorage()
-      ->createItem($body)
-      ->execute();
     }
 
     /**
@@ -200,10 +175,11 @@ class ConfigurationService implements IConfigurationService
         ];
 
         $this
-      ->core
-      ->storage->getConnectionStorage()
-      ->createItem($body)
-      ->execute();
+            ->core
+            ->storage->getConnectionStorage()
+            ->createItem($body)
+            ->execute()
+        ;
 
         return $this;
     }
@@ -214,5 +190,33 @@ class ConfigurationService implements IConfigurationService
     public function deleteFlows(array $keep_machine_names)
     {
         return $this;
+    }
+
+    /**
+     * Create API entity for Drupal that the other types inherit from.
+     *
+     * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     */
+    protected function registerDrupalApi()
+    {
+        // Only do it once (performance).
+        static $done = false;
+        if ($done) {
+            return;
+        }
+        $done = true;
+
+        $body = [
+            'id' => 'drupal-'.ApiStorage::CUSTOM_API_VERSION,
+            'name' => 'drupal',
+            'version' => ApiStorage::CUSTOM_API_VERSION,
+        ];
+
+        $this
+            ->core
+            ->storage->getApiStorage()
+            ->createItem($body)
+            ->execute()
+        ;
     }
 }

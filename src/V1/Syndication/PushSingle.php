@@ -75,7 +75,7 @@ class PushSingle implements IPushSingle
      * @param string      $type
      * @param string      $bundle
      * @param string      $entity_uuid
-     * @param string|null $entity_id
+     * @param null|string $entity_id
      */
     public function __construct($core, $type, $bundle, $entity_uuid, $entity_id)
     {
@@ -165,15 +165,15 @@ class PushSingle implements IPushSingle
         if (!empty($data[Entity::ENTITY_EMBED_KEY]['embed_entities'])) {
             foreach ($data[Entity::ENTITY_EMBED_KEY]['embed_entities'] as $embed) {
                 $this->embedEntityDefinition(
-          $embed[Entity::ENTITY_TYPE_KEY],
-          $embed[Entity::BUNDLE_KEY],
-          $embed[Entity::UUID_KEY],
-          $embed[Entity::ID_KEY],
-          $embed[Entity::AUTO_PUSH_KEY],
-          $embed[Entity::VERSION_KEY],
-          $embed[Entity::API_KEY],
-          $embed
-        );
+                    $embed[Entity::ENTITY_TYPE_KEY],
+                    $embed[Entity::BUNDLE_KEY],
+                    $embed[Entity::UUID_KEY],
+                    $embed[Entity::ID_KEY],
+                    $embed[Entity::AUTO_PUSH_KEY],
+                    $embed[Entity::VERSION_KEY],
+                    $embed[Entity::API_KEY],
+                    $embed
+                );
             }
         }
 
@@ -219,16 +219,16 @@ class PushSingle implements IPushSingle
             Entity::VERSION_KEY => $version,
             Entity::AUTO_PUSH_KEY => $auto_push,
             Entity::SOURCE_CONNECTION_ID_KEY => CustomStorage::getCustomId(
-              $pool_id,
-              $this->core->getApplication()->getSiteMachineName(),
-              $type,
-              $bundle
+                $pool_id,
+                $this->core->getApplication()->getSiteMachineName(),
+                $type,
+                $bundle
             ),
             Entity::POOL_CONNECTION_ID_KEY => CustomStorage::getCustomId(
-              $pool_id,
-              InstanceStorage::POOL_SITE_ID,
-              $type,
-              $bundle
+                $pool_id,
+                InstanceStorage::POOL_SITE_ID,
+                $type,
+                $bundle
             ),
         ], $details ? $details : []);
     }
@@ -285,14 +285,28 @@ class PushSingle implements IPushSingle
                 }
 
                 return $this->getEmbedEntityDefinition(
-          $type, $bundle, $uuid, $id, $auto_push, $version, $pool_id, $details
-        );
+                    $type,
+                    $bundle,
+                    $uuid,
+                    $id,
+                    $auto_push,
+                    $version,
+                    $pool_id,
+                    $details
+                );
             }
         }
 
         $result = $this->getEmbedEntityDefinition(
-      $type, $bundle, $uuid, $id, $auto_push, $version, $pool_id, $details
-    );
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            $auto_push,
+            $version,
+            $pool_id,
+            $details
+        );
 
         if ($auto_push) {
             $this->body['embed_entities'][] = $result;
@@ -307,16 +321,16 @@ class PushSingle implements IPushSingle
     public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->embedEntityDefinition(
-      $type,
-      $bundle,
-      $uuid,
-      $id,
-      Entity::ENTITY_REFERENCE_PUSH_AS_DEPENDENCY,
-      $version,
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            Entity::ENTITY_REFERENCE_PUSH_AS_DEPENDENCY,
+            $version,
             // TODO: Drupal: Check whether pushing to multiple pools at once is possible.
       $pool_machine_names[0],
-      $details
-    );
+            $details
+        );
     }
 
     /**
@@ -325,16 +339,16 @@ class PushSingle implements IPushSingle
     public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
     {
         return $this->embedEntityDefinition(
-      $type,
-      $bundle,
-      $uuid,
-      $id,
-      Entity::ENTITY_REFERENCE_RESOLVE_IF_EXISTS,
-      $version,
+            $type,
+            $bundle,
+            $uuid,
+            $id,
+            Entity::ENTITY_REFERENCE_RESOLVE_IF_EXISTS,
+            $version,
       // TODO: Drupal: Check whether pushing to multiple pools at once is possible.
       $pool_machine_names[0],
-      $details
-    );
+            $details
+        );
     }
 
     /**
@@ -410,14 +424,15 @@ class PushSingle implements IPushSingle
     public function execute()
     {
         $storage = $this
-      ->core
-      ->storage
-      ->getCustomStorage(
-        $this->pool,
-        $this->core->getApplication()->getSiteMachineName(),
-        $this->type,
-        $this->bundle
-      );
+            ->core
+            ->storage
+            ->getCustomStorage(
+                $this->pool,
+                $this->core->getApplication()->getSiteMachineName(),
+                $this->type,
+                $this->bundle
+            )
+        ;
 
         if ($this->is_deletion) {
             $query = $storage->deleteItem($this->body['id']);
@@ -426,8 +441,9 @@ class PushSingle implements IPushSingle
         }
 
         $query
-      ->setAsDependency($this->is_dependency)
-      ->execute();
+            ->setAsDependency($this->is_dependency)
+            ->execute()
+        ;
 
         return $this;
     }

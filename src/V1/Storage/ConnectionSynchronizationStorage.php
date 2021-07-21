@@ -24,10 +24,11 @@ class ConnectionSynchronizationStorage extends Storage
      */
     public static function getExternalConnectionSynchronizationId($connection_id, $is_push)
     {
-        return sprintf('%s--to--%s',
-      $connection_id,
-      $is_push ? 'pool' : 'drupal'
-    );
+        return sprintf(
+            '%s--to--%s',
+            $connection_id,
+            $is_push ? 'pool' : 'drupal'
+        );
     }
 
     /**

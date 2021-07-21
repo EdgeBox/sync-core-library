@@ -72,7 +72,7 @@ abstract class Query
     /**
      * Get the request body to use.
      *
-     * @return array|bool|null
+     * @return null|array|bool
      */
     public function getBody()
     {
@@ -90,13 +90,13 @@ abstract class Query
     /**
      * Provide a Result object to get the actual entities from.
      *
-     * @return \EdgeBox\SyncCore\V1\Query\Result\Result
-     *
      * @throws \EdgeBox\SyncCore\Exception\TimeoutException
      * @throws \EdgeBox\SyncCore\Exception\BadRequestException
      * @throws \EdgeBox\SyncCore\Exception\ForbiddenException
      * @throws \EdgeBox\SyncCore\Exception\NotFoundException
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return \EdgeBox\SyncCore\V1\Query\Result\Result
      */
     abstract public function execute();
 }

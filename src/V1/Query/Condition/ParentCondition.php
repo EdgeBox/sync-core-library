@@ -46,9 +46,9 @@ class ParentCondition extends Condition
      * @param string      $operator
      * @param Condition[] $conditions
      *
-     * @return ParentCondition
-     *
      * @throws \Exception
+     *
+     * @return ParentCondition
      */
     public static function create($operator, $conditions)
     {

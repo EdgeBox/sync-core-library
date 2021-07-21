@@ -19,17 +19,12 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         $this->params = $params;
 
         parent::__construct(
-        $core,
+            $core,
             $type ? $type : IEmbedService::REGISTER_SITE,
             // Set this to "none" as the site is not yet registered, so it can't make
             // any requests to the Sync Core yet.
             empty($this->params['jwt']) && !$core->getApplication()->getSiteUuid() ? '' : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
-    );
-    }
-
-    protected function shouldRegisterSite()
-    {
-        return !empty($this->params['jwt']);
+        );
     }
 
     public function run()
@@ -38,12 +33,17 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
             $this->core->registerSiteWithJwt($this->params);
 
             return new EmbedResult(
-        EmbedResult::TYPE_REDIRECT,
-        $this->core->getApplication()->getEmbedBaseUrl(IEmbedService::SITE_REGISTERED)
-      );
+                EmbedResult::TYPE_REDIRECT,
+                $this->core->getApplication()->getEmbedBaseUrl(IEmbedService::SITE_REGISTERED)
+            );
         }
 
         return $this->render();
+    }
+
+    protected function shouldRegisterSite()
+    {
+        return !empty($this->params['jwt']);
     }
 
     protected function getOptions()

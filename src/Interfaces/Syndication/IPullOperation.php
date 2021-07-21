@@ -20,7 +20,7 @@ interface IPullOperation
     public function getSourceUrl();
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return string
      */
@@ -48,12 +48,12 @@ interface IPullOperation
      * directly referenced by it. These entities must be pulled after the main entity.
      * So put a while loop around this to and when it's NULL, cancel.
      *
-     * @return IPullOperation|null
+     * @return null|IPullOperation
      */
     public function getNextUnprocessedEmbed();
 
     /**
-     * @param string|null $language
+     * @param null|string $language
      *
      * @return mixed
      */
@@ -62,7 +62,7 @@ interface IPullOperation
     /**
      * Return the contents of the file that was uploaded on the remote site.
      *
-     * @return string|null
+     * @return null|string
      */
     public function downloadFile();
 

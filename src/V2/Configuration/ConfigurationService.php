@@ -36,16 +36,18 @@ class ConfigurationService implements IConfigurationService
     public function getRemoteFlow(string $id)
     {
         $request = $this
-        ->core
-        ->getClient()
-        ->flowControllerItemRequest($id);
+            ->core
+            ->getClient()
+            ->flowControllerItemRequest($id)
+        ;
 
         /**
          * @var FlowEntity $item
          */
         $item = $this
-        ->core
-        ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            ->core
+            ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+        ;
 
         return new RemoteFlowItem($this->core, $item);
     }
@@ -72,13 +74,15 @@ class ConfigurationService implements IConfigurationService
     public function listRemotePools()
     {
         $request = $this
-      ->core
-      ->getClient()
-      ->poolControllerListRequest();
+            ->core
+            ->getClient()
+            ->poolControllerListRequest()
+        ;
 
         $response = $this
-      ->core
-      ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            ->core
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+        ;
 
         $remote_pools = json_decode($response, true);
 
@@ -117,13 +121,15 @@ class ConfigurationService implements IConfigurationService
         $dto->setKeepFlowMachineNames($keep_machine_names);
 
         $request = $this
-        ->core
-        ->getClient()
-        ->flowControllerDeleteRequest($dto);
+            ->core
+            ->getClient()
+            ->flowControllerDeleteRequest($dto)
+        ;
 
         $this
-        ->core
-        ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            ->core
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+        ;
 
         return $this;
     }

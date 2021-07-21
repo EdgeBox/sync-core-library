@@ -84,26 +84,6 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -144,6 +124,61 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['machineName'] = $data['machineName'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['required'] = $data['required'] ?? null;
+        $this->container['multiple'] = $data['multiple'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -182,28 +217,6 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['required'] = $data['required'] ?? null;
-        $this->container['multiple'] = $data['multiple'] ?? null;
     }
 
     /**
@@ -314,7 +327,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets required.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getRequired()
     {
@@ -324,7 +337,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets required.
      *
-     * @param bool|null $required required
+     * @param null|bool $required required
      *
      * @return self
      */
@@ -338,7 +351,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets multiple.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getMultiple()
     {
@@ -348,7 +361,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets multiple.
      *
-     * @param bool|null $multiple multiple
+     * @param null|bool $multiple multiple
      *
      * @return self
      */
@@ -376,7 +389,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -386,10 +399,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -404,8 +415,6 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -423,19 +432,6 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

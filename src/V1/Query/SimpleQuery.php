@@ -50,9 +50,9 @@ class SimpleQuery extends Query
     /**
      * Provide a Result object to get the actual entities from.
      *
-     * @return \EdgeBox\SyncCore\V1\Query\Result\SimpleResult
-     *
      * @throws \EdgeBox\SyncCore\Exception\SyncCoreException
+     *
+     * @return \EdgeBox\SyncCore\V1\Query\Result\SimpleResult
      */
     public function execute()
     {

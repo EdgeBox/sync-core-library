@@ -116,26 +116,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -224,6 +204,77 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['rootEntityReference'] = $data['rootEntityReference'] ?? null;
+        $this->container['rootEntityDetails'] = $data['rootEntityDetails'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['type'] = $data['type'] ?? null;
+        $this->container['rootEntity'] = $data['rootEntity'] ?? null;
+        $this->container['rootEntityType'] = $data['rootEntityType'] ?? null;
+        $this->container['rootEntityTypeVersion'] = $data['rootEntityTypeVersion'] ?? null;
+        $this->container['targetSite'] = $data['targetSite'] ?? null;
+        $this->container['pools'] = $data['pools'] ?? null;
+        $this->container['flow'] = $data['flow'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['operations'] = $data['operations'] ?? null;
+        $this->container['migration'] = $data['migration'] ?? null;
+        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
+        $this->container['dependsOnSyndication'] = $data['dependsOnSyndication'] ?? null;
+        $this->container['dryRun'] = $data['dryRun'] ?? null;
+        $this->container['skipSyndication'] = $data['skipSyndication'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -262,44 +313,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['rootEntityReference'] = $data['rootEntityReference'] ?? null;
-        $this->container['rootEntityDetails'] = $data['rootEntityDetails'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['rootEntity'] = $data['rootEntity'] ?? null;
-        $this->container['rootEntityType'] = $data['rootEntityType'] ?? null;
-        $this->container['rootEntityTypeVersion'] = $data['rootEntityTypeVersion'] ?? null;
-        $this->container['targetSite'] = $data['targetSite'] ?? null;
-        $this->container['pools'] = $data['pools'] ?? null;
-        $this->container['flow'] = $data['flow'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['operations'] = $data['operations'] ?? null;
-        $this->container['migration'] = $data['migration'] ?? null;
-        $this->container['finishedAt'] = $data['finishedAt'] ?? null;
-        $this->container['dependsOnSyndication'] = $data['dependsOnSyndication'] ?? null;
-        $this->container['dryRun'] = $data['dryRun'] ?? null;
-        $this->container['skipSyndication'] = $data['skipSyndication'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -356,7 +369,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityReference.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference
      */
     public function getRootEntityReference()
     {
@@ -366,7 +379,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityReference.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference|null $rootEntityReference rootEntityReference
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference $rootEntityReference rootEntityReference
      *
      * @return self
      */
@@ -380,7 +393,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityDetails.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails
      */
     public function getRootEntityDetails()
     {
@@ -390,7 +403,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityDetails.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails|null $rootEntityDetails rootEntityDetails
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails $rootEntityDetails rootEntityDetails
      *
      * @return self
      */
@@ -452,7 +465,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getRootEntity()
     {
@@ -462,7 +475,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $rootEntity rootEntity
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntity rootEntity
      *
      * @return self
      */
@@ -476,7 +489,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getRootEntityType()
     {
@@ -486,7 +499,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $rootEntityType rootEntityType
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntityType rootEntityType
      *
      * @return self
      */
@@ -500,7 +513,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getRootEntityTypeVersion()
     {
@@ -510,7 +523,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $rootEntityTypeVersion rootEntityTypeVersion
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntityTypeVersion rootEntityTypeVersion
      *
      * @return self
      */
@@ -548,7 +561,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
      */
     public function getPools()
     {
@@ -558,7 +571,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]|null $pools pools
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
      *
      * @return self
      */
@@ -644,7 +657,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets operations.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]
      */
     public function getOperations()
     {
@@ -654,7 +667,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets operations.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]|null $operations operations
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[] $operations operations
      *
      * @return self
      */
@@ -668,7 +681,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets migration.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getMigration()
     {
@@ -678,7 +691,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets migration.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $migration migration
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $migration migration
      *
      * @return self
      */
@@ -692,7 +705,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets finishedAt.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getFinishedAt()
     {
@@ -702,7 +715,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets finishedAt.
      *
-     * @param float|null $finishedAt finishedAt
+     * @param null|float $finishedAt finishedAt
      *
      * @return self
      */
@@ -716,7 +729,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets dependsOnSyndication.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
      */
     public function getDependsOnSyndication()
     {
@@ -726,7 +739,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets dependsOnSyndication.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference|null $dependsOnSyndication dependsOnSyndication
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $dependsOnSyndication dependsOnSyndication
      *
      * @return self
      */
@@ -740,7 +753,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets dryRun.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getDryRun()
     {
@@ -750,7 +763,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets dryRun.
      *
-     * @param bool|null $dryRun dryRun
+     * @param null|bool $dryRun dryRun
      *
      * @return self
      */
@@ -764,7 +777,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets skipSyndication.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getSkipSyndication()
     {
@@ -774,7 +787,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets skipSyndication.
      *
-     * @param bool|null $skipSyndication skipSyndication
+     * @param null|bool $skipSyndication skipSyndication
      *
      * @return self
      */
@@ -874,7 +887,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -884,10 +897,8 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -902,8 +913,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -921,19 +930,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

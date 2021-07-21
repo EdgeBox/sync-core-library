@@ -15,9 +15,9 @@ use EdgeBox\SyncCore\V1\SyncCoreClient;
 class AllowPublicAccessAction extends ItemAction
 {
     /**
-     * @var bool|null
+     * @var null|bool
      */
-    protected $value = null;
+    protected $value;
 
     /**
      * CloneAction constructor.

@@ -22,12 +22,12 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var DeleteRemoteEntityRevisionDto|CreateRemoteEntityRevisionDto|RemoteEntityEmbed|RemoteEntityEmbedDraft
+     * @var CreateRemoteEntityRevisionDto|DeleteRemoteEntityRevisionDto|RemoteEntityEmbed|RemoteEntityEmbedDraft
      */
     protected $dto;
 
     /**
-     * @var PullOperation|null
+     * @var null|PullOperation
      */
     protected $parentPullOperation;
 
@@ -48,7 +48,7 @@ class PullOperation implements IPullOperation
     /**
      * PushSingle constructor.
      *
-     * @param RemoteEntityEmbed|RemoteEntityEmbedDraft|array $body
+     * @param array|RemoteEntityEmbed|RemoteEntityEmbedDraft $body
      */
     public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation = null)
     {
@@ -115,7 +115,8 @@ class PullOperation implements IPullOperation
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeNamespaceMachineName();
-        } elseif ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
+        }
+        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
 
@@ -129,7 +130,8 @@ class PullOperation implements IPullOperation
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeMachineName();
-        } elseif ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
+        }
+        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
             return $this->dto->getEntityTypeMachineName();
         }
 
@@ -257,13 +259,14 @@ class PullOperation implements IPullOperation
         if (is_array($embeds)) {
             for ($i = 0; $i < count($embeds); ++$i) {
                 $candidate = $embeds[$i];
-                if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName() &&
-                    $candidate->getLanguage() === $referenceDto->getLanguage() &&
-            $candidate->getEntityTypeMachineName() === $referenceDto->getEntityTypeMachineName() &&
-            $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid() &&
-            $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
+                if ($candidate->getEntityTypeNamespaceMachineName() === $referenceDto->getEntityTypeNamespaceMachineName()
+                    && $candidate->getLanguage() === $referenceDto->getLanguage()
+            && $candidate->getEntityTypeMachineName() === $referenceDto->getEntityTypeMachineName()
+            && $candidate->getRemoteUuid() === $referenceDto->getRemoteUuid()
+            && $candidate->getRemoteUniqueId() === $referenceDto->getRemoteUniqueId()) {
                     $embed = $candidate;
                     $embedIndex = $i;
+
                     break;
                 }
             }

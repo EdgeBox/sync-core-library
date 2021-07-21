@@ -39,6 +39,9 @@ use GuzzleHttp\RequestOptions;
 
 class SyncCore implements ISyncCore
 {
+    protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
+    protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
+    protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';
     /**
      * @var string
      *             The base URL of the remote Sync Core. See Pool::$backend_url
@@ -101,9 +104,9 @@ class SyncCore implements ISyncCore
         $configuration->setHost($this->base_url);
 
         $this->client = new DefaultApi(
-      $application->getHttpClient(),
-      $configuration
-    );
+            $application->getHttpClient(),
+            $configuration
+        );
     }
 
     public function getBaseUrl()
@@ -150,13 +153,13 @@ class SyncCore implements ISyncCore
      * @param bool   $avoid_duplicates if set, the file hash will be sentand if an identical file already exists, it will not be uploaded again
      * @param bool   $is_configuration what permissions to set
      *
-     * @return FileEntity
-     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
+     *
+     * @return FileEntity
      */
     public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false)
     {
@@ -208,11 +211,13 @@ class SyncCore implements ISyncCore
             $file_size_human_friendly = Helper::formatStorageSize($file_size, true);
             $max_size_human_friendly = Helper::formatStorageSize($max_size);
             if (FileType::ENTITY_PREVIEW == $file->getType()) {
-                throw new BadRequestException("Preview of $file_size_human_friendly exceeds max size of $max_size_human_friendly.");
-            } elseif (FileType::REMOTE_FLOW_CONFIG == $file->getType()) {
-                throw new BadRequestException("Flow config of $file_size_human_friendly exceeds max size of $max_size_human_friendly.");
+                throw new BadRequestException("Preview of {$file_size_human_friendly} exceeds max size of {$max_size_human_friendly}.");
             }
-            throw new BadRequestException("File $file_name with $file_size_human_friendly exceeds upload limit of $max_size_human_friendly.");
+            if (FileType::REMOTE_FLOW_CONFIG == $file->getType()) {
+                throw new BadRequestException("Flow config of {$file_size_human_friendly} exceeds max size of {$max_size_human_friendly}.");
+            }
+
+            throw new BadRequestException("File {$file_name} with {$file_size_human_friendly} exceeds upload limit of {$max_size_human_friendly}.");
         }
 
         // Raw body upload
@@ -236,15 +241,18 @@ class SyncCore implements ISyncCore
                     'filename' => $file_name,
                 ],
             ]);
-            $request = new Request('PUT', $upload_url,
-                [], $httpBody);
+            $request = new Request(
+                'PUT',
+                $upload_url,
+                [],
+                $httpBody
+            );
             $this->sendRaw($request, []);
         }
 
         $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
 
-        return $file;
+        return $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
     }
 
     /**
@@ -254,13 +262,13 @@ class SyncCore implements ISyncCore
      *
      * @param array $options
      *
-     * @return mixed
-     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
+     *
+     * @return mixed
      */
     public function sendRaw(Request $request, $options = [])
     {
@@ -294,19 +302,21 @@ class SyncCore implements ISyncCore
             }
             if (400 === $status) {
                 throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-            } elseif (401 === $status) {
+            }
+            if (401 === $status) {
                 throw new UnauthorizedException('The Sync Core responded with 401 Unauthorized for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-            } elseif (403 === $status) {
+            }
+            if (403 === $status) {
                 throw new ForbiddenException('The Sync Core responded with 403 Forbidden for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
-            } elseif (404 === $status) {
+            }
+            if (404 === $status) {
                 throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
             }
+
             throw new SyncCoreException('The Sync Core responded with a non-OK status code for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
         }
 
-        $response_body = (string) $response_body;
-
-        return $response_body;
+        return (string) $response_body;
     }
 
     /**
@@ -314,13 +324,13 @@ class SyncCore implements ISyncCore
      * of unnecessary nonsense, we only want the raw request and then handle status codes
      * etc ourselves.
      *
-     * @return mixed
-     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
+     *
+     * @return mixed
      */
     public function sendToSyncCore(Request $request, string $permissions)
     {
@@ -345,13 +355,13 @@ class SyncCore implements ISyncCore
     }
 
     /**
-     * @return Raw\Model\ModelInterface|object
-     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
+     *
+     * @return object|Raw\Model\ModelInterface
      */
     public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions)
     {
@@ -360,26 +370,9 @@ class SyncCore implements ISyncCore
         return @ObjectSerializer::deserialize($response, $class, []);
     }
 
-    protected function hasValidV2SiteId()
-    {
-        $site_id = $this->application->getSiteUuid();
-        if (!$site_id) {
-            return false;
-        }
-
-        // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
-        // is a UUID and if it's not, the site must be re-registered first.
-        return 1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $site_id);
-    }
-
     public function isSiteRegistered()
     {
         return $this->hasValidV2SiteId();
-    }
-
-    protected function getSiteSecret()
-    {
-        return $this->application->getAuthentication()['password'];
     }
 
     public function createJwt($permissions)
@@ -410,23 +403,6 @@ class SyncCore implements ISyncCore
         $url = parse_url($this->base_url);
 
         return $url['host'];
-    }
-
-    protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
-    protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
-    protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';
-
-    protected function getRelativeReference(string $action)
-    {
-        $relative = $this->application->getRelativeReferenceForRestCall(
-        self::PLACEHOLDER_FLOW_MACHINE_NAME,
-        $action
-    );
-        if ('/' !== $relative[0]) {
-            throw new InternalContentSyncError('Relative reference must start with a slash /.');
-        }
-
-        return $relative;
     }
 
     public function registerSiteWithJwt($options)
@@ -545,19 +521,19 @@ class SyncCore implements ISyncCore
     public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version)
     {
         $request = $this->client->remoteEntityTypeVersionControllerGetVersionUsageRequest(
-        $target_version,
-        $bundle,
-        $entity_type
-    );
+            $target_version,
+            $bundle,
+            $entity_type
+        );
 
         /**
          * @var EntityTypeVersionUsage $response
          */
         $response = $this->sendToSyncCoreAndExpect(
-        $request,
-        EntityTypeVersionUsage::class,
+            $request,
+            EntityTypeVersionUsage::class,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
-    );
+        );
 
         // FIXME: With the new Sync Core version we have a lot more helpful data available.
         //  Once SC 1 is dead, we can improve and provide that here, too.
@@ -667,5 +643,35 @@ class SyncCore implements ISyncCore
         // As sites are registered globally now, we don't need additional verification.
         // Sites can't be registered multiple times with the same ID or base URL.
         return null;
+    }
+
+    protected function hasValidV2SiteId()
+    {
+        $site_id = $this->application->getSiteUuid();
+        if (!$site_id) {
+            return false;
+        }
+
+        // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
+        // is a UUID and if it's not, the site must be re-registered first.
+        return 1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $site_id);
+    }
+
+    protected function getSiteSecret()
+    {
+        return $this->application->getAuthentication()['password'];
+    }
+
+    protected function getRelativeReference(string $action)
+    {
+        $relative = $this->application->getRelativeReferenceForRestCall(
+            self::PLACEHOLDER_FLOW_MACHINE_NAME,
+            $action
+        );
+        if ('/' !== $relative[0]) {
+            throw new InternalContentSyncError('Relative reference must start with a slash /.');
+        }
+
+        return $relative;
     }
 }

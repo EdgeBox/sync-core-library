@@ -108,26 +108,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     ];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization.
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -204,6 +184,73 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        $this->container['match'] = $data['match'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['site'] = $data['site'] ?? null;
+        $this->container['translations'] = $data['translations'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+        $this->container['entityType'] = $data['entityType'] ?? null;
+        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
+        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
+        $this->container['lastPush'] = $data['lastPush'] ?? null;
+        $this->container['lastPull'] = $data['lastPull'] ?? null;
+        $this->container['customer'] = $data['customer'] ?? null;
+        $this->container['project'] = $data['project'] ?? null;
+        $this->container['pools'] = $data['pools'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['createdAt'] = $data['createdAt'] ?? null;
+        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
      * Array of attributes where the key is the local name,
      * and the value is the original name.
      *
@@ -242,40 +289,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     public function getModelName()
     {
         return self::$openAPIModelName;
-    }
-
-    /**
-     * Associative array for storing property values.
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor.
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->container['match'] = $data['match'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
-        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
-        $this->container['site'] = $data['site'] ?? null;
-        $this->container['translations'] = $data['translations'] ?? null;
-        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
-        $this->container['entityType'] = $data['entityType'] ?? null;
-        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
-        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
-        $this->container['lastPush'] = $data['lastPush'] ?? null;
-        $this->container['lastPull'] = $data['lastPull'] ?? null;
-        $this->container['customer'] = $data['customer'] ?? null;
-        $this->container['project'] = $data['project'] ?? null;
-        $this->container['pools'] = $data['pools'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['createdAt'] = $data['createdAt'] ?? null;
-        $this->container['updatedAt'] = $data['updatedAt'] ?? null;
     }
 
     /**
@@ -539,7 +552,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets remoteUniqueId.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRemoteUniqueId()
     {
@@ -549,7 +562,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets remoteUniqueId.
      *
-     * @param string|null $remoteUniqueId remoteUniqueId
+     * @param null|string $remoteUniqueId remoteUniqueId
      *
      * @return self
      */
@@ -563,7 +576,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets lastPush.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getLastPush()
     {
@@ -573,7 +586,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets lastPush.
      *
-     * @param float|null $lastPush lastPush
+     * @param null|float $lastPush lastPush
      *
      * @return self
      */
@@ -587,7 +600,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets lastPull.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getLastPull()
     {
@@ -597,7 +610,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets lastPull.
      *
-     * @param float|null $lastPull lastPull
+     * @param null|float $lastPull lastPull
      *
      * @return self
      */
@@ -769,7 +782,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function offsetGet($offset)
     {
@@ -779,10 +792,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -797,8 +808,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -816,19 +825,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     public function jsonSerialize()
     {
         return ObjectSerializer::sanitizeForSerialization($this);
-    }
-
-    /**
-     * Gets the string presentation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
     }
 
     /**

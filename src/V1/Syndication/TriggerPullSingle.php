@@ -44,9 +44,9 @@ class TriggerPullSingle implements ITriggerPullSingle
     protected $is_dependency;
 
     /**
-     * @var array|null
+     * @var null|array
      */
-    protected $previewData = null;
+    protected $previewData;
 
     public function __construct($core, $type, $bundle, $entity_id)
     {
@@ -92,17 +92,17 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function execute()
     {
         $connection_id = CustomStorage::getCustomId(
-      $this->pool,
-      $this->core->getApplication()->getSiteMachineName(),
-      $this->type,
-      $this->bundle
-    );
+            $this->pool,
+            $this->core->getApplication()->getSiteMachineName(),
+            $this->type,
+            $this->bundle
+        );
 
         $id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($connection_id, false);
 
         $storage = $this
-      ->core
-      ->storage->getConnectionSynchronizationStorage();
+            ->core
+            ->storage->getConnectionSynchronizationStorage();
 
         $sync = $storage->getEntity($id);
 
@@ -112,7 +112,8 @@ class TriggerPullSingle implements ITriggerPullSingle
         $action->isDependency((bool) $this->is_dependency);
 
         $action
-      ->execute();
+            ->execute()
+        ;
 
         return $this;
     }
@@ -123,9 +124,10 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function getPullDashboardSearchResultItem()
     {
         $query = $this->core
-      ->storage->getPreviewEntityStorage()
-      ->getItem($this->entity_id)
-      ->execute();
+            ->storage->getPreviewEntityStorage()
+            ->getItem($this->entity_id)
+            ->execute()
+        ;
 
         $this->previewData = $query->getItem();
 
