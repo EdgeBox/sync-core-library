@@ -56,7 +56,7 @@ abstract class Embed
         $options = $this->getOptions();
 
         if ($this->permissions) {
-            $this->config['jwt'] = $this->permissions;
+            $this->config['jwt'] = $this->core->createJwt($this->permissions);
         }
 
         $html = '<style>
