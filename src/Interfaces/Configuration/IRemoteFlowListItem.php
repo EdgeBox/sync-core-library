@@ -2,24 +2,20 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
-/**
- *
- */
-interface IRemoteFlowListItem {
+interface IRemoteFlowListItem
+{
+    /**
+     * @return string
+     */
+    public function getId();
 
-  /**
-   * @return string
-   */
-  public function getId();
+    /**
+     * @return string
+     */
+    public function getName();
 
-  /**
-   * @return string
-   */
-  public function getName();
-
-  /**
-   * @return string
-   */
-  public function getSiteName();
-
+    /**
+     * @return string
+     */
+    public function getSiteName();
 }

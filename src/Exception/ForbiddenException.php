@@ -11,6 +11,6 @@ namespace EdgeBox\SyncCore\Exception;
  * login requests or the REST interface doesn't allow the selected
  * authentication type.
  */
-class ForbiddenException extends SyncCoreException {
-
+class ForbiddenException extends SyncCoreException
+{
 }

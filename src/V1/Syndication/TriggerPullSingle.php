@@ -6,127 +6,137 @@ use EdgeBox\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
 use EdgeBox\SyncCore\V1\Storage\ConnectionSynchronizationStorage;
 use EdgeBox\SyncCore\V1\Storage\CustomStorage;
 
-/**
- *
- */
-class TriggerPullSingle implements ITriggerPullSingle {
+class TriggerPullSingle implements ITriggerPullSingle
+{
+    /**
+     * @var \EdgeBox\SyncCore\V1\SyncCore
+     */
+    protected $core;
 
-  /**
-   * @var \EdgeBox\SyncCore\V1\SyncCore
-   */
-  protected $core;
+    /**
+     * @var string
+     */
+    protected $type;
 
-  /**
-   * @var string
-   */
-  protected $type;
+    /**
+     * @var string
+     */
+    protected $bundle;
 
-  /**
-   * @var string
-   */
-  protected $bundle;
+    /**
+     * @var string
+     */
+    protected $entity_id;
 
-  /**
-   * @var string
-   */
-  protected $entity_id;
+    /**
+     * @var string
+     */
+    protected $pool;
 
-  /**
-   * @var string
-   */
-  protected $pool;
+    /**
+     * @var bool
+     */
+    protected $is_manual;
 
-  /**
-   * @var bool
-   */
-  protected $is_manual;
+    /**
+     * @var bool
+     */
+    protected $is_dependency;
 
-  /**
-   * @var bool
-   */
-  protected $is_dependency;
+    /**
+     * @var null|array
+     */
+    protected $previewData;
 
-  /**
-   * @var array|null
-   */
-  protected $previewData = NULL;
+    /**
+     * @param mixed $core
+     * @param mixed $type
+     * @param mixed $bundle
+     * @param mixed $entity_id
+     */
+    public function __construct($core, $type, $bundle, $entity_id)
+    {
+        $this->core = $core;
+        $this->type = $type;
+        $this->bundle = $bundle;
+        $this->entity_id = $entity_id;
+    }
 
-  /**
-   *
-   */
-  public function __construct($core, $type, $bundle, $entity_id) {
-    $this->core = $core;
-    $this->type = $type;
-    $this->bundle = $bundle;
-    $this->entity_id = $entity_id;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function fromPool($pool_id)
+    {
+        $this->pool = $pool_id;
 
-  /**
-   * @inheritdoc
-   */
-  public function fromPool($pool_id) {
-    $this->pool = $pool_id;
-    return $this;
-  }
+        return $this;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public function manually($set) {
-    $this->is_manual = $set;
-    return $this;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function manually($set)
+    {
+        $this->is_manual = $set;
 
-  /**
-   * @inheritdoc
-   */
-  public function asDependency($set) {
-    $this->is_dependency = $set;
-    return $this;
-  }
+        return $this;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public function execute() {
-    $connection_id = CustomStorage::getCustomId(
-      $this->pool,
-      $this->core->getApplication()->getSiteMachineName(),
-      $this->type,
-      $this->bundle
-    );
+    /**
+     * {@inheritdoc}
+     */
+    public function asDependency($set)
+    {
+        $this->is_dependency = $set;
 
-    $id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($connection_id, FALSE);
+        return $this;
+    }
 
-    $storage = $this
-      ->core
-      ->storage->getConnectionSynchronizationStorage();
+    /**
+     * {@inheritdoc}
+     */
+    public function execute()
+    {
+        $connection_id = CustomStorage::getCustomId(
+            $this->pool,
+            $this->core->getApplication()->getSiteMachineName(),
+            $this->type,
+            $this->bundle
+        );
 
-    $sync = $storage->getEntity($id);
+        $id = ConnectionSynchronizationStorage::getExternalConnectionSynchronizationId($connection_id, false);
 
-    $action = $sync->synchronizeSingle($this->entity_id);
+        $storage = $this
+            ->core
+            ->storage->getConnectionSynchronizationStorage();
 
-    $action->isManual(!!$this->is_manual);
-    $action->isDependency(!!$this->is_dependency);
+        $sync = $storage->getEntity($id);
 
-    $action
-      ->execute();
+        $action = $sync->synchronizeSingle($this->entity_id);
 
-    return $this;
-  }
+        $action->isManual((bool) $this->is_manual);
+        $action->isDependency((bool) $this->is_dependency);
 
-  /**
-   * @inheritdoc
-   */
-  public function getPullDashboardSearchResultItem() {
-    $query = $this->core
-      ->storage->getPreviewEntityStorage()
-      ->getItem($this->entity_id)
-      ->execute();
+        $action
+            ->execute()
+        ;
 
-    $this->previewData = $query->getItem();
+        return $this;
+    }
 
-    return new PullDashboardSearchResultItem($this->previewData);
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getPullDashboardSearchResultItem()
+    {
+        $query = $this->core
+            ->storage->getPreviewEntityStorage()
+            ->getItem($this->entity_id)
+            ->execute()
+        ;
 
+        $this->previewData = $query->getItem();
+
+        return new PullDashboardSearchResultItem($this->previewData);
+    }
 }

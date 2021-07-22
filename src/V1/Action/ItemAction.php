@@ -9,41 +9,40 @@ use EdgeBox\SyncCore\V1\Storage\Storage;
  * Class ItemAction.
  *
  * Execute an action for a specific entity.
- *
- * @package Drupal\cms_content_sync\SyncCore
  */
-class ItemAction extends ItemQuery {
+class ItemAction extends ItemQuery
+{
+    protected $actionPath;
 
-  protected $actionPath = NULL;
+    protected $method;
 
-  protected $method = NULL;
+    /**
+     * ItemAction constructor.
+     *
+     * @param string $actionPath
+     * @param string $method
+     */
+    public function __construct(Storage $storage, $actionPath, $method)
+    {
+        parent::__construct($storage);
 
-  /**
-   * ItemAction constructor.
-   *
-   * @param \EdgeBox\SyncCore\V1\Storage\Storage $storage
-   * @param string $actionPath
-   * @param string $method
-   */
-  public function __construct(Storage $storage, $actionPath, $method) {
-    parent::__construct($storage);
+        $this->actionPath = $actionPath;
+        $this->method = $method;
+    }
 
-    $this->actionPath = $actionPath;
-    $this->method = $method;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath()
+    {
+        return parent::getPath().'/'.$this->actionPath;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public function getPath() {
-    return parent::getPath() . '/' . $this->actionPath;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function getMethod() {
-    return $this->method;
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
 }

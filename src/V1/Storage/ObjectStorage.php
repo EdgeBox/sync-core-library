@@ -5,22 +5,20 @@ namespace EdgeBox\SyncCore\V1\Storage;
 /**
  * Class ObjectStorage
  * Implement Storage for the Sync Core "ObjectStorage" entity type.
- *
- * @package Drupal\cms_content_sync\SyncCore\V1\Storage
  */
-class ObjectStorage extends Storage {
+class ObjectStorage extends Storage
+{
+    public const ID = 'api_unify-api_unify-object_storage-0_1';
 
-  const ID = 'api_unify-api_unify-object_storage-0_1';
+    public const PROPERTY_TYPE = 'type';
 
-  const PROPERTY_TYPE = 'type';
+    public const PROPERTY_PROPERTIES = 'properties';
 
-  const PROPERTY_PROPERTIES = 'properties';
-
-  /**
-   * @inheritdoc
-   */
-  public function getId() {
-    return self::ID;
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return self::ID;
+    }
 }

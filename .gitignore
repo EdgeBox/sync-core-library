@@ -1,0 +1,10 @@
+# caches
+.phplint-cache
+.php-cs-fixer.cache
+cghooks.lock
+
+# packages
+vendor
+
+# IDEs
+.idea

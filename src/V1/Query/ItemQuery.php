@@ -7,52 +7,53 @@ use EdgeBox\SyncCore\V1\Query\Result\ItemResult;
 /**
  * Class ItemQuery
  * Get an individual item by ID.
- *
- * @package Drupal\cms_content_sync\SyncCore
  */
-class ItemQuery extends StorageQuery {
+class ItemQuery extends StorageQuery
+{
+    /**
+     * @var string
+     */
+    protected $entityId;
 
-  /**
-   * @var string
-   */
-  protected $entityId;
+    /**
+     * {@inheritdoc}
+     */
+    public static function create($storage)
+    {
+        return new ItemQuery($storage);
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public static function create($storage) {
-    return new ItemQuery($storage);
-  }
+    /**
+     * @param string $id
+     *
+     * @return $this
+     */
+    public function setEntityId($id)
+    {
+        $this->entityId = $id;
 
-  /**
-   * @param string $id
-   *
-   * @return $this
-   */
-  public function setEntityId($id) {
-    $this->entityId = $id;
+        return $this;
+    }
 
-    return $this;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath()
+    {
+        return $this->storage->getPath().'/'.$this->entityId;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public function getPath() {
-    return $this->storage->getPath() . '/' . $this->entityId;
-  }
+    /**
+     * {@inheritdoc}
+     *
+     * @return \EdgeBox\SyncCore\V1\Query\Result\ItemResult
+     */
+    public function execute()
+    {
+        $result = new ItemResult($this);
 
-  /**
-   * @inheritdoc
-   *
-   * @return \EdgeBox\SyncCore\V1\Query\Result\ItemResult
-   */
-  public function execute() {
-    $result = new ItemResult($this);
+        $result->execute();
 
-    $result->execute();
-
-    return $result;
-  }
-
+        return $result;
+    }
 }

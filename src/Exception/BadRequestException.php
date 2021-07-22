@@ -10,6 +10,6 @@ namespace EdgeBox\SyncCore\Exception;
  * - This will also be thrown if you provide any localhost domain or raw IP
  * address.
  */
-class BadRequestException extends SyncCoreException {
-
+class BadRequestException extends SyncCoreException
+{
 }

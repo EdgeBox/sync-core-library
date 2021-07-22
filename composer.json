@@ -20,6 +20,15 @@
         "forum": "https://www.drupal.org/project/issues/cms_content_sync",
         "slack": "https://drupal.slack.com/archives/CKN24APFC"
     },
+    "scripts": {
+        "lint": "tools/vendor/bin/phplint ./ --exclude=vendor --warning",
+        "analyze": "tools/vendor/bin/phpstan analyse -c tools/phpstan.neon src",
+        "test-cs": "tools/vendor/bin/php-cs-fixer fix --dry-run --config tools/.php-cs-fixer.php",
+        "fix-cs": "tools/vendor/bin/php-cs-fixer fix --config tools/.php-cs-fixer.php",
+        "cghooks": "vendor/bin/cghooks",
+        "post-install-cmd": "tools/vendor/bin/cghooks add --ignore-lock",
+        "post-update-cmd": "tools/vendor/bin/cghooks update"
+    },
     "require": {
         "php": ">=7.1.3"
     },

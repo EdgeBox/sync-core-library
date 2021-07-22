@@ -2,19 +2,15 @@
 
 namespace EdgeBox\SyncCore\Interfaces;
 
-/**
- *
- */
-interface IProgress {
+interface IProgress
+{
+    /**
+     * @return int
+     */
+    public function total();
 
-  /**
-   * @return int
-   */
-  public function total();
-
-  /**
-   * @return int
-   */
-  public function progress();
-
+    /**
+     * @return int
+     */
+    public function progress();
 }
