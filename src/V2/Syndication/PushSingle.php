@@ -225,8 +225,7 @@ class PushSingle implements IPushSingle
         string $language,
         ?string $name,
         $details = null
-    )
-    {
+    ) {
         $direct_dependencies = $this->dto->getEmbed();
 
         if (!$direct_dependencies) {
