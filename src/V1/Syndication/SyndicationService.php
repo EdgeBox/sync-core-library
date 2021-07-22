@@ -87,9 +87,9 @@ class SyndicationService implements ISyndicationService
             ->orderBy('connection_id')
             ->setCondition(
                 ParentCondition::all()
-            ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
-            ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
-            ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$entity_type.'-'.$bundle))
+                    ->add(DataCondition::equal(MetaInformationConnectionStorage::PROPERTY_ENTITY_ID, $shared_entity_id))
+                    ->add(DataCondition::startsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, $application->getApplicationId().'-'.$pool_id.'-'))
+                    ->add(DataCondition::endsWith(MetaInformationConnectionStorage::PROPERTY_CONNECTION_ID, '-'.$entity_type.'-'.$bundle))
             )
             ->getDetails()
             ->execute()

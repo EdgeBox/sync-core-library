@@ -8,6 +8,7 @@ return $config->setRules([
   '@Symfony' => true,
   '@PSR2' => true,
   '@PhpCsFixer' => true,
-  'phpdoc_to_comment' => false
+  'phpdoc_to_comment' => false,
+  'phpdoc_align' => false
 ])
   ->setFinder($finder);

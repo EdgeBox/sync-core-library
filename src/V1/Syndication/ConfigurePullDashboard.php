@@ -75,7 +75,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
         $this->filters[] = ParentCondition::any()
             ->add(
                 ParentCondition::none()
-            ->add(DataCondition::equal(PreviewEntityStorage::PROPERTY_ENTITY_TYPE_UNVERSIONED, $id))
+                    ->add(DataCondition::equal(PreviewEntityStorage::PROPERTY_ENTITY_TYPE_UNVERSIONED, $id))
             )
             ->add(DataCondition::in(PreviewEntityStorage::PROPERTY_CUSTOM_PROPERTIES.'.'.$property.'.'.Entity::UUID_KEY, $uuids))
         ;

@@ -140,3 +140,4 @@ class TriggerPullSingle implements ITriggerPullSingle
         return new PullDashboardSearchResultItem($this->previewData);
     }
 }
+

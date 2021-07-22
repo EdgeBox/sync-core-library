@@ -112,9 +112,9 @@ class ConfigurationService implements IConfigurationService
             ->listItems()
             ->setCondition(
                 ParentCondition::all()
-            ->add(DataCondition::equal(ApiStorage::PROPERTY_VERSION, ApiStorage::CUSTOM_API_VERSION))
-            ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()
-            ->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION))
+                    ->add(DataCondition::equal(ApiStorage::PROPERTY_VERSION, ApiStorage::CUSTOM_API_VERSION))
+                    ->add(DataCondition::equal(ApiStorage::PROPERTY_PARENT_ID, $this->core->getApplication()
+                    ->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION))
             )
             ->execute()
             ->getAll()

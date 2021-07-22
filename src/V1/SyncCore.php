@@ -408,8 +408,8 @@ class SyncCore implements ISyncCore
         $items = $connectionStorage->listItems()
             ->setCondition(
                 ParentCondition::all()
-            ->add(DataCondition::startsWith(ConnectionStorage::PROPERTY_ID, $this->application->getApplicationId().'-'.$pool_id.'-'))
-            ->add(DataCondition::endsWith(ConnectionStorage::PROPERTY_ID, '-'.$entity_type.'-'.$bundle))
+                    ->add(DataCondition::startsWith(ConnectionStorage::PROPERTY_ID, $this->application->getApplicationId().'-'.$pool_id.'-'))
+                    ->add(DataCondition::endsWith(ConnectionStorage::PROPERTY_ID, '-'.$entity_type.'-'.$bundle))
             )
             ->orderBy('id')
             ->getDetails()
