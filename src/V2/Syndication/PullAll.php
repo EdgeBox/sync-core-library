@@ -14,9 +14,6 @@ use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
 use EdgeBox\SyncCore\V2\SerializableWithSyncCoreReference;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-// TODO: Provide a "Push all" action as well so Drupal doesn't push all the entities, but
-//  the Sync Core will rather pull them from the site, one after another.
-
 class PullAll extends SerializableWithSyncCoreReference implements IPullAll
 {
     /**
