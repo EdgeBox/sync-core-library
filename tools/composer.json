@@ -5,6 +5,11 @@
     "friendsofphp/php-cs-fixer": "^3.0",
     "brainmaestro/composer-git-hooks": "^2.8"
   },
+  "scripts": {
+    "cghooks": "vendor/bin/cghooks",
+    "post-install-cmd": "vendor/bin/cghooks add --ignore-lock",
+    "post-update-cmd": "vendor/bin/cghooks update"
+  },
   "extra": {
     "hooks": {
       "config": {
