@@ -103,8 +103,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $body = $synchronization
             ->synchronizeAllStatus($this->sync_id)
             ->execute()
-            ->getResult()
-        ;
+            ->getResult();
 
         return $this->progress = (int) $body['processed'];
     }
@@ -143,8 +142,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
             ->synchronizeAll()
             ->force($this->is_force)
             ->execute()
-            ->getResult()
-        ;
+            ->getResult();
 
         $this->total = (int) $response['total'];
         $this->sync_id = isset($response['id']) ? $response['id'] : null;
@@ -198,7 +196,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
 
         return $this->core
             ->storage->getConnectionSynchronizationStorage()
-            ->getEntity($sync_id)
-        ;
+            ->getEntity($sync_id);
     }
 }

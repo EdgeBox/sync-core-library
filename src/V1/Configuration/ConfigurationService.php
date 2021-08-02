@@ -55,8 +55,7 @@ class ConfigurationService implements IConfigurationService
         $item = $object_storage
             ->getItem($id)
             ->execute()
-            ->getItem()
-        ;
+            ->getItem();
 
         return new class($item) implements IRemoteFlow {
             protected $item;
@@ -117,8 +116,7 @@ class ConfigurationService implements IConfigurationService
                     ->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION))
             )
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         $options = [];
         foreach ($remote_pools as $option) {
@@ -181,8 +179,7 @@ class ConfigurationService implements IConfigurationService
             ->core
             ->storage->getConnectionStorage()
             ->createItem($body)
-            ->execute()
-        ;
+            ->execute();
 
         return $this;
     }
@@ -211,7 +208,6 @@ class ConfigurationService implements IConfigurationService
             ->core
             ->storage->getApiStorage()
             ->createItem($body)
-            ->execute()
-        ;
+            ->execute();
     }
 }

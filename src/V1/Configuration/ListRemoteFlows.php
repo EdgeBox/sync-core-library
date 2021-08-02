@@ -63,8 +63,7 @@ class ListRemoteFlows implements IListRemoteFlows
             ->setCondition($conditions)
             ->getDetails()
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         $result = [];
 

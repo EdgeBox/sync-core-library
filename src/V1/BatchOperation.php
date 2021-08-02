@@ -78,8 +78,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
                 ->storage
                 ->getStorageById($op['type'])
                 ->createItem($op['body'])
-                ->execute()
-            ;
+                ->execute();
         }
     }
 

@@ -93,8 +93,7 @@ class SyndicationService implements ISyndicationService
             )
             ->getDetails()
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         $result = [];
 
@@ -117,8 +116,7 @@ class SyndicationService implements ISyndicationService
                 $entity = SimpleQuery
           ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
               ->execute()
-              ->getResult()
-                ;
+              ->getResult();
             } else {
                 $storage = new CustomStorage(
                     $this->core,
@@ -132,8 +130,7 @@ class SyndicationService implements ISyndicationService
                     $entity = $storage
                         ->getItem($shared_entity_id)
                         ->execute()
-                        ->getItem()
-                    ;
+                        ->getItem();
                 } catch (SyncCoreException $e) {
                     continue;
                 }
@@ -158,8 +155,7 @@ class SyndicationService implements ISyndicationService
             $result &= $connection
                 ->login()
                 ->execute()
-                ->succeeded()
-            ;
+                ->succeeded();
         }
 
         return $result;
@@ -182,8 +178,7 @@ class SyndicationService implements ISyndicationService
             ->setCondition(DataCondition::equal('instance_id', $this->core->getApplication()
             ->getSiteId()))
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         foreach ($items as $item) {
             $result[] = $storage->getEntity($item['id']);

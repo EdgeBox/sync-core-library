@@ -118,8 +118,7 @@ class TriggerPullSingle implements ITriggerPullSingle
         $action->isDependency((bool) $this->is_dependency);
 
         $action
-            ->execute()
-        ;
+            ->execute();
 
         return $this;
     }
@@ -132,12 +131,10 @@ class TriggerPullSingle implements ITriggerPullSingle
         $query = $this->core
             ->storage->getPreviewEntityStorage()
             ->getItem($this->entity_id)
-            ->execute()
-        ;
+            ->execute();
 
         $this->previewData = $query->getItem();
 
         return new PullDashboardSearchResultItem($this->previewData);
     }
 }
-

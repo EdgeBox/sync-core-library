@@ -184,8 +184,7 @@ class SyncCore implements ISyncCore
           ->setMethod($method)
           ->setAuthentication($authentication)
           ->execute()
-          ->succeeded()
-        ;
+          ->succeeded();
     }
 
     /**
@@ -204,13 +203,11 @@ class SyncCore implements ISyncCore
              * @var \EdgeBox\SyncCore\V1\Entity\EntityPreviewConnection $connection
              */
             $connection = $storage
-                ->getEntity(PreviewEntityStorage::ID)
-            ;
+                ->getEntity(PreviewEntityStorage::ID);
 
             $connection
                 ->allowPublicAccess($set)
-                ->execute()
-            ;
+                ->execute();
 
             return null;
         }
@@ -220,8 +217,7 @@ class SyncCore implements ISyncCore
                 ->storage->getConnectionStorage()
                 ->getItem(PreviewEntityStorage::ID)
                 ->execute()
-                ->getItem()
-            ;
+                ->getItem();
         } catch (NotFoundException $e) {
             return null;
         }
@@ -247,8 +243,7 @@ class SyncCore implements ISyncCore
                 ->storage->getInstanceStorage()
                 ->getItem($id ? $id : $this->application->getSiteId())
                 ->execute()
-                ->getItem()
-            ;
+                ->getItem();
         } catch (NotFoundException $e) {
             return null;
         }
@@ -267,8 +262,7 @@ class SyncCore implements ISyncCore
             ->storage->getInstanceStorage()
             ->getItem($this->application->getSiteId())
             ->execute()
-            ->getItem()
-        ;
+            ->getItem();
 
         $site['name'] = $set;
 
@@ -276,8 +270,7 @@ class SyncCore implements ISyncCore
             ->storage->getInstanceStorage()
             ->updateItem($this->application->getSiteId(), $site)
             ->execute()
-            ->succeeded()
-        ;
+            ->succeeded();
     }
 
     /**
@@ -303,8 +296,7 @@ class SyncCore implements ISyncCore
                     $this
                         ->storage->getInstanceStorage()
                         ->getItem($machine_name)
-                        ->execute()
-                    ;
+                        ->execute();
                 } // Unused ID- keep it.
                 catch (NotFoundException $e) {
                     break;
@@ -325,8 +317,7 @@ class SyncCore implements ISyncCore
                 'api_id' => $this->application->getApplicationId().'-'.ApiStorage::CUSTOM_API_VERSION,
             ])
             ->execute()
-            ->getItem()
-        ;
+            ->getItem();
 
         $this->application->setSiteId($machine_name);
 
@@ -351,8 +342,7 @@ class SyncCore implements ISyncCore
                 ->storage->getInstanceStorage()
                 ->getItem($this->application->getSiteId())
                 ->execute()
-                ->getItem()
-            ;
+                ->getItem();
 
             // No match: Warn user and don't export configuration.
             if ($site['base_url'] !== $this->application->getSiteBaseUrl()) {
@@ -380,8 +370,7 @@ class SyncCore implements ISyncCore
               )
             )
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         // Another ID is already used for this base URL.
         if ($sites && count($sites)) {
@@ -414,8 +403,7 @@ class SyncCore implements ISyncCore
             ->orderBy('id')
             ->getDetails()
             ->execute()
-            ->getAll()
-        ;
+            ->getAll();
 
         $result = [];
 
@@ -463,8 +451,7 @@ class SyncCore implements ISyncCore
         $this_entity_type = $entityTypeStorage
             ->getItem($sites[$this->application->getSiteMachineName()]['entity_type']['id'])
             ->execute()
-            ->getItem()
-        ;
+            ->getItem();
 
         foreach ($other_version_sites as $site_id) {
             $item = $sites[$site_id];
@@ -472,8 +459,7 @@ class SyncCore implements ISyncCore
             $data = $entityTypeStorage
                 ->getItem($item['entity_type']['id'])
                 ->execute()
-                ->getItem()
-            ;
+                ->getItem();
 
             $result[$site_id] = $this->getEntityTypeDiff($this_entity_type, $data);
         }

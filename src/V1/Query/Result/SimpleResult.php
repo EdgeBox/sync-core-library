@@ -30,8 +30,7 @@ class SimpleResult extends Result
         $this->result = $this->query
             ->getCore()
             ->getClient()
-            ->request($this->query)
-        ;
+            ->request($this->query);
 
         return $this;
     }

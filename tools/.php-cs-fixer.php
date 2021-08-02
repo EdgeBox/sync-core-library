@@ -9,6 +9,7 @@ return $config->setRules([
   '@PSR2' => true,
   '@PhpCsFixer' => true,
   'phpdoc_to_comment' => false,
-  'phpdoc_align' => false
+  'phpdoc_align' => false,
+  'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line']
 ])
   ->setFinder($finder);

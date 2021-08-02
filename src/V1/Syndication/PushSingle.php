@@ -422,8 +422,7 @@ class PushSingle implements IPushSingle
                 $this->core->getApplication()->getSiteMachineName(),
                 $this->type,
                 $this->bundle
-            )
-        ;
+            );
 
         if ($this->is_deletion) {
             $query = $storage->deleteItem($this->body['id']);
@@ -433,8 +432,7 @@ class PushSingle implements IPushSingle
 
         $query
             ->setAsDependency($this->is_dependency)
-            ->execute()
-        ;
+            ->execute();
 
         return $this;
     }

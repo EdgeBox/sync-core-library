@@ -56,8 +56,7 @@ class ReportingService implements IReportingService
         $result = SimpleQuery
       ::create($this->core, SyncCoreClient::STATUS_PATH)
           ->execute()
-          ->getResult()
-        ;
+          ->getResult();
 
         return [
             'version' => $result['version'],

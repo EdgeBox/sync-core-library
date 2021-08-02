@@ -77,8 +77,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
                 ParentCondition::none()
                     ->add(DataCondition::equal(PreviewEntityStorage::PROPERTY_ENTITY_TYPE_UNVERSIONED, $id))
             )
-            ->add(DataCondition::in(PreviewEntityStorage::PROPERTY_CUSTOM_PROPERTIES.'.'.$property.'.'.Entity::UUID_KEY, $uuids))
-        ;
+            ->add(DataCondition::in(PreviewEntityStorage::PROPERTY_CUSTOM_PROPERTIES.'.'.$property.'.'.Entity::UUID_KEY, $uuids));
 
         return $this;
     }
@@ -94,8 +93,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
             $config['syncCoreCondition'] = $this->filters[0]->serialize();
         } elseif (count($this->filters) > 1) {
             $config['syncCoreCondition'] = ParentCondition::all($this->filters)
-                ->serialize()
-            ;
+                ->serialize();
         }
 
         return $config;
@@ -183,8 +181,7 @@ class ConfigurePullDashboard implements IConfigurePullDashboard
             )
             ->setPage($page ? $page : 1)
             ->execute()
-            ->getRaw()
-        ;
+            ->getRaw();
 
         return new class($response) implements IPullDashboardSearchResult {
             /**
