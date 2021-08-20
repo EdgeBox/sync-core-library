@@ -221,7 +221,7 @@ class SyncCore implements ISyncCore
         }
 
         // Raw body upload
-        if ('https://s3.amazonaws.com/' === substr($upload_url, 0, 25)) {
+        if (preg_match('@https://[^/]*amazonaws.com/@', $upload_url)) {
             $response = $this->getPublicClient()->request('PUT', $upload_url, [
                 RequestOptions::TIMEOUT => $this->default_timeout,
                 RequestOptions::BODY => $content,
