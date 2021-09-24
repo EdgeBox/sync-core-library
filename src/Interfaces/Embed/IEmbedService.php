@@ -9,6 +9,7 @@ interface IEmbedService
     public const SITE_REGISTERED = 'site-registered';
     public const ENTITY_STATUS = 'entity-status';
     public const MIGRATE = 'migrate';
+    public const FLOW_FORM = 'flow-form';
     public const SYNDICATION_DASHBOARD = 'syndication-dashboard';
 
     /**
@@ -35,6 +36,11 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function migrate(array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function flowForm(array $params);
 
     /**
      * @return IEmbedFeature
