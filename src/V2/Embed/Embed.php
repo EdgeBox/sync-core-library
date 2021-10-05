@@ -109,6 +109,12 @@ abstract class Embed
         jQuery(`.migration-form #edit-action input[value=${type}]`).prop("checked", true);
         jQuery(`.migration-form`).submit();
       }
+      else if(message.type==="save-flow") {
+        jQuery(`.json-form #edit-json`).val(JSON.stringify(message.data));
+        jQuery(`.json-form #edit-action input`).prop("checked", false);
+        jQuery(`.json-form #edit-action input[value=${message.type}]`).prop("checked", true);
+        jQuery(`.json-form`).submit();
+      }
     },
   }, "#contentSyncEmbed");
 })();

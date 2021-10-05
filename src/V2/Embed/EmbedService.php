@@ -63,7 +63,8 @@ class EmbedService implements IEmbedService
     /**
      * {@inheritDoc}
      */
-    public function flowForm(array $params) {
+    public function flowForm(array $params)
+    {
         return new FlowFormEmbed($this->core, $params);
     }
 
