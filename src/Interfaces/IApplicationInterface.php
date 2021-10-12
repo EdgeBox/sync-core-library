@@ -49,6 +49,16 @@ interface IApplicationInterface
     public const REST_ACTION_LIST_ENTITIES = 'list';
 
     /**
+     * @var string FLOW_NONE
+     *
+     * When requesting entities with the site's REST interfaces, this special
+     * name can be used to request entities without a Flow existing yet. This is
+     * used by the embed service to query for entities, e.g. when creating a
+     * Flow to retrieve tags to filter by.
+     */
+    public const FLOW_NONE = '_';
+
+    /**
      * @return IApplicationInterface
      */
     public static function get();

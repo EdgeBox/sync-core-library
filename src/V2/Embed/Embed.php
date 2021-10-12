@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2\Embed;
 
 use EdgeBox\SyncCore\Helpers\EmbedResult;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class Embed
@@ -58,6 +59,9 @@ abstract class Embed
         if ($this->permissions) {
             $this->config['jwt'] = $this->core->createJwt($this->permissions);
         }
+
+        $application = $this->core->getApplication();
+        $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall(IApplicationInterface::FLOW_NONE, IApplicationInterface::REST_ACTION_LIST_ENTITIES);
 
         $html = '<style>
   #contentSyncEmbed {
@@ -114,6 +118,32 @@ abstract class Embed
         jQuery(`.json-form #edit-action input`).prop("checked", false);
         jQuery(`.json-form #edit-action input[value=${message.type}]`).prop("checked", true);
         jQuery(`.json-form`).submit();
+      }
+      else if(message.type==="list-entities") {
+        var {page, itemsPerPage, mode, namespaceMachineName, machineName, search, callbackId} = message;
+        var params = [
+          `page=${page}`,
+          `itemsPerPage=${itemsPerPage}`,
+          `mode=${mode}`,
+          `namespaceMachineName=${namespaceMachineName}`,
+          `machineName=${machineName}`,
+          `search=${search}`,
+        ];
+        jQuery.ajax({
+          url: `'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'${params.join("&")}`,
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+          success: function(response, status, xhr) {
+            iframe.iFrameResizer.sendMessage({
+              type: "list-entities-response",
+              callbackId,
+              response,
+            });
+            callback(data);
+          },
+        });
       }
     },
   }, "#contentSyncEmbed");
