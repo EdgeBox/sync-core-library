@@ -62,6 +62,7 @@ abstract class Embed
 
         $application = $this->core->getApplication();
         $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall(IApplicationInterface::FLOW_NONE, IApplicationInterface::REST_ACTION_LIST_ENTITIES);
+        $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall(IApplicationInterface::FLOW_NONE, IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
         $html = '<style>
   #contentSyncEmbed {
@@ -76,11 +77,15 @@ abstract class Embed
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
-  var baseUrl = "'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'";
-  // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
-  if(baseUrl.substr(0,7)==="http://" && location.protocol === "https:") {
-    baseUrl = `https://${baseUrl.substr(7)}`;
+  function getHttpsUrl(url) {
+    // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
+    if(url.substr(0,7)==="http://" && location.protocol === "https:") {
+      return `https://${url.substr(7)}`;
+    }
+    return url;
   }
+  var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'");
+  var retrieveEntityUrl = getHttpsUrl("'.$retrieve_entity_url.(str_contains($retrieve_entity_url, '?') ? '&' : '?').'");
 
   var iframe = undefined;
 
@@ -139,14 +144,36 @@ abstract class Embed
           `search=${search}`,
         ];
         jQuery.ajax({
-          url: `${baseUrl}${params.join("&")}`,
+          url: `${listEntitiesUrl}${params.join("&")}`,
           method: "GET",
           headers: {
             "Accept": "application/json",
           },
           success: function(response, status, xhr) {
             iframe.iFrameResizer.sendMessage({
-              type: "list-entities-response",
+              type: "response",
+              callbackId,
+              response,
+            });
+          },
+        });
+      }
+      else if(message.type==="retrieve-entity") {
+        var {namespaceMachineName, machineName, sharedEntityId, callbackId} = message;
+        var url = retrieveEntityUrl
+          .replace(/\[type\.namespaceMachineName\]/g, namespaceMachineName)
+          .replace(/\[type\.machineName\]/g, machineName)
+          .replace(/\[entity\.uuid\]/g, sharedEntityId)
+          .replace(/\[entity\.sharedId\]/g, sharedEntityId);
+        jQuery.ajax({
+          url,
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+          success: function(response, status, xhr) {
+            iframe.iFrameResizer.sendMessage({
+              type: "response",
               callbackId,
               response,
             });
