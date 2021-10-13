@@ -76,10 +76,19 @@ abstract class Embed
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
+  var baseUrl = "'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'";
+  // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
+  if(baseUrl.substr(0,7)==="http://" && location.protocol === "https:") {
+    baseUrl = `https://${baseUrl.substr(7)}`;
+  }
+
+  var iframe = undefined;
+
   iFrameResize({
     //log: true,
     checkOrigin: false,
-    onInit: function(iframe) {
+    onInit: function(newIframe) {
+      iframe = newIframe;
       iframe.iFrameResizer.sendMessage({
         type: "config",
         config: '.json_encode($this->config).',
@@ -130,7 +139,7 @@ abstract class Embed
           `search=${search}`,
         ];
         jQuery.ajax({
-          url: `'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'${params.join("&")}`,
+          url: `${baseUrl}${params.join("&")}`,
           method: "GET",
           headers: {
             "Accept": "application/json",
@@ -141,9 +150,11 @@ abstract class Embed
               callbackId,
               response,
             });
-            callback(data);
           },
         });
+      }
+      else {
+        throw new Error("Unknown message "+JSON.stringify(message));
       }
     },
   }, "#contentSyncEmbed");
