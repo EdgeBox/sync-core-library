@@ -61,8 +61,8 @@ abstract class Embed
         }
 
         $application = $this->core->getApplication();
-        $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall(IApplicationInterface::FLOW_NONE, IApplicationInterface::REST_ACTION_LIST_ENTITIES);
-        $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall(IApplicationInterface::FLOW_NONE, IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
+        $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_LIST_ENTITIES);
+        $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
         $html = '<style>
   #contentSyncEmbed {
@@ -103,7 +103,7 @@ abstract class Embed
         options: '.json_encode($options).',
       });
     },
-    onMessage: function({message}) {
+    onMessage: function onMessage({message}) {
       // Need a fresh access token.
       if(message.type==="reload") {
         window.location.reload();
@@ -133,18 +133,30 @@ abstract class Embed
         jQuery(`.json-form #edit-action input[value=${message.type}]`).prop("checked", true);
         jQuery(`.json-form`).submit();
       }
+      else if(message.type==="count-entities") {
+        onMessage({
+            message: {
+            ...message,
+            type: "list-entities",
+            page: 0,
+            itemsPerPage: 0,
+          },
+        });
+      }
       else if(message.type==="list-entities") {
-        var {page, itemsPerPage, mode, namespaceMachineName, machineName, search, callbackId} = message;
+        var {page, itemsPerPage, mode, namespaceMachineName, machineName, search, callbackId, flowMachineName} = message;
         var params = [
           `page=${page}`,
           `itemsPerPage=${itemsPerPage}`,
           `mode=${mode}`,
           `namespaceMachineName=${namespaceMachineName}`,
           `machineName=${machineName}`,
-          `search=${search}`,
+          ...search ? [`search=${search}`] : [],
         ];
+        var baseUrl = listEntitiesUrl
+          .replace(/\[flow\.machineName\]/g, flowMachineName||"'.IApplicationInterface::FLOW_NONE.'");
         jQuery.ajax({
-          url: `${listEntitiesUrl}${params.join("&")}`,
+          url: `${baseUrl}${params.join("&")}`,
           method: "GET",
           headers: {
             "Accept": "application/json",
@@ -159,8 +171,9 @@ abstract class Embed
         });
       }
       else if(message.type==="retrieve-entity") {
-        var {namespaceMachineName, machineName, sharedEntityId, callbackId} = message;
+        var {namespaceMachineName, machineName, sharedEntityId, callbackId, flowMachineName} = message;
         var url = retrieveEntityUrl
+          .replace(/\[flow\.machineName\]/g, flowMachineName||"'.IApplicationInterface::FLOW_NONE.'")
           .replace(/\[type\.namespaceMachineName\]/g, namespaceMachineName)
           .replace(/\[type\.machineName\]/g, machineName)
           .replace(/\[entity\.uuid\]/g, sharedEntityId)
