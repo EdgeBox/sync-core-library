@@ -77,13 +77,8 @@ abstract class Embed
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
-  function getHttpsUrl(url) {
-    // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
-    if(url.substr(0,7)==="http://" && location.protocol === "https:") {
-      return `https://${url.substr(7)}`;
-    }
-    return url;
-  }
+  // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
+  const getHttpsUrl = (url) => url.replace(/^https?:/, "");
   var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'");
   var retrieveEntityUrl = getHttpsUrl("'.$retrieve_entity_url.(str_contains($retrieve_entity_url, '?') ? '&' : '?').'");
 
