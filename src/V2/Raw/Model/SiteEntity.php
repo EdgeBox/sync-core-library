@@ -69,6 +69,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
+        'useProxy' => 'bool',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -98,6 +99,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appType' => null,
         'appVersion' => null,
         'appModuleVersion' => null,
+        'useProxy' => null,
         'uuid' => null,
         'environmentType' => null,
         'customer' => null,
@@ -126,6 +128,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appType' => 'appType',
         'appVersion' => 'appVersion',
         'appModuleVersion' => 'appModuleVersion',
+        'useProxy' => 'useProxy',
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'customer' => 'customer',
@@ -153,6 +156,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appType' => 'setAppType',
         'appVersion' => 'setAppVersion',
         'appModuleVersion' => 'setAppModuleVersion',
+        'useProxy' => 'setUseProxy',
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'customer' => 'setCustomer',
@@ -180,6 +184,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appType' => 'getAppType',
         'appVersion' => 'getAppVersion',
         'appModuleVersion' => 'getAppModuleVersion',
+        'useProxy' => 'getUseProxy',
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'customer' => 'getCustomer',
@@ -216,6 +221,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['appType'] = $data['appType'] ?? null;
         $this->container['appVersion'] = $data['appVersion'] ?? null;
         $this->container['appModuleVersion'] = $data['appModuleVersion'] ?? null;
+        $this->container['useProxy'] = $data['useProxy'] ?? null;
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['environmentType'] = $data['environmentType'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
@@ -568,6 +574,30 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets useProxy.
+     *
+     * @return null|bool
+     */
+    public function getUseProxy()
+    {
+        return $this->container['useProxy'];
+    }
+
+    /**
+     * Sets useProxy.
+     *
+     * @param null|bool $useProxy useProxy
+     *
+     * @return self
+     */
+    public function setUseProxy($useProxy)
+    {
+        $this->container['useProxy'] = $useProxy;
+
+        return $this;
+    }
+
+    /**
      * Gets uuid.
      *
      * @return string
@@ -886,7 +916,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

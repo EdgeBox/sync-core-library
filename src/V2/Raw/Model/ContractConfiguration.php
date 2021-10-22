@@ -1,6 +1,6 @@
 <?php
 /**
- * PullDashboardPullOptionFlow.
+ * ContractConfiguration.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * PullDashboardPullOptionFlow Class Doc Comment.
+ * ContractConfiguration Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonSerializable
+class ContractConfiguration implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      *
      * @var string
      */
-    protected static $openAPIModelName = 'PullDashboardPullOptionFlow';
+    protected static $openAPIModelName = 'ContractConfiguration';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,10 +61,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'string',
-        'machineName' => 'string',
-        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]',
-        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]',
+        'remainingUpdates' => 'float',
+        'maxUpdates' => 'float',
+        'contractExpired' => 'bool',
     ];
 
     /**
@@ -75,10 +74,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'name' => null,
-        'machineName' => null,
-        'entityTypes' => null,
-        'pools' => null,
+        'remainingUpdates' => null,
+        'maxUpdates' => null,
+        'contractExpired' => null,
     ];
 
     /**
@@ -88,10 +86,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $attributeMap = [
-        'name' => 'name',
-        'machineName' => 'machineName',
-        'entityTypes' => 'entityTypes',
-        'pools' => 'pools',
+        'remainingUpdates' => 'remainingUpdates',
+        'maxUpdates' => 'maxUpdates',
+        'contractExpired' => 'contractExpired',
     ];
 
     /**
@@ -100,10 +97,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $setters = [
-        'name' => 'setName',
-        'machineName' => 'setMachineName',
-        'entityTypes' => 'setEntityTypes',
-        'pools' => 'setPools',
+        'remainingUpdates' => 'setRemainingUpdates',
+        'maxUpdates' => 'setMaxUpdates',
+        'contractExpired' => 'setContractExpired',
     ];
 
     /**
@@ -112,10 +108,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $getters = [
-        'name' => 'getName',
-        'machineName' => 'getMachineName',
-        'entityTypes' => 'getEntityTypes',
-        'pools' => 'getPools',
+        'remainingUpdates' => 'getRemainingUpdates',
+        'maxUpdates' => 'getMaxUpdates',
+        'contractExpired' => 'getContractExpired',
     ];
 
     /**
@@ -133,10 +128,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      */
     public function __construct(array $data = null)
     {
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['entityTypes'] = $data['entityTypes'] ?? null;
-        $this->container['pools'] = $data['pools'] ?? null;
+        $this->container['remainingUpdates'] = $data['remainingUpdates'] ?? null;
+        $this->container['maxUpdates'] = $data['maxUpdates'] ?? null;
+        $this->container['contractExpired'] = $data['contractExpired'] ?? null;
     }
 
     /**
@@ -222,17 +216,8 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     {
         $invalidProperties = [];
 
-        if (null === $this->container['name']) {
-            $invalidProperties[] = "'name' can't be null";
-        }
-        if (null === $this->container['machineName']) {
-            $invalidProperties[] = "'machineName' can't be null";
-        }
-        if (null === $this->container['entityTypes']) {
-            $invalidProperties[] = "'entityTypes' can't be null";
-        }
-        if (null === $this->container['pools']) {
-            $invalidProperties[] = "'pools' can't be null";
+        if (null === $this->container['contractExpired']) {
+            $invalidProperties[] = "'contractExpired' can't be null";
         }
 
         return $invalidProperties;
@@ -250,97 +235,73 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     }
 
     /**
-     * Gets name.
+     * Gets remainingUpdates.
      *
-     * @return string
+     * @return null|float
      */
-    public function getName()
+    public function getRemainingUpdates()
     {
-        return $this->container['name'];
+        return $this->container['remainingUpdates'];
     }
 
     /**
-     * Sets name.
+     * Sets remainingUpdates.
      *
-     * @param string $name name
+     * @param null|float $remainingUpdates remainingUpdates
      *
      * @return self
      */
-    public function setName($name)
+    public function setRemainingUpdates($remainingUpdates)
     {
-        $this->container['name'] = $name;
+        $this->container['remainingUpdates'] = $remainingUpdates;
 
         return $this;
     }
 
     /**
-     * Gets machineName.
+     * Gets maxUpdates.
      *
-     * @return string
+     * @return null|float
      */
-    public function getMachineName()
+    public function getMaxUpdates()
     {
-        return $this->container['machineName'];
+        return $this->container['maxUpdates'];
     }
 
     /**
-     * Sets machineName.
+     * Sets maxUpdates.
      *
-     * @param string $machineName machineName
+     * @param null|float $maxUpdates maxUpdates
      *
      * @return self
      */
-    public function setMachineName($machineName)
+    public function setMaxUpdates($maxUpdates)
     {
-        $this->container['machineName'] = $machineName;
+        $this->container['maxUpdates'] = $maxUpdates;
 
         return $this;
     }
 
     /**
-     * Gets entityTypes.
+     * Gets contractExpired.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]
+     * @return bool
      */
-    public function getEntityTypes()
+    public function getContractExpired()
     {
-        return $this->container['entityTypes'];
+        return $this->container['contractExpired'];
     }
 
     /**
-     * Sets entityTypes.
+     * Sets contractExpired.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[] $entityTypes entityTypes
+     * @param bool $contractExpired contractExpired
      *
      * @return self
      */
-    public function setEntityTypes($entityTypes)
+    public function setContractExpired($contractExpired)
     {
-        $this->container['entityTypes'] = $entityTypes;
-
-        return $this;
-    }
-
-    /**
-     * Gets pools.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]
-     */
-    public function getPools()
-    {
-        return $this->container['pools'];
-    }
-
-    /**
-     * Sets pools.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[] $pools pools
-     *
-     * @return self
-     */
-    public function setPools($pools)
-    {
-        $this->container['pools'] = $pools;
+        $this->container['contractExpired'] = $contractExpired;
 
         return $this;
     }

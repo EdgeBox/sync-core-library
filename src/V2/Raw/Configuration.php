@@ -417,7 +417,7 @@ class Configuration
     /**
      * Get API key (with prefix if set).
      *
-     * @param string $apiKeyIdentifier name of apikey
+     * @param  string $apiKeyIdentifier name of apikey
      *
      * @return null|string API key with the prefix
      */

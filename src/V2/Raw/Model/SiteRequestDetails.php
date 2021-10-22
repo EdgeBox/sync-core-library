@@ -65,6 +65,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         'requestBody' => 'string',
         'requestHeaders' => 'mixed',
         'requestMethod' => 'string',
+        'requestRedirects' => 'string',
         'requestMaxFollow' => 'float',
         'requestMaxSize' => 'float',
         'requestTimeout' => 'float',
@@ -88,6 +89,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         'requestBody' => null,
         'requestHeaders' => null,
         'requestMethod' => null,
+        'requestRedirects' => null,
         'requestMaxFollow' => null,
         'requestMaxSize' => null,
         'requestTimeout' => null,
@@ -110,6 +112,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         'requestBody' => 'requestBody',
         'requestHeaders' => 'requestHeaders',
         'requestMethod' => 'requestMethod',
+        'requestRedirects' => 'requestRedirects',
         'requestMaxFollow' => 'requestMaxFollow',
         'requestMaxSize' => 'requestMaxSize',
         'requestTimeout' => 'requestTimeout',
@@ -131,6 +134,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         'requestBody' => 'setRequestBody',
         'requestHeaders' => 'setRequestHeaders',
         'requestMethod' => 'setRequestMethod',
+        'requestRedirects' => 'setRequestRedirects',
         'requestMaxFollow' => 'setRequestMaxFollow',
         'requestMaxSize' => 'setRequestMaxSize',
         'requestTimeout' => 'setRequestTimeout',
@@ -152,6 +156,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         'requestBody' => 'getRequestBody',
         'requestHeaders' => 'getRequestHeaders',
         'requestMethod' => 'getRequestMethod',
+        'requestRedirects' => 'getRequestRedirects',
         'requestMaxFollow' => 'getRequestMaxFollow',
         'requestMaxSize' => 'getRequestMaxSize',
         'requestTimeout' => 'getRequestTimeout',
@@ -182,6 +187,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->container['requestBody'] = $data['requestBody'] ?? null;
         $this->container['requestHeaders'] = $data['requestHeaders'] ?? null;
         $this->container['requestMethod'] = $data['requestMethod'] ?? null;
+        $this->container['requestRedirects'] = $data['requestRedirects'] ?? null;
         $this->container['requestMaxFollow'] = $data['requestMaxFollow'] ?? null;
         $this->container['requestMaxSize'] = $data['requestMaxSize'] ?? null;
         $this->container['requestTimeout'] = $data['requestTimeout'] ?? null;
@@ -380,6 +386,30 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestMethod($requestMethod)
     {
         $this->container['requestMethod'] = $requestMethod;
+
+        return $this;
+    }
+
+    /**
+     * Gets requestRedirects.
+     *
+     * @return null|string
+     */
+    public function getRequestRedirects()
+    {
+        return $this->container['requestRedirects'];
+    }
+
+    /**
+     * Sets requestRedirects.
+     *
+     * @param null|string $requestRedirects requestRedirects
+     *
+     * @return self
+     */
+    public function setRequestRedirects($requestRedirects)
+    {
+        $this->container['requestRedirects'] = $requestRedirects;
 
         return $this;
     }
@@ -655,7 +685,7 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

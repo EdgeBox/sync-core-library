@@ -460,7 +460,7 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

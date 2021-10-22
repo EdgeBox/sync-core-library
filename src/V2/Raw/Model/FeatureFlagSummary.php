@@ -1,6 +1,6 @@
 <?php
 /**
- * PullDashboardPullOptionFlow.
+ * FeatureFlagSummary.
  *
  * PHP version 7.2
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * PullDashboardPullOptionFlow Class Doc Comment.
+ * FeatureFlagSummary Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonSerializable
+class FeatureFlagSummary implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      *
      * @var string
      */
-    protected static $openAPIModelName = 'PullDashboardPullOptionFlow';
+    protected static $openAPIModelName = 'FeatureFlagSummary';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,10 +61,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'string',
-        'machineName' => 'string',
-        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]',
-        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]',
+        'flags' => 'mixed',
     ];
 
     /**
@@ -75,10 +72,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'name' => null,
-        'machineName' => null,
-        'entityTypes' => null,
-        'pools' => null,
+        'flags' => null,
     ];
 
     /**
@@ -88,10 +82,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $attributeMap = [
-        'name' => 'name',
-        'machineName' => 'machineName',
-        'entityTypes' => 'entityTypes',
-        'pools' => 'pools',
+        'flags' => 'flags',
     ];
 
     /**
@@ -100,10 +91,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $setters = [
-        'name' => 'setName',
-        'machineName' => 'setMachineName',
-        'entityTypes' => 'setEntityTypes',
-        'pools' => 'setPools',
+        'flags' => 'setFlags',
     ];
 
     /**
@@ -112,10 +100,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $getters = [
-        'name' => 'getName',
-        'machineName' => 'getMachineName',
-        'entityTypes' => 'getEntityTypes',
-        'pools' => 'getPools',
+        'flags' => 'getFlags',
     ];
 
     /**
@@ -133,10 +118,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      */
     public function __construct(array $data = null)
     {
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['machineName'] = $data['machineName'] ?? null;
-        $this->container['entityTypes'] = $data['entityTypes'] ?? null;
-        $this->container['pools'] = $data['pools'] ?? null;
+        $this->container['flags'] = $data['flags'] ?? null;
     }
 
     /**
@@ -222,17 +204,8 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     {
         $invalidProperties = [];
 
-        if (null === $this->container['name']) {
-            $invalidProperties[] = "'name' can't be null";
-        }
-        if (null === $this->container['machineName']) {
-            $invalidProperties[] = "'machineName' can't be null";
-        }
-        if (null === $this->container['entityTypes']) {
-            $invalidProperties[] = "'entityTypes' can't be null";
-        }
-        if (null === $this->container['pools']) {
-            $invalidProperties[] = "'pools' can't be null";
+        if (null === $this->container['flags']) {
+            $invalidProperties[] = "'flags' can't be null";
         }
 
         return $invalidProperties;
@@ -250,97 +223,25 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     }
 
     /**
-     * Gets name.
+     * Gets flags.
      *
-     * @return string
+     * @return mixed
      */
-    public function getName()
+    public function getFlags()
     {
-        return $this->container['name'];
+        return $this->container['flags'];
     }
 
     /**
-     * Sets name.
+     * Sets flags.
      *
-     * @param string $name name
+     * @param mixed $flags flags
      *
      * @return self
      */
-    public function setName($name)
+    public function setFlags($flags)
     {
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets machineName.
-     *
-     * @return string
-     */
-    public function getMachineName()
-    {
-        return $this->container['machineName'];
-    }
-
-    /**
-     * Sets machineName.
-     *
-     * @param string $machineName machineName
-     *
-     * @return self
-     */
-    public function setMachineName($machineName)
-    {
-        $this->container['machineName'] = $machineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypes.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]
-     */
-    public function getEntityTypes()
-    {
-        return $this->container['entityTypes'];
-    }
-
-    /**
-     * Sets entityTypes.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[] $entityTypes entityTypes
-     *
-     * @return self
-     */
-    public function setEntityTypes($entityTypes)
-    {
-        $this->container['entityTypes'] = $entityTypes;
-
-        return $this;
-    }
-
-    /**
-     * Gets pools.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]
-     */
-    public function getPools()
-    {
-        return $this->container['pools'];
-    }
-
-    /**
-     * Sets pools.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[] $pools pools
-     *
-     * @return self
-     */
-    public function setPools($pools)
-    {
-        $this->container['pools'] = $pools;
+        $this->container['flags'] = $flags;
 
         return $this;
     }

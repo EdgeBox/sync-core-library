@@ -65,7 +65,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'name' => 'string',
-        'tenantId' => 'string',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -84,7 +83,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => null,
         'contract' => null,
         'name' => null,
-        'tenantId' => null,
         'uuid' => null,
         'id' => null,
         'createdAt' => null,
@@ -102,7 +100,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => 'customer',
         'contract' => 'contract',
         'name' => 'name',
-        'tenantId' => 'tenantId',
         'uuid' => 'uuid',
         'id' => 'id',
         'createdAt' => 'createdAt',
@@ -119,7 +116,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'name' => 'setName',
-        'tenantId' => 'setTenantId',
         'uuid' => 'setUuid',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
@@ -136,7 +132,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'name' => 'getName',
-        'tenantId' => 'getTenantId',
         'uuid' => 'getUuid',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
@@ -162,7 +157,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['customer'] = $data['customer'] ?? null;
         $this->container['contract'] = $data['contract'] ?? null;
         $this->container['name'] = $data['name'] ?? null;
-        $this->container['tenantId'] = $data['tenantId'] ?? null;
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['id'] = $data['id'] ?? null;
         $this->container['createdAt'] = $data['createdAt'] ?? null;
@@ -388,30 +382,6 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets tenantId.
-     *
-     * @return null|string
-     */
-    public function getTenantId()
-    {
-        return $this->container['tenantId'];
-    }
-
-    /**
-     * Sets tenantId.
-     *
-     * @param null|string $tenantId tenantId
-     *
-     * @return self
-     */
-    public function setTenantId($tenantId)
-    {
-        $this->container['tenantId'] = $tenantId;
-
-        return $this;
-    }
-
-    /**
      * Gets uuid.
      *
      * @return string
@@ -562,7 +532,7 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

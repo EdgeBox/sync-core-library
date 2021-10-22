@@ -66,6 +66,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'packageType' => '\EdgeBox\SyncCore\V2\Raw\Model\Package',
         'revisionTransition' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition',
         'maxUpdatesPerMonth' => 'float',
+        'maxUpdatesDuringThisRevision' => 'float',
         'startDate' => 'float',
         'endDate' => 'float',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -90,6 +91,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'packageType' => null,
         'revisionTransition' => null,
         'maxUpdatesPerMonth' => null,
+        'maxUpdatesDuringThisRevision' => null,
         'startDate' => null,
         'endDate' => null,
         'customer' => null,
@@ -113,6 +115,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'packageType' => 'packageType',
         'revisionTransition' => 'revisionTransition',
         'maxUpdatesPerMonth' => 'maxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'maxUpdatesDuringThisRevision',
         'startDate' => 'startDate',
         'endDate' => 'endDate',
         'customer' => 'customer',
@@ -135,6 +138,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'packageType' => 'setPackageType',
         'revisionTransition' => 'setRevisionTransition',
         'maxUpdatesPerMonth' => 'setMaxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'setMaxUpdatesDuringThisRevision',
         'startDate' => 'setStartDate',
         'endDate' => 'setEndDate',
         'customer' => 'setCustomer',
@@ -157,6 +161,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'packageType' => 'getPackageType',
         'revisionTransition' => 'getRevisionTransition',
         'maxUpdatesPerMonth' => 'getMaxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'getMaxUpdatesDuringThisRevision',
         'startDate' => 'getStartDate',
         'endDate' => 'getEndDate',
         'customer' => 'getCustomer',
@@ -188,6 +193,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         $this->container['packageType'] = $data['packageType'] ?? null;
         $this->container['revisionTransition'] = $data['revisionTransition'] ?? null;
         $this->container['maxUpdatesPerMonth'] = $data['maxUpdatesPerMonth'] ?? null;
+        $this->container['maxUpdatesDuringThisRevision'] = $data['maxUpdatesDuringThisRevision'] ?? null;
         $this->container['startDate'] = $data['startDate'] ?? null;
         $this->container['endDate'] = $data['endDate'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
@@ -449,6 +455,30 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function setMaxUpdatesPerMonth($maxUpdatesPerMonth)
     {
         $this->container['maxUpdatesPerMonth'] = $maxUpdatesPerMonth;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxUpdatesDuringThisRevision.
+     *
+     * @return null|float
+     */
+    public function getMaxUpdatesDuringThisRevision()
+    {
+        return $this->container['maxUpdatesDuringThisRevision'];
+    }
+
+    /**
+     * Sets maxUpdatesDuringThisRevision.
+     *
+     * @param null|float $maxUpdatesDuringThisRevision maxUpdatesDuringThisRevision
+     *
+     * @return self
+     */
+    public function setMaxUpdatesDuringThisRevision($maxUpdatesDuringThisRevision)
+    {
+        $this->container['maxUpdatesDuringThisRevision'] = $maxUpdatesDuringThisRevision;
 
         return $this;
     }
@@ -724,7 +754,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

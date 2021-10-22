@@ -64,8 +64,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\CustomerStatus',
         'name' => 'string',
         'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
-        'tenantType' => '\EdgeBox\SyncCore\V2\Raw\Model\TenantType',
-        'tenantId' => 'string',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -83,8 +81,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'status' => null,
         'name' => null,
         'region' => null,
-        'tenantType' => null,
-        'tenantId' => null,
         'uuid' => null,
         'id' => null,
         'createdAt' => null,
@@ -101,8 +97,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'status' => 'status',
         'name' => 'name',
         'region' => 'region',
-        'tenantType' => 'tenantType',
-        'tenantId' => 'tenantId',
         'uuid' => 'uuid',
         'id' => 'id',
         'createdAt' => 'createdAt',
@@ -118,8 +112,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'status' => 'setStatus',
         'name' => 'setName',
         'region' => 'setRegion',
-        'tenantType' => 'setTenantType',
-        'tenantId' => 'setTenantId',
         'uuid' => 'setUuid',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
@@ -135,8 +127,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'status' => 'getStatus',
         'name' => 'getName',
         'region' => 'getRegion',
-        'tenantType' => 'getTenantType',
-        'tenantId' => 'getTenantId',
         'uuid' => 'getUuid',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
@@ -161,8 +151,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['status'] = $data['status'] ?? null;
         $this->container['name'] = $data['name'] ?? null;
         $this->container['region'] = $data['region'] ?? null;
-        $this->container['tenantType'] = $data['tenantType'] ?? null;
-        $this->container['tenantId'] = $data['tenantId'] ?? null;
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['id'] = $data['id'] ?? null;
         $this->container['createdAt'] = $data['createdAt'] ?? null;
@@ -261,9 +249,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         if (null === $this->container['region']) {
             $invalidProperties[] = "'region' can't be null";
         }
-        if (null === $this->container['tenantType']) {
-            $invalidProperties[] = "'tenantType' can't be null";
-        }
         if (null === $this->container['uuid']) {
             $invalidProperties[] = "'uuid' can't be null";
         }
@@ -359,54 +344,6 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRegion($region)
     {
         $this->container['region'] = $region;
-
-        return $this;
-    }
-
-    /**
-     * Gets tenantType.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\TenantType
-     */
-    public function getTenantType()
-    {
-        return $this->container['tenantType'];
-    }
-
-    /**
-     * Sets tenantType.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\TenantType $tenantType tenantType
-     *
-     * @return self
-     */
-    public function setTenantType($tenantType)
-    {
-        $this->container['tenantType'] = $tenantType;
-
-        return $this;
-    }
-
-    /**
-     * Gets tenantId.
-     *
-     * @return null|string
-     */
-    public function getTenantId()
-    {
-        return $this->container['tenantId'];
-    }
-
-    /**
-     * Sets tenantId.
-     *
-     * @param null|string $tenantId tenantId
-     *
-     * @return self
-     */
-    public function setTenantId($tenantId)
-    {
-        $this->container['tenantId'] = $tenantId;
 
         return $this;
     }
@@ -562,7 +499,7 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

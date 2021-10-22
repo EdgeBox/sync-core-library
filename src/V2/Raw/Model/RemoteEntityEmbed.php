@@ -270,9 +270,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        if (null === $this->container['remoteUuid']) {
-            $invalidProperties[] = "'remoteUuid' can't be null";
-        }
         if (null === $this->container['language']) {
             $invalidProperties[] = "'language' can't be null";
         }
@@ -312,7 +309,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets remoteUuid.
      *
-     * @return string
+     * @return null|string
      */
     public function getRemoteUuid()
     {
@@ -322,7 +319,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets remoteUuid.
      *
-     * @param string $remoteUuid remoteUuid
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
@@ -652,7 +649,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
      * @return mixed returns data which can be serialized by json_encode(), which is a value
-     *               of any type other than a resource
+     * of any type other than a resource
      */
     public function jsonSerialize()
     {

@@ -48,7 +48,7 @@ class ObjectSerializer
     /**
      * Change the date format.
      *
-     * @param string $format the new date format to use
+     * @param string $format   the new date format to use
      */
     public static function setDateTimeFormat($format)
     {
@@ -230,7 +230,7 @@ class ObjectSerializer
      *
      * @param array  $collection                 collection to serialize to a string
      * @param string $style                      the format use for serialization (csv,
-     *                                           ssv, tsv, pipes, multi)
+     * ssv, tsv, pipes, multi)
      * @param bool   $allowCollectionFormatMulti allow collection format to be a multidimensional array
      *
      * @return string

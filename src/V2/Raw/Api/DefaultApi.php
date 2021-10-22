@@ -119,7 +119,7 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto createAuthenticationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto createAuthenticationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -136,7 +136,7 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -153,13 +153,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -209,7 +223,7 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -229,7 +243,7 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -260,7 +274,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -269,7 +292,7 @@ class DefaultApi
     /**
      * Create request for operation 'authenticationControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -279,7 +302,9 @@ class DefaultApi
     {
         // verify the required parameter 'createAuthenticationDto' is set
         if (null === $createAuthenticationDto || (is_array($createAuthenticationDto) && 0 === count($createAuthenticationDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createAuthenticationDto when calling authenticationControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createAuthenticationDto when calling authenticationControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/authentication';
@@ -356,6 +381,514 @@ class DefaultApi
     }
 
     /**
+     * Operation backendControllerRefreshContract.
+     *
+     * @param  string $id id (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     */
+    public function backendControllerRefreshContract($id)
+    {
+        list($response) = $this->backendControllerRefreshContractWithHttpInfo($id);
+
+        return $response;
+    }
+
+    /**
+     * Operation backendControllerRefreshContractWithHttpInfo.
+     *
+     * @param  string $id (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function backendControllerRefreshContractWithHttpInfo($id)
+    {
+        $request = $this->backendControllerRefreshContractRequest($id);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation backendControllerRefreshContractAsync.
+     *
+     * @param  string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function backendControllerRefreshContractAsync($id)
+    {
+        return $this->backendControllerRefreshContractAsyncWithHttpInfo($id)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation backendControllerRefreshContractAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function backendControllerRefreshContractAsyncWithHttpInfo($id)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+        $request = $this->backendControllerRefreshContractRequest($id);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'backendControllerRefreshContract'.
+     *
+     * @param  string $id (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function backendControllerRefreshContractRequest($id)
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling backendControllerRefreshContract'
+            );
+        }
+
+        $resourcePath = '/sync-core/backend/contract/{id}/refresh';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation configurationControllerContract.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration
+     */
+    public function configurationControllerContract()
+    {
+        list($response) = $this->configurationControllerContractWithHttpInfo();
+
+        return $response;
+    }
+
+    /**
+     * Operation configurationControllerContractWithHttpInfo.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function configurationControllerContractWithHttpInfo()
+    {
+        $request = $this->configurationControllerContractRequest();
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation configurationControllerContractAsync.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function configurationControllerContractAsync()
+    {
+        return $this->configurationControllerContractAsyncWithHttpInfo()
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation configurationControllerContractAsyncWithHttpInfo.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function configurationControllerContractAsyncWithHttpInfo()
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration';
+        $request = $this->configurationControllerContractRequest();
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'configurationControllerContract'.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function configurationControllerContractRequest()
+    {
+        $resourcePath = '/sync-core/configuration/contract';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation configurationControllerPullDashboard.
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -388,13 +921,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -491,7 +1038,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -576,7 +1132,7 @@ class DefaultApi
     /**
      * Operation contractControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -593,7 +1149,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -610,13 +1166,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -666,7 +1236,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -686,7 +1256,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -717,7 +1287,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -726,7 +1305,7 @@ class DefaultApi
     /**
      * Create request for operation 'contractControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -736,7 +1315,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling contractControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contractControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/contract/{id}';
@@ -818,7 +1399,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemByUuid.
      *
-     * @param string $uuid uuid (required)
+     * @param  string $uuid uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -835,7 +1416,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemByUuidWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -852,13 +1433,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -908,7 +1503,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemByUuidAsync.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -928,7 +1523,7 @@ class DefaultApi
     /**
      * Operation contractControllerItemByUuidAsyncWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -959,7 +1554,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -968,7 +1572,7 @@ class DefaultApi
     /**
      * Create request for operation 'contractControllerItemByUuid'.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -978,7 +1582,9 @@ class DefaultApi
     {
         // verify the required parameter 'uuid' is set
         if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
-            throw new \InvalidArgumentException('Missing the required parameter $uuid when calling contractControllerItemByUuid');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling contractControllerItemByUuid'
+            );
         }
 
         $resourcePath = '/sync-core/contract/by-uuid/{uuid}';
@@ -1060,7 +1666,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1077,7 +1683,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1094,13 +1700,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -1150,7 +1770,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1170,7 +1790,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1201,7 +1821,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -1210,7 +1839,7 @@ class DefaultApi
     /**
      * Create request for operation 'contractRevisionControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1220,7 +1849,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling contractRevisionControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contractRevisionControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/contract-revision/{id}';
@@ -1302,7 +1933,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerMostRecentForContract.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1319,7 +1950,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerMostRecentForContractWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1336,13 +1967,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -1392,7 +2037,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerMostRecentForContractAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1412,7 +2057,7 @@ class DefaultApi
     /**
      * Operation contractRevisionControllerMostRecentForContractAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1443,7 +2088,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -1452,7 +2106,7 @@ class DefaultApi
     /**
      * Create request for operation 'contractRevisionControllerMostRecentForContract'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1462,7 +2116,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling contractRevisionControllerMostRecentForContract');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contractRevisionControllerMostRecentForContract'
+            );
         }
 
         $resourcePath = '/sync-core/contract-revision/most-recent-for-contract/{id}';
@@ -1544,7 +2200,7 @@ class DefaultApi
     /**
      * Operation customerControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1561,7 +2217,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1578,13 +2234,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -1634,7 +2304,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1654,7 +2324,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1685,7 +2355,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -1694,7 +2373,7 @@ class DefaultApi
     /**
      * Create request for operation 'customerControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1704,7 +2383,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling customerControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling customerControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/customer/{id}';
@@ -1786,7 +2467,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemByUuid.
      *
-     * @param string $uuid uuid (required)
+     * @param  string $uuid uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1803,7 +2484,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemByUuidWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -1820,13 +2501,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -1876,7 +2571,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemByUuidAsync.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1896,7 +2591,7 @@ class DefaultApi
     /**
      * Operation customerControllerItemByUuidAsyncWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1927,7 +2622,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -1936,7 +2640,7 @@ class DefaultApi
     /**
      * Create request for operation 'customerControllerItemByUuid'.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -1946,7 +2650,9 @@ class DefaultApi
     {
         // verify the required parameter 'uuid' is set
         if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
-            throw new \InvalidArgumentException('Missing the required parameter $uuid when calling customerControllerItemByUuid');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling customerControllerItemByUuid'
+            );
         }
 
         $resourcePath = '/sync-core/customer/by-uuid/{uuid}';
@@ -2026,9 +2732,250 @@ class DefaultApi
     }
 
     /**
+     * Operation featuresControllerSummary.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary
+     */
+    public function featuresControllerSummary()
+    {
+        list($response) = $this->featuresControllerSummaryWithHttpInfo();
+
+        return $response;
+    }
+
+    /**
+     * Operation featuresControllerSummaryWithHttpInfo.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function featuresControllerSummaryWithHttpInfo()
+    {
+        $request = $this->featuresControllerSummaryRequest();
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation featuresControllerSummaryAsync.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerSummaryAsync()
+    {
+        return $this->featuresControllerSummaryAsyncWithHttpInfo()
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation featuresControllerSummaryAsyncWithHttpInfo.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerSummaryAsyncWithHttpInfo()
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
+        $request = $this->featuresControllerSummaryRequest();
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'featuresControllerSummary'.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function featuresControllerSummaryRequest()
+    {
+        $resourcePath = '/sync-core/features/summary';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation fileControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto createFileDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto createFileDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2045,7 +2992,7 @@ class DefaultApi
     /**
      * Operation fileControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2062,13 +3009,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -2118,7 +3079,7 @@ class DefaultApi
     /**
      * Operation fileControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2138,7 +3099,7 @@ class DefaultApi
     /**
      * Operation fileControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2169,7 +3130,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -2178,7 +3148,7 @@ class DefaultApi
     /**
      * Create request for operation 'fileControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2188,7 +3158,9 @@ class DefaultApi
     {
         // verify the required parameter 'createFileDto' is set
         if (null === $createFileDto || (is_array($createFileDto) && 0 === count($createFileDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createFileDto when calling fileControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createFileDto when calling fileControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/file';
@@ -2267,7 +3239,7 @@ class DefaultApi
     /**
      * Operation fileControllerDownload.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2284,7 +3256,7 @@ class DefaultApi
     /**
      * Operation fileControllerDownloadWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2301,13 +3273,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -2357,7 +3343,7 @@ class DefaultApi
     /**
      * Operation fileControllerDownloadAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2377,7 +3363,7 @@ class DefaultApi
     /**
      * Operation fileControllerDownloadAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2408,7 +3394,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -2417,7 +3412,7 @@ class DefaultApi
     /**
      * Create request for operation 'fileControllerDownload'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2427,7 +3422,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling fileControllerDownload');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling fileControllerDownload'
+            );
         }
 
         $resourcePath = '/sync-core/file/{id}/download';
@@ -2509,7 +3506,7 @@ class DefaultApi
     /**
      * Operation fileControllerFileUploaded.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2526,7 +3523,7 @@ class DefaultApi
     /**
      * Operation fileControllerFileUploadedWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2543,13 +3540,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -2599,7 +3610,7 @@ class DefaultApi
     /**
      * Operation fileControllerFileUploadedAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2619,7 +3630,7 @@ class DefaultApi
     /**
      * Operation fileControllerFileUploadedAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2650,7 +3661,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -2659,7 +3679,7 @@ class DefaultApi
     /**
      * Create request for operation 'fileControllerFileUploaded'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2669,7 +3689,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling fileControllerFileUploaded');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling fileControllerFileUploaded'
+            );
         }
 
         $resourcePath = '/sync-core/file/{id}/uploaded';
@@ -2751,7 +3773,7 @@ class DefaultApi
     /**
      * Operation fileControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2768,7 +3790,7 @@ class DefaultApi
     /**
      * Operation fileControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -2785,13 +3807,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -2841,7 +3877,7 @@ class DefaultApi
     /**
      * Operation fileControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2861,7 +3897,7 @@ class DefaultApi
     /**
      * Operation fileControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2892,7 +3928,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -2901,7 +3946,7 @@ class DefaultApi
     /**
      * Create request for operation 'fileControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -2911,7 +3956,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling fileControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling fileControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/file/{id}';
@@ -2993,7 +4040,7 @@ class DefaultApi
     /**
      * Operation flowControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto createFlowDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto createFlowDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3010,7 +4057,7 @@ class DefaultApi
     /**
      * Operation flowControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3027,13 +4074,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -3083,7 +4144,7 @@ class DefaultApi
     /**
      * Operation flowControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3103,7 +4164,7 @@ class DefaultApi
     /**
      * Operation flowControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3134,7 +4195,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -3143,7 +4213,7 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3153,7 +4223,9 @@ class DefaultApi
     {
         // verify the required parameter 'createFlowDto' is set
         if (null === $createFlowDto || (is_array($createFlowDto) && 0 === count($createFlowDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createFlowDto when calling flowControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createFlowDto when calling flowControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/flow';
@@ -3232,7 +4304,7 @@ class DefaultApi
     /**
      * Operation flowControllerDelete.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest flowDeleteRequest (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest flowDeleteRequest (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3249,7 +4321,7 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3266,13 +4338,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -3322,7 +4408,7 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3342,7 +4428,7 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3373,7 +4459,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -3382,7 +4477,7 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerDelete'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3392,7 +4487,9 @@ class DefaultApi
     {
         // verify the required parameter 'flowDeleteRequest' is set
         if (null === $flowDeleteRequest || (is_array($flowDeleteRequest) && 0 === count($flowDeleteRequest))) {
-            throw new \InvalidArgumentException('Missing the required parameter $flowDeleteRequest when calling flowControllerDelete');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $flowDeleteRequest when calling flowControllerDelete'
+            );
         }
 
         $resourcePath = '/sync-core/flow';
@@ -3471,7 +4568,7 @@ class DefaultApi
     /**
      * Operation flowControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3488,7 +4585,7 @@ class DefaultApi
     /**
      * Operation flowControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -3505,13 +4602,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -3561,7 +4672,7 @@ class DefaultApi
     /**
      * Operation flowControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3581,7 +4692,7 @@ class DefaultApi
     /**
      * Operation flowControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3612,7 +4723,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -3621,7 +4741,7 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -3631,7 +4751,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling flowControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling flowControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/flow/{id}';
@@ -3713,18 +4835,19 @@ class DefaultApi
     /**
      * Operation flowControllerList.
      *
-     * @param string $poolMachineNames poolMachineNames (optional)
-     * @param string $itemsPerPage     itemsPerPage (optional)
-     * @param string $page             page (optional)
+     * @param  string $poolMachineNames poolMachineNames (optional)
+     * @param  string $siteId siteId (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList
      */
-    public function flowControllerList($poolMachineNames = null, $itemsPerPage = null, $page = null)
+    public function flowControllerList($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
     {
-        list($response) = $this->flowControllerListWithHttpInfo($poolMachineNames, $itemsPerPage, $page);
+        list($response) = $this->flowControllerListWithHttpInfo($poolMachineNames, $siteId, $itemsPerPage, $page);
 
         return $response;
     }
@@ -3732,18 +4855,19 @@ class DefaultApi
     /**
      * Operation flowControllerListWithHttpInfo.
      *
-     * @param string $poolMachineNames (optional)
-     * @param string $itemsPerPage     (optional)
-     * @param string $page             (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $siteId (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function flowControllerListWithHttpInfo($poolMachineNames = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListWithHttpInfo($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
     {
-        $request = $this->flowControllerListRequest($poolMachineNames, $itemsPerPage, $page);
+        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $itemsPerPage, $page);
 
         try {
             $options = $this->createHttpClientOption();
@@ -3751,13 +4875,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -3807,17 +4945,18 @@ class DefaultApi
     /**
      * Operation flowControllerListAsync.
      *
-     * @param string $poolMachineNames (optional)
-     * @param string $itemsPerPage     (optional)
-     * @param string $page             (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $siteId (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsync($poolMachineNames = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListAsync($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
     {
-        return $this->flowControllerListAsyncWithHttpInfo($poolMachineNames, $itemsPerPage, $page)
+        return $this->flowControllerListAsyncWithHttpInfo($poolMachineNames, $siteId, $itemsPerPage, $page)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -3829,18 +4968,19 @@ class DefaultApi
     /**
      * Operation flowControllerListAsyncWithHttpInfo.
      *
-     * @param string $poolMachineNames (optional)
-     * @param string $itemsPerPage     (optional)
-     * @param string $page             (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $siteId (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsyncWithHttpInfo($poolMachineNames = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListAsyncWithHttpInfo($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList';
-        $request = $this->flowControllerListRequest($poolMachineNames, $itemsPerPage, $page);
+        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $itemsPerPage, $page);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -3862,7 +5002,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -3871,15 +5020,16 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerList'.
      *
-     * @param string $poolMachineNames (optional)
-     * @param string $itemsPerPage     (optional)
-     * @param string $page             (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $siteId (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function flowControllerListRequest($poolMachineNames = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListRequest($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
     {
         $resourcePath = '/sync-core/flow';
         $formParams = [];
@@ -3896,6 +5046,16 @@ class DefaultApi
                 }
             } else {
                 $queryParams['poolMachineNames'] = $poolMachineNames;
+            }
+        }
+        // query params
+        if (null !== $siteId) {
+            if ('form' === 'form' && is_array($siteId)) {
+                foreach ($siteId as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['siteId'] = $siteId;
             }
         }
         // query params
@@ -4012,13 +5172,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -4138,7 +5312,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -4248,13 +5431,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -4374,7 +5571,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -4454,7 +5660,7 @@ class DefaultApi
     /**
      * Operation localFileControllerDownload.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4471,7 +5677,7 @@ class DefaultApi
     /**
      * Operation localFileControllerDownloadWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4488,13 +5694,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -4544,7 +5764,7 @@ class DefaultApi
     /**
      * Operation localFileControllerDownloadAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -4564,7 +5784,7 @@ class DefaultApi
     /**
      * Operation localFileControllerDownloadAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -4595,7 +5815,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -4604,7 +5833,7 @@ class DefaultApi
     /**
      * Create request for operation 'localFileControllerDownload'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -4614,7 +5843,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling localFileControllerDownload');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling localFileControllerDownload'
+            );
         }
 
         $resourcePath = '/sync-core/file/local/{id}';
@@ -4691,8 +5922,8 @@ class DefaultApi
     /**
      * Operation localFileControllerUpload.
      *
-     * @param string         $id   id (required)
-     * @param \SplFileObject $file file (optional)
+     * @param  string $id id (required)
+     * @param  \SplFileObject $file file (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4709,8 +5940,8 @@ class DefaultApi
     /**
      * Operation localFileControllerUploadWithHttpInfo.
      *
-     * @param string         $id   (required)
-     * @param \SplFileObject $file (optional)
+     * @param  string $id (required)
+     * @param  \SplFileObject $file (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4727,13 +5958,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -4783,8 +6028,8 @@ class DefaultApi
     /**
      * Operation localFileControllerUploadAsync.
      *
-     * @param string         $id   (required)
-     * @param \SplFileObject $file (optional)
+     * @param  string $id (required)
+     * @param  \SplFileObject $file (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -4804,8 +6049,8 @@ class DefaultApi
     /**
      * Operation localFileControllerUploadAsyncWithHttpInfo.
      *
-     * @param string         $id   (required)
-     * @param \SplFileObject $file (optional)
+     * @param  string $id (required)
+     * @param  \SplFileObject $file (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -4836,7 +6081,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -4845,8 +6099,8 @@ class DefaultApi
     /**
      * Create request for operation 'localFileControllerUpload'.
      *
-     * @param string         $id   (required)
-     * @param \SplFileObject $file (optional)
+     * @param  string $id (required)
+     * @param  \SplFileObject $file (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -4856,7 +6110,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling localFileControllerUpload');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling localFileControllerUpload'
+            );
         }
 
         $resourcePath = '/sync-core/file/local/{id}';
@@ -4946,7 +6202,7 @@ class DefaultApi
     /**
      * Operation migrationControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto createMigrationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto createMigrationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4963,7 +6219,7 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -4980,13 +6236,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -5036,7 +6306,7 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5056,7 +6326,7 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5087,7 +6357,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -5096,7 +6375,7 @@ class DefaultApi
     /**
      * Create request for operation 'migrationControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5106,7 +6385,9 @@ class DefaultApi
     {
         // verify the required parameter 'createMigrationDto' is set
         if (null === $createMigrationDto || (is_array($createMigrationDto) && 0 === count($createMigrationDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createMigrationDto when calling migrationControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createMigrationDto when calling migrationControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/migration';
@@ -5185,7 +6466,7 @@ class DefaultApi
     /**
      * Operation migrationControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5202,7 +6483,7 @@ class DefaultApi
     /**
      * Operation migrationControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5219,13 +6500,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -5275,7 +6570,7 @@ class DefaultApi
     /**
      * Operation migrationControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5295,7 +6590,7 @@ class DefaultApi
     /**
      * Operation migrationControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5326,7 +6621,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -5335,7 +6639,7 @@ class DefaultApi
     /**
      * Create request for operation 'migrationControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5345,7 +6649,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling migrationControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling migrationControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/migration/{id}';
@@ -5427,17 +6733,17 @@ class DefaultApi
     /**
      * Operation migrationControllerList.
      *
-     * @param string $groupByEntityTypeAndFlowAndSite groupByEntityTypeAndFlowAndSite (optional)
-     * @param string $entityTypeMachineName           entityTypeMachineName (optional)
-     * @param string $entityTypeNamespaceMachineName  entityTypeNamespaceMachineName (optional)
-     * @param string $flowMachineName                 flowMachineName (optional)
-     * @param string $statuses                        statuses (optional)
-     * @param string $types                           types (optional)
-     * @param string $siteUuid                        siteUuid (optional)
-     * @param string $siteId                          siteId (optional)
-     * @param string $initialSetup                    initialSetup (optional)
-     * @param string $itemsPerPage                    itemsPerPage (optional)
-     * @param string $page                            page (optional)
+     * @param  string $groupByEntityTypeAndFlowAndSite groupByEntityTypeAndFlowAndSite (optional)
+     * @param  string $entityTypeMachineName entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName (optional)
+     * @param  string $flowMachineName flowMachineName (optional)
+     * @param  string $statuses statuses (optional)
+     * @param  string $types types (optional)
+     * @param  string $siteUuid siteUuid (optional)
+     * @param  string $siteId siteId (optional)
+     * @param  string $initialSetup initialSetup (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5454,17 +6760,17 @@ class DefaultApi
     /**
      * Operation migrationControllerListWithHttpInfo.
      *
-     * @param string $groupByEntityTypeAndFlowAndSite (optional)
-     * @param string $entityTypeMachineName           (optional)
-     * @param string $entityTypeNamespaceMachineName  (optional)
-     * @param string $flowMachineName                 (optional)
-     * @param string $statuses                        (optional)
-     * @param string $types                           (optional)
-     * @param string $siteUuid                        (optional)
-     * @param string $siteId                          (optional)
-     * @param string $initialSetup                    (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
+     * @param  string $groupByEntityTypeAndFlowAndSite (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  string $flowMachineName (optional)
+     * @param  string $statuses (optional)
+     * @param  string $types (optional)
+     * @param  string $siteUuid (optional)
+     * @param  string $siteId (optional)
+     * @param  string $initialSetup (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5481,13 +6787,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -5537,17 +6857,17 @@ class DefaultApi
     /**
      * Operation migrationControllerListAsync.
      *
-     * @param string $groupByEntityTypeAndFlowAndSite (optional)
-     * @param string $entityTypeMachineName           (optional)
-     * @param string $entityTypeNamespaceMachineName  (optional)
-     * @param string $flowMachineName                 (optional)
-     * @param string $statuses                        (optional)
-     * @param string $types                           (optional)
-     * @param string $siteUuid                        (optional)
-     * @param string $siteId                          (optional)
-     * @param string $initialSetup                    (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
+     * @param  string $groupByEntityTypeAndFlowAndSite (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  string $flowMachineName (optional)
+     * @param  string $statuses (optional)
+     * @param  string $types (optional)
+     * @param  string $siteUuid (optional)
+     * @param  string $siteId (optional)
+     * @param  string $initialSetup (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -5567,17 +6887,17 @@ class DefaultApi
     /**
      * Operation migrationControllerListAsyncWithHttpInfo.
      *
-     * @param string $groupByEntityTypeAndFlowAndSite (optional)
-     * @param string $entityTypeMachineName           (optional)
-     * @param string $entityTypeNamespaceMachineName  (optional)
-     * @param string $flowMachineName                 (optional)
-     * @param string $statuses                        (optional)
-     * @param string $types                           (optional)
-     * @param string $siteUuid                        (optional)
-     * @param string $siteId                          (optional)
-     * @param string $initialSetup                    (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
+     * @param  string $groupByEntityTypeAndFlowAndSite (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  string $flowMachineName (optional)
+     * @param  string $statuses (optional)
+     * @param  string $types (optional)
+     * @param  string $siteUuid (optional)
+     * @param  string $siteId (optional)
+     * @param  string $initialSetup (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -5608,7 +6928,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -5617,17 +6946,17 @@ class DefaultApi
     /**
      * Create request for operation 'migrationControllerList'.
      *
-     * @param string $groupByEntityTypeAndFlowAndSite (optional)
-     * @param string $entityTypeMachineName           (optional)
-     * @param string $entityTypeNamespaceMachineName  (optional)
-     * @param string $flowMachineName                 (optional)
-     * @param string $statuses                        (optional)
-     * @param string $types                           (optional)
-     * @param string $siteUuid                        (optional)
-     * @param string $siteId                          (optional)
-     * @param string $initialSetup                    (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
+     * @param  string $groupByEntityTypeAndFlowAndSite (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  string $flowMachineName (optional)
+     * @param  string $statuses (optional)
+     * @param  string $types (optional)
+     * @param  string $siteUuid (optional)
+     * @param  string $siteId (optional)
+     * @param  string $initialSetup (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -5816,7 +7145,7 @@ class DefaultApi
     /**
      * Operation migrationControllerSummary.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5833,7 +7162,7 @@ class DefaultApi
     /**
      * Operation migrationControllerSummaryWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -5850,13 +7179,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -5906,7 +7249,7 @@ class DefaultApi
     /**
      * Operation migrationControllerSummaryAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5926,7 +7269,7 @@ class DefaultApi
     /**
      * Operation migrationControllerSummaryAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5957,7 +7300,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -5966,7 +7318,7 @@ class DefaultApi
     /**
      * Create request for operation 'migrationControllerSummary'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -5976,7 +7328,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling migrationControllerSummary');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling migrationControllerSummary'
+            );
         }
 
         $resourcePath = '/sync-core/migration/{id}/summary';
@@ -6058,7 +7412,7 @@ class DefaultApi
     /**
      * Operation poolControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto createPoolDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto createPoolDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6075,7 +7429,7 @@ class DefaultApi
     /**
      * Operation poolControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6092,13 +7446,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -6148,7 +7516,7 @@ class DefaultApi
     /**
      * Operation poolControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6168,7 +7536,7 @@ class DefaultApi
     /**
      * Operation poolControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6199,7 +7567,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -6208,7 +7585,7 @@ class DefaultApi
     /**
      * Create request for operation 'poolControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6218,7 +7595,9 @@ class DefaultApi
     {
         // verify the required parameter 'createPoolDto' is set
         if (null === $createPoolDto || (is_array($createPoolDto) && 0 === count($createPoolDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createPoolDto when calling poolControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createPoolDto when calling poolControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/pool';
@@ -6297,7 +7676,7 @@ class DefaultApi
     /**
      * Operation poolControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6314,7 +7693,7 @@ class DefaultApi
     /**
      * Operation poolControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6331,13 +7710,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -6387,7 +7780,7 @@ class DefaultApi
     /**
      * Operation poolControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6407,7 +7800,7 @@ class DefaultApi
     /**
      * Operation poolControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6438,7 +7831,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -6447,7 +7849,7 @@ class DefaultApi
     /**
      * Create request for operation 'poolControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -6457,7 +7859,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling poolControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling poolControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/pool/{id}';
@@ -6569,13 +7973,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -6672,7 +8090,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -6757,19 +8184,19 @@ class DefaultApi
     /**
      * Operation previewsControllerList.
      *
-     * @param string $flowMachineName                 flowMachineName (required)
-     * @param string $existsLocally                   existsLocally (optional)
-     * @param string $deletedLocally                  deletedLocally (optional)
-     * @param string $deleted                         deleted (optional)
-     * @param string $sourceSiteId                    sourceSiteId (optional)
-     * @param string $entityTypeMachineNames          entityTypeMachineNames (optional)
-     * @param string $entityTypeNamespaceMachineNames entityTypeNamespaceMachineNames (optional)
-     * @param string $publishedLatest                 publishedLatest (optional)
-     * @param string $publishedEarliest               publishedEarliest (optional)
-     * @param string $poolMachineNames                poolMachineNames (optional)
-     * @param string $itemsPerPage                    itemsPerPage (optional)
-     * @param string $page                            page (optional)
-     * @param string $search                          search (optional)
+     * @param  string $flowMachineName flowMachineName (required)
+     * @param  string $existsLocally existsLocally (optional)
+     * @param  string $deletedLocally deletedLocally (optional)
+     * @param  string $deleted deleted (optional)
+     * @param  string $sourceSiteId sourceSiteId (optional)
+     * @param  string $entityTypeMachineNames entityTypeMachineNames (optional)
+     * @param  string $entityTypeNamespaceMachineNames entityTypeNamespaceMachineNames (optional)
+     * @param  string $publishedLatest publishedLatest (optional)
+     * @param  string $publishedEarliest publishedEarliest (optional)
+     * @param  string $poolMachineNames poolMachineNames (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
+     * @param  string $search search (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6786,19 +8213,19 @@ class DefaultApi
     /**
      * Operation previewsControllerListWithHttpInfo.
      *
-     * @param string $flowMachineName                 (required)
-     * @param string $existsLocally                   (optional)
-     * @param string $deletedLocally                  (optional)
-     * @param string $deleted                         (optional)
-     * @param string $sourceSiteId                    (optional)
-     * @param string $entityTypeMachineNames          (optional)
-     * @param string $entityTypeNamespaceMachineNames (optional)
-     * @param string $publishedLatest                 (optional)
-     * @param string $publishedEarliest               (optional)
-     * @param string $poolMachineNames                (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
-     * @param string $search                          (optional)
+     * @param  string $flowMachineName (required)
+     * @param  string $existsLocally (optional)
+     * @param  string $deletedLocally (optional)
+     * @param  string $deleted (optional)
+     * @param  string $sourceSiteId (optional)
+     * @param  string $entityTypeMachineNames (optional)
+     * @param  string $entityTypeNamespaceMachineNames (optional)
+     * @param  string $publishedLatest (optional)
+     * @param  string $publishedEarliest (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $search (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -6815,13 +8242,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -6871,19 +8312,19 @@ class DefaultApi
     /**
      * Operation previewsControllerListAsync.
      *
-     * @param string $flowMachineName                 (required)
-     * @param string $existsLocally                   (optional)
-     * @param string $deletedLocally                  (optional)
-     * @param string $deleted                         (optional)
-     * @param string $sourceSiteId                    (optional)
-     * @param string $entityTypeMachineNames          (optional)
-     * @param string $entityTypeNamespaceMachineNames (optional)
-     * @param string $publishedLatest                 (optional)
-     * @param string $publishedEarliest               (optional)
-     * @param string $poolMachineNames                (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
-     * @param string $search                          (optional)
+     * @param  string $flowMachineName (required)
+     * @param  string $existsLocally (optional)
+     * @param  string $deletedLocally (optional)
+     * @param  string $deleted (optional)
+     * @param  string $sourceSiteId (optional)
+     * @param  string $entityTypeMachineNames (optional)
+     * @param  string $entityTypeNamespaceMachineNames (optional)
+     * @param  string $publishedLatest (optional)
+     * @param  string $publishedEarliest (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -6903,19 +8344,19 @@ class DefaultApi
     /**
      * Operation previewsControllerListAsyncWithHttpInfo.
      *
-     * @param string $flowMachineName                 (required)
-     * @param string $existsLocally                   (optional)
-     * @param string $deletedLocally                  (optional)
-     * @param string $deleted                         (optional)
-     * @param string $sourceSiteId                    (optional)
-     * @param string $entityTypeMachineNames          (optional)
-     * @param string $entityTypeNamespaceMachineNames (optional)
-     * @param string $publishedLatest                 (optional)
-     * @param string $publishedEarliest               (optional)
-     * @param string $poolMachineNames                (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
-     * @param string $search                          (optional)
+     * @param  string $flowMachineName (required)
+     * @param  string $existsLocally (optional)
+     * @param  string $deletedLocally (optional)
+     * @param  string $deleted (optional)
+     * @param  string $sourceSiteId (optional)
+     * @param  string $entityTypeMachineNames (optional)
+     * @param  string $entityTypeNamespaceMachineNames (optional)
+     * @param  string $publishedLatest (optional)
+     * @param  string $publishedEarliest (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -6946,7 +8387,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -6955,19 +8405,19 @@ class DefaultApi
     /**
      * Create request for operation 'previewsControllerList'.
      *
-     * @param string $flowMachineName                 (required)
-     * @param string $existsLocally                   (optional)
-     * @param string $deletedLocally                  (optional)
-     * @param string $deleted                         (optional)
-     * @param string $sourceSiteId                    (optional)
-     * @param string $entityTypeMachineNames          (optional)
-     * @param string $entityTypeNamespaceMachineNames (optional)
-     * @param string $publishedLatest                 (optional)
-     * @param string $publishedEarliest               (optional)
-     * @param string $poolMachineNames                (optional)
-     * @param string $itemsPerPage                    (optional)
-     * @param string $page                            (optional)
-     * @param string $search                          (optional)
+     * @param  string $flowMachineName (required)
+     * @param  string $existsLocally (optional)
+     * @param  string $deletedLocally (optional)
+     * @param  string $deleted (optional)
+     * @param  string $sourceSiteId (optional)
+     * @param  string $entityTypeMachineNames (optional)
+     * @param  string $entityTypeNamespaceMachineNames (optional)
+     * @param  string $publishedLatest (optional)
+     * @param  string $publishedEarliest (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -6977,7 +8427,9 @@ class DefaultApi
     {
         // verify the required parameter 'flowMachineName' is set
         if (null === $flowMachineName || (is_array($flowMachineName) && 0 === count($flowMachineName))) {
-            throw new \InvalidArgumentException('Missing the required parameter $flowMachineName when calling previewsControllerList');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $flowMachineName when calling previewsControllerList'
+            );
         }
 
         $resourcePath = '/sync-core/previews/{flowMachineName}';
@@ -7180,7 +8632,7 @@ class DefaultApi
     /**
      * Operation projectControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7197,7 +8649,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7214,13 +8666,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -7270,7 +8736,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7290,7 +8756,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7321,7 +8787,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -7330,7 +8805,7 @@ class DefaultApi
     /**
      * Create request for operation 'projectControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7340,7 +8815,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling projectControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling projectControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/project/{id}';
@@ -7422,7 +8899,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemByUuid.
      *
-     * @param string $uuid uuid (required)
+     * @param  string $uuid uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7439,7 +8916,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemByUuidWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7456,13 +8933,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -7512,7 +9003,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemByUuidAsync.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7532,7 +9023,7 @@ class DefaultApi
     /**
      * Operation projectControllerItemByUuidAsyncWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7563,7 +9054,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -7572,7 +9072,7 @@ class DefaultApi
     /**
      * Create request for operation 'projectControllerItemByUuid'.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7582,7 +9082,9 @@ class DefaultApi
     {
         // verify the required parameter 'uuid' is set
         if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
-            throw new \InvalidArgumentException('Missing the required parameter $uuid when calling projectControllerItemByUuid');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling projectControllerItemByUuid'
+            );
         }
 
         $resourcePath = '/sync-core/project/by-uuid/{uuid}';
@@ -7664,7 +9166,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto createRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto createRemoteEntityRevisionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7681,7 +9183,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7698,13 +9200,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -7754,7 +9270,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7774,7 +9290,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7805,7 +9321,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -7814,7 +9339,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -7824,7 +9349,9 @@ class DefaultApi
     {
         // verify the required parameter 'createRemoteEntityRevisionDto' is set
         if (null === $createRemoteEntityRevisionDto || (is_array($createRemoteEntityRevisionDto) && 0 === count($createRemoteEntityRevisionDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createRemoteEntityRevisionDto when calling remoteEntityRevisionControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createRemoteEntityRevisionDto when calling remoteEntityRevisionControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-revision';
@@ -7903,7 +9430,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDelete.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto deleteRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto deleteRemoteEntityRevisionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7920,7 +9447,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -7937,13 +9464,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -7993,7 +9534,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8013,7 +9554,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8044,7 +9585,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -8053,7 +9603,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerDelete'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8063,7 +9613,9 @@ class DefaultApi
     {
         // verify the required parameter 'deleteRemoteEntityRevisionDto' is set
         if (null === $deleteRemoteEntityRevisionDto || (is_array($deleteRemoteEntityRevisionDto) && 0 === count($deleteRemoteEntityRevisionDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $deleteRemoteEntityRevisionDto when calling remoteEntityRevisionControllerDelete');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $deleteRemoteEntityRevisionDto when calling remoteEntityRevisionControllerDelete'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-revision';
@@ -8142,7 +9694,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8159,7 +9711,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8176,13 +9728,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -8232,7 +9798,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8252,7 +9818,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8283,7 +9849,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -8292,7 +9867,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8302,7 +9877,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityRevisionControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityRevisionControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-revision/{id}';
@@ -8384,19 +9961,20 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerList.
      *
-     * @param string $poolMachineName                poolMachineName (optional)
-     * @param string $entityTypeMachineName          entityTypeMachineName (optional)
-     * @param string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName (optional)
-     * @param float  $page                           page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $poolMachineName poolMachineName (optional)
+     * @param  string $entityTypeMachineName entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName (optional)
+     * @param  float $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList
      */
-    public function remoteEntityRevisionControllerList($poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerList($itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         return $response;
     }
@@ -8404,19 +9982,20 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListWithHttpInfo.
      *
-     * @param string $poolMachineName                (optional)
-     * @param string $entityTypeMachineName          (optional)
-     * @param string $entityTypeNamespaceMachineName (optional)
-     * @param float  $page                           (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $poolMachineName (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  float $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function remoteEntityRevisionControllerListWithHttpInfo($poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListWithHttpInfo($itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        $request = $this->remoteEntityRevisionControllerListRequest($poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         try {
             $options = $this->createHttpClientOption();
@@ -8424,13 +10003,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -8480,18 +10073,19 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListAsync.
      *
-     * @param string $poolMachineName                (optional)
-     * @param string $entityTypeMachineName          (optional)
-     * @param string $entityTypeNamespaceMachineName (optional)
-     * @param float  $page                           (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $poolMachineName (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  float $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsync($poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsync($itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page)
+        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -8503,19 +10097,20 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListAsyncWithHttpInfo.
      *
-     * @param string $poolMachineName                (optional)
-     * @param string $entityTypeMachineName          (optional)
-     * @param string $entityTypeNamespaceMachineName (optional)
-     * @param float  $page                           (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $poolMachineName (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  float $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList';
-        $request = $this->remoteEntityRevisionControllerListRequest($poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -8537,7 +10132,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -8546,16 +10150,17 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerList'.
      *
-     * @param string $poolMachineName                (optional)
-     * @param string $entityTypeMachineName          (optional)
-     * @param string $entityTypeNamespaceMachineName (optional)
-     * @param float  $page                           (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $poolMachineName (optional)
+     * @param  string $entityTypeMachineName (optional)
+     * @param  string $entityTypeNamespaceMachineName (optional)
+     * @param  float $page (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function remoteEntityRevisionControllerListRequest($poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListRequest($itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
         $resourcePath = '/sync-core/remote-entity-revision';
         $formParams = [];
@@ -8564,6 +10169,16 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
+            }
+        }
         // query params
         if (null !== $poolMachineName) {
             if ('form' === 'form' && is_array($poolMachineName)) {
@@ -8668,7 +10283,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerSerialize.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8685,7 +10300,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerSerializeWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8702,13 +10317,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -8758,7 +10387,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerSerializeAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8778,7 +10407,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerSerializeAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8809,7 +10438,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -8818,7 +10456,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerSerialize'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -8828,7 +10466,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityRevisionControllerSerialize');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityRevisionControllerSerialize'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-revision/{id}/serialize';
@@ -8910,8 +10550,8 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerByMachineName.
      *
-     * @param string $machineName          machineName (required)
-     * @param string $namespaceMachineName namespaceMachineName (required)
+     * @param  string $machineName machineName (required)
+     * @param  string $namespaceMachineName namespaceMachineName (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8928,8 +10568,8 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerByMachineNameWithHttpInfo.
      *
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -8946,13 +10586,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -9002,8 +10656,8 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerByMachineNameAsync.
      *
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9023,8 +10677,8 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerByMachineNameAsyncWithHttpInfo.
      *
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9055,7 +10709,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -9064,8 +10727,8 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeControllerByMachineName'.
      *
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9075,11 +10738,15 @@ class DefaultApi
     {
         // verify the required parameter 'machineName' is set
         if (null === $machineName || (is_array($machineName) && 0 === count($machineName))) {
-            throw new \InvalidArgumentException('Missing the required parameter $machineName when calling remoteEntityTypeControllerByMachineName');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $machineName when calling remoteEntityTypeControllerByMachineName'
+            );
         }
         // verify the required parameter 'namespaceMachineName' is set
         if (null === $namespaceMachineName || (is_array($namespaceMachineName) && 0 === count($namespaceMachineName))) {
-            throw new \InvalidArgumentException('Missing the required parameter $namespaceMachineName when calling remoteEntityTypeControllerByMachineName');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $namespaceMachineName when calling remoteEntityTypeControllerByMachineName'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-type/by-machine-name/{namespaceMachineName}/{machineName}';
@@ -9169,7 +10836,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9186,7 +10853,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9203,13 +10870,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -9259,7 +10940,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9279,7 +10960,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9310,7 +10991,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -9319,7 +11009,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9329,7 +11019,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityTypeControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityTypeControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-type/{id}';
@@ -9441,13 +11133,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -9544,7 +11250,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -9629,7 +11344,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto createRemoteEntityTypeVersionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto createRemoteEntityTypeVersionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9646,7 +11361,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9663,13 +11378,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -9719,7 +11448,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9739,7 +11468,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9770,7 +11499,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -9779,7 +11517,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeVersionControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9789,7 +11527,9 @@ class DefaultApi
     {
         // verify the required parameter 'createRemoteEntityTypeVersionDto' is set
         if (null === $createRemoteEntityTypeVersionDto || (is_array($createRemoteEntityTypeVersionDto) && 0 === count($createRemoteEntityTypeVersionDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createRemoteEntityTypeVersionDto when calling remoteEntityTypeVersionControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createRemoteEntityTypeVersionDto when calling remoteEntityTypeVersionControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-type-version';
@@ -9868,9 +11608,9 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerGetVersionUsage.
      *
-     * @param string $versionId            versionId (required)
-     * @param string $machineName          machineName (required)
-     * @param string $namespaceMachineName namespaceMachineName (required)
+     * @param  string $versionId versionId (required)
+     * @param  string $machineName machineName (required)
+     * @param  string $namespaceMachineName namespaceMachineName (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9887,9 +11627,9 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerGetVersionUsageWithHttpInfo.
      *
-     * @param string $versionId            (required)
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -9906,13 +11646,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -9962,9 +11716,9 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerGetVersionUsageAsync.
      *
-     * @param string $versionId            (required)
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -9984,9 +11738,9 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerGetVersionUsageAsyncWithHttpInfo.
      *
-     * @param string $versionId            (required)
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10017,7 +11771,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -10026,9 +11789,9 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeVersionControllerGetVersionUsage'.
      *
-     * @param string $versionId            (required)
-     * @param string $machineName          (required)
-     * @param string $namespaceMachineName (required)
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10038,15 +11801,21 @@ class DefaultApi
     {
         // verify the required parameter 'versionId' is set
         if (null === $versionId || (is_array($versionId) && 0 === count($versionId))) {
-            throw new \InvalidArgumentException('Missing the required parameter $versionId when calling remoteEntityTypeVersionControllerGetVersionUsage');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $versionId when calling remoteEntityTypeVersionControllerGetVersionUsage'
+            );
         }
         // verify the required parameter 'machineName' is set
         if (null === $machineName || (is_array($machineName) && 0 === count($machineName))) {
-            throw new \InvalidArgumentException('Missing the required parameter $machineName when calling remoteEntityTypeVersionControllerGetVersionUsage');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $machineName when calling remoteEntityTypeVersionControllerGetVersionUsage'
+            );
         }
         // verify the required parameter 'namespaceMachineName' is set
         if (null === $namespaceMachineName || (is_array($namespaceMachineName) && 0 === count($namespaceMachineName))) {
-            throw new \InvalidArgumentException('Missing the required parameter $namespaceMachineName when calling remoteEntityTypeVersionControllerGetVersionUsage');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $namespaceMachineName when calling remoteEntityTypeVersionControllerGetVersionUsage'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-type-version/differences/{namespaceMachineName}/{machineName}/{versionId}';
@@ -10144,7 +11913,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10161,7 +11930,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10178,13 +11947,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -10234,7 +12017,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10254,7 +12037,7 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10285,7 +12068,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -10294,7 +12086,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeVersionControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10304,7 +12096,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityTypeVersionControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityTypeVersionControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-type-version/{id}';
@@ -10386,7 +12180,7 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10403,7 +12197,7 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10420,13 +12214,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -10476,7 +12284,7 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10496,7 +12304,7 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10527,7 +12335,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -10536,7 +12353,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityUsageControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -10546,7 +12363,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling remoteEntityUsageControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityUsageControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/remote-entity-usage/{id}';
@@ -10628,13 +12447,13 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerList.
      *
-     * @param string $itemsPerPage   itemsPerPage (optional)
-     * @param string $page           page (optional)
-     * @param string $entityTypeId   entityTypeId (optional)
-     * @param string $siteId         siteId (optional)
-     * @param string $entityId       entityId (optional)
-     * @param string $remoteUniqueId remoteUniqueId (optional)
-     * @param string $remoteUuid     remoteUuid (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
+     * @param  string $entityTypeId entityTypeId (optional)
+     * @param  string $siteId siteId (optional)
+     * @param  string $entityId entityId (optional)
+     * @param  string $remoteUniqueId remoteUniqueId (optional)
+     * @param  string $remoteUuid remoteUuid (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10651,13 +12470,13 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListWithHttpInfo.
      *
-     * @param string $itemsPerPage   (optional)
-     * @param string $page           (optional)
-     * @param string $entityTypeId   (optional)
-     * @param string $siteId         (optional)
-     * @param string $entityId       (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $remoteUuid     (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $entityId (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $remoteUuid (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10674,13 +12493,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -10730,13 +12563,13 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListAsync.
      *
-     * @param string $itemsPerPage   (optional)
-     * @param string $page           (optional)
-     * @param string $entityTypeId   (optional)
-     * @param string $siteId         (optional)
-     * @param string $entityId       (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $remoteUuid     (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $entityId (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $remoteUuid (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -10756,13 +12589,13 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListAsyncWithHttpInfo.
      *
-     * @param string $itemsPerPage   (optional)
-     * @param string $page           (optional)
-     * @param string $entityTypeId   (optional)
-     * @param string $siteId         (optional)
-     * @param string $entityId       (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $remoteUuid     (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $entityId (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $remoteUuid (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -10793,7 +12626,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -10802,13 +12644,13 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityUsageControllerList'.
      *
-     * @param string $itemsPerPage   (optional)
-     * @param string $page           (optional)
-     * @param string $entityTypeId   (optional)
-     * @param string $siteId         (optional)
-     * @param string $entityId       (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $remoteUuid     (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $entityId (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $remoteUuid (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -10957,7 +12799,7 @@ class DefaultApi
     /**
      * Operation siteControllerItem.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10974,7 +12816,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -10991,13 +12833,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -11047,7 +12903,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11067,7 +12923,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11098,7 +12954,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -11107,7 +12972,7 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerItem'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11117,7 +12982,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling siteControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling siteControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/site/{id}';
@@ -11199,7 +13066,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemByUuid.
      *
-     * @param string $uuid uuid (required)
+     * @param  string $uuid uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11216,7 +13083,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemByUuidWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11233,13 +13100,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -11289,7 +13170,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemByUuidAsync.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11309,7 +13190,7 @@ class DefaultApi
     /**
      * Operation siteControllerItemByUuidAsyncWithHttpInfo.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11340,7 +13221,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -11349,7 +13239,7 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerItemByUuid'.
      *
-     * @param string $uuid (required)
+     * @param  string $uuid (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11359,7 +13249,9 @@ class DefaultApi
     {
         // verify the required parameter 'uuid' is set
         if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
-            throw new \InvalidArgumentException('Missing the required parameter $uuid when calling siteControllerItemByUuid');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling siteControllerItemByUuid'
+            );
         }
 
         $resourcePath = '/sync-core/site/by-uuid/{uuid}';
@@ -11441,7 +13333,7 @@ class DefaultApi
     /**
      * Operation siteControllerRegister.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto registerSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto registerSiteDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11458,7 +13350,7 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11475,13 +13367,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -11531,7 +13437,7 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11551,7 +13457,7 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11582,7 +13488,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -11591,7 +13506,7 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerRegister'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -11601,7 +13516,9 @@ class DefaultApi
     {
         // verify the required parameter 'registerSiteDto' is set
         if (null === $registerSiteDto || (is_array($registerSiteDto) && 0 === count($registerSiteDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $registerSiteDto when calling siteControllerRegister');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $registerSiteDto when calling siteControllerRegister'
+            );
         }
 
         $resourcePath = '/sync-core/site';
@@ -11678,11 +13595,275 @@ class DefaultApi
     }
 
     /**
+     * Operation siteControllerRegisterNew.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto registerNewSiteDto (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity
+     */
+    public function siteControllerRegisterNew($registerNewSiteDto)
+    {
+        list($response) = $this->siteControllerRegisterNewWithHttpInfo($registerNewSiteDto);
+
+        return $response;
+    }
+
+    /**
+     * Operation siteControllerRegisterNewWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function siteControllerRegisterNewWithHttpInfo($registerNewSiteDto)
+    {
+        $request = $this->siteControllerRegisterNewRequest($registerNewSiteDto);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation siteControllerRegisterNewAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerRegisterNewAsync($registerNewSiteDto)
+    {
+        return $this->siteControllerRegisterNewAsyncWithHttpInfo($registerNewSiteDto)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation siteControllerRegisterNewAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerRegisterNewAsyncWithHttpInfo($registerNewSiteDto)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity';
+        $request = $this->siteControllerRegisterNewRequest($registerNewSiteDto);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'siteControllerRegisterNew'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function siteControllerRegisterNewRequest($registerNewSiteDto)
+    {
+        // verify the required parameter 'registerNewSiteDto' is set
+        if (null === $registerNewSiteDto || (is_array($registerNewSiteDto) && 0 === count($registerNewSiteDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $registerNewSiteDto when calling siteControllerRegisterNew'
+            );
+        }
+
+        $resourcePath = '/sync-core/site/new';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($registerNewSiteDto)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
+            } else {
+                $httpBody = $registerNewSiteDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation siteControllerSearch.
      *
-     * @param string $baseUrl baseUrl (optional)
-     * @param string $search  search (optional)
-     * @param string $page    page (optional)
+     * @param  string $baseUrl baseUrl (optional)
+     * @param  string $search search (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11699,9 +13880,9 @@ class DefaultApi
     /**
      * Operation siteControllerSearchWithHttpInfo.
      *
-     * @param string $baseUrl (optional)
-     * @param string $search  (optional)
-     * @param string $page    (optional)
+     * @param  string $baseUrl (optional)
+     * @param  string $search (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11718,13 +13899,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -11774,9 +13969,9 @@ class DefaultApi
     /**
      * Operation siteControllerSearchAsync.
      *
-     * @param string $baseUrl (optional)
-     * @param string $search  (optional)
-     * @param string $page    (optional)
+     * @param  string $baseUrl (optional)
+     * @param  string $search (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -11796,9 +13991,9 @@ class DefaultApi
     /**
      * Operation siteControllerSearchAsyncWithHttpInfo.
      *
-     * @param string $baseUrl (optional)
-     * @param string $search  (optional)
-     * @param string $page    (optional)
+     * @param  string $baseUrl (optional)
+     * @param  string $search (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -11829,7 +14024,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -11838,9 +14042,9 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerSearch'.
      *
-     * @param string $baseUrl (optional)
-     * @param string $search  (optional)
-     * @param string $page    (optional)
+     * @param  string $baseUrl (optional)
+     * @param  string $search (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -11949,7 +14153,7 @@ class DefaultApi
     /**
      * Operation siteControllerUpdate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto createSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto createSiteDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11966,7 +14170,7 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -11983,13 +14187,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -12039,7 +14257,7 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12059,7 +14277,7 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12090,7 +14308,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -12099,7 +14326,7 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerUpdate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12109,7 +14336,9 @@ class DefaultApi
     {
         // verify the required parameter 'createSiteDto' is set
         if (null === $createSiteDto || (is_array($createSiteDto) && 0 === count($createSiteDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createSiteDto when calling siteControllerUpdate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createSiteDto when calling siteControllerUpdate'
+            );
         }
 
         $resourcePath = '/sync-core/site';
@@ -12188,7 +14417,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreate.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto createSyndicationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto createSyndicationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12205,7 +14434,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12222,13 +14451,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -12278,7 +14521,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12298,7 +14541,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12329,7 +14572,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -12338,7 +14590,7 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerCreate'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -12348,7 +14600,9 @@ class DefaultApi
     {
         // verify the required parameter 'createSyndicationDto' is set
         if (null === $createSyndicationDto || (is_array($createSyndicationDto) && 0 === count($createSyndicationDto))) {
-            throw new \InvalidArgumentException('Missing the required parameter $createSyndicationDto when calling syndicationControllerCreate');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createSyndicationDto when calling syndicationControllerCreate'
+            );
         }
 
         $resourcePath = '/sync-core/syndication';
@@ -12427,8 +14681,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerGetErrors.
      *
-     * @param string $itemsPerPage itemsPerPage (optional)
-     * @param string $page         page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12445,8 +14699,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerGetErrorsWithHttpInfo.
      *
-     * @param string $itemsPerPage (optional)
-     * @param string $page         (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12463,13 +14717,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -12519,8 +14787,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerGetErrorsAsync.
      *
-     * @param string $itemsPerPage (optional)
-     * @param string $page         (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12540,8 +14808,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerGetErrorsAsyncWithHttpInfo.
      *
-     * @param string $itemsPerPage (optional)
-     * @param string $page         (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12572,7 +14840,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -12581,8 +14858,8 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerGetErrors'.
      *
-     * @param string $itemsPerPage (optional)
-     * @param string $page         (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12681,8 +14958,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerItem.
      *
-     * @param string $id           id (required)
-     * @param string $includeUsage includeUsage (optional)
+     * @param  string $id id (required)
+     * @param  string $includeUsage includeUsage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12699,8 +14976,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemWithHttpInfo.
      *
-     * @param string $id           (required)
-     * @param string $includeUsage (optional)
+     * @param  string $id (required)
+     * @param  string $includeUsage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12717,13 +14994,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -12773,8 +15064,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemAsync.
      *
-     * @param string $id           (required)
-     * @param string $includeUsage (optional)
+     * @param  string $id (required)
+     * @param  string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12794,8 +15085,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerItemAsyncWithHttpInfo.
      *
-     * @param string $id           (required)
-     * @param string $includeUsage (optional)
+     * @param  string $id (required)
+     * @param  string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12826,7 +15117,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -12835,8 +15135,8 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerItem'.
      *
-     * @param string $id           (required)
-     * @param string $includeUsage (optional)
+     * @param  string $id (required)
+     * @param  string $includeUsage (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -12846,7 +15146,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling syndicationControllerItem');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling syndicationControllerItem'
+            );
         }
 
         $resourcePath = '/sync-core/syndication/{id}';
@@ -12939,22 +15241,22 @@ class DefaultApi
     /**
      * Operation syndicationControllerList.
      *
-     * @param string $statuses              statuses (optional)
-     * @param string $migrationId           migrationId (optional)
-     * @param string $includeUsage          includeUsage (optional)
-     * @param string $sourceSyndicationId   sourceSyndicationId (optional)
-     * @param string $flowMachineNames      flowMachineNames (optional)
-     * @param string $flowIds               flowIds (optional)
-     * @param string $poolMachineNames      poolMachineNames (optional)
-     * @param string $poolIds               poolIds (optional)
-     * @param string $siteUuids             siteUuids (optional)
-     * @param string $siteIds               siteIds (optional)
-     * @param string $entityRemoteUniqueIds entityRemoteUniqueIds (optional)
-     * @param string $entityRemoteUuids     entityRemoteUuids (optional)
-     * @param string $entityIds             entityIds (optional)
-     * @param string $groupBy               groupBy (optional)
-     * @param string $itemsPerPage          itemsPerPage (optional)
-     * @param string $page                  page (optional)
+     * @param  string $statuses statuses (optional)
+     * @param  string $migrationId migrationId (optional)
+     * @param  string $includeUsage includeUsage (optional)
+     * @param  string $sourceSyndicationId sourceSyndicationId (optional)
+     * @param  string $flowMachineNames flowMachineNames (optional)
+     * @param  string $flowIds flowIds (optional)
+     * @param  string $poolMachineNames poolMachineNames (optional)
+     * @param  string $poolIds poolIds (optional)
+     * @param  string $siteUuids siteUuids (optional)
+     * @param  string $siteIds siteIds (optional)
+     * @param  string $entityRemoteUniqueIds entityRemoteUniqueIds (optional)
+     * @param  string $entityRemoteUuids entityRemoteUuids (optional)
+     * @param  string $entityIds entityIds (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -12971,22 +15273,22 @@ class DefaultApi
     /**
      * Operation syndicationControllerListWithHttpInfo.
      *
-     * @param string $statuses              (optional)
-     * @param string $migrationId           (optional)
-     * @param string $includeUsage          (optional)
-     * @param string $sourceSyndicationId   (optional)
-     * @param string $flowMachineNames      (optional)
-     * @param string $flowIds               (optional)
-     * @param string $poolMachineNames      (optional)
-     * @param string $poolIds               (optional)
-     * @param string $siteUuids             (optional)
-     * @param string $siteIds               (optional)
-     * @param string $entityRemoteUniqueIds (optional)
-     * @param string $entityRemoteUuids     (optional)
-     * @param string $entityIds             (optional)
-     * @param string $groupBy               (optional)
-     * @param string $itemsPerPage          (optional)
-     * @param string $page                  (optional)
+     * @param  string $statuses (optional)
+     * @param  string $migrationId (optional)
+     * @param  string $includeUsage (optional)
+     * @param  string $sourceSyndicationId (optional)
+     * @param  string $flowMachineNames (optional)
+     * @param  string $flowIds (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $poolIds (optional)
+     * @param  string $siteUuids (optional)
+     * @param  string $siteIds (optional)
+     * @param  string $entityRemoteUniqueIds (optional)
+     * @param  string $entityRemoteUuids (optional)
+     * @param  string $entityIds (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13003,13 +15305,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -13059,22 +15375,22 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsync.
      *
-     * @param string $statuses              (optional)
-     * @param string $migrationId           (optional)
-     * @param string $includeUsage          (optional)
-     * @param string $sourceSyndicationId   (optional)
-     * @param string $flowMachineNames      (optional)
-     * @param string $flowIds               (optional)
-     * @param string $poolMachineNames      (optional)
-     * @param string $poolIds               (optional)
-     * @param string $siteUuids             (optional)
-     * @param string $siteIds               (optional)
-     * @param string $entityRemoteUniqueIds (optional)
-     * @param string $entityRemoteUuids     (optional)
-     * @param string $entityIds             (optional)
-     * @param string $groupBy               (optional)
-     * @param string $itemsPerPage          (optional)
-     * @param string $page                  (optional)
+     * @param  string $statuses (optional)
+     * @param  string $migrationId (optional)
+     * @param  string $includeUsage (optional)
+     * @param  string $sourceSyndicationId (optional)
+     * @param  string $flowMachineNames (optional)
+     * @param  string $flowIds (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $poolIds (optional)
+     * @param  string $siteUuids (optional)
+     * @param  string $siteIds (optional)
+     * @param  string $entityRemoteUniqueIds (optional)
+     * @param  string $entityRemoteUuids (optional)
+     * @param  string $entityIds (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13094,22 +15410,22 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsyncWithHttpInfo.
      *
-     * @param string $statuses              (optional)
-     * @param string $migrationId           (optional)
-     * @param string $includeUsage          (optional)
-     * @param string $sourceSyndicationId   (optional)
-     * @param string $flowMachineNames      (optional)
-     * @param string $flowIds               (optional)
-     * @param string $poolMachineNames      (optional)
-     * @param string $poolIds               (optional)
-     * @param string $siteUuids             (optional)
-     * @param string $siteIds               (optional)
-     * @param string $entityRemoteUniqueIds (optional)
-     * @param string $entityRemoteUuids     (optional)
-     * @param string $entityIds             (optional)
-     * @param string $groupBy               (optional)
-     * @param string $itemsPerPage          (optional)
-     * @param string $page                  (optional)
+     * @param  string $statuses (optional)
+     * @param  string $migrationId (optional)
+     * @param  string $includeUsage (optional)
+     * @param  string $sourceSyndicationId (optional)
+     * @param  string $flowMachineNames (optional)
+     * @param  string $flowIds (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $poolIds (optional)
+     * @param  string $siteUuids (optional)
+     * @param  string $siteIds (optional)
+     * @param  string $entityRemoteUniqueIds (optional)
+     * @param  string $entityRemoteUuids (optional)
+     * @param  string $entityIds (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13140,7 +15456,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -13149,22 +15474,22 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerList'.
      *
-     * @param string $statuses              (optional)
-     * @param string $migrationId           (optional)
-     * @param string $includeUsage          (optional)
-     * @param string $sourceSyndicationId   (optional)
-     * @param string $flowMachineNames      (optional)
-     * @param string $flowIds               (optional)
-     * @param string $poolMachineNames      (optional)
-     * @param string $poolIds               (optional)
-     * @param string $siteUuids             (optional)
-     * @param string $siteIds               (optional)
-     * @param string $entityRemoteUniqueIds (optional)
-     * @param string $entityRemoteUuids     (optional)
-     * @param string $entityIds             (optional)
-     * @param string $groupBy               (optional)
-     * @param string $itemsPerPage          (optional)
-     * @param string $page                  (optional)
+     * @param  string $statuses (optional)
+     * @param  string $migrationId (optional)
+     * @param  string $includeUsage (optional)
+     * @param  string $sourceSyndicationId (optional)
+     * @param  string $flowMachineNames (optional)
+     * @param  string $flowIds (optional)
+     * @param  string $poolMachineNames (optional)
+     * @param  string $poolIds (optional)
+     * @param  string $siteUuids (optional)
+     * @param  string $siteIds (optional)
+     * @param  string $entityRemoteUniqueIds (optional)
+     * @param  string $entityRemoteUuids (optional)
+     * @param  string $entityIds (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13403,7 +15728,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummary.
      *
-     * @param string $id id (required)
+     * @param  string $id id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13420,7 +15745,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13437,13 +15762,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -13493,7 +15832,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryAsync.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -13513,7 +15852,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryAsyncWithHttpInfo.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -13544,7 +15883,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -13553,7 +15901,7 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerUsageSummary'.
      *
-     * @param string $id (required)
+     * @param  string $id (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -13563,7 +15911,9 @@ class DefaultApi
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling syndicationControllerUsageSummary');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling syndicationControllerUsageSummary'
+            );
         }
 
         $resourcePath = '/sync-core/syndication/usage-summary/{id}';
@@ -13645,10 +15995,10 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryForSite.
      *
-     * @param string $siteUuid       siteUuid (required)
-     * @param string $remoteUuid     remoteUuid (optional)
-     * @param string $remoteUniqueId remoteUniqueId (optional)
-     * @param string $page           page (optional)
+     * @param  string $siteUuid siteUuid (required)
+     * @param  string $remoteUuid remoteUuid (optional)
+     * @param  string $remoteUniqueId remoteUniqueId (optional)
+     * @param  string $page page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13665,10 +16015,10 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryForSiteWithHttpInfo.
      *
-     * @param string $siteUuid       (required)
-     * @param string $remoteUuid     (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $page           (optional)
+     * @param  string $siteUuid (required)
+     * @param  string $remoteUuid (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $page (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13685,13 +16035,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -13741,10 +16105,10 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryForSiteAsync.
      *
-     * @param string $siteUuid       (required)
-     * @param string $remoteUuid     (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $page           (optional)
+     * @param  string $siteUuid (required)
+     * @param  string $remoteUuid (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13764,10 +16128,10 @@ class DefaultApi
     /**
      * Operation syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo.
      *
-     * @param string $siteUuid       (required)
-     * @param string $remoteUuid     (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $page           (optional)
+     * @param  string $siteUuid (required)
+     * @param  string $remoteUuid (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13798,7 +16162,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -13807,10 +16180,10 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerUsageSummaryForSite'.
      *
-     * @param string $siteUuid       (required)
-     * @param string $remoteUuid     (optional)
-     * @param string $remoteUniqueId (optional)
-     * @param string $page           (optional)
+     * @param  string $siteUuid (required)
+     * @param  string $remoteUuid (optional)
+     * @param  string $remoteUniqueId (optional)
+     * @param  string $page (optional)
      *
      * @throws \InvalidArgumentException
      *
@@ -13820,7 +16193,9 @@ class DefaultApi
     {
         // verify the required parameter 'siteUuid' is set
         if (null === $siteUuid || (is_array($siteUuid) && 0 === count($siteUuid))) {
-            throw new \InvalidArgumentException('Missing the required parameter $siteUuid when calling syndicationControllerUsageSummaryForSite');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $siteUuid when calling syndicationControllerUsageSummaryForSite'
+            );
         }
 
         $resourcePath = '/sync-core/syndication/usage-summary-for-site/{siteUuid}';
@@ -13933,8 +16308,8 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForPeriod.
      *
-     * @param string                                        $period period (required)
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type   type (required)
+     * @param  string $period period (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type type (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13951,8 +16326,8 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForPeriodWithHttpInfo.
      *
-     * @param string                                        $period (required)
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type   (required)
+     * @param  string $period (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -13969,13 +16344,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -14025,8 +16414,8 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForPeriodAsync.
      *
-     * @param string                                        $period (required)
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type   (required)
+     * @param  string $period (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14046,8 +16435,8 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForPeriodAsyncWithHttpInfo.
      *
-     * @param string                                        $period (required)
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type   (required)
+     * @param  string $period (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14078,7 +16467,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -14087,8 +16485,8 @@ class DefaultApi
     /**
      * Create request for operation 'usageStatsControllerGetForPeriod'.
      *
-     * @param string                                        $period (required)
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type   (required)
+     * @param  string $period (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14098,11 +16496,15 @@ class DefaultApi
     {
         // verify the required parameter 'period' is set
         if (null === $period || (is_array($period) && 0 === count($period))) {
-            throw new \InvalidArgumentException('Missing the required parameter $period when calling usageStatsControllerGetForPeriod');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $period when calling usageStatsControllerGetForPeriod'
+            );
         }
         // verify the required parameter 'type' is set
         if (null === $type || (is_array($type) && 0 === count($type))) {
-            throw new \InvalidArgumentException('Missing the required parameter $type when calling usageStatsControllerGetForPeriod');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $type when calling usageStatsControllerGetForPeriod'
+            );
         }
 
         $resourcePath = '/sync-core/usage-stats/for-period/{type}/{period}';
@@ -14192,7 +16594,7 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type type (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type type (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -14209,7 +16611,7 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForTypeWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -14226,13 +16628,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -14282,7 +16698,7 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForTypeAsync.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14302,7 +16718,7 @@ class DefaultApi
     /**
      * Operation usageStatsControllerGetForTypeAsyncWithHttpInfo.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14333,7 +16749,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
@@ -14342,7 +16767,7 @@ class DefaultApi
     /**
      * Create request for operation 'usageStatsControllerGetForType'.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\UsageStatsType $type (required)
      *
      * @throws \InvalidArgumentException
      *
@@ -14352,7 +16777,9 @@ class DefaultApi
     {
         // verify the required parameter 'type' is set
         if (null === $type || (is_array($type) && 0 === count($type))) {
-            throw new \InvalidArgumentException('Missing the required parameter $type when calling usageStatsControllerGetForType');
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $type when calling usageStatsControllerGetForType'
+            );
         }
 
         $resourcePath = '/sync-core/usage-stats/for-period/{type}';
@@ -14464,13 +16891,27 @@ class DefaultApi
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
-                throw new ApiException("[{$e->getCode()}] {$e->getMessage()}", (int) $e->getCode(), $e->getResponse() ? $e->getResponse()->getHeaders() : null, $e->getResponse() ? (string) $e->getResponse()->getBody() : null);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
             }
 
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, (string) $request->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
             }
 
             switch ($statusCode) {
@@ -14567,7 +17008,16 @@ class DefaultApi
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
-                    throw new ApiException(sprintf('[%d] Error connecting to the API (%s)', $statusCode, $exception->getRequest()->getUri()), $statusCode, $response->getHeaders(), (string) $response->getBody());
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
                 }
             )
         ;
