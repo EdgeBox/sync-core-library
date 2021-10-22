@@ -23,6 +23,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
+use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
@@ -405,6 +406,63 @@ class SyncCore implements ISyncCore
         return $url['host'];
     }
 
+    public function registerNewSiteWithToken(array $options, string $token)
+    {
+        $dto = new RegisterNewSiteDto($options);
+        // TODO: Drupal/Interface: When the password changes, we need to make a request to the Sync Core using
+        //   the old password to set the new password. If the request fails, the password
+        //   can't be changed.
+        $dto->setSecret($this->getSiteSecret());
+
+        $dto->setToken($token);
+        $dto->setName($this->application->getSiteName());
+        $dto->setBaseUrl($this->application->getSiteBaseUrl());
+        /**
+         * @var \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $app_type
+         */
+        $app_type = $this->application->getApplicationId();
+        $dto->setAppType($app_type);
+        $dto->setAppVersion($this->application->getApplicationVersion());
+        $dto->setAppModuleVersion($this->application->getApplicationModuleVersion());
+
+        $urls = new SiteRestUrls();
+
+        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
+        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
+        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
+        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+
+        $dto->setRestUrls($urls);
+
+        $invalid = $dto->listInvalidProperties();
+
+        if (count($invalid)) {
+            throw new InternalContentSyncError('Invalid options: '.print_r($invalid, true));
+        }
+
+        $request = $this->client->siteControllerRegisterNewRequest($dto);
+        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $token);
+
+        $siteId = $entity->getUuid();
+        $this->application->setSiteUuid($siteId);
+        // Save the credentials to the Sync Core so it can connect to the site as well.
+        $auth = $this->application->getAuthentication();
+
+        $authentication = new CreateAuthenticationDto();
+        /**
+         * @var AuthenticationType $type
+         */
+        $type = IApplicationInterface::AUTHENTICATION_TYPE_COOKIE === $auth['type']
+        ? AuthenticationType::DRUPAL8_SERVICES
+            : AuthenticationType::BASIC_AUTH;
+        $authentication->setType($type);
+        $authentication->setUsername($auth['username']);
+        $authentication->setPassword($auth['password']);
+
+        $request = $this->client->authenticationControllerCreateRequest($authentication);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+    }
+
     public function registerSiteWithJwt($options)
     {
         $dto = new RegisterSiteDto($options);
@@ -422,8 +480,10 @@ class SyncCore implements ISyncCore
 
         $dto->setRestUrls($urls);
 
-        if (!$dto->valid()) {
-            throw new InternalContentSyncError('Invalid URL options.');
+        $invalid = $dto->listInvalidProperties();
+
+        if (count($invalid)) {
+            throw new InternalContentSyncError('Invalid options: '.print_r($invalid, true));
         }
 
         $request = $this->client->siteControllerRegisterRequest($dto);
