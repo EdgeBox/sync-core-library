@@ -71,7 +71,7 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         // Redirect to this page.
         $options['redirectUrl'] = $application->getEmbedBaseUrl(IEmbedService::REGISTER_SITE);
 
-        $options['migrated'] = $this->params['migrated'];
+        $options['migrated'] = isset($this->params['migrated']) && (bool) $this->params['migrated'];
 
         return $options;
     }
