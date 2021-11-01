@@ -79,8 +79,8 @@ abstract class Embed
 (function() {
   // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
   const getHttpsUrl = (url) => url.replace(/^https?:/, "");
-  var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(str_contains($list_entities_url, '?') ? '&' : '?').'");
-  var retrieveEntityUrl = getHttpsUrl("'.$retrieve_entity_url.(str_contains($retrieve_entity_url, '?') ? '&' : '?').'");
+  var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(false !== strpos($list_entities_url, '?') ? '&' : '?').'");
+  var retrieveEntityUrl = getHttpsUrl("'.$retrieve_entity_url.(false !== strpos($retrieve_entity_url, '?') ? '&' : '?').'");
 
   var iframe = undefined;
 
