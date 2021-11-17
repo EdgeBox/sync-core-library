@@ -64,6 +64,12 @@ abstract class Embed
         $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_LIST_ENTITIES);
         $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
+        if (!empty($application->getFeatureFlags()['custom_embed_message_handling'])) {
+            $process_messages_javascript = $application->getCustomEmbedMessageHandlingJavascript();
+        } else {
+            $process_messages_javascript = '';
+        }
+
         $html = '<style>
   #contentSyncEmbed {
     width: 1px;
@@ -99,6 +105,9 @@ abstract class Embed
       });
     },
     onMessage: function onMessage({message}) {
+      // Code provided by the parent application to add custom message handling.
+      '.$process_messages_javascript.'
+
       // Need a fresh access token.
       if(message.type==="reload") {
         window.location.reload();
