@@ -19,14 +19,12 @@
         ]
       },
       "pre-commit": [
-        "composer test-cs",
-        "composer lint",
-        "composer analyze"
+        "set -e",
+        "composer test-cs"
       ],
       "pre-push": [
-        "composer test-cs",
-        "composer lint",
-        "composer analyze"
+        "set -e",
+        "composer test-cs"
       ]
     }
   }
