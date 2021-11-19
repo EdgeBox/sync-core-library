@@ -19,9 +19,11 @@
         ]
       },
       "pre-commit": [
+        "set -e",
         "composer test-cs"
       ],
       "pre-push": [
+        "set -e",
         "composer test-cs"
       ]
     }
