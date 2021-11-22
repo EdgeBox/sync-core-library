@@ -197,6 +197,14 @@ abstract class Embed
           },
         });
       }
+      else if(message.type==="scroll-to-top") {
+        // Doesn\'t work in IE but that\'s alright.
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
       else {
         throw new Error("Unknown message "+JSON.stringify(message));
       }
