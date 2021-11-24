@@ -273,6 +273,13 @@ class SyncCore implements ISyncCore
     }
 
     /**
+     * Not supported in v1.
+     */
+    public function setDomains(array $domains)
+    {
+    }
+
+    /**
      * @return bool
      */
     public function setSiteName(string $set)

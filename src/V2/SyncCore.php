@@ -20,6 +20,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
@@ -531,12 +532,19 @@ class SyncCore implements ISyncCore
             return $features;
         }
 
-        // TODO: Add features from the Sync Core
+        $request = $this->client->featuresControllerSummaryRequest();
+        /**
+         * @var FeatureFlagSummary $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, FeatureFlagSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        $flags = (array) $response->getFlags();
+
         $features = [
             ISyncCore::FEATURE_REFRESH_AUTHENTICATION => 0,
             ISyncCore::FEATURE_INDEPENDENT_FLOW_CONFIG => 1,
             ISyncCore::FEATURE_PULL_ALL_WITHOUT_POOL => 1,
-        ];
+        ] + $flags;
 
         return $features;
     }
@@ -679,23 +687,33 @@ class SyncCore implements ISyncCore
         return '';
     }
 
-    public function setSiteName(string $set)
+    public function setDomains(array $domains)
     {
-        if (!$this->hasValidV2SiteId()) {
-            throw new InternalContentSyncError("Site is not registered yet. Can't change site name.");
-        }
-
-        $id = $this->application->getSiteId();
-        $request = $this->client->siteControllerItemByUuidRequest($id);
-        $current = $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
-
-        if ($current['name'] === $set) {
+        if (!$this->featureEnabled('domains')) {
             return;
         }
 
-        $dto = new CreateSiteDto($current);
+        $dto = $this->getSiteUpdateDto();
+
+        if (!count($domains)) {
+            $dto->setDomains(null);
+        } else {
+            $dto->setDomains($domains);
+        }
+        $request = $this->client->siteControllerUpdateRequest($dto);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+    }
+
+    public function setSiteName(string $set)
+    {
+        $dto = $this->getSiteUpdateDto();
+        if ($dto->getName() === $set) {
+            return;
+        }
+
         $dto->setName($set);
-        $this->client->siteControllerUpdateRequest($dto);
+        $request = $this->client->siteControllerUpdateRequest($dto);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
     public function verifySiteId()
@@ -703,6 +721,21 @@ class SyncCore implements ISyncCore
         // As sites are registered globally now, we don't need additional verification.
         // Sites can't be registered multiple times with the same ID or base URL.
         return null;
+    }
+
+    protected function getSiteUpdateDto()
+    {
+        if (!$this->hasValidV2SiteId()) {
+            throw new InternalContentSyncError("Site is not registered yet. Can't change site name.");
+        }
+
+        $id = $this->application->getSiteUuid();
+        $request = $this->client->siteControllerItemByUuidRequest($id);
+        $current = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        $serialized = json_decode(json_encode($current->jsonSerialize()), true);
+
+        return new CreateSiteDto($serialized);
     }
 
     protected function hasValidV2SiteId()

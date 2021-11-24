@@ -63,6 +63,18 @@ interface ISyncCore
      */
     public function getSiteName($id = null);
 
+    /**
+     * Set the domains that are used for this site. Customers are invoiced per
+     * domain.
+     */
+    public function setDomains(array $domains);
+
+    /**
+     * Update the site name at the Sync Core so that other sites see the new
+     * name, e.g. when viewing usages of an entity.
+     *
+     * @param string $set the new name
+     */
     public function setSiteName(string $set);
 
     /**

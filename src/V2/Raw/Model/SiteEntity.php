@@ -70,6 +70,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
+        'domains' => 'string[]',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -81,6 +82,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'updatedAt' => 'float',
         'secret' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'maxRequestsPerMinute' => 'float',
+        'maxParallelRequests' => 'float',
     ];
 
     /**
@@ -100,6 +103,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => null,
         'appModuleVersion' => null,
         'useProxy' => null,
+        'domains' => null,
         'uuid' => null,
         'environmentType' => null,
         'customer' => null,
@@ -111,6 +115,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'updatedAt' => null,
         'secret' => null,
         'restUrls' => null,
+        'maxRequestsPerMinute' => null,
+        'maxParallelRequests' => null,
     ];
 
     /**
@@ -129,6 +135,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'appVersion',
         'appModuleVersion' => 'appModuleVersion',
         'useProxy' => 'useProxy',
+        'domains' => 'domains',
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'customer' => 'customer',
@@ -140,6 +147,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'updatedAt' => 'updatedAt',
         'secret' => 'secret',
         'restUrls' => 'restUrls',
+        'maxRequestsPerMinute' => 'maxRequestsPerMinute',
+        'maxParallelRequests' => 'maxParallelRequests',
     ];
 
     /**
@@ -157,6 +166,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'setAppVersion',
         'appModuleVersion' => 'setAppModuleVersion',
         'useProxy' => 'setUseProxy',
+        'domains' => 'setDomains',
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'customer' => 'setCustomer',
@@ -168,6 +178,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'updatedAt' => 'setUpdatedAt',
         'secret' => 'setSecret',
         'restUrls' => 'setRestUrls',
+        'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
+        'maxParallelRequests' => 'setMaxParallelRequests',
     ];
 
     /**
@@ -185,6 +197,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'getAppVersion',
         'appModuleVersion' => 'getAppModuleVersion',
         'useProxy' => 'getUseProxy',
+        'domains' => 'getDomains',
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'customer' => 'getCustomer',
@@ -196,6 +209,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'updatedAt' => 'getUpdatedAt',
         'secret' => 'getSecret',
         'restUrls' => 'getRestUrls',
+        'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
+        'maxParallelRequests' => 'getMaxParallelRequests',
     ];
 
     /**
@@ -222,6 +237,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['appVersion'] = $data['appVersion'] ?? null;
         $this->container['appModuleVersion'] = $data['appModuleVersion'] ?? null;
         $this->container['useProxy'] = $data['useProxy'] ?? null;
+        $this->container['domains'] = $data['domains'] ?? null;
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['environmentType'] = $data['environmentType'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
@@ -233,6 +249,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
         $this->container['secret'] = $data['secret'] ?? null;
         $this->container['restUrls'] = $data['restUrls'] ?? null;
+        $this->container['maxRequestsPerMinute'] = $data['maxRequestsPerMinute'] ?? null;
+        $this->container['maxParallelRequests'] = $data['maxParallelRequests'] ?? null;
     }
 
     /**
@@ -598,6 +616,30 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets domains.
+     *
+     * @return null|string[]
+     */
+    public function getDomains()
+    {
+        return $this->container['domains'];
+    }
+
+    /**
+     * Sets domains.
+     *
+     * @param null|string[] $domains domains
+     *
+     * @return self
+     */
+    public function setDomains($domains)
+    {
+        $this->container['domains'] = $domains;
+
+        return $this;
+    }
+
+    /**
      * Gets uuid.
      *
      * @return string
@@ -857,6 +899,54 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRestUrls($restUrls)
     {
         $this->container['restUrls'] = $restUrls;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxRequestsPerMinute.
+     *
+     * @return null|float
+     */
+    public function getMaxRequestsPerMinute()
+    {
+        return $this->container['maxRequestsPerMinute'];
+    }
+
+    /**
+     * Sets maxRequestsPerMinute.
+     *
+     * @param null|float $maxRequestsPerMinute maxRequestsPerMinute
+     *
+     * @return self
+     */
+    public function setMaxRequestsPerMinute($maxRequestsPerMinute)
+    {
+        $this->container['maxRequestsPerMinute'] = $maxRequestsPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxParallelRequests.
+     *
+     * @return null|float
+     */
+    public function getMaxParallelRequests()
+    {
+        return $this->container['maxParallelRequests'];
+    }
+
+    /**
+     * Sets maxParallelRequests.
+     *
+     * @param null|float $maxParallelRequests maxParallelRequests
+     *
+     * @return self
+     */
+    public function setMaxParallelRequests($maxParallelRequests)
+    {
+        $this->container['maxParallelRequests'] = $maxParallelRequests;
 
         return $this;
     }

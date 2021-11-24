@@ -69,6 +69,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
+        'defaultMaxRequestsPerMinute' => 'float',
+        'defaultMaxParallelRequests' => 'float',
+        'maxRequestsPerMinute' => 'float',
+        'maxParallelRequests' => 'float',
     ];
 
     /**
@@ -87,6 +91,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
+        'defaultMaxRequestsPerMinute' => null,
+        'defaultMaxParallelRequests' => null,
+        'maxRequestsPerMinute' => null,
+        'maxParallelRequests' => null,
     ];
 
     /**
@@ -104,6 +112,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
+        'defaultMaxRequestsPerMinute' => 'defaultMaxRequestsPerMinute',
+        'defaultMaxParallelRequests' => 'defaultMaxParallelRequests',
+        'maxRequestsPerMinute' => 'maxRequestsPerMinute',
+        'maxParallelRequests' => 'maxParallelRequests',
     ];
 
     /**
@@ -120,6 +132,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
+        'defaultMaxRequestsPerMinute' => 'setDefaultMaxRequestsPerMinute',
+        'defaultMaxParallelRequests' => 'setDefaultMaxParallelRequests',
+        'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
+        'maxParallelRequests' => 'setMaxParallelRequests',
     ];
 
     /**
@@ -136,6 +152,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
+        'defaultMaxRequestsPerMinute' => 'getDefaultMaxRequestsPerMinute',
+        'defaultMaxParallelRequests' => 'getDefaultMaxParallelRequests',
+        'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
+        'maxParallelRequests' => 'getMaxParallelRequests',
     ];
 
     /**
@@ -161,6 +181,10 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['id'] = $data['id'] ?? null;
         $this->container['createdAt'] = $data['createdAt'] ?? null;
         $this->container['updatedAt'] = $data['updatedAt'] ?? null;
+        $this->container['defaultMaxRequestsPerMinute'] = $data['defaultMaxRequestsPerMinute'] ?? null;
+        $this->container['defaultMaxParallelRequests'] = $data['defaultMaxParallelRequests'] ?? null;
+        $this->container['maxRequestsPerMinute'] = $data['maxRequestsPerMinute'] ?? null;
+        $this->container['maxParallelRequests'] = $data['maxParallelRequests'] ?? null;
     }
 
     /**
@@ -473,6 +497,102 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUpdatedAt($updatedAt)
     {
         $this->container['updatedAt'] = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultMaxRequestsPerMinute.
+     *
+     * @return null|float
+     */
+    public function getDefaultMaxRequestsPerMinute()
+    {
+        return $this->container['defaultMaxRequestsPerMinute'];
+    }
+
+    /**
+     * Sets defaultMaxRequestsPerMinute.
+     *
+     * @param null|float $defaultMaxRequestsPerMinute defaultMaxRequestsPerMinute
+     *
+     * @return self
+     */
+    public function setDefaultMaxRequestsPerMinute($defaultMaxRequestsPerMinute)
+    {
+        $this->container['defaultMaxRequestsPerMinute'] = $defaultMaxRequestsPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultMaxParallelRequests.
+     *
+     * @return null|float
+     */
+    public function getDefaultMaxParallelRequests()
+    {
+        return $this->container['defaultMaxParallelRequests'];
+    }
+
+    /**
+     * Sets defaultMaxParallelRequests.
+     *
+     * @param null|float $defaultMaxParallelRequests defaultMaxParallelRequests
+     *
+     * @return self
+     */
+    public function setDefaultMaxParallelRequests($defaultMaxParallelRequests)
+    {
+        $this->container['defaultMaxParallelRequests'] = $defaultMaxParallelRequests;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxRequestsPerMinute.
+     *
+     * @return null|float
+     */
+    public function getMaxRequestsPerMinute()
+    {
+        return $this->container['maxRequestsPerMinute'];
+    }
+
+    /**
+     * Sets maxRequestsPerMinute.
+     *
+     * @param null|float $maxRequestsPerMinute maxRequestsPerMinute
+     *
+     * @return self
+     */
+    public function setMaxRequestsPerMinute($maxRequestsPerMinute)
+    {
+        $this->container['maxRequestsPerMinute'] = $maxRequestsPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxParallelRequests.
+     *
+     * @return null|float
+     */
+    public function getMaxParallelRequests()
+    {
+        return $this->container['maxParallelRequests'];
+    }
+
+    /**
+     * Sets maxParallelRequests.
+     *
+     * @param null|float $maxParallelRequests maxParallelRequests
+     *
+     * @return self
+     */
+    public function setMaxParallelRequests($maxParallelRequests)
+    {
+        $this->container['maxParallelRequests'] = $maxParallelRequests;
 
         return $this;
     }

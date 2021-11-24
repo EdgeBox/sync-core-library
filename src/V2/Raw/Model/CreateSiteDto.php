@@ -70,6 +70,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
+        'domains' => 'string[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -97,6 +98,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => null,
         'appModuleVersion' => null,
         'useProxy' => null,
+        'domains' => null,
         'customer' => null,
         'contract' => null,
         'project' => null,
@@ -123,6 +125,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'appVersion',
         'appModuleVersion' => 'appModuleVersion',
         'useProxy' => 'useProxy',
+        'domains' => 'domains',
         'customer' => 'customer',
         'contract' => 'contract',
         'project' => 'project',
@@ -148,6 +151,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'setAppVersion',
         'appModuleVersion' => 'setAppModuleVersion',
         'useProxy' => 'setUseProxy',
+        'domains' => 'setDomains',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'project' => 'setProject',
@@ -173,6 +177,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appVersion' => 'getAppVersion',
         'appModuleVersion' => 'getAppModuleVersion',
         'useProxy' => 'getUseProxy',
+        'domains' => 'getDomains',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'project' => 'getProject',
@@ -207,6 +212,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['appVersion'] = $data['appVersion'] ?? null;
         $this->container['appModuleVersion'] = $data['appModuleVersion'] ?? null;
         $this->container['useProxy'] = $data['useProxy'] ?? null;
+        $this->container['domains'] = $data['domains'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
         $this->container['contract'] = $data['contract'] ?? null;
         $this->container['project'] = $data['project'] ?? null;
@@ -554,6 +560,30 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUseProxy($useProxy)
     {
         $this->container['useProxy'] = $useProxy;
+
+        return $this;
+    }
+
+    /**
+     * Gets domains.
+     *
+     * @return null|string[]
+     */
+    public function getDomains()
+    {
+        return $this->container['domains'];
+    }
+
+    /**
+     * Sets domains.
+     *
+     * @param null|string[] $domains domains
+     *
+     * @return self
+     */
+    public function setDomains($domains)
+    {
+        $this->container['domains'] = $domains;
 
         return $this;
     }
