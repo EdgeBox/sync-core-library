@@ -270,7 +270,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addObjectProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'object', $multiple, $required);
 
@@ -280,7 +280,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addReferenceProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         return $this->addObjectProperty($machine_name, $name, $multiple, $required);
     }
@@ -288,7 +288,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addBooleanProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'boolean', $multiple, $required);
 
@@ -298,7 +298,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addIntegerProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'integer', $multiple, $required);
 
@@ -308,7 +308,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addFloatProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'float', $multiple, $required);
 
@@ -318,7 +318,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addStringProperty(string $machine_name, string $name, $multiple = false, $required = false)
+    public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
     {
         $this->addProperty($machine_name, 'string', $multiple, $required);
 

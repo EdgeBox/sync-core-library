@@ -22,7 +22,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addBooleanProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -30,7 +30,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addIntegerProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -38,7 +38,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addFloatProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -46,7 +46,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addStringProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -54,7 +54,7 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addObjectProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 
     /**
      * @param bool $multiple
@@ -62,5 +62,5 @@ interface IDefineEntityType extends IBatchOperation
      *
      * @return $this
      */
-    public function addReferenceProperty(string $machine_name, string $name, $multiple = false, $required = false);
+    public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false);
 }
