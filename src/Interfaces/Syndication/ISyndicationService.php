@@ -12,6 +12,16 @@ interface ISyndicationService
     public function configurePullDashboard();
 
     /**
+     * @return IMassPull
+     */
+    public function massPull();
+
+    /**
+     * @return IMassPush
+     */
+    public function massPush();
+
+    /**
      * @return ITriggerPullSingle
      */
     public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id);

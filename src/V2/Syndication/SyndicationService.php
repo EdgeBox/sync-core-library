@@ -28,6 +28,22 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
+    public function massPull()
+    {
+        return new MassPull($this->core);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function massPush()
+    {
+        return new MassPush($this->core);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configurePullDashboard()
     {
         return null;

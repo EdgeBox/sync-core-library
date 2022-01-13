@@ -32,6 +32,22 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritdoc}
      */
+    public function massPull()
+    {
+        throw new \Exception("The Sync Core v1 doesn't support mass updates.");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function massPush()
+    {
+        throw new \Exception("The Sync Core v1 doesn't support mass updates.");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configurePullDashboard()
     {
         return new ConfigurePullDashboard($this->core);
