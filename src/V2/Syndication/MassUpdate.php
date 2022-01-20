@@ -8,6 +8,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -193,10 +194,13 @@ abstract class MassUpdate
             throw new InternalContentSyncError('Entity type version is required.');
         }
 
+        $migrationDto = new CreateMigrationDto();
+        if (MigrationType::PUSH_ALL === $type && $this->initial) {
+            $migrationDto->setSkipSyndication(true);
+        }
         /**
          * @var MigrationType $type
          */
-        $migrationDto = new CreateMigrationDto();
         $migrationDto->setType($type);
         $migrationDto->setInitialSetup($this->initial);
         $migrationDto->setFlowMachineName($this->flow);
