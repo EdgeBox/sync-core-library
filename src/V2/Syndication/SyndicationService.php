@@ -128,6 +128,7 @@ class SyndicationService implements ISyndicationService
                 $page,
                 $type->getId(),
                 null,
+                null,
                 $is_uuid ? null : $shared_entity_id,
                 $is_uuid ? $shared_entity_id : null
             );
