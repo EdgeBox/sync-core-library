@@ -80,12 +80,12 @@ class Storage
      */
     public function getMetaInformationConnectionStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new MetaInformationConnectionStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new MetaInformationConnectionStorage($this->core);
     }
 
     /**
@@ -93,12 +93,12 @@ class Storage
      */
     public function getConnectionStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new ConnectionStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new ConnectionStorage($this->core);
     }
 
     /**
@@ -106,12 +106,12 @@ class Storage
      */
     public function getEntityTypeStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new EntityTypeStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new EntityTypeStorage($this->core);
     }
 
     /**
@@ -119,12 +119,12 @@ class Storage
      */
     public function getConnectionSynchronizationStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new ConnectionSynchronizationStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new ConnectionSynchronizationStorage($this->core);
     }
 
     /**
@@ -132,12 +132,12 @@ class Storage
      */
     public function getPreviewEntityStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new PreviewEntityStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new PreviewEntityStorage($this->core);
     }
 
     /**
@@ -145,12 +145,12 @@ class Storage
      */
     public function getInstanceStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new InstanceStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new InstanceStorage($this->core);
     }
 
     /**
@@ -158,12 +158,12 @@ class Storage
      */
     public function getApiStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new ApiStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new ApiStorage($this->core);
     }
 
     /**
@@ -171,12 +171,12 @@ class Storage
      */
     public function getObjectStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new ObjectStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new ObjectStorage($this->core);
     }
 
     /**
@@ -184,12 +184,12 @@ class Storage
      */
     public function getRemoteStorage()
     {
-        static $cache;
-        if (!empty($cache)) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->core->getBaseUrl()])) {
+            return $cache[$this->core->getBaseUrl()];
         }
 
-        return $cache = new RemoteStorageStorage($this->core);
+        return $cache[$this->core->getBaseUrl()] = new RemoteStorageStorage($this->core);
     }
 
     /**
@@ -204,11 +204,11 @@ class Storage
     {
         static $cache;
 
-        if (!empty($cache[$api_id][$site_id][$entity_type_name][$bundle_name])) {
-            return $cache[$api_id][$site_id][$entity_type_name][$bundle_name];
+        if (!empty($cache[$this->core->getBaseUrl()][$api_id][$site_id][$entity_type_name][$bundle_name])) {
+            return $cache[$this->core->getBaseUrl()][$api_id][$site_id][$entity_type_name][$bundle_name];
         }
 
-        return $cache[$api_id][$site_id][$entity_type_name][$bundle_name] = new CustomStorage(
+        return $cache[$this->core->getBaseUrl()][$api_id][$site_id][$entity_type_name][$bundle_name] = new CustomStorage(
             $this->core,
             $api_id,
             $site_id,
