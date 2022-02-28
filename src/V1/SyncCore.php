@@ -45,6 +45,8 @@ class SyncCore implements ISyncCore
      */
     protected $application;
 
+    protected $_features;
+
     /**
      * @param \EdgeBox\SyncCore\Interfaces\IApplicationInterface $application
      * @param string                                             $base_url
@@ -67,16 +69,15 @@ class SyncCore implements ISyncCore
 
     public function getFeatures()
     {
-        static $features = null;
-        if (null !== $features) {
-            return $features;
+        if (null !== $this->_features) {
+            return $this->_features;
         }
 
-        $features = [
+        $this->_features = [
             ISyncCore::FEATURE_REFRESH_AUTHENTICATION => 1,
         ];
 
-        return $features;
+        return $this->_features;
     }
 
     /**
@@ -101,12 +102,12 @@ class SyncCore implements ISyncCore
      */
     public function getReportingService()
     {
-        static $cache = null;
-        if ($cache) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->base_url])) {
+            return $cache[$this->base_url];
         }
 
-        return $cache = new ReportingService($this);
+        return $cache[$this->base_url] = new ReportingService($this);
     }
 
     /**
@@ -114,12 +115,12 @@ class SyncCore implements ISyncCore
      */
     public function getSyndicationService()
     {
-        static $cache = null;
-        if ($cache) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->base_url])) {
+            return $cache[$this->base_url];
         }
 
-        return $cache = new SyndicationService($this);
+        return $cache[$this->base_url] = new SyndicationService($this);
     }
 
     /**
@@ -127,12 +128,12 @@ class SyncCore implements ISyncCore
      */
     public function getConfigurationService()
     {
-        static $cache = null;
-        if ($cache) {
-            return $cache;
+        static $cache = [];
+        if (isset($cache[$this->base_url])) {
+            return $cache[$this->base_url];
         }
 
-        return $cache = new ConfigurationService($this);
+        return $cache[$this->base_url] = new ConfigurationService($this);
     }
 
     public function getEmbedService()
