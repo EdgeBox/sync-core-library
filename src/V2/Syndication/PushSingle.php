@@ -305,11 +305,28 @@ class PushSingle implements IPushSingle
             $embeds = [];
         }
 
+        $add_embed = function ($embed) use (&$embeds) {
+            foreach ($embeds as $candidate) {
+                if (
+                    $candidate->getEntityTypeNamespaceMachineName() == $embed->getEntityTypeNamespaceMachineName()
+                    && $candidate->getEntityTypeMachineName() == $embed->getEntityTypeMachineName()
+                    && $candidate->getEntityTypeVersion() == $embed->getEntityTypeVersion()
+                    && $candidate->getLanguage() == $embed->getLanguage()
+                    && $candidate->getRemoteUuid() == $embed->getRemoteUuid()
+                    && $candidate->getRemoteUniqueId() == $embed->getRemoteUniqueId()
+                ) {
+                    return;
+                }
+            }
+
+            $embeds[] = $embed;
+        };
+
         // If this is nested, we already get the serialized entity from the child.
         $nested_embeds = $embed_entity->getDto()->getEmbed();
         if ($nested_embeds) {
             foreach ($nested_embeds as $embed) {
-                $embeds[] = $embed;
+                $add_embed($embed);
             }
         }
 
@@ -329,7 +346,7 @@ class PushSingle implements IPushSingle
         $embed_dto->setName($previous_dto->getName());
         $embed_dto->setProperties($previous_dto->getProperties());
 
-        $embeds[] = $embed_dto;
+        $add_embed($embed_dto);
 
         $this->dto->setEmbed($embeds);
 
