@@ -1,6 +1,6 @@
 <?php
 /**
- * SetThrottlingDto.
+ * JwtResponse.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SetThrottlingDto Class Doc Comment.
+ * JwtResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class JwtResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SetThrottlingDto';
+    protected static $openAPIModelName = 'JwtResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,12 +61,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'projectDefaultPerSitePerMinute' => 'float',
-        'projectDefaultPerSiteParallel' => 'float',
-        'projectPerMinute' => 'float',
-        'projectParallel' => 'float',
-        'sitePerMinute' => 'float',
-        'siteParallel' => 'float',
+        'jwt' => 'string',
     ];
 
     /**
@@ -77,12 +72,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'projectDefaultPerSitePerMinute' => null,
-        'projectDefaultPerSiteParallel' => null,
-        'projectPerMinute' => null,
-        'projectParallel' => null,
-        'sitePerMinute' => null,
-        'siteParallel' => null,
+        'jwt' => null,
     ];
 
     /**
@@ -92,12 +82,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'projectDefaultPerSitePerMinute' => 'projectDefaultPerSitePerMinute',
-        'projectDefaultPerSiteParallel' => 'projectDefaultPerSiteParallel',
-        'projectPerMinute' => 'projectPerMinute',
-        'projectParallel' => 'projectParallel',
-        'sitePerMinute' => 'sitePerMinute',
-        'siteParallel' => 'siteParallel',
+        'jwt' => 'jwt',
     ];
 
     /**
@@ -106,12 +91,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'projectDefaultPerSitePerMinute' => 'setProjectDefaultPerSitePerMinute',
-        'projectDefaultPerSiteParallel' => 'setProjectDefaultPerSiteParallel',
-        'projectPerMinute' => 'setProjectPerMinute',
-        'projectParallel' => 'setProjectParallel',
-        'sitePerMinute' => 'setSitePerMinute',
-        'siteParallel' => 'setSiteParallel',
+        'jwt' => 'setJwt',
     ];
 
     /**
@@ -120,12 +100,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'projectDefaultPerSitePerMinute' => 'getProjectDefaultPerSitePerMinute',
-        'projectDefaultPerSiteParallel' => 'getProjectDefaultPerSiteParallel',
-        'projectPerMinute' => 'getProjectPerMinute',
-        'projectParallel' => 'getProjectParallel',
-        'sitePerMinute' => 'getSitePerMinute',
-        'siteParallel' => 'getSiteParallel',
+        'jwt' => 'getJwt',
     ];
 
     /**
@@ -143,12 +118,7 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['projectDefaultPerSitePerMinute'] = $data['projectDefaultPerSitePerMinute'] ?? null;
-        $this->container['projectDefaultPerSiteParallel'] = $data['projectDefaultPerSiteParallel'] ?? null;
-        $this->container['projectPerMinute'] = $data['projectPerMinute'] ?? null;
-        $this->container['projectParallel'] = $data['projectParallel'] ?? null;
-        $this->container['sitePerMinute'] = $data['sitePerMinute'] ?? null;
-        $this->container['siteParallel'] = $data['siteParallel'] ?? null;
+        $this->container['jwt'] = $data['jwt'] ?? null;
     }
 
     /**
@@ -232,7 +202,13 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        if (null === $this->container['jwt']) {
+            $invalidProperties[] = "'jwt' can't be null";
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -247,145 +223,25 @@ class SetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets projectDefaultPerSitePerMinute.
+     * Gets jwt.
      *
-     * @return null|float
+     * @return string
      */
-    public function getProjectDefaultPerSitePerMinute()
+    public function getJwt()
     {
-        return $this->container['projectDefaultPerSitePerMinute'];
+        return $this->container['jwt'];
     }
 
     /**
-     * Sets projectDefaultPerSitePerMinute.
+     * Sets jwt.
      *
-     * @param null|float $projectDefaultPerSitePerMinute projectDefaultPerSitePerMinute
+     * @param string $jwt jwt
      *
      * @return self
      */
-    public function setProjectDefaultPerSitePerMinute($projectDefaultPerSitePerMinute)
+    public function setJwt($jwt)
     {
-        $this->container['projectDefaultPerSitePerMinute'] = $projectDefaultPerSitePerMinute;
-
-        return $this;
-    }
-
-    /**
-     * Gets projectDefaultPerSiteParallel.
-     *
-     * @return null|float
-     */
-    public function getProjectDefaultPerSiteParallel()
-    {
-        return $this->container['projectDefaultPerSiteParallel'];
-    }
-
-    /**
-     * Sets projectDefaultPerSiteParallel.
-     *
-     * @param null|float $projectDefaultPerSiteParallel projectDefaultPerSiteParallel
-     *
-     * @return self
-     */
-    public function setProjectDefaultPerSiteParallel($projectDefaultPerSiteParallel)
-    {
-        $this->container['projectDefaultPerSiteParallel'] = $projectDefaultPerSiteParallel;
-
-        return $this;
-    }
-
-    /**
-     * Gets projectPerMinute.
-     *
-     * @return null|float
-     */
-    public function getProjectPerMinute()
-    {
-        return $this->container['projectPerMinute'];
-    }
-
-    /**
-     * Sets projectPerMinute.
-     *
-     * @param null|float $projectPerMinute projectPerMinute
-     *
-     * @return self
-     */
-    public function setProjectPerMinute($projectPerMinute)
-    {
-        $this->container['projectPerMinute'] = $projectPerMinute;
-
-        return $this;
-    }
-
-    /**
-     * Gets projectParallel.
-     *
-     * @return null|float
-     */
-    public function getProjectParallel()
-    {
-        return $this->container['projectParallel'];
-    }
-
-    /**
-     * Sets projectParallel.
-     *
-     * @param null|float $projectParallel projectParallel
-     *
-     * @return self
-     */
-    public function setProjectParallel($projectParallel)
-    {
-        $this->container['projectParallel'] = $projectParallel;
-
-        return $this;
-    }
-
-    /**
-     * Gets sitePerMinute.
-     *
-     * @return null|float
-     */
-    public function getSitePerMinute()
-    {
-        return $this->container['sitePerMinute'];
-    }
-
-    /**
-     * Sets sitePerMinute.
-     *
-     * @param null|float $sitePerMinute sitePerMinute
-     *
-     * @return self
-     */
-    public function setSitePerMinute($sitePerMinute)
-    {
-        $this->container['sitePerMinute'] = $sitePerMinute;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteParallel.
-     *
-     * @return null|float
-     */
-    public function getSiteParallel()
-    {
-        return $this->container['siteParallel'];
-    }
-
-    /**
-     * Sets siteParallel.
-     *
-     * @param null|float $siteParallel siteParallel
-     *
-     * @return self
-     */
-    public function setSiteParallel($siteParallel)
-    {
-        $this->container['siteParallel'] = $siteParallel;
+        $this->container['jwt'] = $jwt;
 
         return $this;
     }
