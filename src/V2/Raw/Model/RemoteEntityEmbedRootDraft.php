@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateRemoteEntityRevisionDto.
+ * RemoteEntityEmbedRootDraft.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * CreateRemoteEntityRevisionDto Class Doc Comment.
+ * RemoteEntityEmbedRootDraft Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateRemoteEntityRevisionDto';
+    protected static $openAPIModelName = 'RemoteEntityEmbedRootDraft';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,25 +61,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'string',
         'remoteUuid' => 'string',
         'remoteUniqueId' => 'string',
         'language' => 'string',
-        'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'entityTypeNamespaceMachineName' => 'string',
+        'entityTypeMachineName' => 'string',
+        'entityTypeVersion' => 'string',
         'poolMachineNames' => 'string[]',
-        'isTranslationRoot' => 'bool',
-        'viewUrl' => 'string',
-        'deleted' => 'bool',
-        'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[]',
+        'referenceDetails' => 'mixed',
+        'name' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
-        'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
-        'entityTypeByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference',
-        'translationRoot' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'previewHtmlFileId' => 'string',
-        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]',
-        'flowMachineName' => 'string',
-        'previewHtml' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
+        'isTranslationRoot' => 'bool',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]',
     ];
 
     /**
@@ -90,25 +84,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'name' => null,
         'remoteUuid' => null,
         'remoteUniqueId' => null,
         'language' => null,
-        'directDependencies' => null,
-        'appType' => null,
+        'entityTypeNamespaceMachineName' => null,
+        'entityTypeMachineName' => null,
+        'entityTypeVersion' => null,
         'poolMachineNames' => null,
-        'isTranslationRoot' => null,
-        'viewUrl' => null,
-        'deleted' => null,
-        'embed' => null,
+        'referenceDetails' => null,
+        'name' => null,
         'properties' => null,
-        'allDependencies' => null,
-        'entityTypeByMachineName' => null,
-        'translationRoot' => null,
-        'previewHtmlFileId' => null,
+        'directDependencies' => null,
+        'isTranslationRoot' => null,
         'translations' => null,
-        'flowMachineName' => null,
-        'previewHtml' => null,
     ];
 
     /**
@@ -118,25 +106,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'name' => 'name',
         'remoteUuid' => 'remoteUuid',
         'remoteUniqueId' => 'remoteUniqueId',
         'language' => 'language',
-        'directDependencies' => 'directDependencies',
-        'appType' => 'appType',
+        'entityTypeNamespaceMachineName' => 'entityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'entityTypeMachineName',
+        'entityTypeVersion' => 'entityTypeVersion',
         'poolMachineNames' => 'poolMachineNames',
-        'isTranslationRoot' => 'isTranslationRoot',
-        'viewUrl' => 'viewUrl',
-        'deleted' => 'deleted',
-        'embed' => 'embed',
+        'referenceDetails' => 'referenceDetails',
+        'name' => 'name',
         'properties' => 'properties',
-        'allDependencies' => 'allDependencies',
-        'entityTypeByMachineName' => 'entityTypeByMachineName',
-        'translationRoot' => 'translationRoot',
-        'previewHtmlFileId' => 'previewHtmlFileId',
+        'directDependencies' => 'directDependencies',
+        'isTranslationRoot' => 'isTranslationRoot',
         'translations' => 'translations',
-        'flowMachineName' => 'flowMachineName',
-        'previewHtml' => 'previewHtml',
     ];
 
     /**
@@ -145,25 +127,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'name' => 'setName',
         'remoteUuid' => 'setRemoteUuid',
         'remoteUniqueId' => 'setRemoteUniqueId',
         'language' => 'setLanguage',
-        'directDependencies' => 'setDirectDependencies',
-        'appType' => 'setAppType',
+        'entityTypeNamespaceMachineName' => 'setEntityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'setEntityTypeMachineName',
+        'entityTypeVersion' => 'setEntityTypeVersion',
         'poolMachineNames' => 'setPoolMachineNames',
-        'isTranslationRoot' => 'setIsTranslationRoot',
-        'viewUrl' => 'setViewUrl',
-        'deleted' => 'setDeleted',
-        'embed' => 'setEmbed',
+        'referenceDetails' => 'setReferenceDetails',
+        'name' => 'setName',
         'properties' => 'setProperties',
-        'allDependencies' => 'setAllDependencies',
-        'entityTypeByMachineName' => 'setEntityTypeByMachineName',
-        'translationRoot' => 'setTranslationRoot',
-        'previewHtmlFileId' => 'setPreviewHtmlFileId',
+        'directDependencies' => 'setDirectDependencies',
+        'isTranslationRoot' => 'setIsTranslationRoot',
         'translations' => 'setTranslations',
-        'flowMachineName' => 'setFlowMachineName',
-        'previewHtml' => 'setPreviewHtml',
     ];
 
     /**
@@ -172,25 +148,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'name' => 'getName',
         'remoteUuid' => 'getRemoteUuid',
         'remoteUniqueId' => 'getRemoteUniqueId',
         'language' => 'getLanguage',
-        'directDependencies' => 'getDirectDependencies',
-        'appType' => 'getAppType',
+        'entityTypeNamespaceMachineName' => 'getEntityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'getEntityTypeMachineName',
+        'entityTypeVersion' => 'getEntityTypeVersion',
         'poolMachineNames' => 'getPoolMachineNames',
-        'isTranslationRoot' => 'getIsTranslationRoot',
-        'viewUrl' => 'getViewUrl',
-        'deleted' => 'getDeleted',
-        'embed' => 'getEmbed',
+        'referenceDetails' => 'getReferenceDetails',
+        'name' => 'getName',
         'properties' => 'getProperties',
-        'allDependencies' => 'getAllDependencies',
-        'entityTypeByMachineName' => 'getEntityTypeByMachineName',
-        'translationRoot' => 'getTranslationRoot',
-        'previewHtmlFileId' => 'getPreviewHtmlFileId',
+        'directDependencies' => 'getDirectDependencies',
+        'isTranslationRoot' => 'getIsTranslationRoot',
         'translations' => 'getTranslations',
-        'flowMachineName' => 'getFlowMachineName',
-        'previewHtml' => 'getPreviewHtml',
     ];
 
     /**
@@ -208,25 +178,19 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->container['name'] = $data['name'] ?? null;
         $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
         $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
         $this->container['language'] = $data['language'] ?? null;
-        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
-        $this->container['appType'] = $data['appType'] ?? null;
+        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
+        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
+        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
         $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
-        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
-        $this->container['viewUrl'] = $data['viewUrl'] ?? null;
-        $this->container['deleted'] = $data['deleted'] ?? null;
-        $this->container['embed'] = $data['embed'] ?? null;
+        $this->container['referenceDetails'] = $data['referenceDetails'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
         $this->container['properties'] = $data['properties'] ?? null;
-        $this->container['allDependencies'] = $data['allDependencies'] ?? null;
-        $this->container['entityTypeByMachineName'] = $data['entityTypeByMachineName'] ?? null;
-        $this->container['translationRoot'] = $data['translationRoot'] ?? null;
-        $this->container['previewHtmlFileId'] = $data['previewHtmlFileId'] ?? null;
+        $this->container['directDependencies'] = $data['directDependencies'] ?? null;
+        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
         $this->container['translations'] = $data['translations'] ?? null;
-        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
-        $this->container['previewHtml'] = $data['previewHtml'] ?? null;
     }
 
     /**
@@ -315,23 +279,23 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         if (null === $this->container['language']) {
             $invalidProperties[] = "'language' can't be null";
         }
-        if (null === $this->container['appType']) {
-            $invalidProperties[] = "'appType' can't be null";
+        if (null === $this->container['entityTypeNamespaceMachineName']) {
+            $invalidProperties[] = "'entityTypeNamespaceMachineName' can't be null";
+        }
+        if (null === $this->container['entityTypeMachineName']) {
+            $invalidProperties[] = "'entityTypeMachineName' can't be null";
+        }
+        if (null === $this->container['entityTypeVersion']) {
+            $invalidProperties[] = "'entityTypeVersion' can't be null";
         }
         if (null === $this->container['poolMachineNames']) {
             $invalidProperties[] = "'poolMachineNames' can't be null";
         }
-        if (null === $this->container['viewUrl']) {
-            $invalidProperties[] = "'viewUrl' can't be null";
-        }
         if (null === $this->container['properties']) {
             $invalidProperties[] = "'properties' can't be null";
         }
-        if (null === $this->container['entityTypeByMachineName']) {
-            $invalidProperties[] = "'entityTypeByMachineName' can't be null";
-        }
-        if (null === $this->container['flowMachineName']) {
-            $invalidProperties[] = "'flowMachineName' can't be null";
+        if (null === $this->container['directDependencies']) {
+            $invalidProperties[] = "'directDependencies' can't be null";
         }
 
         return $invalidProperties;
@@ -346,30 +310,6 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function valid()
     {
         return 0 === count($this->listInvalidProperties());
-    }
-
-    /**
-     * Gets name.
-     *
-     * @return null|string
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name.
-     *
-     * @param null|string $name name
-     *
-     * @return self
-     */
-    public function setName($name)
-    {
-        $this->container['name'] = $name;
-
-        return $this;
     }
 
     /**
@@ -445,49 +385,73 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets directDependencies.
+     * Gets entityTypeNamespaceMachineName.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return string
      */
-    public function getDirectDependencies()
+    public function getEntityTypeNamespaceMachineName()
     {
-        return $this->container['directDependencies'];
+        return $this->container['entityTypeNamespaceMachineName'];
     }
 
     /**
-     * Sets directDependencies.
+     * Sets entityTypeNamespaceMachineName.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName
      *
      * @return self
      */
-    public function setDirectDependencies($directDependencies)
+    public function setEntityTypeNamespaceMachineName($entityTypeNamespaceMachineName)
     {
-        $this->container['directDependencies'] = $directDependencies;
+        $this->container['entityTypeNamespaceMachineName'] = $entityTypeNamespaceMachineName;
 
         return $this;
     }
 
     /**
-     * Gets appType.
+     * Gets entityTypeMachineName.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return string
      */
-    public function getAppType()
+    public function getEntityTypeMachineName()
     {
-        return $this->container['appType'];
+        return $this->container['entityTypeMachineName'];
     }
 
     /**
-     * Sets appType.
+     * Sets entityTypeMachineName.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param string $entityTypeMachineName entityTypeMachineName
      *
      * @return self
      */
-    public function setAppType($appType)
+    public function setEntityTypeMachineName($entityTypeMachineName)
     {
-        $this->container['appType'] = $appType;
+        $this->container['entityTypeMachineName'] = $entityTypeMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypeVersion.
+     *
+     * @return string
+     */
+    public function getEntityTypeVersion()
+    {
+        return $this->container['entityTypeVersion'];
+    }
+
+    /**
+     * Sets entityTypeVersion.
+     *
+     * @param string $entityTypeVersion entityTypeVersion
+     *
+     * @return self
+     */
+    public function setEntityTypeVersion($entityTypeVersion)
+    {
+        $this->container['entityTypeVersion'] = $entityTypeVersion;
 
         return $this;
     }
@@ -517,97 +481,49 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets isTranslationRoot.
+     * Gets referenceDetails.
      *
-     * @return null|bool
+     * @return null|mixed
      */
-    public function getIsTranslationRoot()
+    public function getReferenceDetails()
     {
-        return $this->container['isTranslationRoot'];
+        return $this->container['referenceDetails'];
     }
 
     /**
-     * Sets isTranslationRoot.
+     * Sets referenceDetails.
      *
-     * @param null|bool $isTranslationRoot isTranslationRoot
+     * @param null|mixed $referenceDetails referenceDetails
      *
      * @return self
      */
-    public function setIsTranslationRoot($isTranslationRoot)
+    public function setReferenceDetails($referenceDetails)
     {
-        $this->container['isTranslationRoot'] = $isTranslationRoot;
+        $this->container['referenceDetails'] = $referenceDetails;
 
         return $this;
     }
 
     /**
-     * Gets viewUrl.
+     * Gets name.
      *
-     * @return string
+     * @return null|string
      */
-    public function getViewUrl()
+    public function getName()
     {
-        return $this->container['viewUrl'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets viewUrl.
+     * Sets name.
      *
-     * @param string $viewUrl viewUrl
+     * @param null|string $name name
      *
      * @return self
      */
-    public function setViewUrl($viewUrl)
+    public function setName($name)
     {
-        $this->container['viewUrl'] = $viewUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleted.
-     *
-     * @return null|bool
-     */
-    public function getDeleted()
-    {
-        return $this->container['deleted'];
-    }
-
-    /**
-     * Sets deleted.
-     *
-     * @param null|bool $deleted deleted
-     *
-     * @return self
-     */
-    public function setDeleted($deleted)
-    {
-        $this->container['deleted'] = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Gets embed.
-     *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[]
-     */
-    public function getEmbed()
-    {
-        return $this->container['embed'];
-    }
-
-    /**
-     * Sets embed.
-     *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[] $embed embed
-     *
-     * @return self
-     */
-    public function setEmbed($embed)
-    {
-        $this->container['embed'] = $embed;
+        $this->container['name'] = $name;
 
         return $this;
     }
@@ -637,97 +553,49 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets allDependencies.
+     * Gets directDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
      */
-    public function getAllDependencies()
+    public function getDirectDependencies()
     {
-        return $this->container['allDependencies'];
+        return $this->container['directDependencies'];
     }
 
     /**
-     * Sets allDependencies.
+     * Sets directDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
-    public function setAllDependencies($allDependencies)
+    public function setDirectDependencies($directDependencies)
     {
-        $this->container['allDependencies'] = $allDependencies;
+        $this->container['directDependencies'] = $directDependencies;
 
         return $this;
     }
 
     /**
-     * Gets entityTypeByMachineName.
+     * Gets isTranslationRoot.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference
+     * @return null|bool
      */
-    public function getEntityTypeByMachineName()
+    public function getIsTranslationRoot()
     {
-        return $this->container['entityTypeByMachineName'];
+        return $this->container['isTranslationRoot'];
     }
 
     /**
-     * Sets entityTypeByMachineName.
+     * Sets isTranslationRoot.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference $entityTypeByMachineName entityTypeByMachineName
+     * @param null|bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
-    public function setEntityTypeByMachineName($entityTypeByMachineName)
+    public function setIsTranslationRoot($isTranslationRoot)
     {
-        $this->container['entityTypeByMachineName'] = $entityTypeByMachineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets translationRoot.
-     *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
-     */
-    public function getTranslationRoot()
-    {
-        return $this->container['translationRoot'];
-    }
-
-    /**
-     * Sets translationRoot.
-     *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
-     *
-     * @return self
-     */
-    public function setTranslationRoot($translationRoot)
-    {
-        $this->container['translationRoot'] = $translationRoot;
-
-        return $this;
-    }
-
-    /**
-     * Gets previewHtmlFileId.
-     *
-     * @return null|string
-     */
-    public function getPreviewHtmlFileId()
-    {
-        return $this->container['previewHtmlFileId'];
-    }
-
-    /**
-     * Sets previewHtmlFileId.
-     *
-     * @param null|string $previewHtmlFileId previewHtmlFileId
-     *
-     * @return self
-     */
-    public function setPreviewHtmlFileId($previewHtmlFileId)
-    {
-        $this->container['previewHtmlFileId'] = $previewHtmlFileId;
+        $this->container['isTranslationRoot'] = $isTranslationRoot;
 
         return $this;
     }
@@ -735,7 +603,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]
      */
     public function getTranslations()
     {
@@ -745,61 +613,13 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[] $translations translations
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[] $translations translations
      *
      * @return self
      */
     public function setTranslations($translations)
     {
         $this->container['translations'] = $translations;
-
-        return $this;
-    }
-
-    /**
-     * Gets flowMachineName.
-     *
-     * @return string
-     */
-    public function getFlowMachineName()
-    {
-        return $this->container['flowMachineName'];
-    }
-
-    /**
-     * Sets flowMachineName.
-     *
-     * @param string $flowMachineName flowMachineName
-     *
-     * @return self
-     */
-    public function setFlowMachineName($flowMachineName)
-    {
-        $this->container['flowMachineName'] = $flowMachineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets previewHtml.
-     *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
-     */
-    public function getPreviewHtml()
-    {
-        return $this->container['previewHtml'];
-    }
-
-    /**
-     * Sets previewHtml.
-     *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
-     *
-     * @return self
-     */
-    public function setPreviewHtml($previewHtml)
-    {
-        $this->container['previewHtml'] = $previewHtml;
 
         return $this;
     }

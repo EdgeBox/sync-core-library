@@ -283,6 +283,8 @@ class SyncCore implements ISyncCore
                 $options[RequestOptions::TIMEOUT] = $this->default_timeout;
             }
 
+            //\Drupal::messenger()->addMessage($request->getMethod().' '.print_r($request->getBody()->__toString(),1));
+
             $response = $this->application->getHttpClient()->send($request, $options);
         } catch (ConnectException $e) {
             throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());

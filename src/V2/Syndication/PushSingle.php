@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Syndication;
 
+use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPushSingle;
 use EdgeBox\SyncCore\V2\Configuration\DefineEntityType;
@@ -11,7 +12,8 @@ use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
-use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -311,10 +313,14 @@ class PushSingle implements IPushSingle
                     $candidate->getEntityTypeNamespaceMachineName() == $embed->getEntityTypeNamespaceMachineName()
                     && $candidate->getEntityTypeMachineName() == $embed->getEntityTypeMachineName()
                     && $candidate->getEntityTypeVersion() == $embed->getEntityTypeVersion()
-                    && $candidate->getLanguage() == $embed->getLanguage()
                     && $candidate->getRemoteUuid() == $embed->getRemoteUuid()
                     && $candidate->getRemoteUniqueId() == $embed->getRemoteUniqueId()
                 ) {
+                    // As we expect all translations to be sent, we always expect the same root language to be set.
+                    if ($candidate->getLanguage() != $embed->getLanguage()) {
+                        throw new InternalContentSyncError("The same entity {$candidate->getEntityTypeNamespaceMachineName()}.{$candidate->getEntityTypeMachineName()} {$candidate->getRemoteUuid()}{$candidate->getRemoteUniqueId()} was embedded twice but with a different root language. Previous root language: {$candidate->getLanguage()}. New root language: {$embed->getLanguage()}.");
+                    }
+
                     return;
                 }
             }
@@ -330,21 +336,45 @@ class PushSingle implements IPushSingle
             }
         }
 
-        $previous_dto = $embed_entity->getDto();
+        $copy_embed = function ($embed_dto, $previous_dto, $details = null) use (&$copy_embed) {
+            /**
+             * @var CreateRemoteEntityRevisionDto $previous_dto
+             */
+            /**
+             * @var RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft $embed_dto
+             */
+            $embed_dto->setDirectDependencies([]);
+            $embed_dto->setEntityTypeMachineName($previous_dto->getEntityTypeByMachineName()->getMachineName());
+            $embed_dto->setEntityTypeNamespaceMachineName($previous_dto->getEntityTypeByMachineName()->getNamespaceMachineName());
+            $embed_dto->setEntityTypeVersion($previous_dto->getEntityTypeByMachineName()->getVersionId());
+            $embed_dto->setLanguage($previous_dto->getLanguage());
+            $embed_dto->setRemoteUuid($previous_dto->getRemoteUuid());
+            $embed_dto->setRemoteUniqueId($previous_dto->getRemoteUniqueId());
+            $embed_dto->setLanguage($previous_dto->getLanguage());
+            $embed_dto->setPoolMachineNames($previous_dto->getPoolMachineNames());
+            $embed_dto->setReferenceDetails($details);
+            $embed_dto->setName($previous_dto->getName());
+            $embed_dto->setProperties($previous_dto->getProperties());
+            $embed_dto->setIsTranslationRoot($previous_dto->getIsTranslationRoot());
 
-        $embed_dto = new RemoteEntityEmbed();
-        $embed_dto->setDirectDependencies([]);
-        $embed_dto->setEntityTypeMachineName($previous_dto->getEntityTypeByMachineName()->getMachineName());
-        $embed_dto->setEntityTypeNamespaceMachineName($previous_dto->getEntityTypeByMachineName()->getNamespaceMachineName());
-        $embed_dto->setEntityTypeVersion($previous_dto->getEntityTypeByMachineName()->getVersionId());
-        $embed_dto->setLanguage($previous_dto->getLanguage());
-        $embed_dto->setRemoteUuid($previous_dto->getRemoteUuid());
-        $embed_dto->setRemoteUniqueId($previous_dto->getRemoteUniqueId());
-        $embed_dto->setLanguage($previous_dto->getLanguage());
-        $embed_dto->setPoolMachineNames($previous_dto->getPoolMachineNames());
-        $embed_dto->setReferenceDetails($details);
-        $embed_dto->setName($previous_dto->getName());
-        $embed_dto->setProperties($previous_dto->getProperties());
+            if ($embed_dto instanceof RemoteEntityEmbedRootDraft) {
+                $translations = $previous_dto->getTranslations();
+                if ($translations) {
+                    $embed_translations = [];
+                    foreach ($translations as $previous_translation_dto) {
+                        $embed_translation_dto = new RemoteEntityEmbedDraft();
+                        $copy_embed($embed_translation_dto, $previous_translation_dto);
+                        $embed_translations[] = $embed_translation_dto;
+                    }
+                    $embed_dto->setTranslations($embed_translations);
+                }
+            }
+        };
+
+        $previous_dto = $embed_entity->getDto();
+        $embed_dto = new RemoteEntityEmbedRootDraft();
+
+        $copy_embed($embed_dto, $previous_dto, $details);
 
         $add_embed($embed_dto);
 
