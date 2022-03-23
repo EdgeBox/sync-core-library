@@ -71,7 +71,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
         'deleted' => 'bool',
-        'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]',
+        'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
         'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -642,7 +642,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets embed.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]
      */
     public function getEmbed()
     {
@@ -652,7 +652,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets embed.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[] $embed embed
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[] $embed embed
      *
      * @return self
      */

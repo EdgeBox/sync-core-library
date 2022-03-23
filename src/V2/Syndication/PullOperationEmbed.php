@@ -6,6 +6,8 @@ use EdgeBox\SyncCore\Interfaces\Syndication\IEntityReference;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class PullOperationEmbed implements IEntityReference
@@ -23,7 +25,7 @@ class PullOperationEmbed implements IEntityReference
      */
     protected $pullOperation;
     /**
-     * @var null|RemoteEntityEmbed|RemoteEntityEmbedDraft
+     * @var null|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed
      */
     protected $embed;
     /**

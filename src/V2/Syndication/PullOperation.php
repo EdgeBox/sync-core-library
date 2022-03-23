@@ -11,6 +11,8 @@ use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -22,7 +24,7 @@ class PullOperation implements IPullOperation
     protected $core;
 
     /**
-     * @var CreateRemoteEntityRevisionDto|DeleteRemoteEntityRevisionDto|RemoteEntityEmbed|RemoteEntityEmbedDraft
+     * @var CreateRemoteEntityRevisionDto|DeleteRemoteEntityRevisionDto|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed
      */
     protected $dto;
 
@@ -48,7 +50,7 @@ class PullOperation implements IPullOperation
     /**
      * PushSingle constructor.
      *
-     * @param array|RemoteEntityEmbed|RemoteEntityEmbedDraft $body
+     * @param array|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed $body
      */
     public function __construct(SyncCore $core, $body, bool $delete, ?PullOperation $parentPullOperation = null)
     {
@@ -59,9 +61,19 @@ class PullOperation implements IPullOperation
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
             $this->dto = @ObjectSerializer::deserialize($body, DeleteRemoteEntityRevisionDto::class, []);
-        } elseif ($body instanceof RemoteEntityEmbed || $body instanceof RemoteEntityEmbedDraft) {
+        } elseif ($body instanceof RemoteEntityEmbed || $body instanceof RemoteEntityEmbedDraft || $body instanceof RemoteEntityRootEmbed || $body instanceof RemoteEntityEmbedRootDraft) {
             $this->dto = $body;
             $this->parentPullOperation = $parentPullOperation;
+
+            if ($body instanceof RemoteEntityRootEmbed || $body instanceof RemoteEntityEmbedRootDraft) {
+                $translations = $this->dto->getTranslations();
+                if ($translations) {
+                    foreach ($translations as $translation_dto) {
+                        $language = $translation_dto->getLanguage();
+                        $this->translations[$language] = $translation_dto;
+                    }
+                }
+            }
         } else {
             // Turn nested arrays into objects.
             $body = json_decode(json_encode($body));
@@ -116,7 +128,7 @@ class PullOperation implements IPullOperation
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
-        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
+        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft || $this->dto instanceof RemoteEntityRootEmbed || $this->dto instanceof RemoteEntityEmbedRootDraft) {
             return $this->dto->getEntityTypeNamespaceMachineName();
         }
 
@@ -131,7 +143,7 @@ class PullOperation implements IPullOperation
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return $this->dto->getEntityTypeMachineName();
         }
-        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft) {
+        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft || $this->dto instanceof RemoteEntityRootEmbed || $this->dto instanceof RemoteEntityEmbedRootDraft) {
             return $this->dto->getEntityTypeMachineName();
         }
 
@@ -277,7 +289,7 @@ class PullOperation implements IPullOperation
         }*/
 
         /**
-         * @var RemoteEntityEmbed|RemoteEntityEmbedDraft $embed
+         * @var RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityRootEmbed|RemoteEntityRootEmbedDraft $embed
          */
 
         return new PullOperationEmbed($this->core, $referenceDto, $this, $embedIndex, $embed);
