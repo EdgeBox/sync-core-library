@@ -6,6 +6,7 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
 use EdgeBox\SyncCore\V2\Helper;
 use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -138,9 +139,9 @@ class SyndicationService implements ISyndicationService
             $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
             foreach ($response->getItems() as $item) {
-                // TODO: Library: This should be the site's UUID, not it's ID. Need to change the usage
-                //  interface to return it, too.
-                $result[$item->getSite()->getId()] = $item->getViewUrl();
+                if (EntityRemoteStatus::EXISTS === $item->getStatus()) {
+                    $result[$item->getSite()->getId()] = $item->getViewUrl();
+                }
             }
 
             ++$page;
