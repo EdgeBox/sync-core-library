@@ -546,6 +546,7 @@ class SyncCore implements ISyncCore
             ISyncCore::FEATURE_REFRESH_AUTHENTICATION => 0,
             ISyncCore::FEATURE_INDEPENDENT_FLOW_CONFIG => 1,
             ISyncCore::FEATURE_PULL_ALL_WITHOUT_POOL => 1,
+            ISyncCore::FEATURE_PUSH_TO_MULTIPLE_POOLS => 1,
         ] + $flags;
 
         return $features;

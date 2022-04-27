@@ -106,10 +106,12 @@ class PushSingle implements IPushSingle
     /**
      * {@inheritdoc}
      */
-    // TODO: Drupal: Support multiple pools.
     public function toPool(string $pool_id)
     {
         $pools = $this->dto->getPoolMachineNames();
+        if (!$pools) {
+            $pools = [];
+        }
         $pools[] = $pool_id;
         $this->dto->setPoolMachineNames($pools);
 
