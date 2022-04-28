@@ -3325,6 +3325,316 @@ class DefaultApi
     }
 
     /**
+     * Operation featuresControllerUpdate.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType targetType (required)
+     * @param  string $featureName featureName (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto setFeatureFlagDto (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary
+     */
+    public function featuresControllerUpdate($targetType, $featureName, $setFeatureFlagDto)
+    {
+        list($response) = $this->featuresControllerUpdateWithHttpInfo($targetType, $featureName, $setFeatureFlagDto);
+
+        return $response;
+    }
+
+    /**
+     * Operation featuresControllerUpdateWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType (required)
+     * @param  string $featureName (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function featuresControllerUpdateWithHttpInfo($targetType, $featureName, $setFeatureFlagDto)
+    {
+        $request = $this->featuresControllerUpdateRequest($targetType, $featureName, $setFeatureFlagDto);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation featuresControllerUpdateAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType (required)
+     * @param  string $featureName (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerUpdateAsync($targetType, $featureName, $setFeatureFlagDto)
+    {
+        return $this->featuresControllerUpdateAsyncWithHttpInfo($targetType, $featureName, $setFeatureFlagDto)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation featuresControllerUpdateAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType (required)
+     * @param  string $featureName (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerUpdateAsyncWithHttpInfo($targetType, $featureName, $setFeatureFlagDto)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
+        $request = $this->featuresControllerUpdateRequest($targetType, $featureName, $setFeatureFlagDto);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'featuresControllerUpdate'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType (required)
+     * @param  string $featureName (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function featuresControllerUpdateRequest($targetType, $featureName, $setFeatureFlagDto)
+    {
+        // verify the required parameter 'targetType' is set
+        if (null === $targetType || (is_array($targetType) && 0 === count($targetType))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $targetType when calling featuresControllerUpdate'
+            );
+        }
+        // verify the required parameter 'featureName' is set
+        if (null === $featureName || (is_array($featureName) && 0 === count($featureName))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $featureName when calling featuresControllerUpdate'
+            );
+        }
+        // verify the required parameter 'setFeatureFlagDto' is set
+        if (null === $setFeatureFlagDto || (is_array($setFeatureFlagDto) && 0 === count($setFeatureFlagDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $setFeatureFlagDto when calling featuresControllerUpdate'
+            );
+        }
+
+        $resourcePath = '/sync-core/features/{targetType}/{featureName}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $targetType) {
+            $resourcePath = str_replace(
+                '{'.'targetType'.'}',
+                ObjectSerializer::toPathValue($targetType),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $featureName) {
+            $resourcePath = str_replace(
+                '{'.'featureName'.'}',
+                ObjectSerializer::toPathValue($featureName),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($setFeatureFlagDto)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($setFeatureFlagDto));
+            } else {
+                $httpBody = $setFeatureFlagDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation fileControllerCreate.
      *
      * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto createFileDto (required)
@@ -10922,6 +11232,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerList.
      *
+     * @param  string $latest latest (optional)
      * @param  string $forCustomer forCustomer (optional)
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $poolMachineName poolMachineName (optional)
@@ -10934,9 +11245,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList
      */
-    public function remoteEntityRevisionControllerList($forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerList($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         return $response;
     }
@@ -10944,6 +11255,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListWithHttpInfo.
      *
+     * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
@@ -10956,9 +11268,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function remoteEntityRevisionControllerListWithHttpInfo($forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListWithHttpInfo($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        $request = $this->remoteEntityRevisionControllerListRequest($forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         try {
             $options = $this->createHttpClientOption();
@@ -11043,6 +11355,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListAsync.
      *
+     * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
@@ -11054,9 +11367,9 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsync($forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsync($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
-        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page)
+        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -11068,6 +11381,7 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerListAsyncWithHttpInfo.
      *
+     * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
@@ -11079,10 +11393,10 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList';
-        $request = $this->remoteEntityRevisionControllerListRequest($forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -11122,6 +11436,7 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerList'.
      *
+     * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
@@ -11133,7 +11448,7 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function remoteEntityRevisionControllerListRequest($forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListRequest($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
     {
         $resourcePath = '/sync-core/remote-entity-revision';
         $formParams = [];
@@ -11142,6 +11457,16 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        if (null !== $latest) {
+            if ('form' === 'form' && is_array($latest)) {
+                foreach ($latest as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['latest'] = $latest;
+            }
+        }
         // query params
         if (null !== $forCustomer) {
             if ('form' === 'form' && is_array($forCustomer)) {
