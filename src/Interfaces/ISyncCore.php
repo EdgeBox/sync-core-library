@@ -15,10 +15,14 @@ use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
  */
 interface ISyncCore
 {
+    // Static features; availability is defined by the library.
     public const FEATURE_REFRESH_AUTHENTICATION = 'site-authentication.refresh';
     public const FEATURE_INDEPENDENT_FLOW_CONFIG = 'flow.independent-config';
     public const FEATURE_PULL_ALL_WITHOUT_POOL = 'migration.no-pool';
     public const FEATURE_PUSH_TO_MULTIPLE_POOLS = 'syndication.multiple-pools';
+
+    // Dynamic features; availability is defined by the Sync Core.
+    public const FEATURE_DYNAMIC_POOL_ASSIGNMENT = 'syndication:dynamic-pool-assignment';
 
     /**
      * @return IReportingService

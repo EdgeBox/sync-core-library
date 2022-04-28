@@ -76,6 +76,11 @@ class SyncCore implements ISyncCore
     protected $default_timeout = 15;
 
     /**
+     * @var int
+     */
+    protected $timeout_quick = 7;
+
+    /**
      * @param string $base_url
      *                         The Sync Core base URL
      */
@@ -336,17 +341,21 @@ class SyncCore implements ISyncCore
      *
      * @return mixed
      */
-    public function sendToSyncCore(Request $request, string $permissions)
+    public function sendToSyncCore(Request $request, string $permissions, bool $quick = false)
     {
         $jwt = $this->createJwt($permissions);
 
-        return $this->sendToSyncCoreWithJwt($request, $jwt);
+        return $this->sendToSyncCoreWithJwt($request, $jwt, $quick);
     }
 
-    public function sendToSyncCoreWithJwt(Request $request, string $jwt)
+    public function sendToSyncCoreWithJwt(Request $request, string $jwt, bool $quick = false)
     {
         $options = [];
         $options[RequestOptions::HEADERS]['Authorization'] = 'Bearer '.$jwt;
+
+        if ($quick) {
+            $options[RequestOptions::TIMEOUT] = $this->timeout_quick;
+        }
 
         return $this->sendRaw($request, $options);
     }
@@ -367,9 +376,9 @@ class SyncCore implements ISyncCore
      *
      * @return object|Raw\Model\ModelInterface
      */
-    public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions)
+    public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions, bool $quick = false)
     {
-        $response = $this->sendToSyncCore($request, $permissions);
+        $response = $this->sendToSyncCore($request, $permissions, $quick);
 
         return @ObjectSerializer::deserialize($response, $class, []);
     }
@@ -522,12 +531,14 @@ class SyncCore implements ISyncCore
         return new Batch($this);
     }
 
-    public function featureEnabled(string $name)
+    public function featureEnabled(string $name, bool $quick = false)
     {
-        return !empty($this->getFeatures()[$name]) && (bool) $this->getFeatures()[$name];
+        $features = $this->getFeatures($quick);
+
+        return !empty($features[$name]) && (bool) $features[$name];
     }
 
-    public function getFeatures()
+    public function getFeatures(bool $quick = false)
     {
         static $features = null;
         if (null !== $features) {
@@ -538,7 +549,7 @@ class SyncCore implements ISyncCore
         /**
          * @var FeatureFlagSummary $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, FeatureFlagSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->sendToSyncCoreAndExpect($request, FeatureFlagSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick);
 
         $flags = (array) $response->getFlags();
 
