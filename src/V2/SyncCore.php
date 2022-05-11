@@ -707,6 +707,10 @@ class SyncCore implements ISyncCore
             return;
         }
 
+        if (!$this->isSiteRegistered()) {
+            return;
+        }
+
         $dto = $this->getSiteUpdateDto();
 
         if (!count($domains)) {
