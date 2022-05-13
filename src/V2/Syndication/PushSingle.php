@@ -531,7 +531,7 @@ class PushSingle implements IPushSingle
             $request = $this
                 ->core
                 ->getClient()
-                ->remoteEntityRevisionControllerDeleteRequest($dto)
+                ->remoteEntityRevisionControllerDeleteRequest(deleteRemoteEntityRevisionDto: $dto)
             ;
 
             $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
@@ -541,7 +541,7 @@ class PushSingle implements IPushSingle
         $request = $this
             ->core
             ->getClient()
-            ->remoteEntityRevisionControllerCreateRequest($this->dto)
+            ->remoteEntityRevisionControllerCreateRequest(createRemoteEntityRevisionDto: $this->dto)
         ;
 
         $this

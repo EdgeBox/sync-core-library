@@ -193,7 +193,7 @@ class SyncCore implements ISyncCore
             ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
             : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
 
-        $request = $this->getClient()->fileControllerCreateRequest($fileDto);
+        $request = $this->getClient()->fileControllerCreateRequest(createFileDto: $fileDto);
         /**
          * @var FileEntity $file
          */
@@ -257,7 +257,7 @@ class SyncCore implements ISyncCore
             $this->sendRaw($request, []);
         }
 
-        $request = $this->getClient()->fileControllerFileUploadedRequest($file->getId());
+        $request = $this->getClient()->fileControllerFileUploadedRequest(id: $file->getId());
 
         return $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
     }
@@ -452,7 +452,7 @@ class SyncCore implements ISyncCore
             throw new InternalContentSyncError('Invalid options: '.print_r($invalid, true));
         }
 
-        $request = $this->client->siteControllerRegisterNewRequest($dto);
+        $request = $this->client->siteControllerRegisterNewRequest(registerNewSiteDto: $dto);
         $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $token);
 
         $siteId = $entity->getUuid();
@@ -471,7 +471,7 @@ class SyncCore implements ISyncCore
         $authentication->setUsername($auth['username']);
         $authentication->setPassword($auth['password']);
 
-        $request = $this->client->authenticationControllerCreateRequest($authentication);
+        $request = $this->client->authenticationControllerCreateRequest(createAuthenticationDto: $authentication);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
@@ -498,7 +498,7 @@ class SyncCore implements ISyncCore
             throw new InternalContentSyncError('Invalid options: '.print_r($invalid, true));
         }
 
-        $request = $this->client->siteControllerRegisterRequest($dto);
+        $request = $this->client->siteControllerRegisterRequest(registerSiteDto: $dto);
         $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
 
         $siteId = $entity->getUuid();
@@ -517,7 +517,7 @@ class SyncCore implements ISyncCore
         $authentication->setUsername($auth['username']);
         $authentication->setPassword($auth['password']);
 
-        $request = $this->client->authenticationControllerCreateRequest($authentication);
+        $request = $this->client->authenticationControllerCreateRequest(createAuthenticationDto: $authentication);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
@@ -587,9 +587,9 @@ class SyncCore implements ISyncCore
         // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
         // is a UUID and if it's not, the site must be re-registered first.
         if (1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
-            $request = $this->client->siteControllerItemByUuidRequest($uuid);
+            $request = $this->client->siteControllerItemByUuidRequest(uuid: $uuid);
         } else {
-            $request = $this->client->siteControllerItemRequest($uuid);
+            $request = $this->client->siteControllerItemRequest(id: $uuid);
         }
 
         /**
@@ -603,9 +603,9 @@ class SyncCore implements ISyncCore
     public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version)
     {
         $request = $this->client->remoteEntityTypeVersionControllerGetVersionUsageRequest(
-            $target_version,
-            $bundle,
-            $entity_type
+            versionId: $target_version,
+            machineName: $bundle,
+            namespaceMachineName: $entity_type
         );
 
         /**
@@ -718,7 +718,7 @@ class SyncCore implements ISyncCore
         } else {
             $dto->setDomains($domains);
         }
-        $request = $this->client->siteControllerUpdateRequest($dto);
+        $request = $this->client->siteControllerUpdateRequest(createSiteDto: $dto);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
@@ -730,7 +730,7 @@ class SyncCore implements ISyncCore
         }
 
         $dto->setName($set);
-        $request = $this->client->siteControllerUpdateRequest($dto);
+        $request = $this->client->siteControllerUpdateRequest(createSiteDto: $dto);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
@@ -748,7 +748,7 @@ class SyncCore implements ISyncCore
         }
 
         $id = $this->application->getSiteUuid();
-        $request = $this->client->siteControllerItemByUuidRequest($id);
+        $request = $this->client->siteControllerItemByUuidRequest(uuid: $id);
         $current = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         $serialized = json_decode(json_encode($current->jsonSerialize()), true);

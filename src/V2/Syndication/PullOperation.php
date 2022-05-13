@@ -305,7 +305,7 @@ class PullOperation implements IPullOperation
             return null;
         }
 
-        $request = $this->core->getClient()->fileControllerItemRequest($reference['id']);
+        $request = $this->core->getClient()->fileControllerItemRequest(id: $reference['id']);
         /**
          * @var FileEntity $file
          */

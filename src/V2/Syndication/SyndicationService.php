@@ -100,7 +100,7 @@ class SyndicationService implements ISyndicationService
         $request = $this
             ->core
             ->getClient()
-            ->remoteEntityRevisionControllerDeleteRequest($dto)
+            ->remoteEntityRevisionControllerDeleteRequest(deleteRemoteEntityRevisionDto: $dto)
         ;
 
         $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
@@ -117,21 +117,19 @@ class SyndicationService implements ISyndicationService
         $page = 0;
 
         $request = $this->core->getClient()->remoteEntityTypeControllerByMachineNameRequest(
-            $bundle,
-            $type
+            machineName: $bundle,
+            namespaceMachineName: $type
         );
         // TODO: Sync Core: Provide filter by pool name and entity type machine names.
         $type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         do {
             $request = $this->core->getClient()->remoteEntityUsageControllerListRequest(
-                $type->getId(),
-                null,
-                null,
-                $is_uuid ? null : $shared_entity_id,
-                $is_uuid ? $shared_entity_id : null,
-                $page,
-                100
+                entityTypeId: $type->getId(),
+                remoteUniqueId: $is_uuid ? null : $shared_entity_id,
+                remoteUuid: $is_uuid ? $shared_entity_id : null,
+                page: $page,
+                itemsPerPage: 100
             );
             /**
              * @var PagedRemoteEntityUsageListResponse $response

@@ -210,7 +210,7 @@ abstract class MassUpdate
         $entityType->setVersionId($this->versionId);
         $migrationDto->setEntityTypeReference($entityType);
 
-        $request = $this->core->getClient()->migrationControllerCreateRequest($migrationDto);
+        $request = $this->core->getClient()->migrationControllerCreateRequest(createMigrationDto: $migrationDto);
         $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
         $this->migrationId = $response->getId();
         $this->dtos = [$response];
@@ -255,17 +255,15 @@ abstract class MassUpdate
             $dtos = [];
             do {
                 $request = $this->core->getClient()->migrationControllerListRequest(
-                    'true',
-                    $this->machineName,
-                    $this->namespaceMachineName,
-                    $this->flow,
-                    null,
-                    join(',', $types),
-                    $site_uuid,
-                    null,
-                    $this->initial ? 'true' : 'false',
-                    $page,
-                    25
+                    groupByEntityTypeAndFlowAndSite: 'true',
+                    entityTypeMachineName: $this->machineName,
+                    entityTypeNamespaceMachineName: $this->namespaceMachineName,
+                    flowMachineName: $this->flow,
+                    types: join(',', $types),
+                    siteUuid: $site_uuid,
+                    initialSetup: $this->initial ? 'true' : 'false',
+                    page: $page,
+                    itemsPerPage: 25
                 );
                 $response = $this->core->sendToSyncCoreAndExpect($request, PagedMigrationList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
                 $dtos = array_merge($dtos, $response->getItems());
@@ -278,7 +276,7 @@ abstract class MassUpdate
 
         $this->summaryDtos = [];
         foreach ($this->dtos as $dto) {
-            $request = $this->core->getClient()->migrationControllerSummaryRequest($dto->getId());
+            $request = $this->core->getClient()->migrationControllerSummaryRequest(id: $dto->getId());
             $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
             $this->summaryDtos[] = $response;
         }

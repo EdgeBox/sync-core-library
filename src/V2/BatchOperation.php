@@ -62,11 +62,11 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         $request_method = $this->requestMethod;
         $dto = $this->dto;
         if (self::REQUEST_FLOW_CREATE === $request_method) {
-            $request = $this->core->getClient()->flowControllerCreateRequest($dto);
+            $request = $this->core->getClient()->flowControllerCreateRequest(createFlowDto: $dto);
         } elseif (self::REQUEST_POOL_CREATE === $request_method) {
-            $request = $this->core->getClient()->poolControllerCreateRequest($dto);
+            $request = $this->core->getClient()->poolControllerCreateRequest(createPoolDto: $dto);
         } elseif (self::REQUEST_ENTITY_TYPE_CREATE === $request_method) {
-            $request = $this->core->getClient()->remoteEntityTypeVersionControllerCreateRequest($dto);
+            $request = $this->core->getClient()->remoteEntityTypeVersionControllerCreateRequest(createRemoteEntityTypeVersionDto: $dto);
         } else {
             throw new InternalContentSyncError("Using unknown request method {$request_method}.");
         }

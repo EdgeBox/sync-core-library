@@ -38,7 +38,7 @@ class ConfigurationService implements IConfigurationService
         $request = $this
             ->core
             ->getClient()
-            ->flowControllerItemRequest($id)
+            ->flowControllerItemRequest(id: $id)
         ;
 
         /**
@@ -123,7 +123,7 @@ class ConfigurationService implements IConfigurationService
         $request = $this
             ->core
             ->getClient()
-            ->flowControllerDeleteRequest($dto)
+            ->flowControllerDeleteRequest(flowDeleteRequest: $dto)
         ;
 
         $this

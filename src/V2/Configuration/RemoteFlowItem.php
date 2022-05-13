@@ -56,7 +56,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         $request = $this
             ->core
             ->getClient()
-            ->siteControllerItemRequest($id)
+            ->siteControllerItemRequest(id: $id)
         ;
 
         $response = $this
@@ -78,7 +78,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
             $request = $this
                 ->core
                 ->getClient()
-                ->flowControllerItemRequest($this->item->getId())
+                ->flowControllerItemRequest(id: $this->item->getId())
             ;
 
             /**
@@ -100,7 +100,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
             return null;
         }
 
-        $request = $this->core->getClient()->fileControllerItemRequest($file_id);
+        $request = $this->core->getClient()->fileControllerItemRequest(id: $file_id);
         /**
          * @var FileEntity $file
          */
