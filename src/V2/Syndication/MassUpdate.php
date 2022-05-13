@@ -254,7 +254,19 @@ abstract class MassUpdate
             $number_of_pages = 1;
             $dtos = [];
             do {
-                $request = $this->core->getClient()->migrationControllerListRequest('true', $this->machineName, $this->namespaceMachineName, $this->flow, null, join(',', $types), $site_uuid, null, $this->initial ? 'true' : 'false', 25, $page);
+                $request = $this->core->getClient()->migrationControllerListRequest(
+                    'true',
+                    $this->machineName,
+                    $this->namespaceMachineName,
+                    $this->flow,
+                    null,
+                    join(',', $types),
+                    $site_uuid,
+                    null,
+                    $this->initial ? 'true' : 'false',
+                    $page,
+                    25
+                );
                 $response = $this->core->sendToSyncCoreAndExpect($request, PagedMigrationList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
                 $dtos = array_merge($dtos, $response->getItems());
                 $number_of_pages = $response->getNumberOfPages();

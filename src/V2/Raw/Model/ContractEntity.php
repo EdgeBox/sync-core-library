@@ -69,6 +69,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentTestingSites' => 'float',
         'autoScaleLicenses' => 'bool',
         'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
+        'currentProductionSiteDomains' => 'string[]',
+        'licensedProductionSiteDomains' => 'string[]',
         'startDate' => 'float',
         'endDate' => 'float',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
@@ -94,6 +96,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentTestingSites' => null,
         'autoScaleLicenses' => null,
         'region' => null,
+        'currentProductionSiteDomains' => null,
+        'licensedProductionSiteDomains' => null,
         'startDate' => null,
         'endDate' => null,
         'customer' => null,
@@ -118,6 +122,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentTestingSites' => 'currentTestingSites',
         'autoScaleLicenses' => 'autoScaleLicenses',
         'region' => 'region',
+        'currentProductionSiteDomains' => 'currentProductionSiteDomains',
+        'licensedProductionSiteDomains' => 'licensedProductionSiteDomains',
         'startDate' => 'startDate',
         'endDate' => 'endDate',
         'customer' => 'customer',
@@ -141,6 +147,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentTestingSites' => 'setCurrentTestingSites',
         'autoScaleLicenses' => 'setAutoScaleLicenses',
         'region' => 'setRegion',
+        'currentProductionSiteDomains' => 'setCurrentProductionSiteDomains',
+        'licensedProductionSiteDomains' => 'setLicensedProductionSiteDomains',
         'startDate' => 'setStartDate',
         'endDate' => 'setEndDate',
         'customer' => 'setCustomer',
@@ -164,6 +172,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentTestingSites' => 'getCurrentTestingSites',
         'autoScaleLicenses' => 'getAutoScaleLicenses',
         'region' => 'getRegion',
+        'currentProductionSiteDomains' => 'getCurrentProductionSiteDomains',
+        'licensedProductionSiteDomains' => 'getLicensedProductionSiteDomains',
         'startDate' => 'getStartDate',
         'endDate' => 'getEndDate',
         'customer' => 'getCustomer',
@@ -196,6 +206,8 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['currentTestingSites'] = $data['currentTestingSites'] ?? null;
         $this->container['autoScaleLicenses'] = $data['autoScaleLicenses'] ?? null;
         $this->container['region'] = $data['region'] ?? null;
+        $this->container['currentProductionSiteDomains'] = $data['currentProductionSiteDomains'] ?? null;
+        $this->container['licensedProductionSiteDomains'] = $data['licensedProductionSiteDomains'] ?? null;
         $this->container['startDate'] = $data['startDate'] ?? null;
         $this->container['endDate'] = $data['endDate'] ?? null;
         $this->container['customer'] = $data['customer'] ?? null;
@@ -527,6 +539,54 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRegion($region)
     {
         $this->container['region'] = $region;
+
+        return $this;
+    }
+
+    /**
+     * Gets currentProductionSiteDomains.
+     *
+     * @return null|string[]
+     */
+    public function getCurrentProductionSiteDomains()
+    {
+        return $this->container['currentProductionSiteDomains'];
+    }
+
+    /**
+     * Sets currentProductionSiteDomains.
+     *
+     * @param null|string[] $currentProductionSiteDomains currentProductionSiteDomains
+     *
+     * @return self
+     */
+    public function setCurrentProductionSiteDomains($currentProductionSiteDomains)
+    {
+        $this->container['currentProductionSiteDomains'] = $currentProductionSiteDomains;
+
+        return $this;
+    }
+
+    /**
+     * Gets licensedProductionSiteDomains.
+     *
+     * @return null|string[]
+     */
+    public function getLicensedProductionSiteDomains()
+    {
+        return $this->container['licensedProductionSiteDomains'];
+    }
+
+    /**
+     * Sets licensedProductionSiteDomains.
+     *
+     * @param null|string[] $licensedProductionSiteDomains licensedProductionSiteDomains
+     *
+     * @return self
+     */
+    public function setLicensedProductionSiteDomains($licensedProductionSiteDomains)
+    {
+        $this->container['licensedProductionSiteDomains'] = $licensedProductionSiteDomains;
 
         return $this;
     }

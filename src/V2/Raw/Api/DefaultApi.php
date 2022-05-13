@@ -5796,17 +5796,17 @@ class DefaultApi
      *
      * @param  string $poolMachineNames poolMachineNames (optional)
      * @param  string $siteId siteId (optional)
-     * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList
      */
-    public function flowControllerList($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
+    public function flowControllerList($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null)
     {
-        list($response) = $this->flowControllerListWithHttpInfo($poolMachineNames, $siteId, $itemsPerPage, $page);
+        list($response) = $this->flowControllerListWithHttpInfo($poolMachineNames, $siteId, $page, $itemsPerPage);
 
         return $response;
     }
@@ -5816,17 +5816,17 @@ class DefaultApi
      *
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function flowControllerListWithHttpInfo($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListWithHttpInfo($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null)
     {
-        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $itemsPerPage, $page);
+        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $page, $itemsPerPage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -5913,16 +5913,16 @@ class DefaultApi
      *
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsync($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListAsync($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null)
     {
-        return $this->flowControllerListAsyncWithHttpInfo($poolMachineNames, $siteId, $itemsPerPage, $page)
+        return $this->flowControllerListAsyncWithHttpInfo($poolMachineNames, $siteId, $page, $itemsPerPage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -5936,17 +5936,17 @@ class DefaultApi
      *
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsyncWithHttpInfo($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListAsyncWithHttpInfo($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList';
-        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $itemsPerPage, $page);
+        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $page, $itemsPerPage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -5988,14 +5988,14 @@ class DefaultApi
      *
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function flowControllerListRequest($poolMachineNames = null, $siteId = null, $itemsPerPage = null, $page = null)
+    public function flowControllerListRequest($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null)
     {
         $resourcePath = '/sync-core/flow';
         $formParams = [];
@@ -6025,16 +6025,6 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $itemsPerPage) {
-            if ('form' === 'form' && is_array($itemsPerPage)) {
-                foreach ($itemsPerPage as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['itemsPerPage'] = $itemsPerPage;
-            }
-        }
-        // query params
         if (null !== $page) {
             if ('form' === 'form' && is_array($page)) {
                 foreach ($page as $key => $value) {
@@ -6042,6 +6032,16 @@ class DefaultApi
                 }
             } else {
                 $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
 
@@ -7465,6 +7465,297 @@ class DefaultApi
     }
 
     /**
+     * Operation migrationControllerDelete.
+     *
+     * @param  string $id id (required)
+     * @param  object $body body (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity
+     */
+    public function migrationControllerDelete($id, $body)
+    {
+        list($response) = $this->migrationControllerDeleteWithHttpInfo($id, $body);
+
+        return $response;
+    }
+
+    /**
+     * Operation migrationControllerDeleteWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function migrationControllerDeleteWithHttpInfo($id, $body)
+    {
+        $request = $this->migrationControllerDeleteRequest($id, $body);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation migrationControllerDeleteAsync.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function migrationControllerDeleteAsync($id, $body)
+    {
+        return $this->migrationControllerDeleteAsyncWithHttpInfo($id, $body)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation migrationControllerDeleteAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function migrationControllerDeleteAsyncWithHttpInfo($id, $body)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
+        $request = $this->migrationControllerDeleteRequest($id, $body);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'migrationControllerDelete'.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function migrationControllerDeleteRequest($id, $body)
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling migrationControllerDelete'
+            );
+        }
+        // verify the required parameter 'body' is set
+        if (null === $body || (is_array($body) && 0 === count($body))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling migrationControllerDelete'
+            );
+        }
+
+        $resourcePath = '/sync-core/migration/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'DELETE',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation migrationControllerItem.
      *
      * @param  string $id id (required)
@@ -7750,17 +8041,17 @@ class DefaultApi
      * @param  string $siteUuid siteUuid (optional)
      * @param  string $siteId siteId (optional)
      * @param  string $initialSetup initialSetup (optional)
-     * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList
      */
-    public function migrationControllerList($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $itemsPerPage = null, $page = null)
+    public function migrationControllerList($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null)
     {
-        list($response) = $this->migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $itemsPerPage, $page);
+        list($response) = $this->migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage);
 
         return $response;
     }
@@ -7777,17 +8068,17 @@ class DefaultApi
      * @param  string $siteUuid (optional)
      * @param  string $siteId (optional)
      * @param  string $initialSetup (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $itemsPerPage = null, $page = null)
+    public function migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null)
     {
-        $request = $this->migrationControllerListRequest($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $itemsPerPage, $page);
+        $request = $this->migrationControllerListRequest($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -7881,16 +8172,16 @@ class DefaultApi
      * @param  string $siteUuid (optional)
      * @param  string $siteId (optional)
      * @param  string $initialSetup (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function migrationControllerListAsync($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $itemsPerPage = null, $page = null)
+    public function migrationControllerListAsync($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null)
     {
-        return $this->migrationControllerListAsyncWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $itemsPerPage, $page)
+        return $this->migrationControllerListAsyncWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -7911,17 +8202,17 @@ class DefaultApi
      * @param  string $siteUuid (optional)
      * @param  string $siteId (optional)
      * @param  string $initialSetup (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function migrationControllerListAsyncWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $itemsPerPage = null, $page = null)
+    public function migrationControllerListAsyncWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList';
-        $request = $this->migrationControllerListRequest($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $itemsPerPage, $page);
+        $request = $this->migrationControllerListRequest($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -7970,14 +8261,14 @@ class DefaultApi
      * @param  string $siteUuid (optional)
      * @param  string $siteId (optional)
      * @param  string $initialSetup (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function migrationControllerListRequest($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $itemsPerPage = null, $page = null)
+    public function migrationControllerListRequest($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null)
     {
         $resourcePath = '/sync-core/migration';
         $formParams = [];
@@ -8077,16 +8368,6 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $itemsPerPage) {
-            if ('form' === 'form' && is_array($itemsPerPage)) {
-                foreach ($itemsPerPage as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['itemsPerPage'] = $itemsPerPage;
-            }
-        }
-        // query params
         if (null !== $page) {
             if ('form' === 'form' && is_array($page)) {
                 foreach ($page as $key => $value) {
@@ -8094,6 +8375,16 @@ class DefaultApi
                 }
             } else {
                 $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
 
@@ -11482,20 +11773,20 @@ class DefaultApi
      *
      * @param  string $latest latest (optional)
      * @param  string $forCustomer forCustomer (optional)
-     * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $poolMachineName poolMachineName (optional)
      * @param  string $entityTypeMachineName entityTypeMachineName (optional)
      * @param  string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName (optional)
-     * @param  float $page page (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList
      */
-    public function remoteEntityRevisionControllerList($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerList($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null)
     {
-        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage);
 
         return $response;
     }
@@ -11505,20 +11796,20 @@ class DefaultApi
      *
      * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
      * @param  string $entityTypeMachineName (optional)
      * @param  string $entityTypeNamespaceMachineName (optional)
-     * @param  float $page (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function remoteEntityRevisionControllerListWithHttpInfo($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListWithHttpInfo($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null)
     {
-        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -11605,19 +11896,19 @@ class DefaultApi
      *
      * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
      * @param  string $entityTypeMachineName (optional)
      * @param  string $entityTypeNamespaceMachineName (optional)
-     * @param  float $page (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsync($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsync($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null)
     {
-        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page)
+        return $this->remoteEntityRevisionControllerListAsyncWithHttpInfo($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -11631,20 +11922,20 @@ class DefaultApi
      *
      * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
      * @param  string $entityTypeMachineName (optional)
      * @param  string $entityTypeNamespaceMachineName (optional)
-     * @param  float $page (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListAsyncWithHttpInfo($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList';
-        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $itemsPerPage, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page);
+        $request = $this->remoteEntityRevisionControllerListRequest($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -11686,17 +11977,17 @@ class DefaultApi
      *
      * @param  string $latest (optional)
      * @param  string $forCustomer (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $poolMachineName (optional)
      * @param  string $entityTypeMachineName (optional)
      * @param  string $entityTypeNamespaceMachineName (optional)
-     * @param  float $page (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function remoteEntityRevisionControllerListRequest($latest = null, $forCustomer = null, $itemsPerPage = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null)
+    public function remoteEntityRevisionControllerListRequest($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null)
     {
         $resourcePath = '/sync-core/remote-entity-revision';
         $formParams = [];
@@ -11723,16 +12014,6 @@ class DefaultApi
                 }
             } else {
                 $queryParams['forCustomer'] = $forCustomer;
-            }
-        }
-        // query params
-        if (null !== $itemsPerPage) {
-            if ('form' === 'form' && is_array($itemsPerPage)) {
-                foreach ($itemsPerPage as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
         // query params
@@ -11773,6 +12054,16 @@ class DefaultApi
                 }
             } else {
                 $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
 
@@ -14059,22 +14350,22 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerList.
      *
-     * @param  string $itemsPerPage itemsPerPage (optional)
-     * @param  string $page page (optional)
      * @param  string $entityTypeId entityTypeId (optional)
      * @param  string $siteId siteId (optional)
      * @param  string $entityId entityId (optional)
      * @param  string $remoteUniqueId remoteUniqueId (optional)
      * @param  string $remoteUuid remoteUuid (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse
      */
-    public function remoteEntityUsageControllerList($itemsPerPage = null, $page = null, $entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null)
+    public function remoteEntityUsageControllerList($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null)
     {
-        list($response) = $this->remoteEntityUsageControllerListWithHttpInfo($itemsPerPage, $page, $entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid);
+        list($response) = $this->remoteEntityUsageControllerListWithHttpInfo($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage);
 
         return $response;
     }
@@ -14082,22 +14373,22 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListWithHttpInfo.
      *
-     * @param  string $itemsPerPage (optional)
-     * @param  string $page (optional)
      * @param  string $entityTypeId (optional)
      * @param  string $siteId (optional)
      * @param  string $entityId (optional)
      * @param  string $remoteUniqueId (optional)
      * @param  string $remoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function remoteEntityUsageControllerListWithHttpInfo($itemsPerPage = null, $page = null, $entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null)
+    public function remoteEntityUsageControllerListWithHttpInfo($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null)
     {
-        $request = $this->remoteEntityUsageControllerListRequest($itemsPerPage, $page, $entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid);
+        $request = $this->remoteEntityUsageControllerListRequest($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -14182,21 +14473,21 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListAsync.
      *
-     * @param  string $itemsPerPage (optional)
-     * @param  string $page (optional)
      * @param  string $entityTypeId (optional)
      * @param  string $siteId (optional)
      * @param  string $entityId (optional)
      * @param  string $remoteUniqueId (optional)
      * @param  string $remoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityUsageControllerListAsync($itemsPerPage = null, $page = null, $entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null)
+    public function remoteEntityUsageControllerListAsync($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null)
     {
-        return $this->remoteEntityUsageControllerListAsyncWithHttpInfo($itemsPerPage, $page, $entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid)
+        return $this->remoteEntityUsageControllerListAsyncWithHttpInfo($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -14208,22 +14499,22 @@ class DefaultApi
     /**
      * Operation remoteEntityUsageControllerListAsyncWithHttpInfo.
      *
-     * @param  string $itemsPerPage (optional)
-     * @param  string $page (optional)
      * @param  string $entityTypeId (optional)
      * @param  string $siteId (optional)
      * @param  string $entityId (optional)
      * @param  string $remoteUniqueId (optional)
      * @param  string $remoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityUsageControllerListAsyncWithHttpInfo($itemsPerPage = null, $page = null, $entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null)
+    public function remoteEntityUsageControllerListAsyncWithHttpInfo($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse';
-        $request = $this->remoteEntityUsageControllerListRequest($itemsPerPage, $page, $entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid);
+        $request = $this->remoteEntityUsageControllerListRequest($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -14263,19 +14554,19 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityUsageControllerList'.
      *
-     * @param  string $itemsPerPage (optional)
-     * @param  string $page (optional)
      * @param  string $entityTypeId (optional)
      * @param  string $siteId (optional)
      * @param  string $entityId (optional)
      * @param  string $remoteUniqueId (optional)
      * @param  string $remoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function remoteEntityUsageControllerListRequest($itemsPerPage = null, $page = null, $entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null)
+    public function remoteEntityUsageControllerListRequest($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null)
     {
         $resourcePath = '/sync-core/remote-entity-usage';
         $formParams = [];
@@ -14284,26 +14575,6 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
-        // query params
-        if (null !== $itemsPerPage) {
-            if ('form' === 'form' && is_array($itemsPerPage)) {
-                foreach ($itemsPerPage as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['itemsPerPage'] = $itemsPerPage;
-            }
-        }
-        // query params
-        if (null !== $page) {
-            if ('form' === 'form' && is_array($page)) {
-                foreach ($page as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['page'] = $page;
-            }
-        }
         // query params
         if (null !== $entityTypeId) {
             if ('form' === 'form' && is_array($entityTypeId)) {
@@ -14352,6 +14623,26 @@ class DefaultApi
                 }
             } else {
                 $queryParams['remoteUuid'] = $remoteUuid;
+            }
+        }
+        // query params
+        if (null !== $page) {
+            if ('form' === 'form' && is_array($page)) {
+                foreach ($page as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
 
@@ -15757,17 +16048,18 @@ class DefaultApi
      * Operation siteControllerSearch.
      *
      * @param  string $baseUrl baseUrl (optional)
-     * @param  string $search search (optional)
      * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $search search (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList
      */
-    public function siteControllerSearch($baseUrl = null, $search = null, $page = null)
+    public function siteControllerSearch($baseUrl = null, $page = null, $itemsPerPage = null, $search = null)
     {
-        list($response) = $this->siteControllerSearchWithHttpInfo($baseUrl, $search, $page);
+        list($response) = $this->siteControllerSearchWithHttpInfo($baseUrl, $page, $itemsPerPage, $search);
 
         return $response;
     }
@@ -15776,17 +16068,18 @@ class DefaultApi
      * Operation siteControllerSearchWithHttpInfo.
      *
      * @param  string $baseUrl (optional)
-     * @param  string $search (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $search (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function siteControllerSearchWithHttpInfo($baseUrl = null, $search = null, $page = null)
+    public function siteControllerSearchWithHttpInfo($baseUrl = null, $page = null, $itemsPerPage = null, $search = null)
     {
-        $request = $this->siteControllerSearchRequest($baseUrl, $search, $page);
+        $request = $this->siteControllerSearchRequest($baseUrl, $page, $itemsPerPage, $search);
 
         try {
             $options = $this->createHttpClientOption();
@@ -15872,16 +16165,17 @@ class DefaultApi
      * Operation siteControllerSearchAsync.
      *
      * @param  string $baseUrl (optional)
-     * @param  string $search (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function siteControllerSearchAsync($baseUrl = null, $search = null, $page = null)
+    public function siteControllerSearchAsync($baseUrl = null, $page = null, $itemsPerPage = null, $search = null)
     {
-        return $this->siteControllerSearchAsyncWithHttpInfo($baseUrl, $search, $page)
+        return $this->siteControllerSearchAsyncWithHttpInfo($baseUrl, $page, $itemsPerPage, $search)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -15894,17 +16188,18 @@ class DefaultApi
      * Operation siteControllerSearchAsyncWithHttpInfo.
      *
      * @param  string $baseUrl (optional)
-     * @param  string $search (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function siteControllerSearchAsyncWithHttpInfo($baseUrl = null, $search = null, $page = null)
+    public function siteControllerSearchAsyncWithHttpInfo($baseUrl = null, $page = null, $itemsPerPage = null, $search = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList';
-        $request = $this->siteControllerSearchRequest($baseUrl, $search, $page);
+        $request = $this->siteControllerSearchRequest($baseUrl, $page, $itemsPerPage, $search);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -15945,14 +16240,15 @@ class DefaultApi
      * Create request for operation 'siteControllerSearch'.
      *
      * @param  string $baseUrl (optional)
-     * @param  string $search (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $search (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function siteControllerSearchRequest($baseUrl = null, $search = null, $page = null)
+    public function siteControllerSearchRequest($baseUrl = null, $page = null, $itemsPerPage = null, $search = null)
     {
         $resourcePath = '/sync-core/site';
         $formParams = [];
@@ -15972,16 +16268,6 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $search) {
-            if ('form' === 'form' && is_array($search)) {
-                foreach ($search as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['search'] = $search;
-            }
-        }
-        // query params
         if (null !== $page) {
             if ('form' === 'form' && is_array($page)) {
                 foreach ($page as $key => $value) {
@@ -15989,6 +16275,26 @@ class DefaultApi
                 }
             } else {
                 $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
+            }
+        }
+        // query params
+        if (null !== $search) {
+            if ('form' === 'form' && is_array($search)) {
+                foreach ($search as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['search'] = $search;
             }
         }
 
@@ -16866,6 +17172,277 @@ class DefaultApi
     }
 
     /**
+     * Operation syndicationControllerDelete.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest syndicationDeleteRequest (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]
+     */
+    public function syndicationControllerDelete($syndicationDeleteRequest)
+    {
+        list($response) = $this->syndicationControllerDeleteWithHttpInfo($syndicationDeleteRequest);
+
+        return $response;
+    }
+
+    /**
+     * Operation syndicationControllerDeleteWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function syndicationControllerDeleteWithHttpInfo($syndicationDeleteRequest)
+    {
+        $request = $this->syndicationControllerDeleteRequest($syndicationDeleteRequest);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation syndicationControllerDeleteAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function syndicationControllerDeleteAsync($syndicationDeleteRequest)
+    {
+        return $this->syndicationControllerDeleteAsyncWithHttpInfo($syndicationDeleteRequest)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation syndicationControllerDeleteAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function syndicationControllerDeleteAsyncWithHttpInfo($syndicationDeleteRequest)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]';
+        $request = $this->syndicationControllerDeleteRequest($syndicationDeleteRequest);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'syndicationControllerDelete'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function syndicationControllerDeleteRequest($syndicationDeleteRequest)
+    {
+        // verify the required parameter 'syndicationDeleteRequest' is set
+        if (null === $syndicationDeleteRequest || (is_array($syndicationDeleteRequest) && 0 === count($syndicationDeleteRequest))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $syndicationDeleteRequest when calling syndicationControllerDelete'
+            );
+        }
+
+        $resourcePath = '/sync-core/syndication';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($syndicationDeleteRequest)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
+            } else {
+                $httpBody = $syndicationDeleteRequest;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'DELETE',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation syndicationControllerGetErrors.
      *
      * @param  string $itemsPerPage itemsPerPage (optional)
@@ -17456,17 +18033,17 @@ class DefaultApi
      * @param  string $entityRemoteUuids entityRemoteUuids (optional)
      * @param  string $entityIds entityIds (optional)
      * @param  string $groupBy groupBy (optional)
-     * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList
      */
-    public function syndicationControllerList($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerList($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null)
     {
-        list($response) = $this->syndicationControllerListWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        list($response) = $this->syndicationControllerListWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage);
 
         return $response;
     }
@@ -17488,17 +18065,17 @@ class DefaultApi
      * @param  string $entityRemoteUuids (optional)
      * @param  string $entityIds (optional)
      * @param  string $groupBy (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerListWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null)
     {
-        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage);
 
         try {
             $options = $this->createHttpClientOption();
@@ -17597,16 +18174,16 @@ class DefaultApi
      * @param  string $entityRemoteUuids (optional)
      * @param  string $entityIds (optional)
      * @param  string $groupBy (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsync($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListAsync($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null)
     {
-        return $this->syndicationControllerListAsyncWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page)
+        return $this->syndicationControllerListAsyncWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -17632,17 +18209,17 @@ class DefaultApi
      * @param  string $entityRemoteUuids (optional)
      * @param  string $entityIds (optional)
      * @param  string $groupBy (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsyncWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListAsyncWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList';
-        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $itemsPerPage, $page);
+        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -17696,14 +18273,14 @@ class DefaultApi
      * @param  string $entityRemoteUuids (optional)
      * @param  string $entityIds (optional)
      * @param  string $groupBy (optional)
-     * @param  string $itemsPerPage (optional)
      * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerListRequest($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $itemsPerPage = null, $page = null)
+    public function syndicationControllerListRequest($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null)
     {
         $resourcePath = '/sync-core/syndication';
         $formParams = [];
@@ -17853,16 +18430,6 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $itemsPerPage) {
-            if ('form' === 'form' && is_array($itemsPerPage)) {
-                foreach ($itemsPerPage as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['itemsPerPage'] = $itemsPerPage;
-            }
-        }
-        // query params
         if (null !== $page) {
             if ('form' === 'form' && is_array($page)) {
                 foreach ($page as $key => $value) {
@@ -17870,6 +18437,16 @@ class DefaultApi
                 }
             } else {
                 $queryParams['page'] = $page;
+            }
+        }
+        // query params
+        if (null !== $itemsPerPage) {
+            if ('form' === 'form' && is_array($itemsPerPage)) {
+                foreach ($itemsPerPage as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['itemsPerPage'] = $itemsPerPage;
             }
         }
 
@@ -17927,6 +18504,297 @@ class DefaultApi
 
         return new Request(
             'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation syndicationControllerRestart.
+     *
+     * @param  string $id id (required)
+     * @param  object $body body (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     */
+    public function syndicationControllerRestart($id, $body)
+    {
+        list($response) = $this->syndicationControllerRestartWithHttpInfo($id, $body);
+
+        return $response;
+    }
+
+    /**
+     * Operation syndicationControllerRestartWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function syndicationControllerRestartWithHttpInfo($id, $body)
+    {
+        $request = $this->syndicationControllerRestartRequest($id, $body);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation syndicationControllerRestartAsync.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function syndicationControllerRestartAsync($id, $body)
+    {
+        return $this->syndicationControllerRestartAsyncWithHttpInfo($id, $body)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation syndicationControllerRestartAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function syndicationControllerRestartAsyncWithHttpInfo($id, $body)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
+        $request = $this->syndicationControllerRestartRequest($id, $body);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'syndicationControllerRestart'.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function syndicationControllerRestartRequest($id, $body)
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling syndicationControllerRestart'
+            );
+        }
+        // verify the required parameter 'body' is set
+        if (null === $body || (is_array($body) && 0 === count($body))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling syndicationControllerRestart'
+            );
+        }
+
+        $resourcePath = '/sync-core/syndication/{id}/restart';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'POST',
             $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody

@@ -55,8 +55,8 @@ class ListRemoteFlows implements IListRemoteFlows
                 ->flowControllerListRequest(
                     count($this->pools) ? $this->pools : null,
                     null,
-                    '100',
-                    $page.''
+                    $page,
+                    100
                 )
             ;
 

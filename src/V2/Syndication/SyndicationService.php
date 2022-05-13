@@ -125,13 +125,13 @@ class SyndicationService implements ISyndicationService
 
         do {
             $request = $this->core->getClient()->remoteEntityUsageControllerListRequest(
-                100,
-                $page,
                 $type->getId(),
                 null,
                 null,
                 $is_uuid ? null : $shared_entity_id,
-                $is_uuid ? $shared_entity_id : null
+                $is_uuid ? $shared_entity_id : null,
+                $page,
+                100
             );
             /**
              * @var PagedRemoteEntityUsageListResponse $response
