@@ -17,14 +17,12 @@ interface IPullOperation
     /**
      * @return string
      */
-    public function getSourceUrl();
+    public function getSourceUrl(?string $language = null);
 
     /**
-     * @param null|string $language
-     *
      * @return string
      */
-    public function getName($language = null);
+    public function getName(?string $language = null);
 
     /**
      * @return string[]
@@ -53,11 +51,9 @@ interface IPullOperation
     public function getNextUnprocessedEmbed();
 
     /**
-     * @param null|string $language
-     *
      * @return mixed
      */
-    public function getProperty(string $name, $language = null);
+    public function getProperty(string $name, ?string $language = null);
 
     /**
      * Return the contents of the file that was uploaded on the remote site.

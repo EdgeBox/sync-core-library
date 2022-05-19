@@ -178,16 +178,18 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getSourceUrl()
+    public function getSourceUrl(?string $language = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return '';
         }
         if ($this->parentPullOperation) {
-            return $this->parentPullOperation->getSourceUrl();
+            return $this->parentPullOperation->getSourceUrl($language);
         }
 
-        return $this->dto->getViewUrl();
+        $dto = $language ? $this->translations[$language] : $this->dto;
+
+        return $dto->getViewUrl();
     }
 
     /**
@@ -201,7 +203,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getProperty(string $name, $language = null)
+    public function getProperty(string $name, ?string $language = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return null;
@@ -321,7 +323,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getName($language = null)
+    public function getName(?string $language = null)
     {
         $dto = $language ? $this->translations[$language] : $this->dto;
 
