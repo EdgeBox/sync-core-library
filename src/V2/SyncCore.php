@@ -41,6 +41,8 @@ use GuzzleHttp\RequestOptions;
 
 class SyncCore implements ISyncCore
 {
+    // Keep tokens alive for 4 hours.
+    public const JWT_LIFETIME = 60 * 60 * 4;
     protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
     protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
     protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';
@@ -406,6 +408,7 @@ class SyncCore implements ISyncCore
                 : [$permissions],
             'provider' => 'jwt-header',
             'uuid' => $uuid,
+            'exp' => time() + self::JWT_LIFETIME,
         ];
 
         return JWT::encode($payload, $secret);
