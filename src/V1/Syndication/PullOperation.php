@@ -63,8 +63,12 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getSourceUrl()
+    public function getSourceUrl(?string $language = null)
     {
+        if ($language) {
+            return '';
+        }
+
         return isset($this->body['url']) ? $this->body['url'] : '';
     }
 
@@ -220,7 +224,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getProperty(string $name, $language = null)
+    public function getProperty(string $name, ?string $language = null)
     {
         if ($language) {
             if (!isset($this->body['apiu_translation'][$language][$name])) {
@@ -240,7 +244,7 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getName($language = null)
+    public function getName(?string $language = null)
     {
         return $this->getProperty(Entity::PROPERTY_NAME, $language);
     }
