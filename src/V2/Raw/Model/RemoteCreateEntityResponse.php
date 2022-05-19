@@ -62,6 +62,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static $openAPITypes = [
         'viewUrl' => 'string',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[]',
     ];
 
     /**
@@ -73,6 +74,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static $openAPIFormats = [
         'viewUrl' => null,
+        'translations' => null,
     ];
 
     /**
@@ -83,6 +85,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static $attributeMap = [
         'viewUrl' => 'viewUrl',
+        'translations' => 'translations',
     ];
 
     /**
@@ -92,6 +95,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static $setters = [
         'viewUrl' => 'setViewUrl',
+        'translations' => 'setTranslations',
     ];
 
     /**
@@ -101,6 +105,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static $getters = [
         'viewUrl' => 'getViewUrl',
+        'translations' => 'getTranslations',
     ];
 
     /**
@@ -119,6 +124,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
     public function __construct(array $data = null)
     {
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['translations'] = $data['translations'] ?? null;
     }
 
     /**
@@ -242,6 +248,30 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets translations.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[]
+     */
+    public function getTranslations()
+    {
+        return $this->container['translations'];
+    }
+
+    /**
+     * Sets translations.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[] $translations translations
+     *
+     * @return self
+     */
+    public function setTranslations($translations)
+    {
+        $this->container['translations'] = $translations;
 
         return $this;
     }

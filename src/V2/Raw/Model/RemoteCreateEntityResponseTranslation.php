@@ -1,6 +1,6 @@
 <?php
 /**
- * SyncCoreRemoteEntityUsageEntityReference.
+ * RemoteCreateEntityResponseTranslation.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SyncCoreRemoteEntityUsageEntityReference Class Doc Comment.
+ * RemoteCreateEntityResponseTranslation Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteCreateEntityResponseTranslation implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SyncCoreRemoteEntityUsageEntityReference';
+    protected static $openAPIModelName = 'RemoteCreateEntityResponseTranslation';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,10 +61,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @var string[]
      */
     protected static $openAPITypes = [
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'language' => 'string',
-        'isTranslationRoot' => 'bool',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
         'viewUrl' => 'string',
     ];
 
@@ -76,10 +73,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'entity' => null,
         'language' => null,
-        'isTranslationRoot' => null,
-        'status' => null,
         'viewUrl' => null,
     ];
 
@@ -90,10 +84,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @var string[]
      */
     protected static $attributeMap = [
-        'entity' => 'entity',
         'language' => 'language',
-        'isTranslationRoot' => 'isTranslationRoot',
-        'status' => 'status',
         'viewUrl' => 'viewUrl',
     ];
 
@@ -103,10 +94,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @var string[]
      */
     protected static $setters = [
-        'entity' => 'setEntity',
         'language' => 'setLanguage',
-        'isTranslationRoot' => 'setIsTranslationRoot',
-        'status' => 'setStatus',
         'viewUrl' => 'setViewUrl',
     ];
 
@@ -116,10 +104,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @var string[]
      */
     protected static $getters = [
-        'entity' => 'getEntity',
         'language' => 'getLanguage',
-        'isTranslationRoot' => 'getIsTranslationRoot',
-        'status' => 'getStatus',
         'viewUrl' => 'getViewUrl',
     ];
 
@@ -138,10 +123,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      */
     public function __construct(array $data = null)
     {
-        $this->container['entity'] = $data['entity'] ?? null;
         $this->container['language'] = $data['language'] ?? null;
-        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
     }
 
@@ -228,17 +210,11 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     {
         $invalidProperties = [];
 
-        if (null === $this->container['entity']) {
-            $invalidProperties[] = "'entity' can't be null";
-        }
         if (null === $this->container['language']) {
             $invalidProperties[] = "'language' can't be null";
         }
-        if (null === $this->container['isTranslationRoot']) {
-            $invalidProperties[] = "'isTranslationRoot' can't be null";
-        }
-        if (null === $this->container['status']) {
-            $invalidProperties[] = "'status' can't be null";
+        if (null === $this->container['viewUrl']) {
+            $invalidProperties[] = "'viewUrl' can't be null";
         }
 
         return $invalidProperties;
@@ -253,30 +229,6 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     public function valid()
     {
         return 0 === count($this->listInvalidProperties());
-    }
-
-    /**
-     * Gets entity.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
-     */
-    public function getEntity()
-    {
-        return $this->container['entity'];
-    }
-
-    /**
-     * Sets entity.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
-     *
-     * @return self
-     */
-    public function setEntity($entity)
-    {
-        $this->container['entity'] = $entity;
-
-        return $this;
     }
 
     /**
@@ -304,57 +256,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     }
 
     /**
-     * Gets isTranslationRoot.
-     *
-     * @return bool
-     */
-    public function getIsTranslationRoot()
-    {
-        return $this->container['isTranslationRoot'];
-    }
-
-    /**
-     * Sets isTranslationRoot.
-     *
-     * @param bool $isTranslationRoot isTranslationRoot
-     *
-     * @return self
-     */
-    public function setIsTranslationRoot($isTranslationRoot)
-    {
-        $this->container['isTranslationRoot'] = $isTranslationRoot;
-
-        return $this;
-    }
-
-    /**
-     * Gets status.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
-     */
-    public function getStatus()
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
-     *
-     * @return self
-     */
-    public function setStatus($status)
-    {
-        $this->container['status'] = $status;
-
-        return $this;
-    }
-
-    /**
      * Gets viewUrl.
      *
-     * @return null|string
+     * @return string
      */
     public function getViewUrl()
     {
@@ -364,7 +268,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets viewUrl.
      *
-     * @param null|string $viewUrl viewUrl
+     * @param string $viewUrl viewUrl
      *
      * @return self
      */
