@@ -65,7 +65,7 @@ class RemoteEntityListResponse implements ModelInterface, ArrayAccess, \JsonSeri
         'numberOfPages' => 'float',
         'itemsPerPage' => 'float',
         'totalNumberOfItems' => 'float',
-        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslations[]',
     ];
 
     /**
@@ -357,7 +357,7 @@ class RemoteEntityListResponse implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets items.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslations[]
      */
     public function getItems()
     {
@@ -367,7 +367,7 @@ class RemoteEntityListResponse implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets items.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[] $items items
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslations[] $items items
      *
      * @return self
      */

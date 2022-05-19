@@ -1,6 +1,6 @@
 <?php
 /**
- * RemoteEntityDetails.
+ * RemoteEntitySummaryWithTranslations.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RemoteEntityDetails Class Doc Comment.
+ * RemoteEntitySummaryWithTranslations Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RemoteEntityDetails';
+    protected static $openAPIModelName = 'RemoteEntitySummaryWithTranslations';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,10 +61,19 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $openAPITypes = [
+        'remoteUuid' => 'string',
+        'remoteUniqueId' => 'string',
+        'language' => 'string',
+        'entityTypeNamespaceMachineName' => 'string',
+        'entityTypeMachineName' => 'string',
+        'entityTypeVersion' => 'string',
+        'poolMachineNames' => 'string[]',
+        'referenceDetails' => 'mixed',
+        'name' => 'string',
         'isDeleted' => 'bool',
         'isSource' => 'bool',
         'viewUrl' => 'string',
-        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[]',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[]',
     ];
 
     /**
@@ -75,6 +84,15 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
+        'remoteUuid' => null,
+        'remoteUniqueId' => null,
+        'language' => null,
+        'entityTypeNamespaceMachineName' => null,
+        'entityTypeMachineName' => null,
+        'entityTypeVersion' => null,
+        'poolMachineNames' => null,
+        'referenceDetails' => null,
+        'name' => null,
         'isDeleted' => null,
         'isSource' => null,
         'viewUrl' => null,
@@ -88,6 +106,15 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
+        'remoteUuid' => 'remoteUuid',
+        'remoteUniqueId' => 'remoteUniqueId',
+        'language' => 'language',
+        'entityTypeNamespaceMachineName' => 'entityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'entityTypeMachineName',
+        'entityTypeVersion' => 'entityTypeVersion',
+        'poolMachineNames' => 'poolMachineNames',
+        'referenceDetails' => 'referenceDetails',
+        'name' => 'name',
         'isDeleted' => 'isDeleted',
         'isSource' => 'isSource',
         'viewUrl' => 'viewUrl',
@@ -100,6 +127,15 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
+        'remoteUuid' => 'setRemoteUuid',
+        'remoteUniqueId' => 'setRemoteUniqueId',
+        'language' => 'setLanguage',
+        'entityTypeNamespaceMachineName' => 'setEntityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'setEntityTypeMachineName',
+        'entityTypeVersion' => 'setEntityTypeVersion',
+        'poolMachineNames' => 'setPoolMachineNames',
+        'referenceDetails' => 'setReferenceDetails',
+        'name' => 'setName',
         'isDeleted' => 'setIsDeleted',
         'isSource' => 'setIsSource',
         'viewUrl' => 'setViewUrl',
@@ -112,6 +148,15 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
+        'remoteUuid' => 'getRemoteUuid',
+        'remoteUniqueId' => 'getRemoteUniqueId',
+        'language' => 'getLanguage',
+        'entityTypeNamespaceMachineName' => 'getEntityTypeNamespaceMachineName',
+        'entityTypeMachineName' => 'getEntityTypeMachineName',
+        'entityTypeVersion' => 'getEntityTypeVersion',
+        'poolMachineNames' => 'getPoolMachineNames',
+        'referenceDetails' => 'getReferenceDetails',
+        'name' => 'getName',
         'isDeleted' => 'getIsDeleted',
         'isSource' => 'getIsSource',
         'viewUrl' => 'getViewUrl',
@@ -133,6 +178,15 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(array $data = null)
     {
+        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
+        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
+        $this->container['language'] = $data['language'] ?? null;
+        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
+        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
+        $this->container['entityTypeVersion'] = $data['entityTypeVersion'] ?? null;
+        $this->container['poolMachineNames'] = $data['poolMachineNames'] ?? null;
+        $this->container['referenceDetails'] = $data['referenceDetails'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
         $this->container['isDeleted'] = $data['isDeleted'] ?? null;
         $this->container['isSource'] = $data['isSource'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
@@ -222,6 +276,21 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
+        if (null === $this->container['language']) {
+            $invalidProperties[] = "'language' can't be null";
+        }
+        if (null === $this->container['entityTypeNamespaceMachineName']) {
+            $invalidProperties[] = "'entityTypeNamespaceMachineName' can't be null";
+        }
+        if (null === $this->container['entityTypeMachineName']) {
+            $invalidProperties[] = "'entityTypeMachineName' can't be null";
+        }
+        if (null === $this->container['entityTypeVersion']) {
+            $invalidProperties[] = "'entityTypeVersion' can't be null";
+        }
+        if (null === $this->container['poolMachineNames']) {
+            $invalidProperties[] = "'poolMachineNames' can't be null";
+        }
         if (null === $this->container['isDeleted']) {
             $invalidProperties[] = "'isDeleted' can't be null";
         }
@@ -241,6 +310,222 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     public function valid()
     {
         return 0 === count($this->listInvalidProperties());
+    }
+
+    /**
+     * Gets remoteUuid.
+     *
+     * @return null|string
+     */
+    public function getRemoteUuid()
+    {
+        return $this->container['remoteUuid'];
+    }
+
+    /**
+     * Sets remoteUuid.
+     *
+     * @param null|string $remoteUuid remoteUuid
+     *
+     * @return self
+     */
+    public function setRemoteUuid($remoteUuid)
+    {
+        $this->container['remoteUuid'] = $remoteUuid;
+
+        return $this;
+    }
+
+    /**
+     * Gets remoteUniqueId.
+     *
+     * @return null|string
+     */
+    public function getRemoteUniqueId()
+    {
+        return $this->container['remoteUniqueId'];
+    }
+
+    /**
+     * Sets remoteUniqueId.
+     *
+     * @param null|string $remoteUniqueId remoteUniqueId
+     *
+     * @return self
+     */
+    public function setRemoteUniqueId($remoteUniqueId)
+    {
+        $this->container['remoteUniqueId'] = $remoteUniqueId;
+
+        return $this;
+    }
+
+    /**
+     * Gets language.
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
+
+    /**
+     * Sets language.
+     *
+     * @param string $language language
+     *
+     * @return self
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypeNamespaceMachineName.
+     *
+     * @return string
+     */
+    public function getEntityTypeNamespaceMachineName()
+    {
+        return $this->container['entityTypeNamespaceMachineName'];
+    }
+
+    /**
+     * Sets entityTypeNamespaceMachineName.
+     *
+     * @param string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName
+     *
+     * @return self
+     */
+    public function setEntityTypeNamespaceMachineName($entityTypeNamespaceMachineName)
+    {
+        $this->container['entityTypeNamespaceMachineName'] = $entityTypeNamespaceMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypeMachineName.
+     *
+     * @return string
+     */
+    public function getEntityTypeMachineName()
+    {
+        return $this->container['entityTypeMachineName'];
+    }
+
+    /**
+     * Sets entityTypeMachineName.
+     *
+     * @param string $entityTypeMachineName entityTypeMachineName
+     *
+     * @return self
+     */
+    public function setEntityTypeMachineName($entityTypeMachineName)
+    {
+        $this->container['entityTypeMachineName'] = $entityTypeMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypeVersion.
+     *
+     * @return string
+     */
+    public function getEntityTypeVersion()
+    {
+        return $this->container['entityTypeVersion'];
+    }
+
+    /**
+     * Sets entityTypeVersion.
+     *
+     * @param string $entityTypeVersion entityTypeVersion
+     *
+     * @return self
+     */
+    public function setEntityTypeVersion($entityTypeVersion)
+    {
+        $this->container['entityTypeVersion'] = $entityTypeVersion;
+
+        return $this;
+    }
+
+    /**
+     * Gets poolMachineNames.
+     *
+     * @return string[]
+     */
+    public function getPoolMachineNames()
+    {
+        return $this->container['poolMachineNames'];
+    }
+
+    /**
+     * Sets poolMachineNames.
+     *
+     * @param string[] $poolMachineNames poolMachineNames
+     *
+     * @return self
+     */
+    public function setPoolMachineNames($poolMachineNames)
+    {
+        $this->container['poolMachineNames'] = $poolMachineNames;
+
+        return $this;
+    }
+
+    /**
+     * Gets referenceDetails.
+     *
+     * @return null|mixed
+     */
+    public function getReferenceDetails()
+    {
+        return $this->container['referenceDetails'];
+    }
+
+    /**
+     * Sets referenceDetails.
+     *
+     * @param null|mixed $referenceDetails referenceDetails
+     *
+     * @return self
+     */
+    public function setReferenceDetails($referenceDetails)
+    {
+        $this->container['referenceDetails'] = $referenceDetails;
+
+        return $this;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return null|string
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
+
+    /**
+     * Sets name.
+     *
+     * @param null|string $name name
+     *
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
+
+        return $this;
     }
 
     /**
@@ -318,7 +603,7 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets translations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[]
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[]
      */
     public function getTranslations()
     {
@@ -328,7 +613,7 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets translations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[] $translations translations
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[] $translations translations
      *
      * @return self
      */
