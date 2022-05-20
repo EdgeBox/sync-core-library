@@ -68,6 +68,13 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
 
         $options = (array) $siteDto->jsonSerialize();
 
+        if (!empty($this->params['domains'])) {
+            // We could use $siteDto->setDomains() above instead but as we have
+            // to implode() to make it a string instead of an array anyway, we
+            // can also just assign it manually here.
+            $options['domains'] = implode(',', $this->params['domains']);
+        }
+
         // Redirect to this page.
         $options['redirectUrl'] = $application->getEmbedBaseUrl(IEmbedService::REGISTER_SITE);
 
