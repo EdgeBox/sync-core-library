@@ -114,4 +114,12 @@ interface IPushSingle
      * @return $this
      */
     public function uploadFile(string $content, ?string $name = null);
+
+    /**
+     * Get the serialized entity as it is sent to the Sync Core. Only needed for
+     * debugging purpooses.
+     *
+     * @return mixed
+     */
+    public function getData();
 }
