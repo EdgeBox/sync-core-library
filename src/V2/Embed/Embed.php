@@ -9,6 +9,7 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class Embed
 {
+    public static $embed_count = 0;
     /**
      * @var SyncCore
      */
@@ -35,7 +36,7 @@ abstract class Embed
     public function __construct(SyncCore $core, string $embed_id, string $permissions)
     {
         $this->core = $core;
-        $this->url = $this->core->getCloudEmbedUrl().'/'.$embed_id;
+        $this->url = $this->core->getCloudEmbedUrl().'/'.str_replace('.', '/', $embed_id);
         $this->permissions = $permissions;
 
         $this->config = [
@@ -70,14 +71,21 @@ abstract class Embed
             $process_messages_javascript = '';
         }
 
+        $size = empty($options['embedSize']) ? 'page' : $options['embedSize'];
+        $is_page = 'page' === $size;
+        $is_line = 'line' === $size;
+
+        $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.time().'-'.(self::$embed_count++);
+
         $html = '<style>
-  #contentSyncEmbed {
+  #'.$id.' {
     width: 1px;
     min-width: 100%;
-    min-height: 200px;
+    '.($is_page ? 'min-height: 200px;' : '').'
+    '.($is_line ? 'border-radius: 5px;' : '').'
   }
 </style>
-<iframe id="contentSyncEmbed" src="'.$this->url.'" frameborder="0">
+<iframe id="'.$id.'" src="'.$this->url.'" frameborder="0" class="content-sync-embed size-'.$size.'">
   The page could not be loaded as your browser does not support it.
 </iframe>
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
@@ -209,7 +217,7 @@ abstract class Embed
         throw new Error("Unknown message "+JSON.stringify(message));
       }
     },
-  }, "#contentSyncEmbed");
+  }, "#'.$id.'");
 })();
 </script>';
 
