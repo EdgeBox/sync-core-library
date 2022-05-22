@@ -8,6 +8,7 @@ interface IEmbedService
     public const PULL_DASHBOARD = 'pull-dashboard';
     public const SITE_REGISTERED = 'site-registered';
     public const ENTITY_STATUS = 'entity-status';
+    public const BOX_UPDATE_STATUS = 'box.update-status';
     public const MIGRATE = 'migrate';
     public const FLOW_FORM = 'flow-form';
     public const SYNDICATION_DASHBOARD = 'syndication-dashboard';
@@ -31,6 +32,11 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function entityStatus(array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function updateStatusBox(array $params);
 
     /**
      * @return IEmbedFeature

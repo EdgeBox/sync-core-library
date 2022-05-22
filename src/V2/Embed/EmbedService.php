@@ -55,6 +55,14 @@ class EmbedService implements IEmbedService
     /**
      * {@inheritDoc}
      */
+    public function updateStatusBox(array $params)
+    {
+        return new UpdateStatusBoxEmbed($this->core, $params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function migrate(array $params)
     {
         return new MigrateEmbed($this->core, $params);
