@@ -82,6 +82,7 @@ abstract class Embed
     width: 1px;
     min-width: 100%;
     '.($is_page ? 'min-height: 200px;' : '').'
+    '.($is_line ? 'max-height: 40px;' : '').'
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
 </style>
