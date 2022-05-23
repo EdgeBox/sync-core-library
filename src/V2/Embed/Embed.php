@@ -86,12 +86,14 @@ abstract class Embed
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
 </style>
-<iframe id="'.$id.'" src="'.$this->url.'" frameborder="0" class="content-sync-embed size-'.$size.'">
+<iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'">
   The page could not be loaded as your browser does not support it.
 </iframe>
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
 <script>
 (function() {
+  '.($is_line ? 'jQuery(document).ready( function() { document.getElementById("'.$id.'").src = "'.$this->url.'"; } );' : '').'
+
   // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
   const getHttpsUrl = (url) => url.replace(/^https?:/, "");
   var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(false !== strpos($list_entities_url, '?') ? '&' : '?').'");
