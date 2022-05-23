@@ -227,7 +227,7 @@ abstract class Embed
     }
   }
 
-  '.($is_line ? 'onDocumentReady( function() { document.getElementById("'.$id.'").src = "'.$this->url.'"; initIframe(); } );' : 'initIframe();').'
+  '.($is_line ? 'onDocumentReady( function() { var element = document.getElementById("'.$id.'"); element.loading = "lazy"; element.src = "'.$this->url.'"; initIframe(); } );' : 'initIframe();').'
 })();
 </script>';
 
