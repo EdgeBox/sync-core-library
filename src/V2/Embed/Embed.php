@@ -80,11 +80,11 @@ abstract class Embed
         $html = '<style>
   #'.$id.' {
     '.($is_page ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
-    '.($is_page ? 'min-height: 200px;' : 'max-height: 40px;').'
+    '.($is_page ? 'min-height: 200px;' : 'height: 32px; max-height: 40px;').'
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
 </style>
-<iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'">
+<iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'" loading="lazy">
   The page could not be loaded as your browser does not support it.
 </iframe>
 <script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
@@ -100,6 +100,7 @@ abstract class Embed
     iFrameResize({
       //log: true,
       checkOrigin: false,
+      autoResize: '.($is_page ? 'true' : 'false').',
       onInit: function(newIframe) {
         iframe = newIframe;
         iframe.iFrameResizer.sendMessage({
@@ -227,7 +228,29 @@ abstract class Embed
     }
   }
 
-  '.($is_line ? 'onDocumentReady( function() { var element = document.getElementById("'.$id.'"); element.loading = "lazy"; element.src = "'.$this->url.'"; initIframe(); } );' : 'initIframe();').'
+  '.($is_line
+        ? 'onDocumentReady(function() {
+          var element = jQuery("#'.$id.'");
+          var url = "'.$this->url.'";
+          var inited = false;
+          function checkIfVisible() {
+            if(inited) {
+              return;
+            }
+            var elementTop = element.offset().top;
+            var windowBottom = jQuery(window).scrollTop() + jQuery(window).innerHeight();
+            // Load 200px before the element enters the viewport.
+            if(elementTop-200<windowBottom) {
+              element.attr("src", url);
+              initIframe();
+              inited = true;
+              jQuery(window).off("scroll", checkIfVisible);
+            }
+          }
+          checkIfVisible();
+          jQuery(window).scroll(checkIfVisible);
+        });'
+        : 'initIframe();').'
 })();
 </script>';
 
