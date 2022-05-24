@@ -19081,16 +19081,18 @@ class DefaultApi
      * @param  string $siteUuid siteUuid (required)
      * @param  string $remoteUuid remoteUuid (optional)
      * @param  string $remoteUniqueId remoteUniqueId (optional)
-     * @param  string $page page (optional)
+     * @param  string $namespaceMachineName namespaceMachineName (optional)
+     * @param  string $machineName machineName (optional)
+     * @param  string $includingMigrations includingMigrations (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse
      */
-    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         return $response;
     }
@@ -19101,16 +19103,18 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         try {
             $options = $this->createHttpClientOption();
@@ -19198,15 +19202,17 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $page)
+        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -19221,16 +19227,18 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse';
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -19273,13 +19281,15 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
         // verify the required parameter 'siteUuid' is set
         if (null === $siteUuid || (is_array($siteUuid) && 0 === count($siteUuid))) {
@@ -19316,13 +19326,33 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $page) {
-            if ('form' === 'form' && is_array($page)) {
-                foreach ($page as $key => $value) {
+        if (null !== $namespaceMachineName) {
+            if ('form' === 'form' && is_array($namespaceMachineName)) {
+                foreach ($namespaceMachineName as $key => $value) {
                     $queryParams[$key] = $value;
                 }
             } else {
-                $queryParams['page'] = $page;
+                $queryParams['namespaceMachineName'] = $namespaceMachineName;
+            }
+        }
+        // query params
+        if (null !== $machineName) {
+            if ('form' === 'form' && is_array($machineName)) {
+                foreach ($machineName as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['machineName'] = $machineName;
+            }
+        }
+        // query params
+        if (null !== $includingMigrations) {
+            if ('form' === 'form' && is_array($includingMigrations)) {
+                foreach ($includingMigrations as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['includingMigrations'] = $includingMigrations;
             }
         }
 
