@@ -186,9 +186,11 @@ class PullOperation implements IPullOperation
 
         $dto = $language && isset($this->translations[$language]) ? $this->translations[$language] : $this->dto;
 
-        $url = $dto->getViewUrl();
-        if ($url) {
-            return $url;
+        if ($dto && method_exists($dto, 'getViewUrl')) {
+            $url = $dto->getViewUrl();
+            if ($url) {
+                return $url;
+            }
         }
 
         if ($this->parentPullOperation) {
