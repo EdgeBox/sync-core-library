@@ -183,13 +183,19 @@ class PullOperation implements IPullOperation
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return '';
         }
+
+        $dto = $language && isset($this->translations[$language]) ? $this->translations[$language] : $this->dto;
+
+        $url = $dto->getViewUrl();
+        if ($url) {
+            return $url;
+        }
+
         if ($this->parentPullOperation) {
             return $this->parentPullOperation->getSourceUrl($language);
         }
 
-        $dto = $language ? $this->translations[$language] : $this->dto;
-
-        return $dto->getViewUrl();
+        return '';
     }
 
     /**
