@@ -527,6 +527,7 @@ class PushSingle implements IPushSingle
             $dto->setLanguage($this->dto->getLanguage());
             $dto->setRemoteUuid($this->dto->getRemoteUuid());
             $dto->setRemoteUniqueId($this->dto->getRemoteUniqueId());
+            $dto->setName($this->dto->getName());
 
             $request = $this
                 ->core

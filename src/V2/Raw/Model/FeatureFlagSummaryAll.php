@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateAuthenticationDto.
+ * FeatureFlagSummaryAll.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * CreateAuthenticationDto Class Doc Comment.
+ * FeatureFlagSummaryAll Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class FeatureFlagSummaryAll implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateAuthenticationDto';
+    protected static $openAPIModelName = 'FeatureFlagSummaryAll';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,10 +61,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
-        'username' => 'string',
-        'password' => 'mixed',
-        'sessionLifespanInSeconds' => 'float',
+        'types' => 'mixed',
     ];
 
     /**
@@ -75,10 +72,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'type' => null,
-        'username' => null,
-        'password' => null,
-        'sessionLifespanInSeconds' => null,
+        'types' => null,
     ];
 
     /**
@@ -88,10 +82,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $attributeMap = [
-        'type' => 'type',
-        'username' => 'username',
-        'password' => 'password',
-        'sessionLifespanInSeconds' => 'sessionLifespanInSeconds',
+        'types' => 'types',
     ];
 
     /**
@@ -100,10 +91,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $setters = [
-        'type' => 'setType',
-        'username' => 'setUsername',
-        'password' => 'setPassword',
-        'sessionLifespanInSeconds' => 'setSessionLifespanInSeconds',
+        'types' => 'setTypes',
     ];
 
     /**
@@ -112,10 +100,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $getters = [
-        'type' => 'getType',
-        'username' => 'getUsername',
-        'password' => 'getPassword',
-        'sessionLifespanInSeconds' => 'getSessionLifespanInSeconds',
+        'types' => 'getTypes',
     ];
 
     /**
@@ -133,10 +118,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      */
     public function __construct(array $data = null)
     {
-        $this->container['type'] = $data['type'] ?? null;
-        $this->container['username'] = $data['username'] ?? null;
-        $this->container['password'] = $data['password'] ?? null;
-        $this->container['sessionLifespanInSeconds'] = $data['sessionLifespanInSeconds'] ?? null;
+        $this->container['types'] = $data['types'] ?? null;
     }
 
     /**
@@ -222,14 +204,8 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     {
         $invalidProperties = [];
 
-        if (null === $this->container['type']) {
-            $invalidProperties[] = "'type' can't be null";
-        }
-        if (null === $this->container['username']) {
-            $invalidProperties[] = "'username' can't be null";
-        }
-        if (null === $this->container['password']) {
-            $invalidProperties[] = "'password' can't be null";
+        if (null === $this->container['types']) {
+            $invalidProperties[] = "'types' can't be null";
         }
 
         return $invalidProperties;
@@ -247,97 +223,25 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
-     * Gets type.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType
-     */
-    public function getType()
-    {
-        return $this->container['type'];
-    }
-
-    /**
-     * Sets type.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType $type type
-     *
-     * @return self
-     */
-    public function setType($type)
-    {
-        $this->container['type'] = $type;
-
-        return $this;
-    }
-
-    /**
-     * Gets username.
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->container['username'];
-    }
-
-    /**
-     * Sets username.
-     *
-     * @param string $username username
-     *
-     * @return self
-     */
-    public function setUsername($username)
-    {
-        $this->container['username'] = $username;
-
-        return $this;
-    }
-
-    /**
-     * Gets password.
+     * Gets types.
      *
      * @return mixed
      */
-    public function getPassword()
+    public function getTypes()
     {
-        return $this->container['password'];
+        return $this->container['types'];
     }
 
     /**
-     * Sets password.
+     * Sets types.
      *
-     * @param mixed $password password
+     * @param mixed $types types
      *
      * @return self
      */
-    public function setPassword($password)
+    public function setTypes($types)
     {
-        $this->container['password'] = $password;
-
-        return $this;
-    }
-
-    /**
-     * Gets sessionLifespanInSeconds.
-     *
-     * @return null|float
-     */
-    public function getSessionLifespanInSeconds()
-    {
-        return $this->container['sessionLifespanInSeconds'];
-    }
-
-    /**
-     * Sets sessionLifespanInSeconds.
-     *
-     * @param null|float $sessionLifespanInSeconds sessionLifespanInSeconds
-     *
-     * @return self
-     */
-    public function setSessionLifespanInSeconds($sessionLifespanInSeconds)
-    {
-        $this->container['sessionLifespanInSeconds'] = $sessionLifespanInSeconds;
+        $this->container['types'] = $types;
 
         return $this;
     }

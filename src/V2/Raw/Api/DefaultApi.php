@@ -3573,6 +3573,254 @@ class DefaultApi
     }
 
     /**
+     * Operation featuresControllerSummaryAll.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll
+     */
+    public function featuresControllerSummaryAll()
+    {
+        list($response) = $this->featuresControllerSummaryAllWithHttpInfo();
+
+        return $response;
+    }
+
+    /**
+     * Operation featuresControllerSummaryAllWithHttpInfo.
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function featuresControllerSummaryAllWithHttpInfo()
+    {
+        $request = $this->featuresControllerSummaryAllRequest();
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation featuresControllerSummaryAllAsync.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerSummaryAllAsync()
+    {
+        return $this->featuresControllerSummaryAllAsyncWithHttpInfo()
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation featuresControllerSummaryAllAsyncWithHttpInfo.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function featuresControllerSummaryAllAsyncWithHttpInfo()
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll';
+        $request = $this->featuresControllerSummaryAllRequest();
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'featuresControllerSummaryAll'.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function featuresControllerSummaryAllRequest()
+    {
+        $resourcePath = '/sync-core/features/summary/all';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation featuresControllerUpdate.
      *
      * @param  \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType $targetType targetType (required)
@@ -7187,6 +7435,277 @@ class DefaultApi
 
         return new Request(
             'PUT',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation loggingControllerList.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest loggingIdsRequest (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse
+     */
+    public function loggingControllerList($loggingIdsRequest)
+    {
+        list($response) = $this->loggingControllerListWithHttpInfo($loggingIdsRequest);
+
+        return $response;
+    }
+
+    /**
+     * Operation loggingControllerListWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function loggingControllerListWithHttpInfo($loggingIdsRequest)
+    {
+        $request = $this->loggingControllerListRequest($loggingIdsRequest);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation loggingControllerListAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function loggingControllerListAsync($loggingIdsRequest)
+    {
+        return $this->loggingControllerListAsyncWithHttpInfo($loggingIdsRequest)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation loggingControllerListAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function loggingControllerListAsyncWithHttpInfo($loggingIdsRequest)
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse';
+        $request = $this->loggingControllerListRequest($loggingIdsRequest);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'loggingControllerList'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function loggingControllerListRequest($loggingIdsRequest)
+    {
+        // verify the required parameter 'loggingIdsRequest' is set
+        if (null === $loggingIdsRequest || (is_array($loggingIdsRequest) && 0 === count($loggingIdsRequest))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $loggingIdsRequest when calling loggingControllerList'
+            );
+        }
+
+        $resourcePath = '/sync-core/logging/map-ids';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($loggingIdsRequest)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($loggingIdsRequest));
+            } else {
+                $httpBody = $loggingIdsRequest;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (null !== $this->config->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
+        return new Request(
+            'POST',
             $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -19081,16 +19600,18 @@ class DefaultApi
      * @param  string $siteUuid siteUuid (required)
      * @param  string $remoteUuid remoteUuid (optional)
      * @param  string $remoteUniqueId remoteUniqueId (optional)
-     * @param  string $page page (optional)
+     * @param  string $namespaceMachineName namespaceMachineName (optional)
+     * @param  string $machineName machineName (optional)
+     * @param  string $includingMigrations includingMigrations (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse
      */
-    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         return $response;
     }
@@ -19101,16 +19622,18 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         try {
             $options = $this->createHttpClientOption();
@@ -19198,15 +19721,17 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
-        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $page)
+        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -19221,16 +19746,18 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse';
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $page);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -19273,13 +19800,15 @@ class DefaultApi
      * @param  string $siteUuid (required)
      * @param  string $remoteUuid (optional)
      * @param  string $remoteUniqueId (optional)
-     * @param  string $page (optional)
+     * @param  string $namespaceMachineName (optional)
+     * @param  string $machineName (optional)
+     * @param  string $includingMigrations (optional)
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $page = null)
+    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null)
     {
         // verify the required parameter 'siteUuid' is set
         if (null === $siteUuid || (is_array($siteUuid) && 0 === count($siteUuid))) {
@@ -19316,13 +19845,33 @@ class DefaultApi
             }
         }
         // query params
-        if (null !== $page) {
-            if ('form' === 'form' && is_array($page)) {
-                foreach ($page as $key => $value) {
+        if (null !== $namespaceMachineName) {
+            if ('form' === 'form' && is_array($namespaceMachineName)) {
+                foreach ($namespaceMachineName as $key => $value) {
                     $queryParams[$key] = $value;
                 }
             } else {
-                $queryParams['page'] = $page;
+                $queryParams['namespaceMachineName'] = $namespaceMachineName;
+            }
+        }
+        // query params
+        if (null !== $machineName) {
+            if ('form' === 'form' && is_array($machineName)) {
+                foreach ($machineName as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['machineName'] = $machineName;
+            }
+        }
+        // query params
+        if (null !== $includingMigrations) {
+            if ('form' === 'form' && is_array($includingMigrations)) {
+                foreach ($includingMigrations as $key => $value) {
+                    $queryParams[$key] = $value;
+                }
+            } else {
+                $queryParams['includingMigrations'] = $includingMigrations;
             }
         }
 

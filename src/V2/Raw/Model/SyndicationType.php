@@ -47,6 +47,8 @@ class SyndicationType
 
     public const SYNDICATE_DELETE_ENTITY = 'syndicate-delete-entity';
 
+    public const SYNDICATE_DELETE_EMBEDDED_ENTITY = 'syndicate-delete-embedded-entity';
+
     public const RETRIEVE_ENTITY = 'retrieve-entity';
 
     public const RETRIEVE_ENTITY_LIST = 'retrieve-entity-list';
@@ -54,6 +56,8 @@ class SyndicationType
     public const PUSH_ENTITY = 'push-entity';
 
     public const DELETE_ENTITY = 'delete-entity';
+
+    public const DELETE_EMBEDDED_ENTITY = 'delete-embedded-entity';
 
     /**
      * Gets allowable values of the enum.
@@ -65,10 +69,12 @@ class SyndicationType
         return [
             self::SYNDICATE_CREATE_ENTITY,
             self::SYNDICATE_DELETE_ENTITY,
+            self::SYNDICATE_DELETE_EMBEDDED_ENTITY,
             self::RETRIEVE_ENTITY,
             self::RETRIEVE_ENTITY_LIST,
             self::PUSH_ENTITY,
             self::DELETE_ENTITY,
+            self::DELETE_EMBEDDED_ENTITY,
         ];
     }
 }

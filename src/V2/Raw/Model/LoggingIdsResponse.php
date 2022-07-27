@@ -1,6 +1,6 @@
 <?php
 /**
- * DeleteRemoteEntityRevisionDto.
+ * LoggingIdsResponse.
  *
  * PHP version 7.3
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * DeleteRemoteEntityRevisionDto Class Doc Comment.
+ * LoggingIdsResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -44,7 +44,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -53,7 +53,7 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      *
      * @var string
      */
-    protected static $openAPIModelName = 'DeleteRemoteEntityRevisionDto';
+    protected static $openAPIModelName = 'LoggingIdsResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -61,13 +61,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $openAPITypes = [
-        'entityTypeNamespaceMachineName' => 'string',
-        'entityTypeMachineName' => 'string',
-        'language' => 'string',
-        'remoteUuid' => 'string',
-        'remoteUniqueId' => 'string',
-        'flowMachineName' => 'string',
-        'name' => 'string',
+        'customerId' => 'string',
+        'contractId' => 'string',
+        'contractRevisionId' => 'string',
+        'projectId' => 'string',
+        'siteId' => 'string',
     ];
 
     /**
@@ -78,13 +76,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'entityTypeNamespaceMachineName' => null,
-        'entityTypeMachineName' => null,
-        'language' => null,
-        'remoteUuid' => null,
-        'remoteUniqueId' => null,
-        'flowMachineName' => null,
-        'name' => null,
+        'customerId' => null,
+        'contractId' => null,
+        'contractRevisionId' => null,
+        'projectId' => null,
+        'siteId' => null,
     ];
 
     /**
@@ -94,13 +90,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'entityTypeNamespaceMachineName' => 'entityTypeNamespaceMachineName',
-        'entityTypeMachineName' => 'entityTypeMachineName',
-        'language' => 'language',
-        'remoteUuid' => 'remoteUuid',
-        'remoteUniqueId' => 'remoteUniqueId',
-        'flowMachineName' => 'flowMachineName',
-        'name' => 'name',
+        'customerId' => 'customerId',
+        'contractId' => 'contractId',
+        'contractRevisionId' => 'contractRevisionId',
+        'projectId' => 'projectId',
+        'siteId' => 'siteId',
     ];
 
     /**
@@ -109,13 +103,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'entityTypeNamespaceMachineName' => 'setEntityTypeNamespaceMachineName',
-        'entityTypeMachineName' => 'setEntityTypeMachineName',
-        'language' => 'setLanguage',
-        'remoteUuid' => 'setRemoteUuid',
-        'remoteUniqueId' => 'setRemoteUniqueId',
-        'flowMachineName' => 'setFlowMachineName',
-        'name' => 'setName',
+        'customerId' => 'setCustomerId',
+        'contractId' => 'setContractId',
+        'contractRevisionId' => 'setContractRevisionId',
+        'projectId' => 'setProjectId',
+        'siteId' => 'setSiteId',
     ];
 
     /**
@@ -124,13 +116,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'entityTypeNamespaceMachineName' => 'getEntityTypeNamespaceMachineName',
-        'entityTypeMachineName' => 'getEntityTypeMachineName',
-        'language' => 'getLanguage',
-        'remoteUuid' => 'getRemoteUuid',
-        'remoteUniqueId' => 'getRemoteUniqueId',
-        'flowMachineName' => 'getFlowMachineName',
-        'name' => 'getName',
+        'customerId' => 'getCustomerId',
+        'contractId' => 'getContractId',
+        'contractRevisionId' => 'getContractRevisionId',
+        'projectId' => 'getProjectId',
+        'siteId' => 'getSiteId',
     ];
 
     /**
@@ -148,13 +138,11 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->container['entityTypeNamespaceMachineName'] = $data['entityTypeNamespaceMachineName'] ?? null;
-        $this->container['entityTypeMachineName'] = $data['entityTypeMachineName'] ?? null;
-        $this->container['language'] = $data['language'] ?? null;
-        $this->container['remoteUuid'] = $data['remoteUuid'] ?? null;
-        $this->container['remoteUniqueId'] = $data['remoteUniqueId'] ?? null;
-        $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
-        $this->container['name'] = $data['name'] ?? null;
+        $this->container['customerId'] = $data['customerId'] ?? null;
+        $this->container['contractId'] = $data['contractId'] ?? null;
+        $this->container['contractRevisionId'] = $data['contractRevisionId'] ?? null;
+        $this->container['projectId'] = $data['projectId'] ?? null;
+        $this->container['siteId'] = $data['siteId'] ?? null;
     }
 
     /**
@@ -238,22 +226,7 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        if (null === $this->container['entityTypeNamespaceMachineName']) {
-            $invalidProperties[] = "'entityTypeNamespaceMachineName' can't be null";
-        }
-        if (null === $this->container['entityTypeMachineName']) {
-            $invalidProperties[] = "'entityTypeMachineName' can't be null";
-        }
-        if (null === $this->container['language']) {
-            $invalidProperties[] = "'language' can't be null";
-        }
-        if (null === $this->container['flowMachineName']) {
-            $invalidProperties[] = "'flowMachineName' can't be null";
-        }
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -268,169 +241,121 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets entityTypeNamespaceMachineName.
-     *
-     * @return string
-     */
-    public function getEntityTypeNamespaceMachineName()
-    {
-        return $this->container['entityTypeNamespaceMachineName'];
-    }
-
-    /**
-     * Sets entityTypeNamespaceMachineName.
-     *
-     * @param string $entityTypeNamespaceMachineName entityTypeNamespaceMachineName
-     *
-     * @return self
-     */
-    public function setEntityTypeNamespaceMachineName($entityTypeNamespaceMachineName)
-    {
-        $this->container['entityTypeNamespaceMachineName'] = $entityTypeNamespaceMachineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypeMachineName.
-     *
-     * @return string
-     */
-    public function getEntityTypeMachineName()
-    {
-        return $this->container['entityTypeMachineName'];
-    }
-
-    /**
-     * Sets entityTypeMachineName.
-     *
-     * @param string $entityTypeMachineName entityTypeMachineName
-     *
-     * @return self
-     */
-    public function setEntityTypeMachineName($entityTypeMachineName)
-    {
-        $this->container['entityTypeMachineName'] = $entityTypeMachineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets language.
-     *
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->container['language'];
-    }
-
-    /**
-     * Sets language.
-     *
-     * @param string $language language
-     *
-     * @return self
-     */
-    public function setLanguage($language)
-    {
-        $this->container['language'] = $language;
-
-        return $this;
-    }
-
-    /**
-     * Gets remoteUuid.
+     * Gets customerId.
      *
      * @return null|string
      */
-    public function getRemoteUuid()
+    public function getCustomerId()
     {
-        return $this->container['remoteUuid'];
+        return $this->container['customerId'];
     }
 
     /**
-     * Sets remoteUuid.
+     * Sets customerId.
      *
-     * @param null|string $remoteUuid remoteUuid
+     * @param null|string $customerId customerId
      *
      * @return self
      */
-    public function setRemoteUuid($remoteUuid)
+    public function setCustomerId($customerId)
     {
-        $this->container['remoteUuid'] = $remoteUuid;
+        $this->container['customerId'] = $customerId;
 
         return $this;
     }
 
     /**
-     * Gets remoteUniqueId.
+     * Gets contractId.
      *
      * @return null|string
      */
-    public function getRemoteUniqueId()
+    public function getContractId()
     {
-        return $this->container['remoteUniqueId'];
+        return $this->container['contractId'];
     }
 
     /**
-     * Sets remoteUniqueId.
+     * Sets contractId.
      *
-     * @param null|string $remoteUniqueId remoteUniqueId
+     * @param null|string $contractId contractId
      *
      * @return self
      */
-    public function setRemoteUniqueId($remoteUniqueId)
+    public function setContractId($contractId)
     {
-        $this->container['remoteUniqueId'] = $remoteUniqueId;
+        $this->container['contractId'] = $contractId;
 
         return $this;
     }
 
     /**
-     * Gets flowMachineName.
-     *
-     * @return string
-     */
-    public function getFlowMachineName()
-    {
-        return $this->container['flowMachineName'];
-    }
-
-    /**
-     * Sets flowMachineName.
-     *
-     * @param string $flowMachineName flowMachineName
-     *
-     * @return self
-     */
-    public function setFlowMachineName($flowMachineName)
-    {
-        $this->container['flowMachineName'] = $flowMachineName;
-
-        return $this;
-    }
-
-    /**
-     * Gets name.
+     * Gets contractRevisionId.
      *
      * @return null|string
      */
-    public function getName()
+    public function getContractRevisionId()
     {
-        return $this->container['name'];
+        return $this->container['contractRevisionId'];
     }
 
     /**
-     * Sets name.
+     * Sets contractRevisionId.
      *
-     * @param null|string $name name
+     * @param null|string $contractRevisionId contractRevisionId
      *
      * @return self
      */
-    public function setName($name)
+    public function setContractRevisionId($contractRevisionId)
     {
-        $this->container['name'] = $name;
+        $this->container['contractRevisionId'] = $contractRevisionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets projectId.
+     *
+     * @return null|string
+     */
+    public function getProjectId()
+    {
+        return $this->container['projectId'];
+    }
+
+    /**
+     * Sets projectId.
+     *
+     * @param null|string $projectId projectId
+     *
+     * @return self
+     */
+    public function setProjectId($projectId)
+    {
+        $this->container['projectId'] = $projectId;
+
+        return $this;
+    }
+
+    /**
+     * Gets siteId.
+     *
+     * @return null|string
+     */
+    public function getSiteId()
+    {
+        return $this->container['siteId'];
+    }
+
+    /**
+     * Sets siteId.
+     *
+     * @param null|string $siteId siteId
+     *
+     * @return self
+     */
+    public function setSiteId($siteId)
+    {
+        $this->container['siteId'] = $siteId;
 
         return $this;
     }
