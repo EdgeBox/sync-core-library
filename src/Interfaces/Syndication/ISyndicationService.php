@@ -47,6 +47,11 @@ interface ISyndicationService
     public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $root_language, string $entity_uuid, ?string $entity_id);
 
     /**
+     * @return IPushMultiple
+     */
+    public function pushMultiple(string $flow_id);
+
+    /**
      * Inform the Sync Core that the given entity was deleted locally.
      */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id);

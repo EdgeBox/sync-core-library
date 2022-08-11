@@ -88,6 +88,14 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritDoc}
      */
+    public function pushMultiple(string $flow_id)
+    {
+        throw new \Exception("The Sync Core v1 doesn't support mass updates.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $root_language, string $entity_uuid, ?string $entity_id)
     {
     }

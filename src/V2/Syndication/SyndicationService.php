@@ -87,6 +87,14 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritDoc}
      */
+    public function pushMultiple(string $flow_id)
+    {
+        return new PushMultiple($this->core, $flow_id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id)
     {
         $dto = new DeleteRemoteEntityRevisionDto();
