@@ -84,6 +84,12 @@ interface ISyncCore
     public function setSiteName(string $set);
 
     /**
+     * Update the site details at the Sync Core e.g. to notify the Sync Core of
+     * changed REST routes.
+     */
+    public function updateSiteAtSyncCore();
+
+    /**
      * @throws NotFoundException
      *
      * @return null|array

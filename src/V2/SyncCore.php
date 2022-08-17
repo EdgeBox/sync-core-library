@@ -430,24 +430,8 @@ class SyncCore implements ISyncCore
         $dto->setSecret($this->getSiteSecret());
 
         $dto->setToken($token);
-        $dto->setName($this->application->getSiteName());
-        $dto->setBaseUrl($this->application->getSiteBaseUrl());
-        /**
-         * @var \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $app_type
-         */
-        $app_type = $this->application->getApplicationId();
-        $dto->setAppType($app_type);
-        $dto->setAppVersion($this->application->getApplicationVersion());
-        $dto->setAppModuleVersion($this->application->getApplicationModuleVersion());
 
-        $urls = new SiteRestUrls();
-
-        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
-        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
-        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
-        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
-
-        $dto->setRestUrls($urls);
+        $this->addSiteDetails($dto);
 
         $invalid = $dto->listInvalidProperties();
 
@@ -738,11 +722,51 @@ class SyncCore implements ISyncCore
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
+    public function updateSiteAtSyncCore()
+    {
+        if (!$this->isSiteRegistered()) {
+            return;
+        }
+
+        $dto = $this->getSiteUpdateDto();
+
+        $this->addSiteDetails($dto);
+
+        $request = $this->client->siteControllerUpdateRequest($dto);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+    }
+
     public function verifySiteId()
     {
         // As sites are registered globally now, we don't need additional verification.
         // Sites can't be registered multiple times with the same ID or base URL.
         return null;
+    }
+
+    /**
+     * @param CreateSiteDto|RegisterNewSiteDto $dto
+     */
+    protected function addSiteDetails($dto)
+    {
+        $dto->setName($this->application->getSiteName());
+        $dto->setBaseUrl($this->application->getSiteBaseUrl());
+
+        /**
+         * @var \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $app_type
+         */
+        $app_type = $this->application->getApplicationId();
+        $dto->setAppType($app_type);
+        $dto->setAppVersion($this->application->getApplicationVersion());
+        $dto->setAppModuleVersion($this->application->getApplicationModuleVersion());
+
+        $urls = new SiteRestUrls();
+
+        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
+        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
+        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
+        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+
+        $dto->setRestUrls($urls);
     }
 
     protected function getSiteUpdateDto()

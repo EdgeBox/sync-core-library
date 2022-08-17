@@ -281,6 +281,13 @@ class SyncCore implements ISyncCore
     }
 
     /**
+     * Note supported in v1.
+     */
+    public function updateSiteAtSyncCore()
+    {
+    }
+
+    /**
      * @return bool
      */
     public function setSiteName(string $set)
