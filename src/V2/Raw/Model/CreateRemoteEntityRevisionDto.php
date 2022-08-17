@@ -80,6 +80,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]',
         'flowMachineName' => 'string',
         'previewHtml' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'allLanguages' => 'string[]',
     ];
 
     /**
@@ -109,6 +110,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'translations' => null,
         'flowMachineName' => null,
         'previewHtml' => null,
+        'allLanguages' => null,
     ];
 
     /**
@@ -137,6 +139,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'translations' => 'translations',
         'flowMachineName' => 'flowMachineName',
         'previewHtml' => 'previewHtml',
+        'allLanguages' => 'allLanguages',
     ];
 
     /**
@@ -164,6 +167,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'translations' => 'setTranslations',
         'flowMachineName' => 'setFlowMachineName',
         'previewHtml' => 'setPreviewHtml',
+        'allLanguages' => 'setAllLanguages',
     ];
 
     /**
@@ -191,6 +195,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'translations' => 'getTranslations',
         'flowMachineName' => 'getFlowMachineName',
         'previewHtml' => 'getPreviewHtml',
+        'allLanguages' => 'getAllLanguages',
     ];
 
     /**
@@ -227,6 +232,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->container['translations'] = $data['translations'] ?? null;
         $this->container['flowMachineName'] = $data['flowMachineName'] ?? null;
         $this->container['previewHtml'] = $data['previewHtml'] ?? null;
+        $this->container['allLanguages'] = $data['allLanguages'] ?? null;
     }
 
     /**
@@ -800,6 +806,30 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setPreviewHtml($previewHtml)
     {
         $this->container['previewHtml'] = $previewHtml;
+
+        return $this;
+    }
+
+    /**
+     * Gets allLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getAllLanguages()
+    {
+        return $this->container['allLanguages'];
+    }
+
+    /**
+     * Sets allLanguages.
+     *
+     * @param null|string[] $allLanguages allLanguages
+     *
+     * @return self
+     */
+    public function setAllLanguages($allLanguages)
+    {
+        $this->container['allLanguages'] = $allLanguages;
 
         return $this;
     }
