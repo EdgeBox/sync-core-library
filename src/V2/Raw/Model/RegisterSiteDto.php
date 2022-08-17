@@ -64,6 +64,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'string',
         'secret' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'baseUrl' => 'string',
     ];
 
     /**
@@ -77,6 +78,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => null,
         'secret' => null,
         'restUrls' => null,
+        'baseUrl' => null,
     ];
 
     /**
@@ -89,6 +91,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'uuid',
         'secret' => 'secret',
         'restUrls' => 'restUrls',
+        'baseUrl' => 'baseUrl',
     ];
 
     /**
@@ -100,6 +103,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'setUuid',
         'secret' => 'setSecret',
         'restUrls' => 'setRestUrls',
+        'baseUrl' => 'setBaseUrl',
     ];
 
     /**
@@ -111,6 +115,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => 'getUuid',
         'secret' => 'getSecret',
         'restUrls' => 'getRestUrls',
+        'baseUrl' => 'getBaseUrl',
     ];
 
     /**
@@ -131,6 +136,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->container['uuid'] = $data['uuid'] ?? null;
         $this->container['secret'] = $data['secret'] ?? null;
         $this->container['restUrls'] = $data['restUrls'] ?? null;
+        $this->container['baseUrl'] = $data['baseUrl'] ?? null;
     }
 
     /**
@@ -308,6 +314,30 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRestUrls($restUrls)
     {
         $this->container['restUrls'] = $restUrls;
+
+        return $this;
+    }
+
+    /**
+     * Gets baseUrl.
+     *
+     * @return null|string
+     */
+    public function getBaseUrl()
+    {
+        return $this->container['baseUrl'];
+    }
+
+    /**
+     * Sets baseUrl.
+     *
+     * @param null|string $baseUrl baseUrl
+     *
+     * @return self
+     */
+    public function setBaseUrl($baseUrl)
+    {
+        $this->container['baseUrl'] = $baseUrl;
 
         return $this;
     }

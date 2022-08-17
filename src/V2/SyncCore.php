@@ -484,6 +484,7 @@ class SyncCore implements ISyncCore
         // TODO: Drupal/Interface: When the password changes, we need to make a request to the Sync Core using
         //   the old password to set the new password. If the request fails, the password
         //   can't be changed.
+        $dto->setBaseUrl($this->application->getSiteBaseUrl());
         $dto->setSecret($this->getSiteSecret());
 
         $urls = new SiteRestUrls();
