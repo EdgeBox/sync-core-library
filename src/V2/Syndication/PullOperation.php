@@ -209,7 +209,7 @@ class PullOperation implements IPullOperation
             return [];
         }
 
-        if (is_array($this->dto->getAllLanguages())) {
+        if ($this->dto instanceof CreateRemoteEntityRevisionDto && !empty($this->dto->getAllLanguages())) {
             $languages = $this->dto->getAllLanguages();
             // Exclude the root language.
             return array_diff($languages, [$this->dto->getLanguage()]);
