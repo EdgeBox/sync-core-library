@@ -188,6 +188,9 @@ abstract class Embed
             .replace(/\[flow\.machineName\]/g, flowMachineName||"'.IApplicationInterface::FLOW_NONE.'")
             .replace(/\[type\.namespaceMachineName\]/g, namespaceMachineName)
             .replace(/\[type\.machineName\]/g, machineName)
+            .replace(/\[entity\.isTranslationRoot\]/g, "true")
+            .replace(/\[entity\.language\]/g, "")
+            .replace(/\[entity\.individualTranslation\]/g, "true")
             .replace(/\[entity\.uuid\]/g, sharedEntityId)
             .replace(/\[entity\.sharedId\]/g, sharedEntityId);
           jQuery.ajax({
