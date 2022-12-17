@@ -145,8 +145,7 @@ class SyndicationService implements ISyndicationService
             }
 
             if (!empty($item['entity']['_resource_url'])) {
-                $entity = SimpleQuery
-          ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
+                $entity = SimpleQuery::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
               ->execute()
               ->getResult()
                 ;
