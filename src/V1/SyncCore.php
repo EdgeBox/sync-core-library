@@ -196,11 +196,11 @@ class SyncCore implements ISyncCore
     public function requestPing($site_url, $method, $authentication)
     {
         return PingQuery::create($this, null)
-          ->setSiteUrl($site_url)
-          ->setMethod($method)
-          ->setAuthentication($authentication)
-          ->execute()
-          ->succeeded()
+            ->setSiteUrl($site_url)
+            ->setMethod($method)
+            ->setAuthentication($authentication)
+            ->execute()
+            ->succeeded()
         ;
     }
 
@@ -427,12 +427,12 @@ class SyncCore implements ISyncCore
             ->listItems()
             ->setCondition(
                 ParentCondition::all()
-              ->add(
-                  DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
-              )
-              ->add(
-                  DataCondition::notEqual('id', $this->application->getSiteId())
-              )
+                    ->add(
+                        DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
+                    )
+                    ->add(
+                        DataCondition::notEqual('id', $this->application->getSiteId())
+                    )
             )
             ->execute()
             ->getAll()
