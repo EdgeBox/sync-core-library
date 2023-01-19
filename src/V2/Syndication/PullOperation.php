@@ -205,6 +205,16 @@ class PullOperation implements IPullOperation
      */
     public function getUsedTranslationLanguages()
     {
+        if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
+            return [];
+        }
+
+        if ($this->dto instanceof CreateRemoteEntityRevisionDto && !empty($this->dto->getAllLanguages())) {
+            $languages = $this->dto->getAllLanguages();
+            // Exclude the root language.
+            return array_diff($languages, [$this->dto->getLanguage()]);
+        }
+
         return array_keys($this->translations);
     }
 

@@ -88,6 +88,14 @@ class SyndicationService implements ISyndicationService
     /**
      * {@inheritDoc}
      */
+    public function pushMultiple(string $flow_id)
+    {
+        throw new \Exception("The Sync Core v1 doesn't support mass updates.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $root_language, string $entity_uuid, ?string $entity_id)
     {
     }
@@ -137,10 +145,9 @@ class SyndicationService implements ISyndicationService
             }
 
             if (!empty($item['entity']['_resource_url'])) {
-                $entity = SimpleQuery
-          ::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
-              ->execute()
-              ->getResult()
+                $entity = SimpleQuery::create($this->core, SyncCoreClient::getRelativeUrl($item['entity']['_resource_url']))
+                    ->execute()
+                    ->getResult()
                 ;
             } else {
                 $storage = new CustomStorage(

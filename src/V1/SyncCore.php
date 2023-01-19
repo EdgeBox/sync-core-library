@@ -195,13 +195,12 @@ class SyncCore implements ISyncCore
      */
     public function requestPing($site_url, $method, $authentication)
     {
-        return PingQuery
-      ::create($this, null)
-          ->setSiteUrl($site_url)
-          ->setMethod($method)
-          ->setAuthentication($authentication)
-          ->execute()
-          ->succeeded()
+        return PingQuery::create($this, null)
+            ->setSiteUrl($site_url)
+            ->setMethod($method)
+            ->setAuthentication($authentication)
+            ->execute()
+            ->succeeded()
         ;
     }
 
@@ -277,6 +276,13 @@ class SyncCore implements ISyncCore
      * Not supported in v1.
      */
     public function setDomains(array $domains)
+    {
+    }
+
+    /**
+     * Note supported in v1.
+     */
+    public function updateSiteAtSyncCore()
     {
     }
 
@@ -420,14 +426,13 @@ class SyncCore implements ISyncCore
             ->storage->getInstanceStorage()
             ->listItems()
             ->setCondition(
-                ParentCondition
-          ::all()
-              ->add(
-                  DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
-              )
-              ->add(
-                  DataCondition::notEqual('id', $this->application->getSiteId())
-              )
+                ParentCondition::all()
+                    ->add(
+                        DataCondition::equal('base_url', $this->application->getSiteBaseUrl())
+                    )
+                    ->add(
+                        DataCondition::notEqual('id', $this->application->getSiteId())
+                    )
             )
             ->execute()
             ->getAll()

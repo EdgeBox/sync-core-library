@@ -73,6 +73,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isDeleted' => 'bool',
         'isSource' => 'bool',
         'viewUrl' => 'string',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[]',
     ];
 
     /**
@@ -95,6 +96,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isDeleted' => null,
         'isSource' => null,
         'viewUrl' => null,
+        'translations' => null,
     ];
 
     /**
@@ -116,6 +118,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isDeleted' => 'isDeleted',
         'isSource' => 'isSource',
         'viewUrl' => 'viewUrl',
+        'translations' => 'translations',
     ];
 
     /**
@@ -136,6 +139,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isDeleted' => 'setIsDeleted',
         'isSource' => 'setIsSource',
         'viewUrl' => 'setViewUrl',
+        'translations' => 'setTranslations',
     ];
 
     /**
@@ -156,6 +160,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isDeleted' => 'getIsDeleted',
         'isSource' => 'getIsSource',
         'viewUrl' => 'getViewUrl',
+        'translations' => 'getTranslations',
     ];
 
     /**
@@ -185,6 +190,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         $this->container['isDeleted'] = $data['isDeleted'] ?? null;
         $this->container['isSource'] = $data['isSource'] ?? null;
         $this->container['viewUrl'] = $data['viewUrl'] ?? null;
+        $this->container['translations'] = $data['translations'] ?? null;
     }
 
     /**
@@ -590,6 +596,30 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
     public function setViewUrl($viewUrl)
     {
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets translations.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[]
+     */
+    public function getTranslations()
+    {
+        return $this->container['translations'];
+    }
+
+    /**
+     * Sets translations.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[] $translations translations
+     *
+     * @return self
+     */
+    public function setTranslations($translations)
+    {
+        $this->container['translations'] = $translations;
 
         return $this;
     }

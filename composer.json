@@ -28,7 +28,7 @@
     },
     "require": {
         "php": ">=8.0.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "^6.0|| ^7.0",
         "firebase/php-jwt": "^5.2",
         "ext-json": "*"
     },

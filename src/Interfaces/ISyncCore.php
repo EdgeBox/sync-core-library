@@ -23,6 +23,7 @@ interface ISyncCore
 
     // Dynamic features; availability is defined by the Sync Core.
     public const FEATURE_DYNAMIC_POOL_ASSIGNMENT = 'syndication:dynamic-pool-assignment';
+    public const FEATURE_PUSH_ASYNC = 'syndication:push-async';
 
     /**
      * @return IReportingService
@@ -81,6 +82,12 @@ interface ISyncCore
      * @param string $set the new name
      */
     public function setSiteName(string $set);
+
+    /**
+     * Update the site details at the Sync Core e.g. to notify the Sync Core of
+     * changed REST routes.
+     */
+    public function updateSiteAtSyncCore();
 
     /**
      * @throws NotFoundException

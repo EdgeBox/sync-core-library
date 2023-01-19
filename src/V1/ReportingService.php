@@ -32,10 +32,9 @@ class ReportingService implements IReportingService
             $arguments['level'] = (is_array($level) ? implode(',', $level) : $level);
         }
 
-        $items = SimpleQuery
-      ::create($this->core, SyncCoreClient::LOG_PATH, $arguments)
-          ->execute()
-          ->getResult()['items'];
+        $items = SimpleQuery::create($this->core, SyncCoreClient::LOG_PATH, $arguments)
+            ->execute()
+            ->getResult()['items'];
 
         $items = Helper::obfuscateCredentials($items);
 
@@ -53,10 +52,9 @@ class ReportingService implements IReportingService
      */
     public function getStatus()
     {
-        $result = SimpleQuery
-      ::create($this->core, SyncCoreClient::STATUS_PATH)
-          ->execute()
-          ->getResult()
+        $result = SimpleQuery::create($this->core, SyncCoreClient::STATUS_PATH)
+            ->execute()
+            ->getResult()
         ;
 
         return [

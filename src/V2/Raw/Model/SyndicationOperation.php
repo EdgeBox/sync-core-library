@@ -68,6 +68,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'file' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'language' => 'string',
+        'isTranslationRoot' => 'bool',
     ];
 
     /**
@@ -85,6 +87,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'entity' => null,
         'file' => null,
         'pools' => null,
+        'language' => null,
+        'isTranslationRoot' => null,
     ];
 
     /**
@@ -101,6 +105,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'entity' => 'entity',
         'file' => 'file',
         'pools' => 'pools',
+        'language' => 'language',
+        'isTranslationRoot' => 'isTranslationRoot',
     ];
 
     /**
@@ -116,6 +122,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'entity' => 'setEntity',
         'file' => 'setFile',
         'pools' => 'setPools',
+        'language' => 'setLanguage',
+        'isTranslationRoot' => 'setIsTranslationRoot',
     ];
 
     /**
@@ -131,6 +139,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'entity' => 'getEntity',
         'file' => 'getFile',
         'pools' => 'getPools',
+        'language' => 'getLanguage',
+        'isTranslationRoot' => 'getIsTranslationRoot',
     ];
 
     /**
@@ -155,6 +165,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->container['entity'] = $data['entity'] ?? null;
         $this->container['file'] = $data['file'] ?? null;
         $this->container['pools'] = $data['pools'] ?? null;
+        $this->container['language'] = $data['language'] ?? null;
+        $this->container['isTranslationRoot'] = $data['isTranslationRoot'] ?? null;
     }
 
     /**
@@ -425,6 +437,54 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setPools($pools)
     {
         $this->container['pools'] = $pools;
+
+        return $this;
+    }
+
+    /**
+     * Gets language.
+     *
+     * @return null|string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
+
+    /**
+     * Sets language.
+     *
+     * @param null|string $language language
+     *
+     * @return self
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
+
+        return $this;
+    }
+
+    /**
+     * Gets isTranslationRoot.
+     *
+     * @return null|bool
+     */
+    public function getIsTranslationRoot()
+    {
+        return $this->container['isTranslationRoot'];
+    }
+
+    /**
+     * Sets isTranslationRoot.
+     *
+     * @param null|bool $isTranslationRoot isTranslationRoot
+     *
+     * @return self
+     */
+    public function setIsTranslationRoot($isTranslationRoot)
+    {
+        $this->container['isTranslationRoot'] = $isTranslationRoot;
 
         return $this;
     }

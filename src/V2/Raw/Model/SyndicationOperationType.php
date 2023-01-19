@@ -45,9 +45,13 @@ class SyndicationOperationType
      */
     public const PUSH_ENTITY = 'push-entity';
 
+    public const PUSH_ENTITY_TRANSLATION = 'push-entity-translation';
+
     public const DELETE_ENTITY = 'delete-entity';
 
     public const RETRIEVE_ENTITY = 'retrieve-entity';
+
+    public const RETRIEVE_ENTITY_TRANSLATION = 'retrieve-entity-translation';
 
     public const RETRIEVE_ENTITY_LIST_PAGE = 'retrieve-entity-list-page';
 
@@ -64,8 +68,10 @@ class SyndicationOperationType
     {
         return [
             self::PUSH_ENTITY,
+            self::PUSH_ENTITY_TRANSLATION,
             self::DELETE_ENTITY,
             self::RETRIEVE_ENTITY,
+            self::RETRIEVE_ENTITY_TRANSLATION,
             self::RETRIEVE_ENTITY_LIST_PAGE,
             self::RETRIEVE_ENTITY_LIST_INIT,
             self::RETRIEVE_FILE,
