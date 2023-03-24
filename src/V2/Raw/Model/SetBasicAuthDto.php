@@ -1,6 +1,6 @@
 <?php
 /**
- * PagedRemoteEntityRevisionList.
+ * SetBasicAuthDto.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * PagedRemoteEntityRevisionList Class Doc Comment.
+ * SetBasicAuthDto Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \JsonSerializable
+class SetBasicAuthDto implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      *
      * @var string
      */
-    protected static $openAPIModelName = 'PagedRemoteEntityRevisionList';
+    protected static $openAPIModelName = 'SetBasicAuthDto';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $openAPITypes = [
-        'page' => 'float',
-        'numberOfPages' => 'float',
-        'itemsPerPage' => 'float',
-        'totalNumberOfItems' => 'float',
-        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity[]',
+        'basicAuthUsername' => 'string',
+        'basicAuthPassword' => 'string',
     ];
 
     /**
@@ -74,11 +71,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'page' => null,
-        'numberOfPages' => null,
-        'itemsPerPage' => null,
-        'totalNumberOfItems' => null,
-        'items' => null,
+        'basicAuthUsername' => null,
+        'basicAuthPassword' => null,
     ];
 
     /**
@@ -87,11 +81,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'page' => false,
-        'numberOfPages' => false,
-        'itemsPerPage' => false,
-        'totalNumberOfItems' => false,
-        'items' => false,
+        'basicAuthUsername' => false,
+        'basicAuthPassword' => false,
     ];
 
     /**
@@ -108,11 +99,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'page' => 'page',
-        'numberOfPages' => 'numberOfPages',
-        'itemsPerPage' => 'itemsPerPage',
-        'totalNumberOfItems' => 'totalNumberOfItems',
-        'items' => 'items',
+        'basicAuthUsername' => 'basicAuthUsername',
+        'basicAuthPassword' => 'basicAuthPassword',
     ];
 
     /**
@@ -121,11 +109,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'page' => 'setPage',
-        'numberOfPages' => 'setNumberOfPages',
-        'itemsPerPage' => 'setItemsPerPage',
-        'totalNumberOfItems' => 'setTotalNumberOfItems',
-        'items' => 'setItems',
+        'basicAuthUsername' => 'setBasicAuthUsername',
+        'basicAuthPassword' => 'setBasicAuthPassword',
     ];
 
     /**
@@ -134,11 +119,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'page' => 'getPage',
-        'numberOfPages' => 'getNumberOfPages',
-        'itemsPerPage' => 'getItemsPerPage',
-        'totalNumberOfItems' => 'getTotalNumberOfItems',
-        'items' => 'getItems',
+        'basicAuthUsername' => 'getBasicAuthUsername',
+        'basicAuthPassword' => 'getBasicAuthPassword',
     ];
 
     /**
@@ -156,11 +138,8 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('page', $data ?? [], null);
-        $this->setIfExists('numberOfPages', $data ?? [], null);
-        $this->setIfExists('itemsPerPage', $data ?? [], null);
-        $this->setIfExists('totalNumberOfItems', $data ?? [], null);
-        $this->setIfExists('items', $data ?? [], null);
+        $this->setIfExists('basicAuthUsername', $data ?? [], null);
+        $this->setIfExists('basicAuthPassword', $data ?? [], null);
     }
 
     /**
@@ -260,25 +239,7 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        if (null === $this->container['page']) {
-            $invalidProperties[] = "'page' can't be null";
-        }
-        if (null === $this->container['numberOfPages']) {
-            $invalidProperties[] = "'numberOfPages' can't be null";
-        }
-        if (null === $this->container['itemsPerPage']) {
-            $invalidProperties[] = "'itemsPerPage' can't be null";
-        }
-        if (null === $this->container['totalNumberOfItems']) {
-            $invalidProperties[] = "'totalNumberOfItems' can't be null";
-        }
-        if (null === $this->container['items']) {
-            $invalidProperties[] = "'items' can't be null";
-        }
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -293,136 +254,55 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets page.
+     * Gets basicAuthUsername.
      *
-     * @return float
+     * @return null|string
      */
-    public function getPage()
+    public function getBasicAuthUsername()
     {
-        return $this->container['page'];
+        return $this->container['basicAuthUsername'];
     }
 
     /**
-     * Sets page.
+     * Sets basicAuthUsername.
      *
-     * @param float $page page
+     * @param null|string $basicAuthUsername basicAuthUsername
      *
      * @return self
      */
-    public function setPage($page)
+    public function setBasicAuthUsername($basicAuthUsername)
     {
-        if (is_null($page)) {
-            throw new \InvalidArgumentException('non-nullable page cannot be null');
+        if (is_null($basicAuthUsername)) {
+            throw new \InvalidArgumentException('non-nullable basicAuthUsername cannot be null');
         }
-        $this->container['page'] = $page;
+        $this->container['basicAuthUsername'] = $basicAuthUsername;
 
         return $this;
     }
 
     /**
-     * Gets numberOfPages.
+     * Gets basicAuthPassword.
      *
-     * @return float
+     * @return null|string
      */
-    public function getNumberOfPages()
+    public function getBasicAuthPassword()
     {
-        return $this->container['numberOfPages'];
+        return $this->container['basicAuthPassword'];
     }
 
     /**
-     * Sets numberOfPages.
+     * Sets basicAuthPassword.
      *
-     * @param float $numberOfPages numberOfPages
+     * @param null|string $basicAuthPassword basicAuthPassword
      *
      * @return self
      */
-    public function setNumberOfPages($numberOfPages)
+    public function setBasicAuthPassword($basicAuthPassword)
     {
-        if (is_null($numberOfPages)) {
-            throw new \InvalidArgumentException('non-nullable numberOfPages cannot be null');
+        if (is_null($basicAuthPassword)) {
+            throw new \InvalidArgumentException('non-nullable basicAuthPassword cannot be null');
         }
-        $this->container['numberOfPages'] = $numberOfPages;
-
-        return $this;
-    }
-
-    /**
-     * Gets itemsPerPage.
-     *
-     * @return float
-     */
-    public function getItemsPerPage()
-    {
-        return $this->container['itemsPerPage'];
-    }
-
-    /**
-     * Sets itemsPerPage.
-     *
-     * @param float $itemsPerPage itemsPerPage
-     *
-     * @return self
-     */
-    public function setItemsPerPage($itemsPerPage)
-    {
-        if (is_null($itemsPerPage)) {
-            throw new \InvalidArgumentException('non-nullable itemsPerPage cannot be null');
-        }
-        $this->container['itemsPerPage'] = $itemsPerPage;
-
-        return $this;
-    }
-
-    /**
-     * Gets totalNumberOfItems.
-     *
-     * @return float
-     */
-    public function getTotalNumberOfItems()
-    {
-        return $this->container['totalNumberOfItems'];
-    }
-
-    /**
-     * Sets totalNumberOfItems.
-     *
-     * @param float $totalNumberOfItems totalNumberOfItems
-     *
-     * @return self
-     */
-    public function setTotalNumberOfItems($totalNumberOfItems)
-    {
-        if (is_null($totalNumberOfItems)) {
-            throw new \InvalidArgumentException('non-nullable totalNumberOfItems cannot be null');
-        }
-        $this->container['totalNumberOfItems'] = $totalNumberOfItems;
-
-        return $this;
-    }
-
-    /**
-     * Gets items.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity[]
-     */
-    public function getItems()
-    {
-        return $this->container['items'];
-    }
-
-    /**
-     * Sets items.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity[] $items items
-     *
-     * @return self
-     */
-    public function setItems($items)
-    {
-        if (is_null($items)) {
-            throw new \InvalidArgumentException('non-nullable items cannot be null');
-        }
-        $this->container['items'] = $items;
+        $this->container['basicAuthPassword'] = $basicAuthPassword;
 
         return $this;
     }
