@@ -2,44 +2,37 @@
 
 namespace EdgeBox\SyncCore\V2\Configuration;
 
-use EdgeBox\SyncCore\Interfaces\Configuration\IDefineEntityType;
-use EdgeBox\SyncCore\V2\Batch;
+use EdgeBox\SyncCore\Interfaces\Configuration\IDefineObject;
 use EdgeBox\SyncCore\V2\BatchOperation;
-use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class DefineEntityType extends BatchOperation implements IDefineEntityType
+class DefineProperty extends BatchOperation implements IDefineObject
 {
-    public const FILE_PROPERTY_NAME = '__file__';
-
     /**
      * @var SyncCore
      */
     protected $core;
 
     /**
-     * @var CreateRemoteEntityTypeVersionDto
+     * @var RemoteEntityTypeProperty
      */
     protected $dto;
 
     /**
      * DefineEntityType constructor.
-     *
-     * @param null|string $name
      */
-    public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $version_id, $name = null)
+    public function __construct(SyncCore $core, string $machine_name, ?string $name, string $type, bool $required, bool $multiple, ?string $type_name)
     {
-        $dto = new CreateRemoteEntityTypeVersionDto();
-
-        $dto->setAppType($core->getApplication()->getApplicationId());
-        $dto->setName($name ?? $machine_name);
-        $dto->setNamespaceMachineName($namespace_machine_name);
-        $dto->setMachineName($machine_name);
-        $dto->setVersionId($version_id);
-        $dto->setTranslatable(false);
-        $dto->setProperties([]);
+        $dto = new RemoteEntityTypeProperty([
+            'machineName' => $machine_name,
+            'name' => $name ?? $machine_name,
+            'type' => $type,
+            'required' => $required,
+            'multiple' => $multiple,
+            'remoteTypeName' => $type_name,
+        ]);
 
         parent::__construct(
             $core,
@@ -49,70 +42,19 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     }
 
     /**
+     * @return RemoteEntityTypeProperty
+     */
+    public function getDto()
+    {
+        return $this->dto;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function addToBatch($batch)
     {
-        /**
-         * @var Batch $batch
-         */
-        $batch->prependOperation($this);
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamespaceMachineName()
-    {
-        return $this->dto->getNamespaceMachineName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getMachineName()
-    {
-        return $this->dto->getMachineName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getVersionId()
-    {
-        return $this->dto->getVersionId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isTranslatable(bool $set)
-    {
-        if ($set) {
-            $this->dto->setTranslatable(true);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isFile(bool $set)
-    {
-        if ($set) {
-            $this->addProperty(
-                self::FILE_PROPERTY_NAME,
-                'File content',
-                RemoteEntityTypePropertyType::FILE,
-                false,
-                true,
-                '__file__'
-            );
-        }
-
+        // Nothing to do as we're part of the entity type definition.
         return $this;
     }
 
@@ -187,13 +129,17 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
          * @var RemoteEntityTypeProperty[] $properties
          */
         $properties = $this->dto->getProperties();
-        foreach ($properties as $i => $property) {
-            if ($property->getMachineName() === $machine_name) {
-                $properties[$i] = $newProperty;
-                $newProperty = null;
+        if ($properties) {
+            foreach ($properties as $i => $property) {
+                if ($property->getMachineName() === $machine_name) {
+                    $properties[$i] = $newProperty;
+                    $newProperty = null;
 
-                break;
+                    break;
+                }
             }
+        } else {
+            $properties = [];
         }
 
         if ($newProperty) {
