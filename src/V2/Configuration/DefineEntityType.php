@@ -107,7 +107,8 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
                 'File content',
                 RemoteEntityTypePropertyType::FILE,
                 false,
-                true
+                true,
+                '__file__'
             );
         }
 
@@ -117,9 +118,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required, $type_name);
 
         return $this;
     }
@@ -127,9 +128,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::INTEGER, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::INTEGER, $multiple, $required, $type_name);
 
         return $this;
     }
@@ -137,9 +138,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::FLOAT, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::FLOAT, $multiple, $required, $type_name);
 
         return $this;
     }
@@ -147,9 +148,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::STRING, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::STRING, $multiple, $required, $type_name);
 
         return $this;
     }
@@ -157,9 +158,9 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::OBJECT, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::OBJECT, $multiple, $required, $type_name);
 
         return $this;
     }
@@ -167,14 +168,14 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
-    public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false)
+    public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
-        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required);
+        $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required, $type_name);
 
         return $this;
     }
 
-    protected function addProperty(string $machine_name, ?string $name, string $type, bool $multiple, bool $required)
+    protected function addProperty(string $machine_name, ?string $name, string $type, bool $multiple, bool $required, ?string $type_name)
     {
         $newProperty = new RemoteEntityTypeProperty([
             'machineName' => $machine_name,
@@ -182,6 +183,7 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
             'type' => $type,
             'required' => $required,
             'multiple' => $multiple,
+            'remoteTypeName' => $type_name,
         ]);
 
         /**
