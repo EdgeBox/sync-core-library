@@ -87,11 +87,11 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'customerUuid' => false,
-        'contractUuid' => false,
-        'contractRevisionUuid' => false,
-        'projectUuid' => false,
-        'siteUuid' => false,
+        'customerUuid' => true,
+        'contractUuid' => true,
+        'contractRevisionUuid' => true,
+        'projectUuid' => true,
+        'siteUuid' => true,
     ];
 
     /**
@@ -294,7 +294,14 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setCustomerUuid($customerUuid)
     {
         if (is_null($customerUuid)) {
-            throw new \InvalidArgumentException('non-nullable customerUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'customerUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('customerUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['customerUuid'] = $customerUuid;
 
@@ -321,7 +328,14 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setContractUuid($contractUuid)
     {
         if (is_null($contractUuid)) {
-            throw new \InvalidArgumentException('non-nullable contractUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'contractUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contractUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['contractUuid'] = $contractUuid;
 
@@ -348,7 +362,14 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setContractRevisionUuid($contractRevisionUuid)
     {
         if (is_null($contractRevisionUuid)) {
-            throw new \InvalidArgumentException('non-nullable contractRevisionUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'contractRevisionUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contractRevisionUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['contractRevisionUuid'] = $contractRevisionUuid;
 
@@ -375,7 +396,14 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setProjectUuid($projectUuid)
     {
         if (is_null($projectUuid)) {
-            throw new \InvalidArgumentException('non-nullable projectUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'projectUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['projectUuid'] = $projectUuid;
 
@@ -402,7 +430,14 @@ class LoggingIdsRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setSiteUuid($siteUuid)
     {
         if (is_null($siteUuid)) {
-            throw new \InvalidArgumentException('non-nullable siteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'siteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('siteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['siteUuid'] = $siteUuid;
 

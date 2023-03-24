@@ -1,6 +1,6 @@
 <?php
 /**
- * RemoteEntityUsageEntity.
+ * PreviewItemEntityTypeVersion.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RemoteEntityUsageEntity Class Doc Comment.
+ * PreviewItemEntityTypeVersion Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RemoteEntityUsageEntity';
+    protected static $openAPIModelName = 'PreviewItem_entityTypeVersion';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,20 +59,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $openAPITypes = [
-        'match' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
-        'viewUrl' => 'string',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]',
-        'poolMachineNames' => 'string[]',
-        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'remoteUuid' => 'string',
-        'remoteUniqueId' => 'string',
-        'lastPush' => 'float',
-        'lastPull' => 'float',
+        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'name' => 'string',
+        'namespaceMachineName' => 'string',
+        'machineName' => 'string',
+        'versionId' => 'string',
+        'translatable' => 'bool',
+        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -87,20 +83,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'match' => null,
-        'status' => null,
-        'viewUrl' => null,
-        'site' => null,
-        'translations' => null,
-        'poolMachineNames' => null,
-        'entityType' => null,
-        'remoteUuid' => null,
-        'remoteUniqueId' => null,
-        'lastPush' => null,
-        'lastPull' => null,
+        'appType' => null,
+        'name' => null,
+        'namespaceMachineName' => null,
+        'machineName' => null,
+        'versionId' => null,
+        'translatable' => null,
+        'properties' => null,
         'customer' => null,
+        'entityType' => null,
         'project' => null,
-        'pools' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -113,20 +105,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'match' => false,
-        'status' => false,
-        'viewUrl' => false,
-        'site' => false,
-        'translations' => false,
-        'poolMachineNames' => false,
-        'entityType' => false,
-        'remoteUuid' => false,
-        'remoteUniqueId' => true,
-        'lastPush' => true,
-        'lastPull' => true,
+        'appType' => false,
+        'name' => false,
+        'namespaceMachineName' => false,
+        'machineName' => false,
+        'versionId' => false,
+        'translatable' => true,
+        'properties' => false,
         'customer' => false,
+        'entityType' => false,
         'project' => false,
-        'pools' => false,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -147,20 +135,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $attributeMap = [
-        'match' => 'match',
-        'status' => 'status',
-        'viewUrl' => 'viewUrl',
-        'site' => 'site',
-        'translations' => 'translations',
-        'poolMachineNames' => 'poolMachineNames',
-        'entityType' => 'entityType',
-        'remoteUuid' => 'remoteUuid',
-        'remoteUniqueId' => 'remoteUniqueId',
-        'lastPush' => 'lastPush',
-        'lastPull' => 'lastPull',
+        'appType' => 'appType',
+        'name' => 'name',
+        'namespaceMachineName' => 'namespaceMachineName',
+        'machineName' => 'machineName',
+        'versionId' => 'versionId',
+        'translatable' => 'translatable',
+        'properties' => 'properties',
         'customer' => 'customer',
+        'entityType' => 'entityType',
         'project' => 'project',
-        'pools' => 'pools',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -173,20 +157,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $setters = [
-        'match' => 'setMatch',
-        'status' => 'setStatus',
-        'viewUrl' => 'setViewUrl',
-        'site' => 'setSite',
-        'translations' => 'setTranslations',
-        'poolMachineNames' => 'setPoolMachineNames',
-        'entityType' => 'setEntityType',
-        'remoteUuid' => 'setRemoteUuid',
-        'remoteUniqueId' => 'setRemoteUniqueId',
-        'lastPush' => 'setLastPush',
-        'lastPull' => 'setLastPull',
+        'appType' => 'setAppType',
+        'name' => 'setName',
+        'namespaceMachineName' => 'setNamespaceMachineName',
+        'machineName' => 'setMachineName',
+        'versionId' => 'setVersionId',
+        'translatable' => 'setTranslatable',
+        'properties' => 'setProperties',
         'customer' => 'setCustomer',
+        'entityType' => 'setEntityType',
         'project' => 'setProject',
-        'pools' => 'setPools',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -199,20 +179,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $getters = [
-        'match' => 'getMatch',
-        'status' => 'getStatus',
-        'viewUrl' => 'getViewUrl',
-        'site' => 'getSite',
-        'translations' => 'getTranslations',
-        'poolMachineNames' => 'getPoolMachineNames',
-        'entityType' => 'getEntityType',
-        'remoteUuid' => 'getRemoteUuid',
-        'remoteUniqueId' => 'getRemoteUniqueId',
-        'lastPush' => 'getLastPush',
-        'lastPull' => 'getLastPull',
+        'appType' => 'getAppType',
+        'name' => 'getName',
+        'namespaceMachineName' => 'getNamespaceMachineName',
+        'machineName' => 'getMachineName',
+        'versionId' => 'getVersionId',
+        'translatable' => 'getTranslatable',
+        'properties' => 'getProperties',
         'customer' => 'getCustomer',
+        'entityType' => 'getEntityType',
         'project' => 'getProject',
-        'pools' => 'getPools',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -234,20 +210,16 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('match', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('viewUrl', $data ?? [], null);
-        $this->setIfExists('site', $data ?? [], null);
-        $this->setIfExists('translations', $data ?? [], null);
-        $this->setIfExists('poolMachineNames', $data ?? [], null);
-        $this->setIfExists('entityType', $data ?? [], null);
-        $this->setIfExists('remoteUuid', $data ?? [], null);
-        $this->setIfExists('remoteUniqueId', $data ?? [], null);
-        $this->setIfExists('lastPush', $data ?? [], null);
-        $this->setIfExists('lastPull', $data ?? [], null);
+        $this->setIfExists('appType', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('namespaceMachineName', $data ?? [], null);
+        $this->setIfExists('machineName', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('translatable', $data ?? [], null);
+        $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
+        $this->setIfExists('entityType', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
-        $this->setIfExists('pools', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -353,38 +325,32 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     {
         $invalidProperties = [];
 
-        if (null === $this->container['match']) {
-            $invalidProperties[] = "'match' can't be null";
+        if (null === $this->container['appType']) {
+            $invalidProperties[] = "'appType' can't be null";
         }
-        if (null === $this->container['status']) {
-            $invalidProperties[] = "'status' can't be null";
+        if (null === $this->container['name']) {
+            $invalidProperties[] = "'name' can't be null";
         }
-        if (null === $this->container['viewUrl']) {
-            $invalidProperties[] = "'viewUrl' can't be null";
+        if (null === $this->container['namespaceMachineName']) {
+            $invalidProperties[] = "'namespaceMachineName' can't be null";
         }
-        if (null === $this->container['site']) {
-            $invalidProperties[] = "'site' can't be null";
+        if (null === $this->container['machineName']) {
+            $invalidProperties[] = "'machineName' can't be null";
         }
-        if (null === $this->container['translations']) {
-            $invalidProperties[] = "'translations' can't be null";
+        if (null === $this->container['versionId']) {
+            $invalidProperties[] = "'versionId' can't be null";
         }
-        if (null === $this->container['poolMachineNames']) {
-            $invalidProperties[] = "'poolMachineNames' can't be null";
-        }
-        if (null === $this->container['entityType']) {
-            $invalidProperties[] = "'entityType' can't be null";
-        }
-        if (null === $this->container['remoteUuid']) {
-            $invalidProperties[] = "'remoteUuid' can't be null";
+        if (null === $this->container['properties']) {
+            $invalidProperties[] = "'properties' can't be null";
         }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
         }
+        if (null === $this->container['entityType']) {
+            $invalidProperties[] = "'entityType' can't be null";
+        }
         if (null === $this->container['project']) {
             $invalidProperties[] = "'project' can't be null";
-        }
-        if (null === $this->container['pools']) {
-            $invalidProperties[] = "'pools' can't be null";
         }
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
@@ -411,319 +377,197 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
-     * Gets match.
+     * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
      */
-    public function getMatch()
+    public function getAppType()
     {
-        return $this->container['match'];
+        return $this->container['appType'];
     }
 
     /**
-     * Sets match.
+     * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType $match match
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
      *
      * @return self
      */
-    public function setMatch($match)
+    public function setAppType($appType)
     {
-        if (is_null($match)) {
-            throw new \InvalidArgumentException('non-nullable match cannot be null');
+        if (is_null($appType)) {
+            throw new \InvalidArgumentException('non-nullable appType cannot be null');
         }
-        $this->container['match'] = $match;
+        $this->container['appType'] = $appType;
 
         return $this;
     }
 
     /**
-     * Gets status.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
-     */
-    public function getStatus()
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
-     *
-     * @return self
-     */
-    public function setStatus($status)
-    {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
-        }
-        $this->container['status'] = $status;
-
-        return $this;
-    }
-
-    /**
-     * Gets viewUrl.
+     * Gets name.
      *
      * @return string
      */
-    public function getViewUrl()
+    public function getName()
     {
-        return $this->container['viewUrl'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets viewUrl.
+     * Sets name.
      *
-     * @param string $viewUrl viewUrl
+     * @param string $name name
      *
      * @return self
      */
-    public function setViewUrl($viewUrl)
+    public function setName($name)
     {
-        if (is_null($viewUrl)) {
-            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['viewUrl'] = $viewUrl;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets site.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
-     */
-    public function getSite()
-    {
-        return $this->container['site'];
-    }
-
-    /**
-     * Sets site.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
-     *
-     * @return self
-     */
-    public function setSite($site)
-    {
-        if (is_null($site)) {
-            throw new \InvalidArgumentException('non-nullable site cannot be null');
-        }
-        $this->container['site'] = $site;
-
-        return $this;
-    }
-
-    /**
-     * Gets translations.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]
-     */
-    public function getTranslations()
-    {
-        return $this->container['translations'];
-    }
-
-    /**
-     * Sets translations.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[] $translations translations
-     *
-     * @return self
-     */
-    public function setTranslations($translations)
-    {
-        if (is_null($translations)) {
-            throw new \InvalidArgumentException('non-nullable translations cannot be null');
-        }
-        $this->container['translations'] = $translations;
-
-        return $this;
-    }
-
-    /**
-     * Gets poolMachineNames.
-     *
-     * @return string[]
-     */
-    public function getPoolMachineNames()
-    {
-        return $this->container['poolMachineNames'];
-    }
-
-    /**
-     * Sets poolMachineNames.
-     *
-     * @param string[] $poolMachineNames poolMachineNames
-     *
-     * @return self
-     */
-    public function setPoolMachineNames($poolMachineNames)
-    {
-        if (is_null($poolMachineNames)) {
-            throw new \InvalidArgumentException('non-nullable poolMachineNames cannot be null');
-        }
-        $this->container['poolMachineNames'] = $poolMachineNames;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityType.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
-     */
-    public function getEntityType()
-    {
-        return $this->container['entityType'];
-    }
-
-    /**
-     * Sets entityType.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
-     *
-     * @return self
-     */
-    public function setEntityType($entityType)
-    {
-        if (is_null($entityType)) {
-            throw new \InvalidArgumentException('non-nullable entityType cannot be null');
-        }
-        $this->container['entityType'] = $entityType;
-
-        return $this;
-    }
-
-    /**
-     * Gets remoteUuid.
+     * Gets namespaceMachineName.
      *
      * @return string
      */
-    public function getRemoteUuid()
+    public function getNamespaceMachineName()
     {
-        return $this->container['remoteUuid'];
+        return $this->container['namespaceMachineName'];
     }
 
     /**
-     * Sets remoteUuid.
+     * Sets namespaceMachineName.
      *
-     * @param string $remoteUuid remoteUuid
+     * @param string $namespaceMachineName namespaceMachineName
      *
      * @return self
      */
-    public function setRemoteUuid($remoteUuid)
+    public function setNamespaceMachineName($namespaceMachineName)
     {
-        if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+        if (is_null($namespaceMachineName)) {
+            throw new \InvalidArgumentException('non-nullable namespaceMachineName cannot be null');
         }
-        $this->container['remoteUuid'] = $remoteUuid;
+        $this->container['namespaceMachineName'] = $namespaceMachineName;
 
         return $this;
     }
 
     /**
-     * Gets remoteUniqueId.
+     * Gets machineName.
      *
-     * @return null|string
+     * @return string
      */
-    public function getRemoteUniqueId()
+    public function getMachineName()
     {
-        return $this->container['remoteUniqueId'];
+        return $this->container['machineName'];
     }
 
     /**
-     * Sets remoteUniqueId.
+     * Sets machineName.
      *
-     * @param null|string $remoteUniqueId remoteUniqueId
+     * @param string $machineName machineName
      *
      * @return self
      */
-    public function setRemoteUniqueId($remoteUniqueId)
+    public function setMachineName($machineName)
     {
-        if (is_null($remoteUniqueId)) {
-            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('remoteUniqueId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($machineName)) {
+            throw new \InvalidArgumentException('non-nullable machineName cannot be null');
         }
-        $this->container['remoteUniqueId'] = $remoteUniqueId;
+        $this->container['machineName'] = $machineName;
 
         return $this;
     }
 
     /**
-     * Gets lastPush.
+     * Gets versionId.
      *
-     * @return null|float
+     * @return string
      */
-    public function getLastPush()
+    public function getVersionId()
     {
-        return $this->container['lastPush'];
+        return $this->container['versionId'];
     }
 
     /**
-     * Sets lastPush.
+     * Sets versionId.
      *
-     * @param null|float $lastPush lastPush
+     * @param string $versionId versionId
      *
      * @return self
      */
-    public function setLastPush($lastPush)
+    public function setVersionId($versionId)
     {
-        if (is_null($lastPush)) {
-            array_push($this->openAPINullablesSetToNull, 'lastPush');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('lastPush', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($versionId)) {
+            throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
-        $this->container['lastPush'] = $lastPush;
+        $this->container['versionId'] = $versionId;
 
         return $this;
     }
 
     /**
-     * Gets lastPull.
+     * Gets translatable.
      *
-     * @return null|float
+     * @return null|bool
      */
-    public function getLastPull()
+    public function getTranslatable()
     {
-        return $this->container['lastPull'];
+        return $this->container['translatable'];
     }
 
     /**
-     * Sets lastPull.
+     * Sets translatable.
      *
-     * @param null|float $lastPull lastPull
+     * @param null|bool $translatable translatable
      *
      * @return self
      */
-    public function setLastPull($lastPull)
+    public function setTranslatable($translatable)
     {
-        if (is_null($lastPull)) {
-            array_push($this->openAPINullablesSetToNull, 'lastPull');
+        if (is_null($translatable)) {
+            array_push($this->openAPINullablesSetToNull, 'translatable');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('lastPull', $nullablesSetToNull);
+            $index = array_search('translatable', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['lastPull'] = $lastPull;
+        $this->container['translatable'] = $translatable;
+
+        return $this;
+    }
+
+    /**
+     * Gets properties.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]
+     */
+    public function getProperties()
+    {
+        return $this->container['properties'];
+    }
+
+    /**
+     * Sets properties.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[] $properties properties
+     *
+     * @return self
+     */
+    public function setProperties($properties)
+    {
+        if (is_null($properties)) {
+            throw new \InvalidArgumentException('non-nullable properties cannot be null');
+        }
+        $this->container['properties'] = $properties;
 
         return $this;
     }
@@ -756,6 +600,33 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
+     * Gets entityType.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     */
+    public function getEntityType()
+    {
+        return $this->container['entityType'];
+    }
+
+    /**
+     * Sets entityType.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     *
+     * @return self
+     */
+    public function setEntityType($entityType)
+    {
+        if (is_null($entityType)) {
+            throw new \InvalidArgumentException('non-nullable entityType cannot be null');
+        }
+        $this->container['entityType'] = $entityType;
+
+        return $this;
+    }
+
+    /**
      * Gets project.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
@@ -778,33 +649,6 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
             throw new \InvalidArgumentException('non-nullable project cannot be null');
         }
         $this->container['project'] = $project;
-
-        return $this;
-    }
-
-    /**
-     * Gets pools.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
-     */
-    public function getPools()
-    {
-        return $this->container['pools'];
-    }
-
-    /**
-     * Sets pools.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
-     *
-     * @return self
-     */
-    public function setPools($pools)
-    {
-        if (is_null($pools)) {
-            throw new \InvalidArgumentException('non-nullable pools cannot be null');
-        }
-        $this->container['pools'] = $pools;
 
         return $this;
     }

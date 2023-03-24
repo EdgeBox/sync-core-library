@@ -60,8 +60,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'name' => 'string',
         'uuid' => 'string',
         'id' => 'string',
@@ -111,11 +111,11 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
-        'defaultMaxRequestsPerMinute' => false,
-        'defaultMaxParallelRequests' => false,
-        'maxRequestsPerMinute' => false,
-        'maxParallelRequests' => false,
+        'deletedAt' => true,
+        'defaultMaxRequestsPerMinute' => true,
+        'defaultMaxParallelRequests' => true,
+        'maxRequestsPerMinute' => true,
+        'maxParallelRequests' => true,
     ];
 
     /**
@@ -387,7 +387,7 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -397,7 +397,7 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -414,7 +414,7 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -424,7 +424,7 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $contract contract
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */
@@ -593,7 +593,14 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 
@@ -620,7 +627,14 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDefaultMaxRequestsPerMinute($defaultMaxRequestsPerMinute)
     {
         if (is_null($defaultMaxRequestsPerMinute)) {
-            throw new \InvalidArgumentException('non-nullable defaultMaxRequestsPerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'defaultMaxRequestsPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultMaxRequestsPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['defaultMaxRequestsPerMinute'] = $defaultMaxRequestsPerMinute;
 
@@ -647,7 +661,14 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDefaultMaxParallelRequests($defaultMaxParallelRequests)
     {
         if (is_null($defaultMaxParallelRequests)) {
-            throw new \InvalidArgumentException('non-nullable defaultMaxParallelRequests cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'defaultMaxParallelRequests');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultMaxParallelRequests', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['defaultMaxParallelRequests'] = $defaultMaxParallelRequests;
 
@@ -674,7 +695,14 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setMaxRequestsPerMinute($maxRequestsPerMinute)
     {
         if (is_null($maxRequestsPerMinute)) {
-            throw new \InvalidArgumentException('non-nullable maxRequestsPerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxRequestsPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxRequestsPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxRequestsPerMinute'] = $maxRequestsPerMinute;
 
@@ -701,7 +729,14 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setMaxParallelRequests($maxParallelRequests)
     {
         if (is_null($maxParallelRequests)) {
-            throw new \InvalidArgumentException('non-nullable maxParallelRequests cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxParallelRequests');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxParallelRequests', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxParallelRequests'] = $maxParallelRequests;
 

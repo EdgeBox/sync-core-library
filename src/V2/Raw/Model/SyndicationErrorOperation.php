@@ -100,12 +100,12 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
         'operationIndex' => false,
         'status' => false,
         'type' => false,
-        'errors' => false,
-        'entityTypeNamespaceMachineName' => false,
-        'entityTypeMachineName' => false,
-        'entityName' => false,
-        'entityRemoteUuid' => false,
-        'entityRemoteUniqueId' => false,
+        'errors' => true,
+        'entityTypeNamespaceMachineName' => true,
+        'entityTypeMachineName' => true,
+        'entityName' => true,
+        'entityRemoteUuid' => true,
+        'entityRemoteUniqueId' => true,
         'poolMachineNames' => false,
     ];
 
@@ -425,7 +425,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setErrors($errors)
     {
         if (is_null($errors)) {
-            throw new \InvalidArgumentException('non-nullable errors cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'errors');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('errors', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['errors'] = $errors;
 
@@ -452,7 +459,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setEntityTypeNamespaceMachineName($entityTypeNamespaceMachineName)
     {
         if (is_null($entityTypeNamespaceMachineName)) {
-            throw new \InvalidArgumentException('non-nullable entityTypeNamespaceMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityTypeNamespaceMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypeNamespaceMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityTypeNamespaceMachineName'] = $entityTypeNamespaceMachineName;
 
@@ -479,7 +493,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setEntityTypeMachineName($entityTypeMachineName)
     {
         if (is_null($entityTypeMachineName)) {
-            throw new \InvalidArgumentException('non-nullable entityTypeMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityTypeMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypeMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityTypeMachineName'] = $entityTypeMachineName;
 
@@ -506,7 +527,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setEntityName($entityName)
     {
         if (is_null($entityName)) {
-            throw new \InvalidArgumentException('non-nullable entityName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityName'] = $entityName;
 
@@ -533,7 +561,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setEntityRemoteUuid($entityRemoteUuid)
     {
         if (is_null($entityRemoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable entityRemoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityRemoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityRemoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityRemoteUuid'] = $entityRemoteUuid;
 
@@ -560,7 +595,14 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     public function setEntityRemoteUniqueId($entityRemoteUniqueId)
     {
         if (is_null($entityRemoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable entityRemoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityRemoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityRemoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityRemoteUniqueId'] = $entityRemoteUniqueId;
 

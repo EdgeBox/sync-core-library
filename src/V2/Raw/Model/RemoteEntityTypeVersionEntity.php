@@ -66,9 +66,9 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => 'string',
         'translatable' => 'bool',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -110,7 +110,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'namespaceMachineName' => false,
         'machineName' => false,
         'versionId' => false,
-        'translatable' => false,
+        'translatable' => true,
         'properties' => false,
         'customer' => false,
         'entityType' => false,
@@ -118,7 +118,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -531,7 +531,14 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     public function setTranslatable($translatable)
     {
         if (is_null($translatable)) {
-            throw new \InvalidArgumentException('non-nullable translatable cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translatable');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translatable', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translatable'] = $translatable;
 
@@ -568,7 +575,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -578,7 +585,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -595,7 +602,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -605,7 +612,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entityType entityType
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -622,7 +629,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -632,7 +639,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -747,7 +754,14 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

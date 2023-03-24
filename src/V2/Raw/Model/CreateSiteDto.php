@@ -69,14 +69,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
         'domains' => 'string[]',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => 'DynamicReference',
+        'contract' => 'DynamicReference',
+        'project' => 'DynamicReference',
         'lastActivity' => 'float',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
     ];
 
     /**
@@ -114,22 +114,22 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'name' => false,
-        'deprecatedMachineName' => false,
+        'deprecatedMachineName' => true,
         'baseUrl' => false,
         'status' => false,
-        'inactiveSince' => false,
+        'inactiveSince' => true,
         'appType' => false,
         'appVersion' => false,
         'appModuleVersion' => false,
-        'useProxy' => false,
-        'domains' => false,
-        'customer' => false,
-        'contract' => false,
-        'project' => false,
-        'lastActivity' => false,
+        'useProxy' => true,
+        'domains' => true,
+        'customer' => true,
+        'contract' => true,
+        'project' => true,
+        'lastActivity' => true,
         'uuid' => false,
         'environmentType' => false,
-        'secret' => false,
+        'secret' => true,
         'restUrls' => false,
     ];
 
@@ -442,7 +442,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeprecatedMachineName($deprecatedMachineName)
     {
         if (is_null($deprecatedMachineName)) {
-            throw new \InvalidArgumentException('non-nullable deprecatedMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deprecatedMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deprecatedMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deprecatedMachineName'] = $deprecatedMachineName;
 
@@ -523,7 +530,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setInactiveSince($inactiveSince)
     {
         if (is_null($inactiveSince)) {
-            throw new \InvalidArgumentException('non-nullable inactiveSince cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'inactiveSince');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('inactiveSince', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['inactiveSince'] = $inactiveSince;
 
@@ -631,7 +645,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUseProxy($useProxy)
     {
         if (is_null($useProxy)) {
-            throw new \InvalidArgumentException('non-nullable useProxy cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'useProxy');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('useProxy', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['useProxy'] = $useProxy;
 
@@ -658,7 +679,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDomains($domains)
     {
         if (is_null($domains)) {
-            throw new \InvalidArgumentException('non-nullable domains cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'domains');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('domains', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['domains'] = $domains;
 
@@ -668,7 +696,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getCustomer()
     {
@@ -678,14 +706,21 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param null|DynamicReference $customer customer
      *
      * @return self
      */
     public function setCustomer($customer)
     {
         if (is_null($customer)) {
-            throw new \InvalidArgumentException('non-nullable customer cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'customer');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('customer', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['customer'] = $customer;
 
@@ -695,7 +730,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets contract.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getContract()
     {
@@ -705,14 +740,21 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets contract.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $contract contract
+     * @param null|DynamicReference $contract contract
      *
      * @return self
      */
     public function setContract($contract)
     {
         if (is_null($contract)) {
-            throw new \InvalidArgumentException('non-nullable contract cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'contract');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contract', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['contract'] = $contract;
 
@@ -722,7 +764,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getProject()
     {
@@ -732,14 +774,21 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param null|DynamicReference $project project
      *
      * @return self
      */
     public function setProject($project)
     {
         if (is_null($project)) {
-            throw new \InvalidArgumentException('non-nullable project cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'project');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('project', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['project'] = $project;
 
@@ -766,7 +815,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setLastActivity($lastActivity)
     {
         if (is_null($lastActivity)) {
-            throw new \InvalidArgumentException('non-nullable lastActivity cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'lastActivity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastActivity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['lastActivity'] = $lastActivity;
 
@@ -847,7 +903,14 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSecret($secret)
     {
         if (is_null($secret)) {
-            throw new \InvalidArgumentException('non-nullable secret cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'secret');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('secret', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['secret'] = $secret;
 
@@ -857,7 +920,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -867,7 +930,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */

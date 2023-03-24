@@ -94,10 +94,10 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'entityTypeNamespaceMachineName' => false,
         'entityTypeMachineName' => false,
         'language' => false,
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'flowMachineName' => false,
-        'name' => false,
+        'name' => true,
     ];
 
     /**
@@ -404,7 +404,14 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -431,7 +438,14 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -485,7 +499,14 @@ class DeleteRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 

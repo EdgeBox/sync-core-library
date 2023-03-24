@@ -1,6 +1,6 @@
 <?php
 /**
- * LoggingIdsResponse.
+ * CreateRemoteEntityRevisionDtoEntityTypeByMachineName.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * LoggingIdsResponse Class Doc Comment.
+ * CreateRemoteEntityRevisionDtoEntityTypeByMachineName Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateRemoteEntityRevisionDtoEntityTypeByMachineName implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @var string
      */
-    protected static $openAPIModelName = 'LoggingIdsResponse';
+    protected static $openAPIModelName = 'CreateRemoteEntityRevisionDto_entityTypeByMachineName';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'customerId' => 'string',
-        'contractId' => 'string',
-        'contractRevisionId' => 'string',
-        'projectId' => 'string',
-        'siteId' => 'string',
+        'namespaceMachineName' => 'string',
+        'machineName' => 'string',
+        'versionId' => 'string',
     ];
 
     /**
@@ -74,11 +72,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'customerId' => null,
-        'contractId' => null,
-        'contractRevisionId' => null,
-        'projectId' => null,
-        'siteId' => null,
+        'namespaceMachineName' => null,
+        'machineName' => null,
+        'versionId' => null,
     ];
 
     /**
@@ -87,11 +83,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'customerId' => true,
-        'contractId' => true,
-        'contractRevisionId' => true,
-        'projectId' => true,
-        'siteId' => true,
+        'namespaceMachineName' => false,
+        'machineName' => false,
+        'versionId' => false,
     ];
 
     /**
@@ -108,11 +102,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'customerId' => 'customerId',
-        'contractId' => 'contractId',
-        'contractRevisionId' => 'contractRevisionId',
-        'projectId' => 'projectId',
-        'siteId' => 'siteId',
+        'namespaceMachineName' => 'namespaceMachineName',
+        'machineName' => 'machineName',
+        'versionId' => 'versionId',
     ];
 
     /**
@@ -121,11 +113,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'customerId' => 'setCustomerId',
-        'contractId' => 'setContractId',
-        'contractRevisionId' => 'setContractRevisionId',
-        'projectId' => 'setProjectId',
-        'siteId' => 'setSiteId',
+        'namespaceMachineName' => 'setNamespaceMachineName',
+        'machineName' => 'setMachineName',
+        'versionId' => 'setVersionId',
     ];
 
     /**
@@ -134,11 +124,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'customerId' => 'getCustomerId',
-        'contractId' => 'getContractId',
-        'contractRevisionId' => 'getContractRevisionId',
-        'projectId' => 'getProjectId',
-        'siteId' => 'getSiteId',
+        'namespaceMachineName' => 'getNamespaceMachineName',
+        'machineName' => 'getMachineName',
+        'versionId' => 'getVersionId',
     ];
 
     /**
@@ -156,11 +144,9 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('customerId', $data ?? [], null);
-        $this->setIfExists('contractId', $data ?? [], null);
-        $this->setIfExists('contractRevisionId', $data ?? [], null);
-        $this->setIfExists('projectId', $data ?? [], null);
-        $this->setIfExists('siteId', $data ?? [], null);
+        $this->setIfExists('namespaceMachineName', $data ?? [], null);
+        $this->setIfExists('machineName', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
     }
 
     /**
@@ -260,7 +246,19 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        if (null === $this->container['namespaceMachineName']) {
+            $invalidProperties[] = "'namespaceMachineName' can't be null";
+        }
+        if (null === $this->container['machineName']) {
+            $invalidProperties[] = "'machineName' can't be null";
+        }
+        if (null === $this->container['versionId']) {
+            $invalidProperties[] = "'versionId' can't be null";
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -275,171 +273,82 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Gets customerId.
+     * Gets namespaceMachineName.
      *
-     * @return null|string
+     * @return string
      */
-    public function getCustomerId()
+    public function getNamespaceMachineName()
     {
-        return $this->container['customerId'];
+        return $this->container['namespaceMachineName'];
     }
 
     /**
-     * Sets customerId.
+     * Sets namespaceMachineName.
      *
-     * @param null|string $customerId customerId
+     * @param string $namespaceMachineName namespaceMachineName
      *
      * @return self
      */
-    public function setCustomerId($customerId)
+    public function setNamespaceMachineName($namespaceMachineName)
     {
-        if (is_null($customerId)) {
-            array_push($this->openAPINullablesSetToNull, 'customerId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('customerId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($namespaceMachineName)) {
+            throw new \InvalidArgumentException('non-nullable namespaceMachineName cannot be null');
         }
-        $this->container['customerId'] = $customerId;
+        $this->container['namespaceMachineName'] = $namespaceMachineName;
 
         return $this;
     }
 
     /**
-     * Gets contractId.
+     * Gets machineName.
      *
-     * @return null|string
+     * @return string
      */
-    public function getContractId()
+    public function getMachineName()
     {
-        return $this->container['contractId'];
+        return $this->container['machineName'];
     }
 
     /**
-     * Sets contractId.
+     * Sets machineName.
      *
-     * @param null|string $contractId contractId
+     * @param string $machineName machineName
      *
      * @return self
      */
-    public function setContractId($contractId)
+    public function setMachineName($machineName)
     {
-        if (is_null($contractId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($machineName)) {
+            throw new \InvalidArgumentException('non-nullable machineName cannot be null');
         }
-        $this->container['contractId'] = $contractId;
+        $this->container['machineName'] = $machineName;
 
         return $this;
     }
 
     /**
-     * Gets contractRevisionId.
+     * Gets versionId.
      *
-     * @return null|string
+     * @return string
      */
-    public function getContractRevisionId()
+    public function getVersionId()
     {
-        return $this->container['contractRevisionId'];
+        return $this->container['versionId'];
     }
 
     /**
-     * Sets contractRevisionId.
+     * Sets versionId.
      *
-     * @param null|string $contractRevisionId contractRevisionId
+     * @param string $versionId versionId
      *
      * @return self
      */
-    public function setContractRevisionId($contractRevisionId)
+    public function setVersionId($versionId)
     {
-        if (is_null($contractRevisionId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractRevisionId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractRevisionId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($versionId)) {
+            throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
-        $this->container['contractRevisionId'] = $contractRevisionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets projectId.
-     *
-     * @return null|string
-     */
-    public function getProjectId()
-    {
-        return $this->container['projectId'];
-    }
-
-    /**
-     * Sets projectId.
-     *
-     * @param null|string $projectId projectId
-     *
-     * @return self
-     */
-    public function setProjectId($projectId)
-    {
-        if (is_null($projectId)) {
-            array_push($this->openAPINullablesSetToNull, 'projectId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('projectId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['projectId'] = $projectId;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteId.
-     *
-     * @return null|string
-     */
-    public function getSiteId()
-    {
-        return $this->container['siteId'];
-    }
-
-    /**
-     * Sets siteId.
-     *
-     * @param null|string $siteId siteId
-     *
-     * @return self
-     */
-    public function setSiteId($siteId)
-    {
-        if (is_null($siteId)) {
-            array_push($this->openAPINullablesSetToNull, 'siteId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['siteId'] = $siteId;
+        $this->container['versionId'] = $versionId;
 
         return $this;
     }

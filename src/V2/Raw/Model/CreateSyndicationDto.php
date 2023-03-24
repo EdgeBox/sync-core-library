@@ -93,14 +93,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'entityTypeNamespaceMachineName' => false,
         'entityTypeMachineName' => false,
-        'poolMachineNames' => false,
+        'poolMachineNames' => true,
         'flowMachineName' => false,
-        'asDependency' => false,
-        'manually' => false,
+        'asDependency' => true,
+        'manually' => true,
     ];
 
     /**
@@ -327,7 +327,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -354,7 +361,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -435,7 +449,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setPoolMachineNames($poolMachineNames)
     {
         if (is_null($poolMachineNames)) {
-            throw new \InvalidArgumentException('non-nullable poolMachineNames cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'poolMachineNames');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('poolMachineNames', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['poolMachineNames'] = $poolMachineNames;
 
@@ -489,7 +510,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setAsDependency($asDependency)
     {
         if (is_null($asDependency)) {
-            throw new \InvalidArgumentException('non-nullable asDependency cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'asDependency');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('asDependency', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['asDependency'] = $asDependency;
 
@@ -516,7 +544,14 @@ class CreateSyndicationDto implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setManually($manually)
     {
         if (is_null($manually)) {
-            throw new \InvalidArgumentException('non-nullable manually cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'manually');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('manually', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['manually'] = $manually;
 

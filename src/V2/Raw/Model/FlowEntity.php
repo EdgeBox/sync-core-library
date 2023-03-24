@@ -62,13 +62,13 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'machineName' => 'string',
         'containsPreviews' => 'bool',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus',
         'sitePushes' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]',
         'sitePulls' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]',
-        'remoteConfigAsFile' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'remoteConfigAsFile' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -107,18 +107,18 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'name' => false,
         'machineName' => false,
-        'containsPreviews' => false,
+        'containsPreviews' => true,
         'customer' => false,
         'site' => false,
         'project' => false,
         'status' => false,
         'sitePushes' => false,
         'sitePulls' => false,
-        'remoteConfigAsFile' => false,
+        'remoteConfigAsFile' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -447,7 +447,14 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setContainsPreviews($containsPreviews)
     {
         if (is_null($containsPreviews)) {
-            throw new \InvalidArgumentException('non-nullable containsPreviews cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'containsPreviews');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('containsPreviews', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['containsPreviews'] = $containsPreviews;
 
@@ -457,7 +464,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -467,7 +474,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -484,7 +491,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets site.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getSite()
     {
@@ -494,7 +501,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets site.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $site site
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
      *
      * @return self
      */
@@ -511,7 +518,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -521,7 +528,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -619,7 +626,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets remoteConfigAsFile.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getRemoteConfigAsFile()
     {
@@ -629,14 +636,21 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets remoteConfigAsFile.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $remoteConfigAsFile remoteConfigAsFile
+     * @param null|DynamicReference $remoteConfigAsFile remoteConfigAsFile
      *
      * @return self
      */
     public function setRemoteConfigAsFile($remoteConfigAsFile)
     {
         if (is_null($remoteConfigAsFile)) {
-            throw new \InvalidArgumentException('non-nullable remoteConfigAsFile cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteConfigAsFile');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteConfigAsFile', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteConfigAsFile'] = $remoteConfigAsFile;
 
@@ -744,7 +758,14 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

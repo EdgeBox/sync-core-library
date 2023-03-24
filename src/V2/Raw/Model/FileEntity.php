@@ -70,12 +70,12 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'fileSize' => 'float',
         'maxFileSize' => 'float',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FileStatus',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'entity' => 'DynamicReference',
+        'flow' => 'DynamicReference',
+        'syndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -121,25 +121,25 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'type' => false,
         'fileName' => false,
-        'remoteFilePath' => false,
-        'remoteDownloadUrl' => false,
-        'hash' => false,
-        'uploadUrl' => false,
-        'downloadUrl' => false,
+        'remoteFilePath' => true,
+        'remoteDownloadUrl' => true,
+        'hash' => true,
+        'uploadUrl' => true,
+        'downloadUrl' => true,
         'mimeType' => false,
         'fileSize' => false,
-        'maxFileSize' => false,
+        'maxFileSize' => true,
         'status' => false,
         'customer' => false,
         'site' => false,
         'project' => false,
-        'entity' => false,
-        'flow' => false,
-        'syndication' => false,
+        'entity' => true,
+        'flow' => true,
+        'syndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -496,7 +496,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteFilePath($remoteFilePath)
     {
         if (is_null($remoteFilePath)) {
-            throw new \InvalidArgumentException('non-nullable remoteFilePath cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteFilePath');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteFilePath', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteFilePath'] = $remoteFilePath;
 
@@ -523,7 +530,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteDownloadUrl($remoteDownloadUrl)
     {
         if (is_null($remoteDownloadUrl)) {
-            throw new \InvalidArgumentException('non-nullable remoteDownloadUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteDownloadUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteDownloadUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
 
@@ -550,7 +564,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setHash($hash)
     {
         if (is_null($hash)) {
-            throw new \InvalidArgumentException('non-nullable hash cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'hash');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('hash', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['hash'] = $hash;
 
@@ -577,7 +598,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUploadUrl($uploadUrl)
     {
         if (is_null($uploadUrl)) {
-            throw new \InvalidArgumentException('non-nullable uploadUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'uploadUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('uploadUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['uploadUrl'] = $uploadUrl;
 
@@ -604,7 +632,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDownloadUrl($downloadUrl)
     {
         if (is_null($downloadUrl)) {
-            throw new \InvalidArgumentException('non-nullable downloadUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'downloadUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('downloadUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['downloadUrl'] = $downloadUrl;
 
@@ -685,7 +720,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setMaxFileSize($maxFileSize)
     {
         if (is_null($maxFileSize)) {
-            throw new \InvalidArgumentException('non-nullable maxFileSize cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxFileSize');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxFileSize', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxFileSize'] = $maxFileSize;
 
@@ -722,7 +764,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -732,7 +774,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -749,7 +791,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets site.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getSite()
     {
@@ -759,7 +801,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets site.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $site site
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
      *
      * @return self
      */
@@ -776,7 +818,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -786,7 +828,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -803,7 +845,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entity.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getEntity()
     {
@@ -813,14 +855,21 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entity.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
+     * @param null|DynamicReference $entity entity
      *
      * @return self
      */
     public function setEntity($entity)
     {
         if (is_null($entity)) {
-            throw new \InvalidArgumentException('non-nullable entity cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entity'] = $entity;
 
@@ -830,7 +879,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets flow.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getFlow()
     {
@@ -840,14 +889,21 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets flow.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $flow flow
+     * @param null|DynamicReference $flow flow
      *
      * @return self
      */
     public function setFlow($flow)
     {
         if (is_null($flow)) {
-            throw new \InvalidArgumentException('non-nullable flow cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'flow');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('flow', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['flow'] = $flow;
 
@@ -857,7 +913,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets syndication.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getSyndication()
     {
@@ -867,14 +923,21 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets syndication.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $syndication syndication
+     * @param null|DynamicReference $syndication syndication
      *
      * @return self
      */
     public function setSyndication($syndication)
     {
         if (is_null($syndication)) {
-            throw new \InvalidArgumentException('non-nullable syndication cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'syndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['syndication'] = $syndication;
 
@@ -982,7 +1045,14 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

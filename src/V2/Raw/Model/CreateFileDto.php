@@ -91,10 +91,10 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'type' => false,
         'fileName' => false,
-        'remoteFilePath' => false,
-        'remoteDownloadUrl' => false,
-        'hash' => false,
-        'fileSize' => false,
+        'remoteFilePath' => true,
+        'remoteDownloadUrl' => true,
+        'hash' => true,
+        'fileSize' => true,
     ];
 
     /**
@@ -364,7 +364,14 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteFilePath($remoteFilePath)
     {
         if (is_null($remoteFilePath)) {
-            throw new \InvalidArgumentException('non-nullable remoteFilePath cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteFilePath');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteFilePath', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteFilePath'] = $remoteFilePath;
 
@@ -391,7 +398,14 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteDownloadUrl($remoteDownloadUrl)
     {
         if (is_null($remoteDownloadUrl)) {
-            throw new \InvalidArgumentException('non-nullable remoteDownloadUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteDownloadUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteDownloadUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
 
@@ -418,7 +432,14 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setHash($hash)
     {
         if (is_null($hash)) {
-            throw new \InvalidArgumentException('non-nullable hash cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'hash');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('hash', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['hash'] = $hash;
 
@@ -445,7 +466,14 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setFileSize($fileSize)
     {
         if (is_null($fileSize)) {
-            throw new \InvalidArgumentException('non-nullable fileSize cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'fileSize');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fileSize', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['fileSize'] = $fileSize;
 

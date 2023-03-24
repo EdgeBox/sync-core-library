@@ -79,7 +79,7 @@ class GetBasicAuthDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'basicAuthUsername' => false,
+        'basicAuthUsername' => true,
     ];
 
     /**
@@ -266,7 +266,14 @@ class GetBasicAuthDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setBasicAuthUsername($basicAuthUsername)
     {
         if (is_null($basicAuthUsername)) {
-            throw new \InvalidArgumentException('non-nullable basicAuthUsername cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'basicAuthUsername');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('basicAuthUsername', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['basicAuthUsername'] = $basicAuthUsername;
 

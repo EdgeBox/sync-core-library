@@ -92,8 +92,8 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
         'type' => false,
         'username' => false,
         'password' => true,
-        'sessionLifespanInSeconds' => false,
-        'basicAuthUsername' => false,
+        'sessionLifespanInSeconds' => true,
+        'basicAuthUsername' => true,
         'basicAuthPassword' => true,
     ];
 
@@ -401,7 +401,14 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     public function setSessionLifespanInSeconds($sessionLifespanInSeconds)
     {
         if (is_null($sessionLifespanInSeconds)) {
-            throw new \InvalidArgumentException('non-nullable sessionLifespanInSeconds cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'sessionLifespanInSeconds');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('sessionLifespanInSeconds', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['sessionLifespanInSeconds'] = $sessionLifespanInSeconds;
 
@@ -428,7 +435,14 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     public function setBasicAuthUsername($basicAuthUsername)
     {
         if (is_null($basicAuthUsername)) {
-            throw new \InvalidArgumentException('non-nullable basicAuthUsername cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'basicAuthUsername');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('basicAuthUsername', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['basicAuthUsername'] = $basicAuthUsername;
 

@@ -71,16 +71,16 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'string[]',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'lastActivity' => 'float',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
     ];
@@ -126,15 +126,15 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'name' => false,
-        'deprecatedMachineName' => false,
+        'deprecatedMachineName' => true,
         'baseUrl' => false,
         'status' => false,
-        'inactiveSince' => false,
+        'inactiveSince' => true,
         'appType' => false,
         'appVersion' => false,
         'appModuleVersion' => false,
-        'useProxy' => false,
-        'domains' => false,
+        'useProxy' => true,
+        'domains' => true,
         'uuid' => false,
         'environmentType' => false,
         'customer' => false,
@@ -144,11 +144,11 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
-        'secret' => false,
+        'deletedAt' => true,
+        'secret' => true,
         'restUrls' => false,
-        'maxRequestsPerMinute' => false,
-        'maxParallelRequests' => false,
+        'maxRequestsPerMinute' => true,
+        'maxParallelRequests' => true,
     ];
 
     /**
@@ -505,7 +505,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeprecatedMachineName($deprecatedMachineName)
     {
         if (is_null($deprecatedMachineName)) {
-            throw new \InvalidArgumentException('non-nullable deprecatedMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deprecatedMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deprecatedMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deprecatedMachineName'] = $deprecatedMachineName;
 
@@ -586,7 +593,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setInactiveSince($inactiveSince)
     {
         if (is_null($inactiveSince)) {
-            throw new \InvalidArgumentException('non-nullable inactiveSince cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'inactiveSince');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('inactiveSince', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['inactiveSince'] = $inactiveSince;
 
@@ -694,7 +708,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setUseProxy($useProxy)
     {
         if (is_null($useProxy)) {
-            throw new \InvalidArgumentException('non-nullable useProxy cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'useProxy');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('useProxy', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['useProxy'] = $useProxy;
 
@@ -721,7 +742,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDomains($domains)
     {
         if (is_null($domains)) {
-            throw new \InvalidArgumentException('non-nullable domains cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'domains');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('domains', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['domains'] = $domains;
 
@@ -785,7 +813,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -795,7 +823,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -812,7 +840,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -822,7 +850,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $contract contract
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */
@@ -839,7 +867,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -849,7 +877,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -991,7 +1019,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 
@@ -1018,7 +1053,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSecret($secret)
     {
         if (is_null($secret)) {
-            throw new \InvalidArgumentException('non-nullable secret cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'secret');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('secret', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['secret'] = $secret;
 
@@ -1028,7 +1070,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -1038,7 +1080,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */
@@ -1072,7 +1114,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setMaxRequestsPerMinute($maxRequestsPerMinute)
     {
         if (is_null($maxRequestsPerMinute)) {
-            throw new \InvalidArgumentException('non-nullable maxRequestsPerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxRequestsPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxRequestsPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxRequestsPerMinute'] = $maxRequestsPerMinute;
 
@@ -1099,7 +1148,14 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setMaxParallelRequests($maxParallelRequests)
     {
         if (is_null($maxParallelRequests)) {
-            throw new \InvalidArgumentException('non-nullable maxParallelRequests cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxParallelRequests');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxParallelRequests', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxParallelRequests'] = $maxParallelRequests;
 

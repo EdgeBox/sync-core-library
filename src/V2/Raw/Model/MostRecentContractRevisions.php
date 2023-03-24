@@ -59,8 +59,8 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $openAPITypes = [
-        'current' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity',
-        'next' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity',
+        'current' => '\EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisionsCurrent',
+        'next' => 'ContractRevisionEntity',
     ];
 
     /**
@@ -82,7 +82,7 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
      */
     protected static array $openAPINullables = [
         'current' => false,
-        'next' => false,
+        'next' => true,
     ];
 
     /**
@@ -262,7 +262,7 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Gets current.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisionsCurrent
      */
     public function getCurrent()
     {
@@ -272,7 +272,7 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets current.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity $current current
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisionsCurrent $current current
      *
      * @return self
      */
@@ -289,7 +289,7 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Gets next.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity
+     * @return null|ContractRevisionEntity
      */
     public function getNext()
     {
@@ -299,14 +299,21 @@ class MostRecentContractRevisions implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets next.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity $next next
+     * @param null|ContractRevisionEntity $next next
      *
      * @return self
      */
     public function setNext($next)
     {
         if (is_null($next)) {
-            throw new \InvalidArgumentException('non-nullable next cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'next');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('next', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['next'] = $next;
 

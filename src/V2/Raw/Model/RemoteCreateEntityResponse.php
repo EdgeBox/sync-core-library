@@ -82,7 +82,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     protected static array $openAPINullables = [
         'viewUrl' => false,
-        'translations' => false,
+        'translations' => true,
     ];
 
     /**
@@ -306,7 +306,14 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
     public function setTranslations($translations)
     {
         if (is_null($translations)) {
-            throw new \InvalidArgumentException('non-nullable translations cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translations'] = $translations;
 

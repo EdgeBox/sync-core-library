@@ -63,8 +63,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType',
         'page' => 'float',
         'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]',
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'file' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entity' => 'DynamicReference',
+        'file' => 'DynamicReference',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'language' => 'string',
         'isTranslationRoot' => 'bool',
@@ -97,13 +97,13 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static array $openAPINullables = [
         'status' => false,
         'type' => false,
-        'page' => false,
-        'errors' => false,
-        'entity' => false,
-        'file' => false,
-        'pools' => false,
-        'language' => false,
-        'isTranslationRoot' => false,
+        'page' => true,
+        'errors' => true,
+        'entity' => true,
+        'file' => true,
+        'pools' => true,
+        'language' => true,
+        'isTranslationRoot' => true,
     ];
 
     /**
@@ -385,7 +385,14 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setPage($page)
     {
         if (is_null($page)) {
-            throw new \InvalidArgumentException('non-nullable page cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'page');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('page', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['page'] = $page;
 
@@ -412,7 +419,14 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setErrors($errors)
     {
         if (is_null($errors)) {
-            throw new \InvalidArgumentException('non-nullable errors cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'errors');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('errors', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['errors'] = $errors;
 
@@ -422,7 +436,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets entity.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getEntity()
     {
@@ -432,14 +446,21 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets entity.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
+     * @param null|DynamicReference $entity entity
      *
      * @return self
      */
     public function setEntity($entity)
     {
         if (is_null($entity)) {
-            throw new \InvalidArgumentException('non-nullable entity cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entity'] = $entity;
 
@@ -449,7 +470,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets file.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getFile()
     {
@@ -459,14 +480,21 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets file.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $file file
+     * @param null|DynamicReference $file file
      *
      * @return self
      */
     public function setFile($file)
     {
         if (is_null($file)) {
-            throw new \InvalidArgumentException('non-nullable file cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'file');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('file', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['file'] = $file;
 
@@ -493,7 +521,14 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setPools($pools)
     {
         if (is_null($pools)) {
-            throw new \InvalidArgumentException('non-nullable pools cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'pools');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pools', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['pools'] = $pools;
 
@@ -520,7 +555,14 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setLanguage($language)
     {
         if (is_null($language)) {
-            throw new \InvalidArgumentException('non-nullable language cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'language');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('language', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['language'] = $language;
 
@@ -547,7 +589,14 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     public function setIsTranslationRoot($isTranslationRoot)
     {
         if (is_null($isTranslationRoot)) {
-            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
 

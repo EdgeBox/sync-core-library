@@ -1,6 +1,6 @@
 <?php
 /**
- * ContractEntity.
+ * MostRecentContractRevisionsCurrent.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * ContractEntity Class Doc Comment.
+ * MostRecentContractRevisionsCurrent Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ContractEntity';
+    protected static $openAPIModelName = 'MostRecentContractRevisions_current';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,19 +59,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'minProdSites' => 'float',
-        'maxProdSites' => 'float',
-        'licensedSites' => 'float',
-        'currentProductionSites' => 'float',
-        'currentStagingSites' => 'float',
-        'currentTestingSites' => 'float',
-        'autoScaleLicenses' => 'bool',
-        'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
-        'currentProductionSiteDomains' => 'string[]',
-        'licensedProductionSiteDomains' => 'string[]',
+        'hostingType' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractType',
+        'product' => '\EdgeBox\SyncCore\V2\Raw\Model\Product',
+        'packageType' => '\EdgeBox\SyncCore\V2\Raw\Model\Package',
+        'revisionTransition' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition',
+        'maxUpdatesPerMonth' => 'float',
+        'maxUpdatesDuringThisRevision' => 'float',
         'startDate' => 'float',
         'endDate' => 'float',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'previousContractRevision' => 'DynamicReference',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -87,19 +85,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'minProdSites' => null,
-        'maxProdSites' => null,
-        'licensedSites' => null,
-        'currentProductionSites' => null,
-        'currentStagingSites' => null,
-        'currentTestingSites' => null,
-        'autoScaleLicenses' => null,
-        'region' => null,
-        'currentProductionSiteDomains' => null,
-        'licensedProductionSiteDomains' => null,
+        'hostingType' => null,
+        'product' => null,
+        'packageType' => null,
+        'revisionTransition' => null,
+        'maxUpdatesPerMonth' => null,
+        'maxUpdatesDuringThisRevision' => null,
         'startDate' => null,
         'endDate' => null,
         'customer' => null,
+        'contract' => null,
+        'previousContractRevision' => null,
         'uuid' => null,
         'id' => null,
         'createdAt' => null,
@@ -113,19 +109,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'minProdSites' => true,
-        'maxProdSites' => true,
-        'licensedSites' => false,
-        'currentProductionSites' => false,
-        'currentStagingSites' => false,
-        'currentTestingSites' => false,
-        'autoScaleLicenses' => false,
-        'region' => false,
-        'currentProductionSiteDomains' => true,
-        'licensedProductionSiteDomains' => true,
+        'hostingType' => false,
+        'product' => false,
+        'packageType' => false,
+        'revisionTransition' => false,
+        'maxUpdatesPerMonth' => true,
+        'maxUpdatesDuringThisRevision' => true,
         'startDate' => false,
-        'endDate' => true,
+        'endDate' => false,
         'customer' => false,
+        'contract' => false,
+        'previousContractRevision' => true,
         'uuid' => false,
         'id' => false,
         'createdAt' => false,
@@ -147,19 +141,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'minProdSites' => 'minProdSites',
-        'maxProdSites' => 'maxProdSites',
-        'licensedSites' => 'licensedSites',
-        'currentProductionSites' => 'currentProductionSites',
-        'currentStagingSites' => 'currentStagingSites',
-        'currentTestingSites' => 'currentTestingSites',
-        'autoScaleLicenses' => 'autoScaleLicenses',
-        'region' => 'region',
-        'currentProductionSiteDomains' => 'currentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'licensedProductionSiteDomains',
+        'hostingType' => 'hostingType',
+        'product' => 'product',
+        'packageType' => 'packageType',
+        'revisionTransition' => 'revisionTransition',
+        'maxUpdatesPerMonth' => 'maxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'maxUpdatesDuringThisRevision',
         'startDate' => 'startDate',
         'endDate' => 'endDate',
         'customer' => 'customer',
+        'contract' => 'contract',
+        'previousContractRevision' => 'previousContractRevision',
         'uuid' => 'uuid',
         'id' => 'id',
         'createdAt' => 'createdAt',
@@ -173,19 +165,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'minProdSites' => 'setMinProdSites',
-        'maxProdSites' => 'setMaxProdSites',
-        'licensedSites' => 'setLicensedSites',
-        'currentProductionSites' => 'setCurrentProductionSites',
-        'currentStagingSites' => 'setCurrentStagingSites',
-        'currentTestingSites' => 'setCurrentTestingSites',
-        'autoScaleLicenses' => 'setAutoScaleLicenses',
-        'region' => 'setRegion',
-        'currentProductionSiteDomains' => 'setCurrentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'setLicensedProductionSiteDomains',
+        'hostingType' => 'setHostingType',
+        'product' => 'setProduct',
+        'packageType' => 'setPackageType',
+        'revisionTransition' => 'setRevisionTransition',
+        'maxUpdatesPerMonth' => 'setMaxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'setMaxUpdatesDuringThisRevision',
         'startDate' => 'setStartDate',
         'endDate' => 'setEndDate',
         'customer' => 'setCustomer',
+        'contract' => 'setContract',
+        'previousContractRevision' => 'setPreviousContractRevision',
         'uuid' => 'setUuid',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
@@ -199,19 +189,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'minProdSites' => 'getMinProdSites',
-        'maxProdSites' => 'getMaxProdSites',
-        'licensedSites' => 'getLicensedSites',
-        'currentProductionSites' => 'getCurrentProductionSites',
-        'currentStagingSites' => 'getCurrentStagingSites',
-        'currentTestingSites' => 'getCurrentTestingSites',
-        'autoScaleLicenses' => 'getAutoScaleLicenses',
-        'region' => 'getRegion',
-        'currentProductionSiteDomains' => 'getCurrentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'getLicensedProductionSiteDomains',
+        'hostingType' => 'getHostingType',
+        'product' => 'getProduct',
+        'packageType' => 'getPackageType',
+        'revisionTransition' => 'getRevisionTransition',
+        'maxUpdatesPerMonth' => 'getMaxUpdatesPerMonth',
+        'maxUpdatesDuringThisRevision' => 'getMaxUpdatesDuringThisRevision',
         'startDate' => 'getStartDate',
         'endDate' => 'getEndDate',
         'customer' => 'getCustomer',
+        'contract' => 'getContract',
+        'previousContractRevision' => 'getPreviousContractRevision',
         'uuid' => 'getUuid',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
@@ -234,19 +222,17 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('minProdSites', $data ?? [], null);
-        $this->setIfExists('maxProdSites', $data ?? [], null);
-        $this->setIfExists('licensedSites', $data ?? [], null);
-        $this->setIfExists('currentProductionSites', $data ?? [], null);
-        $this->setIfExists('currentStagingSites', $data ?? [], null);
-        $this->setIfExists('currentTestingSites', $data ?? [], null);
-        $this->setIfExists('autoScaleLicenses', $data ?? [], null);
-        $this->setIfExists('region', $data ?? [], null);
-        $this->setIfExists('currentProductionSiteDomains', $data ?? [], null);
-        $this->setIfExists('licensedProductionSiteDomains', $data ?? [], null);
+        $this->setIfExists('hostingType', $data ?? [], null);
+        $this->setIfExists('product', $data ?? [], null);
+        $this->setIfExists('packageType', $data ?? [], null);
+        $this->setIfExists('revisionTransition', $data ?? [], null);
+        $this->setIfExists('maxUpdatesPerMonth', $data ?? [], null);
+        $this->setIfExists('maxUpdatesDuringThisRevision', $data ?? [], null);
         $this->setIfExists('startDate', $data ?? [], null);
         $this->setIfExists('endDate', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
+        $this->setIfExists('contract', $data ?? [], null);
+        $this->setIfExists('previousContractRevision', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
@@ -353,29 +339,29 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['licensedSites']) {
-            $invalidProperties[] = "'licensedSites' can't be null";
+        if (null === $this->container['hostingType']) {
+            $invalidProperties[] = "'hostingType' can't be null";
         }
-        if (null === $this->container['currentProductionSites']) {
-            $invalidProperties[] = "'currentProductionSites' can't be null";
+        if (null === $this->container['product']) {
+            $invalidProperties[] = "'product' can't be null";
         }
-        if (null === $this->container['currentStagingSites']) {
-            $invalidProperties[] = "'currentStagingSites' can't be null";
+        if (null === $this->container['packageType']) {
+            $invalidProperties[] = "'packageType' can't be null";
         }
-        if (null === $this->container['currentTestingSites']) {
-            $invalidProperties[] = "'currentTestingSites' can't be null";
-        }
-        if (null === $this->container['autoScaleLicenses']) {
-            $invalidProperties[] = "'autoScaleLicenses' can't be null";
-        }
-        if (null === $this->container['region']) {
-            $invalidProperties[] = "'region' can't be null";
+        if (null === $this->container['revisionTransition']) {
+            $invalidProperties[] = "'revisionTransition' can't be null";
         }
         if (null === $this->container['startDate']) {
             $invalidProperties[] = "'startDate' can't be null";
         }
+        if (null === $this->container['endDate']) {
+            $invalidProperties[] = "'endDate' can't be null";
+        }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
+        }
+        if (null === $this->container['contract']) {
+            $invalidProperties[] = "'contract' can't be null";
         }
         if (null === $this->container['uuid']) {
             $invalidProperties[] = "'uuid' can't be null";
@@ -405,299 +391,177 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets minProdSites.
+     * Gets hostingType.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractType
+     */
+    public function getHostingType()
+    {
+        return $this->container['hostingType'];
+    }
+
+    /**
+     * Sets hostingType.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\ContractType $hostingType hostingType
+     *
+     * @return self
+     */
+    public function setHostingType($hostingType)
+    {
+        if (is_null($hostingType)) {
+            throw new \InvalidArgumentException('non-nullable hostingType cannot be null');
+        }
+        $this->container['hostingType'] = $hostingType;
+
+        return $this;
+    }
+
+    /**
+     * Gets product.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\Product
+     */
+    public function getProduct()
+    {
+        return $this->container['product'];
+    }
+
+    /**
+     * Sets product.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\Product $product product
+     *
+     * @return self
+     */
+    public function setProduct($product)
+    {
+        if (is_null($product)) {
+            throw new \InvalidArgumentException('non-nullable product cannot be null');
+        }
+        $this->container['product'] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Gets packageType.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\Package
+     */
+    public function getPackageType()
+    {
+        return $this->container['packageType'];
+    }
+
+    /**
+     * Sets packageType.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\Package $packageType packageType
+     *
+     * @return self
+     */
+    public function setPackageType($packageType)
+    {
+        if (is_null($packageType)) {
+            throw new \InvalidArgumentException('non-nullable packageType cannot be null');
+        }
+        $this->container['packageType'] = $packageType;
+
+        return $this;
+    }
+
+    /**
+     * Gets revisionTransition.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition
+     */
+    public function getRevisionTransition()
+    {
+        return $this->container['revisionTransition'];
+    }
+
+    /**
+     * Sets revisionTransition.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition $revisionTransition revisionTransition
+     *
+     * @return self
+     */
+    public function setRevisionTransition($revisionTransition)
+    {
+        if (is_null($revisionTransition)) {
+            throw new \InvalidArgumentException('non-nullable revisionTransition cannot be null');
+        }
+        $this->container['revisionTransition'] = $revisionTransition;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxUpdatesPerMonth.
      *
      * @return null|float
      */
-    public function getMinProdSites()
+    public function getMaxUpdatesPerMonth()
     {
-        return $this->container['minProdSites'];
+        return $this->container['maxUpdatesPerMonth'];
     }
 
     /**
-     * Sets minProdSites.
+     * Sets maxUpdatesPerMonth.
      *
-     * @param null|float $minProdSites minProdSites
+     * @param null|float $maxUpdatesPerMonth maxUpdatesPerMonth
      *
      * @return self
      */
-    public function setMinProdSites($minProdSites)
+    public function setMaxUpdatesPerMonth($maxUpdatesPerMonth)
     {
-        if (is_null($minProdSites)) {
-            array_push($this->openAPINullablesSetToNull, 'minProdSites');
+        if (is_null($maxUpdatesPerMonth)) {
+            array_push($this->openAPINullablesSetToNull, 'maxUpdatesPerMonth');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('minProdSites', $nullablesSetToNull);
+            $index = array_search('maxUpdatesPerMonth', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['minProdSites'] = $minProdSites;
+        $this->container['maxUpdatesPerMonth'] = $maxUpdatesPerMonth;
 
         return $this;
     }
 
     /**
-     * Gets maxProdSites.
+     * Gets maxUpdatesDuringThisRevision.
      *
      * @return null|float
      */
-    public function getMaxProdSites()
+    public function getMaxUpdatesDuringThisRevision()
     {
-        return $this->container['maxProdSites'];
+        return $this->container['maxUpdatesDuringThisRevision'];
     }
 
     /**
-     * Sets maxProdSites.
+     * Sets maxUpdatesDuringThisRevision.
      *
-     * @param null|float $maxProdSites maxProdSites
+     * @param null|float $maxUpdatesDuringThisRevision maxUpdatesDuringThisRevision
      *
      * @return self
      */
-    public function setMaxProdSites($maxProdSites)
+    public function setMaxUpdatesDuringThisRevision($maxUpdatesDuringThisRevision)
     {
-        if (is_null($maxProdSites)) {
-            array_push($this->openAPINullablesSetToNull, 'maxProdSites');
+        if (is_null($maxUpdatesDuringThisRevision)) {
+            array_push($this->openAPINullablesSetToNull, 'maxUpdatesDuringThisRevision');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('maxProdSites', $nullablesSetToNull);
+            $index = array_search('maxUpdatesDuringThisRevision', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['maxProdSites'] = $maxProdSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets licensedSites.
-     *
-     * @return float
-     */
-    public function getLicensedSites()
-    {
-        return $this->container['licensedSites'];
-    }
-
-    /**
-     * Sets licensedSites.
-     *
-     * @param float $licensedSites licensedSites
-     *
-     * @return self
-     */
-    public function setLicensedSites($licensedSites)
-    {
-        if (is_null($licensedSites)) {
-            throw new \InvalidArgumentException('non-nullable licensedSites cannot be null');
-        }
-        $this->container['licensedSites'] = $licensedSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentProductionSites.
-     *
-     * @return float
-     */
-    public function getCurrentProductionSites()
-    {
-        return $this->container['currentProductionSites'];
-    }
-
-    /**
-     * Sets currentProductionSites.
-     *
-     * @param float $currentProductionSites currentProductionSites
-     *
-     * @return self
-     */
-    public function setCurrentProductionSites($currentProductionSites)
-    {
-        if (is_null($currentProductionSites)) {
-            throw new \InvalidArgumentException('non-nullable currentProductionSites cannot be null');
-        }
-        $this->container['currentProductionSites'] = $currentProductionSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentStagingSites.
-     *
-     * @return float
-     */
-    public function getCurrentStagingSites()
-    {
-        return $this->container['currentStagingSites'];
-    }
-
-    /**
-     * Sets currentStagingSites.
-     *
-     * @param float $currentStagingSites currentStagingSites
-     *
-     * @return self
-     */
-    public function setCurrentStagingSites($currentStagingSites)
-    {
-        if (is_null($currentStagingSites)) {
-            throw new \InvalidArgumentException('non-nullable currentStagingSites cannot be null');
-        }
-        $this->container['currentStagingSites'] = $currentStagingSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentTestingSites.
-     *
-     * @return float
-     */
-    public function getCurrentTestingSites()
-    {
-        return $this->container['currentTestingSites'];
-    }
-
-    /**
-     * Sets currentTestingSites.
-     *
-     * @param float $currentTestingSites currentTestingSites
-     *
-     * @return self
-     */
-    public function setCurrentTestingSites($currentTestingSites)
-    {
-        if (is_null($currentTestingSites)) {
-            throw new \InvalidArgumentException('non-nullable currentTestingSites cannot be null');
-        }
-        $this->container['currentTestingSites'] = $currentTestingSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets autoScaleLicenses.
-     *
-     * @return bool
-     */
-    public function getAutoScaleLicenses()
-    {
-        return $this->container['autoScaleLicenses'];
-    }
-
-    /**
-     * Sets autoScaleLicenses.
-     *
-     * @param bool $autoScaleLicenses autoScaleLicenses
-     *
-     * @return self
-     */
-    public function setAutoScaleLicenses($autoScaleLicenses)
-    {
-        if (is_null($autoScaleLicenses)) {
-            throw new \InvalidArgumentException('non-nullable autoScaleLicenses cannot be null');
-        }
-        $this->container['autoScaleLicenses'] = $autoScaleLicenses;
-
-        return $this;
-    }
-
-    /**
-     * Gets region.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion
-     */
-    public function getRegion()
-    {
-        return $this->container['region'];
-    }
-
-    /**
-     * Sets region.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion $region region
-     *
-     * @return self
-     */
-    public function setRegion($region)
-    {
-        if (is_null($region)) {
-            throw new \InvalidArgumentException('non-nullable region cannot be null');
-        }
-        $this->container['region'] = $region;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentProductionSiteDomains.
-     *
-     * @return null|string[]
-     */
-    public function getCurrentProductionSiteDomains()
-    {
-        return $this->container['currentProductionSiteDomains'];
-    }
-
-    /**
-     * Sets currentProductionSiteDomains.
-     *
-     * @param null|string[] $currentProductionSiteDomains currentProductionSiteDomains
-     *
-     * @return self
-     */
-    public function setCurrentProductionSiteDomains($currentProductionSiteDomains)
-    {
-        if (is_null($currentProductionSiteDomains)) {
-            array_push($this->openAPINullablesSetToNull, 'currentProductionSiteDomains');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('currentProductionSiteDomains', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['currentProductionSiteDomains'] = $currentProductionSiteDomains;
-
-        return $this;
-    }
-
-    /**
-     * Gets licensedProductionSiteDomains.
-     *
-     * @return null|string[]
-     */
-    public function getLicensedProductionSiteDomains()
-    {
-        return $this->container['licensedProductionSiteDomains'];
-    }
-
-    /**
-     * Sets licensedProductionSiteDomains.
-     *
-     * @param null|string[] $licensedProductionSiteDomains licensedProductionSiteDomains
-     *
-     * @return self
-     */
-    public function setLicensedProductionSiteDomains($licensedProductionSiteDomains)
-    {
-        if (is_null($licensedProductionSiteDomains)) {
-            array_push($this->openAPINullablesSetToNull, 'licensedProductionSiteDomains');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('licensedProductionSiteDomains', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['licensedProductionSiteDomains'] = $licensedProductionSiteDomains;
+        $this->container['maxUpdatesDuringThisRevision'] = $maxUpdatesDuringThisRevision;
 
         return $this;
     }
@@ -732,7 +596,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets endDate.
      *
-     * @return null|float
+     * @return float
      */
     public function getEndDate()
     {
@@ -742,21 +606,14 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets endDate.
      *
-     * @param null|float $endDate endDate
+     * @param float $endDate endDate
      *
      * @return self
      */
     public function setEndDate($endDate)
     {
         if (is_null($endDate)) {
-            array_push($this->openAPINullablesSetToNull, 'endDate');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('endDate', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable endDate cannot be null');
         }
         $this->container['endDate'] = $endDate;
 
@@ -786,6 +643,67 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable customer cannot be null');
         }
         $this->container['customer'] = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Gets contract.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     */
+    public function getContract()
+    {
+        return $this->container['contract'];
+    }
+
+    /**
+     * Sets contract.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
+     *
+     * @return self
+     */
+    public function setContract($contract)
+    {
+        if (is_null($contract)) {
+            throw new \InvalidArgumentException('non-nullable contract cannot be null');
+        }
+        $this->container['contract'] = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Gets previousContractRevision.
+     *
+     * @return null|DynamicReference
+     */
+    public function getPreviousContractRevision()
+    {
+        return $this->container['previousContractRevision'];
+    }
+
+    /**
+     * Sets previousContractRevision.
+     *
+     * @param null|DynamicReference $previousContractRevision previousContractRevision
+     *
+     * @return self
+     */
+    public function setPreviousContractRevision($previousContractRevision)
+    {
+        if (is_null($previousContractRevision)) {
+            array_push($this->openAPINullablesSetToNull, 'previousContractRevision');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previousContractRevision', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['previousContractRevision'] = $previousContractRevision;
 
         return $this;
     }

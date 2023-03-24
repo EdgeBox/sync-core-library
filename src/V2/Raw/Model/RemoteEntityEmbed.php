@@ -101,18 +101,18 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'language' => false,
         'entityTypeNamespaceMachineName' => false,
         'entityTypeMachineName' => false,
         'entityTypeVersion' => false,
         'poolMachineNames' => false,
         'referenceDetails' => true,
-        'name' => false,
+        'name' => true,
         'properties' => false,
         'directDependencies' => false,
-        'isTranslationRoot' => false,
+        'isTranslationRoot' => true,
     ];
 
     /**
@@ -367,7 +367,14 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -394,7 +401,14 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -590,7 +604,14 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -671,7 +692,14 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setIsTranslationRoot($isTranslationRoot)
     {
         if (is_null($isTranslationRoot)) {
-            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
 

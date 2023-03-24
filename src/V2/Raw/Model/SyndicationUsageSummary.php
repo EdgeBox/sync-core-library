@@ -61,9 +61,9 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $openAPITypes = [
         'startedAt' => 'float',
         'finishedAt' => 'float',
-        'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
-        'sourceSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
-        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage',
+        'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite',
+        'sourceSite' => 'SyndicationEntityWithUsage',
+        'targetSite' => 'SyndicationEntityWithUsage',
         'targetSummary' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]',
     ];
 
@@ -90,11 +90,11 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static array $openAPINullables = [
         'startedAt' => false,
-        'finishedAt' => false,
+        'finishedAt' => true,
         'thisSite' => false,
-        'sourceSite' => false,
-        'targetSite' => false,
-        'targetSummary' => false,
+        'sourceSite' => true,
+        'targetSite' => true,
+        'targetSummary' => true,
     ];
 
     /**
@@ -337,7 +337,14 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     public function setFinishedAt($finishedAt)
     {
         if (is_null($finishedAt)) {
-            throw new \InvalidArgumentException('non-nullable finishedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'finishedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('finishedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['finishedAt'] = $finishedAt;
 
@@ -347,7 +354,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets thisSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite
      */
     public function getThisSite()
     {
@@ -357,7 +364,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets thisSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $thisSite thisSite
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite $thisSite thisSite
      *
      * @return self
      */
@@ -374,7 +381,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets sourceSite.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
+     * @return null|SyndicationEntityWithUsage
      */
     public function getSourceSite()
     {
@@ -384,14 +391,21 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets sourceSite.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $sourceSite sourceSite
+     * @param null|SyndicationEntityWithUsage $sourceSite sourceSite
      *
      * @return self
      */
     public function setSourceSite($sourceSite)
     {
         if (is_null($sourceSite)) {
-            throw new \InvalidArgumentException('non-nullable sourceSite cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'sourceSite');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('sourceSite', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['sourceSite'] = $sourceSite;
 
@@ -401,7 +415,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSite.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
+     * @return null|SyndicationEntityWithUsage
      */
     public function getTargetSite()
     {
@@ -411,14 +425,21 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSite.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage $targetSite targetSite
+     * @param null|SyndicationEntityWithUsage $targetSite targetSite
      *
      * @return self
      */
     public function setTargetSite($targetSite)
     {
         if (is_null($targetSite)) {
-            throw new \InvalidArgumentException('non-nullable targetSite cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'targetSite');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('targetSite', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['targetSite'] = $targetSite;
 
@@ -445,7 +466,14 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     public function setTargetSummary($targetSummary)
     {
         if (is_null($targetSummary)) {
-            throw new \InvalidArgumentException('non-nullable targetSummary cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'targetSummary');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('targetSummary', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['targetSummary'] = $targetSummary;
 

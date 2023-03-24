@@ -105,20 +105,20 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'requestUrl' => false,
-        'requestBody' => false,
+        'requestUrl' => true,
+        'requestBody' => true,
         'requestHeaders' => true,
-        'requestMethod' => false,
-        'requestRedirects' => false,
-        'requestMaxFollow' => false,
-        'requestMaxSize' => false,
-        'requestTimeout' => false,
-        'requestStart' => false,
-        'requestEnd' => false,
-        'responseBody' => false,
+        'requestMethod' => true,
+        'requestRedirects' => true,
+        'requestMaxFollow' => true,
+        'requestMaxSize' => true,
+        'requestTimeout' => true,
+        'requestStart' => true,
+        'requestEnd' => true,
+        'responseBody' => true,
         'responseHeaders' => true,
-        'responseStatusCode' => false,
-        'responseStatusText' => false,
+        'responseStatusCode' => true,
+        'responseStatusText' => true,
     ];
 
     /**
@@ -357,7 +357,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestUrl($requestUrl)
     {
         if (is_null($requestUrl)) {
-            throw new \InvalidArgumentException('non-nullable requestUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestUrl'] = $requestUrl;
 
@@ -384,7 +391,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestBody($requestBody)
     {
         if (is_null($requestBody)) {
-            throw new \InvalidArgumentException('non-nullable requestBody cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestBody');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestBody', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestBody'] = $requestBody;
 
@@ -445,7 +459,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestMethod($requestMethod)
     {
         if (is_null($requestMethod)) {
-            throw new \InvalidArgumentException('non-nullable requestMethod cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestMethod');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestMethod', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestMethod'] = $requestMethod;
 
@@ -472,7 +493,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestRedirects($requestRedirects)
     {
         if (is_null($requestRedirects)) {
-            throw new \InvalidArgumentException('non-nullable requestRedirects cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestRedirects');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestRedirects', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestRedirects'] = $requestRedirects;
 
@@ -499,7 +527,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestMaxFollow($requestMaxFollow)
     {
         if (is_null($requestMaxFollow)) {
-            throw new \InvalidArgumentException('non-nullable requestMaxFollow cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestMaxFollow');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestMaxFollow', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestMaxFollow'] = $requestMaxFollow;
 
@@ -526,7 +561,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestMaxSize($requestMaxSize)
     {
         if (is_null($requestMaxSize)) {
-            throw new \InvalidArgumentException('non-nullable requestMaxSize cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestMaxSize');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestMaxSize', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestMaxSize'] = $requestMaxSize;
 
@@ -553,7 +595,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestTimeout($requestTimeout)
     {
         if (is_null($requestTimeout)) {
-            throw new \InvalidArgumentException('non-nullable requestTimeout cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestTimeout');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestTimeout', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestTimeout'] = $requestTimeout;
 
@@ -580,7 +629,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestStart($requestStart)
     {
         if (is_null($requestStart)) {
-            throw new \InvalidArgumentException('non-nullable requestStart cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestStart');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestStart', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestStart'] = $requestStart;
 
@@ -607,7 +663,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setRequestEnd($requestEnd)
     {
         if (is_null($requestEnd)) {
-            throw new \InvalidArgumentException('non-nullable requestEnd cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestEnd');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestEnd', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestEnd'] = $requestEnd;
 
@@ -634,7 +697,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setResponseBody($responseBody)
     {
         if (is_null($responseBody)) {
-            throw new \InvalidArgumentException('non-nullable responseBody cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'responseBody');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('responseBody', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['responseBody'] = $responseBody;
 
@@ -695,7 +765,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setResponseStatusCode($responseStatusCode)
     {
         if (is_null($responseStatusCode)) {
-            throw new \InvalidArgumentException('non-nullable responseStatusCode cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'responseStatusCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('responseStatusCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['responseStatusCode'] = $responseStatusCode;
 
@@ -722,7 +799,14 @@ class SiteRequestDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setResponseStatusText($responseStatusText)
     {
         if (is_null($responseStatusText)) {
-            throw new \InvalidArgumentException('non-nullable responseStatusText cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'responseStatusText');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('responseStatusText', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['responseStatusText'] = $responseStatusText;
 

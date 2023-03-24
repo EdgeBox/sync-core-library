@@ -97,12 +97,12 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'projectDefaultPerSitePerMinute' => false,
-        'projectDefaultPerSiteParallel' => false,
-        'projectPerMinute' => false,
-        'projectParallel' => false,
-        'sitePerMinute' => false,
-        'siteParallel' => false,
+        'projectDefaultPerSitePerMinute' => true,
+        'projectDefaultPerSiteParallel' => true,
+        'projectPerMinute' => true,
+        'projectParallel' => true,
+        'sitePerMinute' => true,
+        'siteParallel' => true,
         'defaultPerSitePerMinute' => false,
         'defaultPerSiteParallel' => false,
         'appliedSitePerMinute' => false,
@@ -344,7 +344,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setProjectDefaultPerSitePerMinute($projectDefaultPerSitePerMinute)
     {
         if (is_null($projectDefaultPerSitePerMinute)) {
-            throw new \InvalidArgumentException('non-nullable projectDefaultPerSitePerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'projectDefaultPerSitePerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectDefaultPerSitePerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['projectDefaultPerSitePerMinute'] = $projectDefaultPerSitePerMinute;
 
@@ -371,7 +378,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setProjectDefaultPerSiteParallel($projectDefaultPerSiteParallel)
     {
         if (is_null($projectDefaultPerSiteParallel)) {
-            throw new \InvalidArgumentException('non-nullable projectDefaultPerSiteParallel cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'projectDefaultPerSiteParallel');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectDefaultPerSiteParallel', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['projectDefaultPerSiteParallel'] = $projectDefaultPerSiteParallel;
 
@@ -398,7 +412,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setProjectPerMinute($projectPerMinute)
     {
         if (is_null($projectPerMinute)) {
-            throw new \InvalidArgumentException('non-nullable projectPerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'projectPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['projectPerMinute'] = $projectPerMinute;
 
@@ -425,7 +446,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setProjectParallel($projectParallel)
     {
         if (is_null($projectParallel)) {
-            throw new \InvalidArgumentException('non-nullable projectParallel cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'projectParallel');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectParallel', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['projectParallel'] = $projectParallel;
 
@@ -452,7 +480,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSitePerMinute($sitePerMinute)
     {
         if (is_null($sitePerMinute)) {
-            throw new \InvalidArgumentException('non-nullable sitePerMinute cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'sitePerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('sitePerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['sitePerMinute'] = $sitePerMinute;
 
@@ -479,7 +514,14 @@ class GetThrottlingDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSiteParallel($siteParallel)
     {
         if (is_null($siteParallel)) {
-            throw new \InvalidArgumentException('non-nullable siteParallel cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'siteParallel');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('siteParallel', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['siteParallel'] = $siteParallel;
 

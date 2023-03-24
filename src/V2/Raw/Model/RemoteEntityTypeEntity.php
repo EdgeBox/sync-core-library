@@ -63,8 +63,8 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'name' => 'string',
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -106,7 +106,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -450,7 +450,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -460,7 +460,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -477,7 +477,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -487,7 +487,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -602,7 +602,14 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

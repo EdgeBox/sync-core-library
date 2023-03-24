@@ -72,12 +72,12 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
-        'entityTypeByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference',
-        'translationRoot' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entityTypeByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName',
+        'translationRoot' => 'DynamicReference',
         'previewHtmlFileId' => 'string',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]',
         'flowMachineName' => 'string',
-        'previewHtml' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'previewHtml' => 'DynamicReference',
         'allLanguages' => 'string[]',
     ];
 
@@ -117,26 +117,26 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'name' => false,
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'name' => true,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'language' => false,
-        'directDependencies' => false,
+        'directDependencies' => true,
         'appType' => false,
         'poolMachineNames' => false,
-        'isTranslationRoot' => false,
+        'isTranslationRoot' => true,
         'viewUrl' => false,
-        'deleted' => false,
-        'embed' => false,
+        'deleted' => true,
+        'embed' => true,
         'properties' => false,
-        'allDependencies' => false,
+        'allDependencies' => true,
         'entityTypeByMachineName' => false,
-        'translationRoot' => false,
-        'previewHtmlFileId' => false,
-        'translations' => false,
+        'translationRoot' => true,
+        'previewHtmlFileId' => true,
+        'translations' => true,
         'flowMachineName' => false,
-        'previewHtml' => false,
-        'allLanguages' => false,
+        'previewHtml' => true,
+        'allLanguages' => true,
     ];
 
     /**
@@ -423,7 +423,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -450,7 +457,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -477,7 +491,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -531,7 +552,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setDirectDependencies($directDependencies)
     {
         if (is_null($directDependencies)) {
-            throw new \InvalidArgumentException('non-nullable directDependencies cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'directDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('directDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['directDependencies'] = $directDependencies;
 
@@ -612,7 +640,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setIsTranslationRoot($isTranslationRoot)
     {
         if (is_null($isTranslationRoot)) {
-            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
 
@@ -666,7 +701,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setDeleted($deleted)
     {
         if (is_null($deleted)) {
-            throw new \InvalidArgumentException('non-nullable deleted cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deleted');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deleted', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deleted'] = $deleted;
 
@@ -693,7 +735,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setEmbed($embed)
     {
         if (is_null($embed)) {
-            throw new \InvalidArgumentException('non-nullable embed cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'embed');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('embed', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['embed'] = $embed;
 
@@ -747,7 +796,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setAllDependencies($allDependencies)
     {
         if (is_null($allDependencies)) {
-            throw new \InvalidArgumentException('non-nullable allDependencies cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'allDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['allDependencies'] = $allDependencies;
 
@@ -757,7 +813,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets entityTypeByMachineName.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName
      */
     public function getEntityTypeByMachineName()
     {
@@ -767,7 +823,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets entityTypeByMachineName.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference $entityTypeByMachineName entityTypeByMachineName
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName $entityTypeByMachineName entityTypeByMachineName
      *
      * @return self
      */
@@ -784,7 +840,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translationRoot.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getTranslationRoot()
     {
@@ -794,14 +850,21 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translationRoot.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
+     * @param null|DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
     public function setTranslationRoot($translationRoot)
     {
         if (is_null($translationRoot)) {
-            throw new \InvalidArgumentException('non-nullable translationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translationRoot'] = $translationRoot;
 
@@ -828,7 +891,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setPreviewHtmlFileId($previewHtmlFileId)
     {
         if (is_null($previewHtmlFileId)) {
-            throw new \InvalidArgumentException('non-nullable previewHtmlFileId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previewHtmlFileId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previewHtmlFileId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previewHtmlFileId'] = $previewHtmlFileId;
 
@@ -855,7 +925,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setTranslations($translations)
     {
         if (is_null($translations)) {
-            throw new \InvalidArgumentException('non-nullable translations cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translations'] = $translations;
 
@@ -892,7 +969,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets previewHtml.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getPreviewHtml()
     {
@@ -902,14 +979,21 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets previewHtml.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
+     * @param null|DynamicReference $previewHtml previewHtml
      *
      * @return self
      */
     public function setPreviewHtml($previewHtml)
     {
         if (is_null($previewHtml)) {
-            throw new \InvalidArgumentException('non-nullable previewHtml cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previewHtml');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previewHtml', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previewHtml'] = $previewHtml;
 
@@ -936,7 +1020,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function setAllLanguages($allLanguages)
     {
         if (is_null($allLanguages)) {
-            throw new \InvalidArgumentException('non-nullable allLanguages cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'allLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['allLanguages'] = $allLanguages;
 

@@ -93,10 +93,10 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'name' => false,
         'machineName' => false,
-        'containsPreviews' => false,
+        'containsPreviews' => true,
         'sitePushesByMachineName' => false,
         'sitePullsByMachineName' => false,
-        'remoteConfigFileId' => false,
+        'remoteConfigFileId' => true,
         'status' => false,
     ];
 
@@ -377,7 +377,14 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setContainsPreviews($containsPreviews)
     {
         if (is_null($containsPreviews)) {
-            throw new \InvalidArgumentException('non-nullable containsPreviews cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'containsPreviews');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('containsPreviews', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['containsPreviews'] = $containsPreviews;
 
@@ -458,7 +465,14 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setRemoteConfigFileId($remoteConfigFileId)
     {
         if (is_null($remoteConfigFileId)) {
-            throw new \InvalidArgumentException('non-nullable remoteConfigFileId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteConfigFileId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteConfigFileId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteConfigFileId'] = $remoteConfigFileId;
 

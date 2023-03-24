@@ -1,6 +1,6 @@
 <?php
 /**
- * LoggingIdsResponse.
+ * RuntimeRemoteEntityDependencyWithDependenciesEntity.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * LoggingIdsResponse Class Doc Comment.
+ * RuntimeRemoteEntityDependencyWithDependenciesEntity Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class RuntimeRemoteEntityDependencyWithDependenciesEntity implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @var string
      */
-    protected static $openAPIModelName = 'LoggingIdsResponse';
+    protected static $openAPIModelName = 'RuntimeRemoteEntityDependencyWithDependencies_entity';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'customerId' => 'string',
-        'contractId' => 'string',
-        'contractRevisionId' => 'string',
-        'projectId' => 'string',
-        'siteId' => 'string',
+        'id' => 'string',
     ];
 
     /**
@@ -74,11 +70,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'customerId' => null,
-        'contractId' => null,
-        'contractRevisionId' => null,
-        'projectId' => null,
-        'siteId' => null,
+        'id' => null,
     ];
 
     /**
@@ -87,11 +79,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'customerId' => true,
-        'contractId' => true,
-        'contractRevisionId' => true,
-        'projectId' => true,
-        'siteId' => true,
+        'id' => false,
     ];
 
     /**
@@ -108,11 +96,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'customerId' => 'customerId',
-        'contractId' => 'contractId',
-        'contractRevisionId' => 'contractRevisionId',
-        'projectId' => 'projectId',
-        'siteId' => 'siteId',
+        'id' => 'id',
     ];
 
     /**
@@ -121,11 +105,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'customerId' => 'setCustomerId',
-        'contractId' => 'setContractId',
-        'contractRevisionId' => 'setContractRevisionId',
-        'projectId' => 'setProjectId',
-        'siteId' => 'setSiteId',
+        'id' => 'setId',
     ];
 
     /**
@@ -134,11 +114,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'customerId' => 'getCustomerId',
-        'contractId' => 'getContractId',
-        'contractRevisionId' => 'getContractRevisionId',
-        'projectId' => 'getProjectId',
-        'siteId' => 'getSiteId',
+        'id' => 'getId',
     ];
 
     /**
@@ -156,11 +132,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('customerId', $data ?? [], null);
-        $this->setIfExists('contractId', $data ?? [], null);
-        $this->setIfExists('contractRevisionId', $data ?? [], null);
-        $this->setIfExists('projectId', $data ?? [], null);
-        $this->setIfExists('siteId', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
     }
 
     /**
@@ -260,7 +232,13 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        if (null === $this->container['id']) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -275,171 +253,28 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Gets customerId.
+     * Gets id.
      *
-     * @return null|string
+     * @return string
      */
-    public function getCustomerId()
+    public function getId()
     {
-        return $this->container['customerId'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets customerId.
+     * Sets id.
      *
-     * @param null|string $customerId customerId
+     * @param string $id id
      *
      * @return self
      */
-    public function setCustomerId($customerId)
+    public function setId($id)
     {
-        if (is_null($customerId)) {
-            array_push($this->openAPINullablesSetToNull, 'customerId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('customerId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
         }
-        $this->container['customerId'] = $customerId;
-
-        return $this;
-    }
-
-    /**
-     * Gets contractId.
-     *
-     * @return null|string
-     */
-    public function getContractId()
-    {
-        return $this->container['contractId'];
-    }
-
-    /**
-     * Sets contractId.
-     *
-     * @param null|string $contractId contractId
-     *
-     * @return self
-     */
-    public function setContractId($contractId)
-    {
-        if (is_null($contractId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['contractId'] = $contractId;
-
-        return $this;
-    }
-
-    /**
-     * Gets contractRevisionId.
-     *
-     * @return null|string
-     */
-    public function getContractRevisionId()
-    {
-        return $this->container['contractRevisionId'];
-    }
-
-    /**
-     * Sets contractRevisionId.
-     *
-     * @param null|string $contractRevisionId contractRevisionId
-     *
-     * @return self
-     */
-    public function setContractRevisionId($contractRevisionId)
-    {
-        if (is_null($contractRevisionId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractRevisionId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractRevisionId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['contractRevisionId'] = $contractRevisionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets projectId.
-     *
-     * @return null|string
-     */
-    public function getProjectId()
-    {
-        return $this->container['projectId'];
-    }
-
-    /**
-     * Sets projectId.
-     *
-     * @param null|string $projectId projectId
-     *
-     * @return self
-     */
-    public function setProjectId($projectId)
-    {
-        if (is_null($projectId)) {
-            array_push($this->openAPINullablesSetToNull, 'projectId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('projectId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['projectId'] = $projectId;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteId.
-     *
-     * @return null|string
-     */
-    public function getSiteId()
-    {
-        return $this->container['siteId'];
-    }
-
-    /**
-     * Sets siteId.
-     *
-     * @param null|string $siteId siteId
-     *
-     * @return self
-     */
-    public function setSiteId($siteId)
-    {
-        if (is_null($siteId)) {
-            array_push($this->openAPINullablesSetToNull, 'siteId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['siteId'] = $siteId;
+        $this->container['id'] = $id;
 
         return $this;
     }

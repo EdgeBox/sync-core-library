@@ -66,7 +66,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'useProxy' => 'bool',
         'secret' => 'string',
         'token' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'name' => 'string',
         'baseUrl' => 'string',
         'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
@@ -106,8 +106,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'environmentType' => false,
         'contractUuid' => false,
         'projectUuid' => false,
-        'uuid' => false,
-        'useProxy' => false,
+        'uuid' => true,
+        'useProxy' => true,
         'secret' => false,
         'token' => false,
         'restUrls' => false,
@@ -467,7 +467,14 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setUuid($uuid)
     {
         if (is_null($uuid)) {
-            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'uuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('uuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['uuid'] = $uuid;
 
@@ -494,7 +501,14 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setUseProxy($useProxy)
     {
         if (is_null($useProxy)) {
-            throw new \InvalidArgumentException('non-nullable useProxy cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'useProxy');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('useProxy', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['useProxy'] = $useProxy;
 
@@ -558,7 +572,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -568,7 +582,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */

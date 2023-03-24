@@ -94,10 +94,10 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => false,
         'name' => false,
         'type' => false,
-        'required' => false,
-        'multiple' => false,
-        'remoteTypeName' => false,
-        'properties' => false,
+        'required' => true,
+        'multiple' => true,
+        'remoteTypeName' => true,
+        'properties' => true,
     ];
 
     /**
@@ -401,7 +401,14 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function setRequired($required)
     {
         if (is_null($required)) {
-            throw new \InvalidArgumentException('non-nullable required cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'required');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('required', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['required'] = $required;
 
@@ -428,7 +435,14 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function setMultiple($multiple)
     {
         if (is_null($multiple)) {
-            throw new \InvalidArgumentException('non-nullable multiple cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'multiple');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('multiple', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['multiple'] = $multiple;
 
@@ -455,7 +469,14 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function setRemoteTypeName($remoteTypeName)
     {
         if (is_null($remoteTypeName)) {
-            throw new \InvalidArgumentException('non-nullable remoteTypeName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteTypeName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteTypeName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteTypeName'] = $remoteTypeName;
 
@@ -482,7 +503,14 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     public function setProperties($properties)
     {
         if (is_null($properties)) {
-            throw new \InvalidArgumentException('non-nullable properties cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'properties');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('properties', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['properties'] = $properties;
 

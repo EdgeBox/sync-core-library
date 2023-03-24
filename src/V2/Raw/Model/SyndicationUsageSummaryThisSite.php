@@ -1,6 +1,6 @@
 <?php
 /**
- * SyndicationEntityWithUsage.
+ * SyndicationUsageSummaryThisSite.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SyndicationEntityWithUsage Class Doc Comment.
+ * SyndicationUsageSummaryThisSite Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SyndicationEntityWithUsage';
+    protected static $openAPIModelName = 'SyndicationUsageSummary_thisSite';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.

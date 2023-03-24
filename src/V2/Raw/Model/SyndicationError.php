@@ -64,7 +64,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
         'errorMessage' => 'string',
         'callStack' => 'string',
         'statusCode' => 'float',
-        'requestDetails' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'requestDetails' => 'DynamicReference',
     ];
 
     /**
@@ -91,10 +91,10 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'type' => false,
         'timestamp' => false,
-        'errorMessage' => false,
-        'callStack' => false,
-        'statusCode' => false,
-        'requestDetails' => false,
+        'errorMessage' => true,
+        'callStack' => true,
+        'statusCode' => true,
+        'requestDetails' => true,
     ];
 
     /**
@@ -364,7 +364,14 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setErrorMessage($errorMessage)
     {
         if (is_null($errorMessage)) {
-            throw new \InvalidArgumentException('non-nullable errorMessage cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'errorMessage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('errorMessage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['errorMessage'] = $errorMessage;
 
@@ -391,7 +398,14 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setCallStack($callStack)
     {
         if (is_null($callStack)) {
-            throw new \InvalidArgumentException('non-nullable callStack cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'callStack');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('callStack', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['callStack'] = $callStack;
 
@@ -418,7 +432,14 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setStatusCode($statusCode)
     {
         if (is_null($statusCode)) {
-            throw new \InvalidArgumentException('non-nullable statusCode cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'statusCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('statusCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['statusCode'] = $statusCode;
 
@@ -428,7 +449,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets requestDetails.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getRequestDetails()
     {
@@ -438,14 +459,21 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets requestDetails.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $requestDetails requestDetails
+     * @param null|DynamicReference $requestDetails requestDetails
      *
      * @return self
      */
     public function setRequestDetails($requestDetails)
     {
         if (is_null($requestDetails)) {
-            throw new \InvalidArgumentException('non-nullable requestDetails cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'requestDetails');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestDetails', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['requestDetails'] = $requestDetails;
 

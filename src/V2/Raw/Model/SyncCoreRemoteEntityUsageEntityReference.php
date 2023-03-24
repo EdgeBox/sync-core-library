@@ -59,7 +59,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @var string[]
      */
     protected static $openAPITypes = [
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'language' => 'string',
         'isTranslationRoot' => 'bool',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
@@ -91,7 +91,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'language' => false,
         'isTranslationRoot' => false,
         'status' => false,
-        'viewUrl' => false,
+        'viewUrl' => true,
     ];
 
     /**
@@ -292,7 +292,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntity()
     {
@@ -302,7 +302,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entity entity
      *
      * @return self
      */
@@ -417,7 +417,14 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     public function setViewUrl($viewUrl)
     {
         if (is_null($viewUrl)) {
-            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['viewUrl'] = $viewUrl;
 

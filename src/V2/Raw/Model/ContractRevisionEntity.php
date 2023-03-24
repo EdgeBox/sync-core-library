@@ -67,9 +67,9 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'maxUpdatesDuringThisRevision' => 'float',
         'startDate' => 'float',
         'endDate' => 'float',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'previousContractRevision' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'previousContractRevision' => 'DynamicReference',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -113,18 +113,18 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
         'product' => false,
         'packageType' => false,
         'revisionTransition' => false,
-        'maxUpdatesPerMonth' => false,
-        'maxUpdatesDuringThisRevision' => false,
+        'maxUpdatesPerMonth' => true,
+        'maxUpdatesDuringThisRevision' => true,
         'startDate' => false,
         'endDate' => false,
         'customer' => false,
         'contract' => false,
-        'previousContractRevision' => false,
+        'previousContractRevision' => true,
         'uuid' => false,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -518,7 +518,14 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function setMaxUpdatesPerMonth($maxUpdatesPerMonth)
     {
         if (is_null($maxUpdatesPerMonth)) {
-            throw new \InvalidArgumentException('non-nullable maxUpdatesPerMonth cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxUpdatesPerMonth');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxUpdatesPerMonth', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxUpdatesPerMonth'] = $maxUpdatesPerMonth;
 
@@ -545,7 +552,14 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function setMaxUpdatesDuringThisRevision($maxUpdatesDuringThisRevision)
     {
         if (is_null($maxUpdatesDuringThisRevision)) {
-            throw new \InvalidArgumentException('non-nullable maxUpdatesDuringThisRevision cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxUpdatesDuringThisRevision');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxUpdatesDuringThisRevision', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxUpdatesDuringThisRevision'] = $maxUpdatesDuringThisRevision;
 
@@ -609,7 +623,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -619,7 +633,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -636,7 +650,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -646,7 +660,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $contract contract
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */
@@ -663,7 +677,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets previousContractRevision.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getPreviousContractRevision()
     {
@@ -673,14 +687,21 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets previousContractRevision.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previousContractRevision previousContractRevision
+     * @param null|DynamicReference $previousContractRevision previousContractRevision
      *
      * @return self
      */
     public function setPreviousContractRevision($previousContractRevision)
     {
         if (is_null($previousContractRevision)) {
-            throw new \InvalidArgumentException('non-nullable previousContractRevision cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previousContractRevision');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previousContractRevision', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previousContractRevision'] = $previousContractRevision;
 
@@ -815,7 +836,14 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

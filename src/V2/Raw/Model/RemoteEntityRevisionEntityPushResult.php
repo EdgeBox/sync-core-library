@@ -72,19 +72,19 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
-        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'translationRoot' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'previewHtml' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'translationRoot' => 'DynamicReference',
+        'previewHtml' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'versionId' => 'string',
-        'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'syndication' => 'DynamicReference',
     ];
 
     /**
@@ -129,32 +129,32 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'name' => false,
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'name' => true,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'language' => false,
-        'directDependencies' => false,
+        'directDependencies' => true,
         'appType' => false,
         'poolMachineNames' => false,
-        'isTranslationRoot' => false,
+        'isTranslationRoot' => true,
         'viewUrl' => false,
-        'deleted' => false,
-        'embed' => false,
+        'deleted' => true,
+        'embed' => true,
         'properties' => false,
-        'allDependencies' => false,
+        'allDependencies' => true,
         'entityType' => false,
         'entityTypeVersion' => false,
         'pools' => false,
         'customer' => false,
         'project' => false,
-        'translationRoot' => false,
-        'previewHtml' => false,
+        'translationRoot' => true,
+        'previewHtml' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
         'versionId' => false,
-        'syndication' => false,
+        'syndication' => true,
     ];
 
     /**
@@ -486,7 +486,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -513,7 +520,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -540,7 +554,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -594,7 +615,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setDirectDependencies($directDependencies)
     {
         if (is_null($directDependencies)) {
-            throw new \InvalidArgumentException('non-nullable directDependencies cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'directDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('directDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['directDependencies'] = $directDependencies;
 
@@ -675,7 +703,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setIsTranslationRoot($isTranslationRoot)
     {
         if (is_null($isTranslationRoot)) {
-            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
 
@@ -729,7 +764,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setDeleted($deleted)
     {
         if (is_null($deleted)) {
-            throw new \InvalidArgumentException('non-nullable deleted cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deleted');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deleted', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deleted'] = $deleted;
 
@@ -756,7 +798,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setEmbed($embed)
     {
         if (is_null($embed)) {
-            throw new \InvalidArgumentException('non-nullable embed cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'embed');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('embed', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['embed'] = $embed;
 
@@ -810,7 +859,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setAllDependencies($allDependencies)
     {
         if (is_null($allDependencies)) {
-            throw new \InvalidArgumentException('non-nullable allDependencies cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'allDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['allDependencies'] = $allDependencies;
 
@@ -820,7 +876,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -830,7 +886,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entityType entityType
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -847,7 +903,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets entityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityTypeVersion()
     {
@@ -857,7 +913,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets entityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entityTypeVersion entityTypeVersion
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
@@ -901,7 +957,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -911,7 +967,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -928,7 +984,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -938,7 +994,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -955,7 +1011,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets translationRoot.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getTranslationRoot()
     {
@@ -965,14 +1021,21 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets translationRoot.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $translationRoot translationRoot
+     * @param null|DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
     public function setTranslationRoot($translationRoot)
     {
         if (is_null($translationRoot)) {
-            throw new \InvalidArgumentException('non-nullable translationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translationRoot'] = $translationRoot;
 
@@ -982,7 +1045,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets previewHtml.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getPreviewHtml()
     {
@@ -992,14 +1055,21 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets previewHtml.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previewHtml previewHtml
+     * @param null|DynamicReference $previewHtml previewHtml
      *
      * @return self
      */
     public function setPreviewHtml($previewHtml)
     {
         if (is_null($previewHtml)) {
-            throw new \InvalidArgumentException('non-nullable previewHtml cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previewHtml');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previewHtml', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previewHtml'] = $previewHtml;
 
@@ -1107,7 +1177,14 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 
@@ -1144,7 +1221,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets syndication.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getSyndication()
     {
@@ -1154,14 +1231,21 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets syndication.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $syndication syndication
+     * @param null|DynamicReference $syndication syndication
      *
      * @return self
      */
     public function setSyndication($syndication)
     {
         if (is_null($syndication)) {
-            throw new \InvalidArgumentException('non-nullable syndication cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'syndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['syndication'] = $syndication;
 

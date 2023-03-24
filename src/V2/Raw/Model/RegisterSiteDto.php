@@ -61,7 +61,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'uuid' => 'string',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls',
+        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'baseUrl' => 'string',
     ];
 
@@ -88,7 +88,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'uuid' => false,
         'secret' => false,
         'restUrls' => false,
-        'baseUrl' => false,
+        'baseUrl' => true,
     ];
 
     /**
@@ -336,7 +336,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -346,7 +346,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls $restUrls restUrls
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */
@@ -380,7 +380,14 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setBaseUrl($baseUrl)
     {
         if (is_null($baseUrl)) {
-            throw new \InvalidArgumentException('non-nullable baseUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'baseUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('baseUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['baseUrl'] = $baseUrl;
 

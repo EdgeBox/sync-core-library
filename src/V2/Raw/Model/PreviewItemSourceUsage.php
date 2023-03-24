@@ -1,6 +1,6 @@
 <?php
 /**
- * ContractEntity.
+ * PreviewItemSourceUsage.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * ContractEntity Class Doc Comment.
+ * PreviewItemSourceUsage Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ContractEntity';
+    protected static $openAPIModelName = 'PreviewItem_sourceUsage';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,20 +59,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'minProdSites' => 'float',
-        'maxProdSites' => 'float',
-        'licensedSites' => 'float',
-        'currentProductionSites' => 'float',
-        'currentStagingSites' => 'float',
-        'currentTestingSites' => 'float',
-        'autoScaleLicenses' => 'bool',
-        'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
-        'currentProductionSiteDomains' => 'string[]',
-        'licensedProductionSiteDomains' => 'string[]',
-        'startDate' => 'float',
-        'endDate' => 'float',
+        'match' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType',
+        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
+        'viewUrl' => 'string',
+        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]',
+        'poolMachineNames' => 'string[]',
+        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'remoteUuid' => 'string',
+        'remoteUniqueId' => 'string',
+        'lastPush' => 'float',
+        'lastPull' => 'float',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'uuid' => 'string',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -87,20 +87,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'minProdSites' => null,
-        'maxProdSites' => null,
-        'licensedSites' => null,
-        'currentProductionSites' => null,
-        'currentStagingSites' => null,
-        'currentTestingSites' => null,
-        'autoScaleLicenses' => null,
-        'region' => null,
-        'currentProductionSiteDomains' => null,
-        'licensedProductionSiteDomains' => null,
-        'startDate' => null,
-        'endDate' => null,
+        'match' => null,
+        'status' => null,
+        'viewUrl' => null,
+        'site' => null,
+        'translations' => null,
+        'poolMachineNames' => null,
+        'entityType' => null,
+        'remoteUuid' => null,
+        'remoteUniqueId' => null,
+        'lastPush' => null,
+        'lastPull' => null,
         'customer' => null,
-        'uuid' => null,
+        'project' => null,
+        'pools' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -113,20 +113,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'minProdSites' => true,
-        'maxProdSites' => true,
-        'licensedSites' => false,
-        'currentProductionSites' => false,
-        'currentStagingSites' => false,
-        'currentTestingSites' => false,
-        'autoScaleLicenses' => false,
-        'region' => false,
-        'currentProductionSiteDomains' => true,
-        'licensedProductionSiteDomains' => true,
-        'startDate' => false,
-        'endDate' => true,
+        'match' => false,
+        'status' => false,
+        'viewUrl' => false,
+        'site' => false,
+        'translations' => false,
+        'poolMachineNames' => false,
+        'entityType' => false,
+        'remoteUuid' => false,
+        'remoteUniqueId' => true,
+        'lastPush' => true,
+        'lastPull' => true,
         'customer' => false,
-        'uuid' => false,
+        'project' => false,
+        'pools' => false,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -147,20 +147,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'minProdSites' => 'minProdSites',
-        'maxProdSites' => 'maxProdSites',
-        'licensedSites' => 'licensedSites',
-        'currentProductionSites' => 'currentProductionSites',
-        'currentStagingSites' => 'currentStagingSites',
-        'currentTestingSites' => 'currentTestingSites',
-        'autoScaleLicenses' => 'autoScaleLicenses',
-        'region' => 'region',
-        'currentProductionSiteDomains' => 'currentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'licensedProductionSiteDomains',
-        'startDate' => 'startDate',
-        'endDate' => 'endDate',
+        'match' => 'match',
+        'status' => 'status',
+        'viewUrl' => 'viewUrl',
+        'site' => 'site',
+        'translations' => 'translations',
+        'poolMachineNames' => 'poolMachineNames',
+        'entityType' => 'entityType',
+        'remoteUuid' => 'remoteUuid',
+        'remoteUniqueId' => 'remoteUniqueId',
+        'lastPush' => 'lastPush',
+        'lastPull' => 'lastPull',
         'customer' => 'customer',
-        'uuid' => 'uuid',
+        'project' => 'project',
+        'pools' => 'pools',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -173,20 +173,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'minProdSites' => 'setMinProdSites',
-        'maxProdSites' => 'setMaxProdSites',
-        'licensedSites' => 'setLicensedSites',
-        'currentProductionSites' => 'setCurrentProductionSites',
-        'currentStagingSites' => 'setCurrentStagingSites',
-        'currentTestingSites' => 'setCurrentTestingSites',
-        'autoScaleLicenses' => 'setAutoScaleLicenses',
-        'region' => 'setRegion',
-        'currentProductionSiteDomains' => 'setCurrentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'setLicensedProductionSiteDomains',
-        'startDate' => 'setStartDate',
-        'endDate' => 'setEndDate',
+        'match' => 'setMatch',
+        'status' => 'setStatus',
+        'viewUrl' => 'setViewUrl',
+        'site' => 'setSite',
+        'translations' => 'setTranslations',
+        'poolMachineNames' => 'setPoolMachineNames',
+        'entityType' => 'setEntityType',
+        'remoteUuid' => 'setRemoteUuid',
+        'remoteUniqueId' => 'setRemoteUniqueId',
+        'lastPush' => 'setLastPush',
+        'lastPull' => 'setLastPull',
         'customer' => 'setCustomer',
-        'uuid' => 'setUuid',
+        'project' => 'setProject',
+        'pools' => 'setPools',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -199,20 +199,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'minProdSites' => 'getMinProdSites',
-        'maxProdSites' => 'getMaxProdSites',
-        'licensedSites' => 'getLicensedSites',
-        'currentProductionSites' => 'getCurrentProductionSites',
-        'currentStagingSites' => 'getCurrentStagingSites',
-        'currentTestingSites' => 'getCurrentTestingSites',
-        'autoScaleLicenses' => 'getAutoScaleLicenses',
-        'region' => 'getRegion',
-        'currentProductionSiteDomains' => 'getCurrentProductionSiteDomains',
-        'licensedProductionSiteDomains' => 'getLicensedProductionSiteDomains',
-        'startDate' => 'getStartDate',
-        'endDate' => 'getEndDate',
+        'match' => 'getMatch',
+        'status' => 'getStatus',
+        'viewUrl' => 'getViewUrl',
+        'site' => 'getSite',
+        'translations' => 'getTranslations',
+        'poolMachineNames' => 'getPoolMachineNames',
+        'entityType' => 'getEntityType',
+        'remoteUuid' => 'getRemoteUuid',
+        'remoteUniqueId' => 'getRemoteUniqueId',
+        'lastPush' => 'getLastPush',
+        'lastPull' => 'getLastPull',
         'customer' => 'getCustomer',
-        'uuid' => 'getUuid',
+        'project' => 'getProject',
+        'pools' => 'getPools',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -234,20 +234,20 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('minProdSites', $data ?? [], null);
-        $this->setIfExists('maxProdSites', $data ?? [], null);
-        $this->setIfExists('licensedSites', $data ?? [], null);
-        $this->setIfExists('currentProductionSites', $data ?? [], null);
-        $this->setIfExists('currentStagingSites', $data ?? [], null);
-        $this->setIfExists('currentTestingSites', $data ?? [], null);
-        $this->setIfExists('autoScaleLicenses', $data ?? [], null);
-        $this->setIfExists('region', $data ?? [], null);
-        $this->setIfExists('currentProductionSiteDomains', $data ?? [], null);
-        $this->setIfExists('licensedProductionSiteDomains', $data ?? [], null);
-        $this->setIfExists('startDate', $data ?? [], null);
-        $this->setIfExists('endDate', $data ?? [], null);
+        $this->setIfExists('match', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
+        $this->setIfExists('site', $data ?? [], null);
+        $this->setIfExists('translations', $data ?? [], null);
+        $this->setIfExists('poolMachineNames', $data ?? [], null);
+        $this->setIfExists('entityType', $data ?? [], null);
+        $this->setIfExists('remoteUuid', $data ?? [], null);
+        $this->setIfExists('remoteUniqueId', $data ?? [], null);
+        $this->setIfExists('lastPush', $data ?? [], null);
+        $this->setIfExists('lastPull', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
-        $this->setIfExists('uuid', $data ?? [], null);
+        $this->setIfExists('project', $data ?? [], null);
+        $this->setIfExists('pools', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -353,32 +353,38 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['licensedSites']) {
-            $invalidProperties[] = "'licensedSites' can't be null";
+        if (null === $this->container['match']) {
+            $invalidProperties[] = "'match' can't be null";
         }
-        if (null === $this->container['currentProductionSites']) {
-            $invalidProperties[] = "'currentProductionSites' can't be null";
+        if (null === $this->container['status']) {
+            $invalidProperties[] = "'status' can't be null";
         }
-        if (null === $this->container['currentStagingSites']) {
-            $invalidProperties[] = "'currentStagingSites' can't be null";
+        if (null === $this->container['viewUrl']) {
+            $invalidProperties[] = "'viewUrl' can't be null";
         }
-        if (null === $this->container['currentTestingSites']) {
-            $invalidProperties[] = "'currentTestingSites' can't be null";
+        if (null === $this->container['site']) {
+            $invalidProperties[] = "'site' can't be null";
         }
-        if (null === $this->container['autoScaleLicenses']) {
-            $invalidProperties[] = "'autoScaleLicenses' can't be null";
+        if (null === $this->container['translations']) {
+            $invalidProperties[] = "'translations' can't be null";
         }
-        if (null === $this->container['region']) {
-            $invalidProperties[] = "'region' can't be null";
+        if (null === $this->container['poolMachineNames']) {
+            $invalidProperties[] = "'poolMachineNames' can't be null";
         }
-        if (null === $this->container['startDate']) {
-            $invalidProperties[] = "'startDate' can't be null";
+        if (null === $this->container['entityType']) {
+            $invalidProperties[] = "'entityType' can't be null";
+        }
+        if (null === $this->container['remoteUuid']) {
+            $invalidProperties[] = "'remoteUuid' can't be null";
         }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
         }
-        if (null === $this->container['uuid']) {
-            $invalidProperties[] = "'uuid' can't be null";
+        if (null === $this->container['project']) {
+            $invalidProperties[] = "'project' can't be null";
+        }
+        if (null === $this->container['pools']) {
+            $invalidProperties[] = "'pools' can't be null";
         }
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
@@ -405,360 +411,319 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets minProdSites.
+     * Gets match.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType
+     */
+    public function getMatch()
+    {
+        return $this->container['match'];
+    }
+
+    /**
+     * Sets match.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType $match match
+     *
+     * @return self
+     */
+    public function setMatch($match)
+    {
+        if (is_null($match)) {
+            throw new \InvalidArgumentException('non-nullable match cannot be null');
+        }
+        $this->container['match'] = $match;
+
+        return $this;
+    }
+
+    /**
+     * Gets status.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
+     */
+    public function getStatus()
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
+     *
+     * @return self
+     */
+    public function setStatus($status)
+    {
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+        }
+        $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets site.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     */
+    public function getSite()
+    {
+        return $this->container['site'];
+    }
+
+    /**
+     * Sets site.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
+     *
+     * @return self
+     */
+    public function setSite($site)
+    {
+        if (is_null($site)) {
+            throw new \InvalidArgumentException('non-nullable site cannot be null');
+        }
+        $this->container['site'] = $site;
+
+        return $this;
+    }
+
+    /**
+     * Gets translations.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]
+     */
+    public function getTranslations()
+    {
+        return $this->container['translations'];
+    }
+
+    /**
+     * Sets translations.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[] $translations translations
+     *
+     * @return self
+     */
+    public function setTranslations($translations)
+    {
+        if (is_null($translations)) {
+            throw new \InvalidArgumentException('non-nullable translations cannot be null');
+        }
+        $this->container['translations'] = $translations;
+
+        return $this;
+    }
+
+    /**
+     * Gets poolMachineNames.
+     *
+     * @return string[]
+     */
+    public function getPoolMachineNames()
+    {
+        return $this->container['poolMachineNames'];
+    }
+
+    /**
+     * Sets poolMachineNames.
+     *
+     * @param string[] $poolMachineNames poolMachineNames
+     *
+     * @return self
+     */
+    public function setPoolMachineNames($poolMachineNames)
+    {
+        if (is_null($poolMachineNames)) {
+            throw new \InvalidArgumentException('non-nullable poolMachineNames cannot be null');
+        }
+        $this->container['poolMachineNames'] = $poolMachineNames;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityType.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     */
+    public function getEntityType()
+    {
+        return $this->container['entityType'];
+    }
+
+    /**
+     * Sets entityType.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     *
+     * @return self
+     */
+    public function setEntityType($entityType)
+    {
+        if (is_null($entityType)) {
+            throw new \InvalidArgumentException('non-nullable entityType cannot be null');
+        }
+        $this->container['entityType'] = $entityType;
+
+        return $this;
+    }
+
+    /**
+     * Gets remoteUuid.
+     *
+     * @return string
+     */
+    public function getRemoteUuid()
+    {
+        return $this->container['remoteUuid'];
+    }
+
+    /**
+     * Sets remoteUuid.
+     *
+     * @param string $remoteUuid remoteUuid
+     *
+     * @return self
+     */
+    public function setRemoteUuid($remoteUuid)
+    {
+        if (is_null($remoteUuid)) {
+            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+        }
+        $this->container['remoteUuid'] = $remoteUuid;
+
+        return $this;
+    }
+
+    /**
+     * Gets remoteUniqueId.
+     *
+     * @return null|string
+     */
+    public function getRemoteUniqueId()
+    {
+        return $this->container['remoteUniqueId'];
+    }
+
+    /**
+     * Sets remoteUniqueId.
+     *
+     * @param null|string $remoteUniqueId remoteUniqueId
+     *
+     * @return self
+     */
+    public function setRemoteUniqueId($remoteUniqueId)
+    {
+        if (is_null($remoteUniqueId)) {
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['remoteUniqueId'] = $remoteUniqueId;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastPush.
      *
      * @return null|float
      */
-    public function getMinProdSites()
+    public function getLastPush()
     {
-        return $this->container['minProdSites'];
+        return $this->container['lastPush'];
     }
 
     /**
-     * Sets minProdSites.
+     * Sets lastPush.
      *
-     * @param null|float $minProdSites minProdSites
+     * @param null|float $lastPush lastPush
      *
      * @return self
      */
-    public function setMinProdSites($minProdSites)
+    public function setLastPush($lastPush)
     {
-        if (is_null($minProdSites)) {
-            array_push($this->openAPINullablesSetToNull, 'minProdSites');
+        if (is_null($lastPush)) {
+            array_push($this->openAPINullablesSetToNull, 'lastPush');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('minProdSites', $nullablesSetToNull);
+            $index = array_search('lastPush', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['minProdSites'] = $minProdSites;
+        $this->container['lastPush'] = $lastPush;
 
         return $this;
     }
 
     /**
-     * Gets maxProdSites.
+     * Gets lastPull.
      *
      * @return null|float
      */
-    public function getMaxProdSites()
+    public function getLastPull()
     {
-        return $this->container['maxProdSites'];
+        return $this->container['lastPull'];
     }
 
     /**
-     * Sets maxProdSites.
+     * Sets lastPull.
      *
-     * @param null|float $maxProdSites maxProdSites
+     * @param null|float $lastPull lastPull
      *
      * @return self
      */
-    public function setMaxProdSites($maxProdSites)
+    public function setLastPull($lastPull)
     {
-        if (is_null($maxProdSites)) {
-            array_push($this->openAPINullablesSetToNull, 'maxProdSites');
+        if (is_null($lastPull)) {
+            array_push($this->openAPINullablesSetToNull, 'lastPull');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('maxProdSites', $nullablesSetToNull);
+            $index = array_search('lastPull', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['maxProdSites'] = $maxProdSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets licensedSites.
-     *
-     * @return float
-     */
-    public function getLicensedSites()
-    {
-        return $this->container['licensedSites'];
-    }
-
-    /**
-     * Sets licensedSites.
-     *
-     * @param float $licensedSites licensedSites
-     *
-     * @return self
-     */
-    public function setLicensedSites($licensedSites)
-    {
-        if (is_null($licensedSites)) {
-            throw new \InvalidArgumentException('non-nullable licensedSites cannot be null');
-        }
-        $this->container['licensedSites'] = $licensedSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentProductionSites.
-     *
-     * @return float
-     */
-    public function getCurrentProductionSites()
-    {
-        return $this->container['currentProductionSites'];
-    }
-
-    /**
-     * Sets currentProductionSites.
-     *
-     * @param float $currentProductionSites currentProductionSites
-     *
-     * @return self
-     */
-    public function setCurrentProductionSites($currentProductionSites)
-    {
-        if (is_null($currentProductionSites)) {
-            throw new \InvalidArgumentException('non-nullable currentProductionSites cannot be null');
-        }
-        $this->container['currentProductionSites'] = $currentProductionSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentStagingSites.
-     *
-     * @return float
-     */
-    public function getCurrentStagingSites()
-    {
-        return $this->container['currentStagingSites'];
-    }
-
-    /**
-     * Sets currentStagingSites.
-     *
-     * @param float $currentStagingSites currentStagingSites
-     *
-     * @return self
-     */
-    public function setCurrentStagingSites($currentStagingSites)
-    {
-        if (is_null($currentStagingSites)) {
-            throw new \InvalidArgumentException('non-nullable currentStagingSites cannot be null');
-        }
-        $this->container['currentStagingSites'] = $currentStagingSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentTestingSites.
-     *
-     * @return float
-     */
-    public function getCurrentTestingSites()
-    {
-        return $this->container['currentTestingSites'];
-    }
-
-    /**
-     * Sets currentTestingSites.
-     *
-     * @param float $currentTestingSites currentTestingSites
-     *
-     * @return self
-     */
-    public function setCurrentTestingSites($currentTestingSites)
-    {
-        if (is_null($currentTestingSites)) {
-            throw new \InvalidArgumentException('non-nullable currentTestingSites cannot be null');
-        }
-        $this->container['currentTestingSites'] = $currentTestingSites;
-
-        return $this;
-    }
-
-    /**
-     * Gets autoScaleLicenses.
-     *
-     * @return bool
-     */
-    public function getAutoScaleLicenses()
-    {
-        return $this->container['autoScaleLicenses'];
-    }
-
-    /**
-     * Sets autoScaleLicenses.
-     *
-     * @param bool $autoScaleLicenses autoScaleLicenses
-     *
-     * @return self
-     */
-    public function setAutoScaleLicenses($autoScaleLicenses)
-    {
-        if (is_null($autoScaleLicenses)) {
-            throw new \InvalidArgumentException('non-nullable autoScaleLicenses cannot be null');
-        }
-        $this->container['autoScaleLicenses'] = $autoScaleLicenses;
-
-        return $this;
-    }
-
-    /**
-     * Gets region.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion
-     */
-    public function getRegion()
-    {
-        return $this->container['region'];
-    }
-
-    /**
-     * Sets region.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion $region region
-     *
-     * @return self
-     */
-    public function setRegion($region)
-    {
-        if (is_null($region)) {
-            throw new \InvalidArgumentException('non-nullable region cannot be null');
-        }
-        $this->container['region'] = $region;
-
-        return $this;
-    }
-
-    /**
-     * Gets currentProductionSiteDomains.
-     *
-     * @return null|string[]
-     */
-    public function getCurrentProductionSiteDomains()
-    {
-        return $this->container['currentProductionSiteDomains'];
-    }
-
-    /**
-     * Sets currentProductionSiteDomains.
-     *
-     * @param null|string[] $currentProductionSiteDomains currentProductionSiteDomains
-     *
-     * @return self
-     */
-    public function setCurrentProductionSiteDomains($currentProductionSiteDomains)
-    {
-        if (is_null($currentProductionSiteDomains)) {
-            array_push($this->openAPINullablesSetToNull, 'currentProductionSiteDomains');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('currentProductionSiteDomains', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['currentProductionSiteDomains'] = $currentProductionSiteDomains;
-
-        return $this;
-    }
-
-    /**
-     * Gets licensedProductionSiteDomains.
-     *
-     * @return null|string[]
-     */
-    public function getLicensedProductionSiteDomains()
-    {
-        return $this->container['licensedProductionSiteDomains'];
-    }
-
-    /**
-     * Sets licensedProductionSiteDomains.
-     *
-     * @param null|string[] $licensedProductionSiteDomains licensedProductionSiteDomains
-     *
-     * @return self
-     */
-    public function setLicensedProductionSiteDomains($licensedProductionSiteDomains)
-    {
-        if (is_null($licensedProductionSiteDomains)) {
-            array_push($this->openAPINullablesSetToNull, 'licensedProductionSiteDomains');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('licensedProductionSiteDomains', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['licensedProductionSiteDomains'] = $licensedProductionSiteDomains;
-
-        return $this;
-    }
-
-    /**
-     * Gets startDate.
-     *
-     * @return float
-     */
-    public function getStartDate()
-    {
-        return $this->container['startDate'];
-    }
-
-    /**
-     * Sets startDate.
-     *
-     * @param float $startDate startDate
-     *
-     * @return self
-     */
-    public function setStartDate($startDate)
-    {
-        if (is_null($startDate)) {
-            throw new \InvalidArgumentException('non-nullable startDate cannot be null');
-        }
-        $this->container['startDate'] = $startDate;
-
-        return $this;
-    }
-
-    /**
-     * Gets endDate.
-     *
-     * @return null|float
-     */
-    public function getEndDate()
-    {
-        return $this->container['endDate'];
-    }
-
-    /**
-     * Sets endDate.
-     *
-     * @param null|float $endDate endDate
-     *
-     * @return self
-     */
-    public function setEndDate($endDate)
-    {
-        if (is_null($endDate)) {
-            array_push($this->openAPINullablesSetToNull, 'endDate');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('endDate', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['endDate'] = $endDate;
+        $this->container['lastPull'] = $lastPull;
 
         return $this;
     }
@@ -791,28 +756,55 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets uuid.
+     * Gets project.
      *
-     * @return string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
-    public function getUuid()
+    public function getProject()
     {
-        return $this->container['uuid'];
+        return $this->container['project'];
     }
 
     /**
-     * Sets uuid.
+     * Sets project.
      *
-     * @param string $uuid uuid
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
-    public function setUuid($uuid)
+    public function setProject($project)
     {
-        if (is_null($uuid)) {
-            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
+        if (is_null($project)) {
+            throw new \InvalidArgumentException('non-nullable project cannot be null');
         }
-        $this->container['uuid'] = $uuid;
+        $this->container['project'] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Gets pools.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     */
+    public function getPools()
+    {
+        return $this->container['pools'];
+    }
+
+    /**
+     * Sets pools.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     *
+     * @return self
+     */
+    public function setPools($pools)
+    {
+        if (is_null($pools)) {
+            throw new \InvalidArgumentException('non-nullable pools cannot be null');
+        }
+        $this->container['pools'] = $pools;
 
         return $this;
     }

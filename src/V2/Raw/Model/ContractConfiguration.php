@@ -83,8 +83,8 @@ class ContractConfiguration implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'remainingUpdates' => false,
-        'maxUpdates' => false,
+        'remainingUpdates' => true,
+        'maxUpdates' => true,
         'contractExpired' => false,
     ];
 
@@ -286,7 +286,14 @@ class ContractConfiguration implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setRemainingUpdates($remainingUpdates)
     {
         if (is_null($remainingUpdates)) {
-            throw new \InvalidArgumentException('non-nullable remainingUpdates cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remainingUpdates');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remainingUpdates', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remainingUpdates'] = $remainingUpdates;
 
@@ -313,7 +320,14 @@ class ContractConfiguration implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setMaxUpdates($maxUpdates)
     {
         if (is_null($maxUpdates)) {
-            throw new \InvalidArgumentException('non-nullable maxUpdates cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'maxUpdates');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxUpdates', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['maxUpdates'] = $maxUpdates;
 

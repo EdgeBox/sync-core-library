@@ -62,7 +62,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
         'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode',
         'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
         'syndicateDeletions' => 'bool',
-        'pool' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'pool' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'entityTypeVersions' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
     ];
@@ -90,8 +90,8 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'mode' => false,
-        'filters' => false,
-        'syndicateDeletions' => false,
+        'filters' => true,
+        'syndicateDeletions' => true,
         'pool' => false,
         'entityTypes' => false,
         'entityTypeVersions' => false,
@@ -343,7 +343,14 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setFilters($filters)
     {
         if (is_null($filters)) {
-            throw new \InvalidArgumentException('non-nullable filters cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'filters');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('filters', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['filters'] = $filters;
 
@@ -370,7 +377,14 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setSyndicateDeletions($syndicateDeletions)
     {
         if (is_null($syndicateDeletions)) {
-            throw new \InvalidArgumentException('non-nullable syndicateDeletions cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'syndicateDeletions');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syndicateDeletions', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['syndicateDeletions'] = $syndicateDeletions;
 
@@ -380,7 +394,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets pool.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getPool()
     {
@@ -390,7 +404,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets pool.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $pool pool
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $pool pool
      *
      * @return self
      */

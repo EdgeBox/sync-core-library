@@ -59,23 +59,23 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'rootEntityReference' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference',
-        'rootEntityDetails' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails',
+        'rootEntityReference' => 'RemoteEntityReference',
+        'rootEntityDetails' => 'RemoteEntityDetails',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType',
-        'rootEntity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'rootEntityType' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'rootEntityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'rootEntity' => 'DynamicReference',
+        'rootEntityType' => 'DynamicReference',
+        'rootEntityTypeVersion' => 'DynamicReference',
+        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
-        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]',
-        'migration' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'migration' => 'DynamicReference',
         'migrationType' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
         'finishedAt' => 'float',
-        'dependsOnSyndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'dependsOnSyndication' => 'DynamicReference',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'id' => 'string',
@@ -123,29 +123,29 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'rootEntityReference' => false,
-        'rootEntityDetails' => false,
+        'rootEntityReference' => true,
+        'rootEntityDetails' => true,
         'status' => false,
         'type' => false,
-        'rootEntity' => false,
-        'rootEntityType' => false,
-        'rootEntityTypeVersion' => false,
+        'rootEntity' => true,
+        'rootEntityType' => true,
+        'rootEntityTypeVersion' => true,
         'targetSite' => false,
-        'pools' => false,
+        'pools' => true,
         'flow' => false,
         'customer' => false,
         'project' => false,
-        'operations' => false,
-        'migration' => false,
+        'operations' => true,
+        'migration' => true,
         'migrationType' => false,
-        'finishedAt' => false,
-        'dependsOnSyndication' => false,
-        'dryRun' => false,
-        'skipSyndication' => false,
+        'finishedAt' => true,
+        'dependsOnSyndication' => true,
+        'dryRun' => true,
+        'skipSyndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
-        'deletedAt' => false,
+        'deletedAt' => true,
     ];
 
     /**
@@ -433,7 +433,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityReference.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference
+     * @return null|RemoteEntityReference
      */
     public function getRootEntityReference()
     {
@@ -443,14 +443,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityReference.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityReference $rootEntityReference rootEntityReference
+     * @param null|RemoteEntityReference $rootEntityReference rootEntityReference
      *
      * @return self
      */
     public function setRootEntityReference($rootEntityReference)
     {
         if (is_null($rootEntityReference)) {
-            throw new \InvalidArgumentException('non-nullable rootEntityReference cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'rootEntityReference');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rootEntityReference', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['rootEntityReference'] = $rootEntityReference;
 
@@ -460,7 +467,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityDetails.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails
+     * @return null|RemoteEntityDetails
      */
     public function getRootEntityDetails()
     {
@@ -470,14 +477,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityDetails.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDetails $rootEntityDetails rootEntityDetails
+     * @param null|RemoteEntityDetails $rootEntityDetails rootEntityDetails
      *
      * @return self
      */
     public function setRootEntityDetails($rootEntityDetails)
     {
         if (is_null($rootEntityDetails)) {
-            throw new \InvalidArgumentException('non-nullable rootEntityDetails cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'rootEntityDetails');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rootEntityDetails', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['rootEntityDetails'] = $rootEntityDetails;
 
@@ -541,7 +555,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntity.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getRootEntity()
     {
@@ -551,14 +565,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntity.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntity rootEntity
+     * @param null|DynamicReference $rootEntity rootEntity
      *
      * @return self
      */
     public function setRootEntity($rootEntity)
     {
         if (is_null($rootEntity)) {
-            throw new \InvalidArgumentException('non-nullable rootEntity cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'rootEntity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rootEntity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['rootEntity'] = $rootEntity;
 
@@ -568,7 +589,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getRootEntityType()
     {
@@ -578,14 +599,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntityType rootEntityType
+     * @param null|DynamicReference $rootEntityType rootEntityType
      *
      * @return self
      */
     public function setRootEntityType($rootEntityType)
     {
         if (is_null($rootEntityType)) {
-            throw new \InvalidArgumentException('non-nullable rootEntityType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'rootEntityType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rootEntityType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['rootEntityType'] = $rootEntityType;
 
@@ -595,7 +623,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets rootEntityTypeVersion.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getRootEntityTypeVersion()
     {
@@ -605,14 +633,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets rootEntityTypeVersion.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $rootEntityTypeVersion rootEntityTypeVersion
+     * @param null|DynamicReference $rootEntityTypeVersion rootEntityTypeVersion
      *
      * @return self
      */
     public function setRootEntityTypeVersion($rootEntityTypeVersion)
     {
         if (is_null($rootEntityTypeVersion)) {
-            throw new \InvalidArgumentException('non-nullable rootEntityTypeVersion cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'rootEntityTypeVersion');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rootEntityTypeVersion', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['rootEntityTypeVersion'] = $rootEntityTypeVersion;
 
@@ -622,7 +657,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets targetSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getTargetSite()
     {
@@ -632,7 +667,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets targetSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $targetSite targetSite
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $targetSite targetSite
      *
      * @return self
      */
@@ -666,7 +701,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setPools($pools)
     {
         if (is_null($pools)) {
-            throw new \InvalidArgumentException('non-nullable pools cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'pools');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pools', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['pools'] = $pools;
 
@@ -676,7 +718,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets flow.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getFlow()
     {
@@ -686,7 +728,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets flow.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $flow flow
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $flow flow
      *
      * @return self
      */
@@ -703,7 +745,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -713,7 +755,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $customer customer
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -730,7 +772,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -740,7 +782,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $project project
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -774,7 +816,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setOperations($operations)
     {
         if (is_null($operations)) {
-            throw new \InvalidArgumentException('non-nullable operations cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'operations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('operations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['operations'] = $operations;
 
@@ -784,7 +833,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets migration.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getMigration()
     {
@@ -794,14 +843,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets migration.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $migration migration
+     * @param null|DynamicReference $migration migration
      *
      * @return self
      */
     public function setMigration($migration)
     {
         if (is_null($migration)) {
-            throw new \InvalidArgumentException('non-nullable migration cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'migration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('migration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['migration'] = $migration;
 
@@ -855,7 +911,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setFinishedAt($finishedAt)
     {
         if (is_null($finishedAt)) {
-            throw new \InvalidArgumentException('non-nullable finishedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'finishedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('finishedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['finishedAt'] = $finishedAt;
 
@@ -865,7 +928,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets dependsOnSyndication.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getDependsOnSyndication()
     {
@@ -875,14 +938,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets dependsOnSyndication.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $dependsOnSyndication dependsOnSyndication
+     * @param null|DynamicReference $dependsOnSyndication dependsOnSyndication
      *
      * @return self
      */
     public function setDependsOnSyndication($dependsOnSyndication)
     {
         if (is_null($dependsOnSyndication)) {
-            throw new \InvalidArgumentException('non-nullable dependsOnSyndication cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'dependsOnSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('dependsOnSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['dependsOnSyndication'] = $dependsOnSyndication;
 
@@ -909,7 +979,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setDryRun($dryRun)
     {
         if (is_null($dryRun)) {
-            throw new \InvalidArgumentException('non-nullable dryRun cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'dryRun');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('dryRun', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['dryRun'] = $dryRun;
 
@@ -936,7 +1013,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setSkipSyndication($skipSyndication)
     {
         if (is_null($skipSyndication)) {
-            throw new \InvalidArgumentException('non-nullable skipSyndication cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'skipSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['skipSyndication'] = $skipSyndication;
 
@@ -1044,7 +1128,14 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function setDeletedAt($deletedAt)
     {
         if (is_null($deletedAt)) {
-            throw new \InvalidArgumentException('non-nullable deletedAt cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'deletedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['deletedAt'] = $deletedAt;
 

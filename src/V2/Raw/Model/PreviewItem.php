@@ -59,12 +59,12 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity',
-        'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity',
+        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntity',
+        'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntityTypeVersion',
         'previewHtml' => 'string',
-        'localUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity',
-        'sourceUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity',
-        'lastPull' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity',
+        'localUsage' => 'RemoteEntityUsageEntity',
+        'sourceUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage',
+        'lastPull' => 'SyndicationEntity',
     ];
 
     /**
@@ -91,10 +91,10 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'entity' => false,
         'entityTypeVersion' => false,
-        'previewHtml' => false,
-        'localUsage' => false,
+        'previewHtml' => true,
+        'localUsage' => true,
         'sourceUsage' => false,
-        'lastPull' => false,
+        'lastPull' => true,
     ];
 
     /**
@@ -296,7 +296,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntity
      */
     public function getEntity()
     {
@@ -306,7 +306,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity $entity entity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntity $entity entity
      *
      * @return self
      */
@@ -323,7 +323,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntityTypeVersion
      */
     public function getEntityTypeVersion()
     {
@@ -333,7 +333,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity $entityTypeVersion entityTypeVersion
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntityTypeVersion $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
@@ -367,7 +367,14 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     public function setPreviewHtml($previewHtml)
     {
         if (is_null($previewHtml)) {
-            throw new \InvalidArgumentException('non-nullable previewHtml cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previewHtml');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previewHtml', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previewHtml'] = $previewHtml;
 
@@ -377,7 +384,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets localUsage.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
+     * @return null|RemoteEntityUsageEntity
      */
     public function getLocalUsage()
     {
@@ -387,14 +394,21 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets localUsage.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity $localUsage localUsage
+     * @param null|RemoteEntityUsageEntity $localUsage localUsage
      *
      * @return self
      */
     public function setLocalUsage($localUsage)
     {
         if (is_null($localUsage)) {
-            throw new \InvalidArgumentException('non-nullable localUsage cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'localUsage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('localUsage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['localUsage'] = $localUsage;
 
@@ -404,7 +418,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets sourceUsage.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage
      */
     public function getSourceUsage()
     {
@@ -414,7 +428,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sourceUsage.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity $sourceUsage sourceUsage
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage $sourceUsage sourceUsage
      *
      * @return self
      */
@@ -431,7 +445,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets lastPull.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     * @return null|SyndicationEntity
      */
     public function getLastPull()
     {
@@ -441,14 +455,21 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets lastPull.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity $lastPull lastPull
+     * @param null|SyndicationEntity $lastPull lastPull
      *
      * @return self
      */
     public function setLastPull($lastPull)
     {
         if (is_null($lastPull)) {
-            throw new \InvalidArgumentException('non-nullable lastPull cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'lastPull');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastPull', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['lastPull'] = $lastPull;
 

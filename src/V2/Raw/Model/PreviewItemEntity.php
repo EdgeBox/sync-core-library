@@ -1,6 +1,6 @@
 <?php
 /**
- * MigrationEntity.
+ * PreviewItemEntity.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * MigrationEntity Class Doc Comment.
+ * PreviewItemEntity Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'MigrationEntity';
+    protected static $openAPIModelName = 'PreviewItem_entity';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,27 +59,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
-        'entityTypeReference' => 'EntityTypeVersionReference',
-        'entityReferences' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
-        'previousMigration' => 'DynamicReference',
-        'initialSetup' => 'bool',
-        'changedAfter' => 'float',
-        'dryRun' => 'bool',
-        'skipSyndication' => 'bool',
-        'flowMachineName' => 'string',
-        'entityTypeVersion' => 'DynamicReference',
-        'entityType' => 'DynamicReference',
-        'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'name' => 'string',
+        'remoteUuid' => 'string',
+        'remoteUniqueId' => 'string',
+        'language' => 'string',
+        'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
+        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'poolMachineNames' => 'string[]',
+        'isTranslationRoot' => 'bool',
+        'viewUrl' => 'string',
+        'deleted' => 'bool',
+        'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]',
+        'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
+        'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
+        'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'entityTypeVersion' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'flow' => 'DynamicReference',
+        'translationRoot' => 'DynamicReference',
+        'previewHtml' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'versionId' => 'string',
     ];
 
     /**
@@ -90,27 +94,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'type' => null,
-        'entityTypeReference' => null,
-        'entityReferences' => null,
-        'previousMigration' => null,
-        'initialSetup' => null,
-        'changedAfter' => null,
-        'dryRun' => null,
-        'skipSyndication' => null,
-        'flowMachineName' => null,
-        'entityTypeVersion' => null,
+        'name' => null,
+        'remoteUuid' => null,
+        'remoteUniqueId' => null,
+        'language' => null,
+        'directDependencies' => null,
+        'appType' => null,
+        'poolMachineNames' => null,
+        'isTranslationRoot' => null,
+        'viewUrl' => null,
+        'deleted' => null,
+        'embed' => null,
+        'properties' => null,
+        'allDependencies' => null,
         'entityType' => null,
-        'entities' => null,
-        'status' => null,
+        'entityTypeVersion' => null,
+        'pools' => null,
         'customer' => null,
-        'site' => null,
         'project' => null,
-        'flow' => null,
+        'translationRoot' => null,
+        'previewHtml' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'versionId' => null,
     ];
 
     /**
@@ -119,27 +127,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'type' => false,
-        'entityTypeReference' => true,
-        'entityReferences' => true,
-        'previousMigration' => true,
-        'initialSetup' => true,
-        'changedAfter' => true,
-        'dryRun' => true,
-        'skipSyndication' => true,
-        'flowMachineName' => true,
-        'entityTypeVersion' => true,
-        'entityType' => true,
-        'entities' => true,
-        'status' => false,
+        'name' => true,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
+        'language' => false,
+        'directDependencies' => true,
+        'appType' => false,
+        'poolMachineNames' => false,
+        'isTranslationRoot' => true,
+        'viewUrl' => false,
+        'deleted' => true,
+        'embed' => true,
+        'properties' => false,
+        'allDependencies' => true,
+        'entityType' => false,
+        'entityTypeVersion' => false,
+        'pools' => false,
         'customer' => false,
-        'site' => false,
         'project' => false,
-        'flow' => true,
+        'translationRoot' => true,
+        'previewHtml' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'versionId' => false,
     ];
 
     /**
@@ -156,27 +168,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'type' => 'type',
-        'entityTypeReference' => 'entityTypeReference',
-        'entityReferences' => 'entityReferences',
-        'previousMigration' => 'previousMigration',
-        'initialSetup' => 'initialSetup',
-        'changedAfter' => 'changedAfter',
-        'dryRun' => 'dryRun',
-        'skipSyndication' => 'skipSyndication',
-        'flowMachineName' => 'flowMachineName',
-        'entityTypeVersion' => 'entityTypeVersion',
+        'name' => 'name',
+        'remoteUuid' => 'remoteUuid',
+        'remoteUniqueId' => 'remoteUniqueId',
+        'language' => 'language',
+        'directDependencies' => 'directDependencies',
+        'appType' => 'appType',
+        'poolMachineNames' => 'poolMachineNames',
+        'isTranslationRoot' => 'isTranslationRoot',
+        'viewUrl' => 'viewUrl',
+        'deleted' => 'deleted',
+        'embed' => 'embed',
+        'properties' => 'properties',
+        'allDependencies' => 'allDependencies',
         'entityType' => 'entityType',
-        'entities' => 'entities',
-        'status' => 'status',
+        'entityTypeVersion' => 'entityTypeVersion',
+        'pools' => 'pools',
         'customer' => 'customer',
-        'site' => 'site',
         'project' => 'project',
-        'flow' => 'flow',
+        'translationRoot' => 'translationRoot',
+        'previewHtml' => 'previewHtml',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'versionId' => 'versionId',
     ];
 
     /**
@@ -185,27 +201,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'type' => 'setType',
-        'entityTypeReference' => 'setEntityTypeReference',
-        'entityReferences' => 'setEntityReferences',
-        'previousMigration' => 'setPreviousMigration',
-        'initialSetup' => 'setInitialSetup',
-        'changedAfter' => 'setChangedAfter',
-        'dryRun' => 'setDryRun',
-        'skipSyndication' => 'setSkipSyndication',
-        'flowMachineName' => 'setFlowMachineName',
-        'entityTypeVersion' => 'setEntityTypeVersion',
+        'name' => 'setName',
+        'remoteUuid' => 'setRemoteUuid',
+        'remoteUniqueId' => 'setRemoteUniqueId',
+        'language' => 'setLanguage',
+        'directDependencies' => 'setDirectDependencies',
+        'appType' => 'setAppType',
+        'poolMachineNames' => 'setPoolMachineNames',
+        'isTranslationRoot' => 'setIsTranslationRoot',
+        'viewUrl' => 'setViewUrl',
+        'deleted' => 'setDeleted',
+        'embed' => 'setEmbed',
+        'properties' => 'setProperties',
+        'allDependencies' => 'setAllDependencies',
         'entityType' => 'setEntityType',
-        'entities' => 'setEntities',
-        'status' => 'setStatus',
+        'entityTypeVersion' => 'setEntityTypeVersion',
+        'pools' => 'setPools',
         'customer' => 'setCustomer',
-        'site' => 'setSite',
         'project' => 'setProject',
-        'flow' => 'setFlow',
+        'translationRoot' => 'setTranslationRoot',
+        'previewHtml' => 'setPreviewHtml',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'versionId' => 'setVersionId',
     ];
 
     /**
@@ -214,27 +234,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'type' => 'getType',
-        'entityTypeReference' => 'getEntityTypeReference',
-        'entityReferences' => 'getEntityReferences',
-        'previousMigration' => 'getPreviousMigration',
-        'initialSetup' => 'getInitialSetup',
-        'changedAfter' => 'getChangedAfter',
-        'dryRun' => 'getDryRun',
-        'skipSyndication' => 'getSkipSyndication',
-        'flowMachineName' => 'getFlowMachineName',
-        'entityTypeVersion' => 'getEntityTypeVersion',
+        'name' => 'getName',
+        'remoteUuid' => 'getRemoteUuid',
+        'remoteUniqueId' => 'getRemoteUniqueId',
+        'language' => 'getLanguage',
+        'directDependencies' => 'getDirectDependencies',
+        'appType' => 'getAppType',
+        'poolMachineNames' => 'getPoolMachineNames',
+        'isTranslationRoot' => 'getIsTranslationRoot',
+        'viewUrl' => 'getViewUrl',
+        'deleted' => 'getDeleted',
+        'embed' => 'getEmbed',
+        'properties' => 'getProperties',
+        'allDependencies' => 'getAllDependencies',
         'entityType' => 'getEntityType',
-        'entities' => 'getEntities',
-        'status' => 'getStatus',
+        'entityTypeVersion' => 'getEntityTypeVersion',
+        'pools' => 'getPools',
         'customer' => 'getCustomer',
-        'site' => 'getSite',
         'project' => 'getProject',
-        'flow' => 'getFlow',
+        'translationRoot' => 'getTranslationRoot',
+        'previewHtml' => 'getPreviewHtml',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'versionId' => 'getVersionId',
     ];
 
     /**
@@ -252,27 +276,31 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('type', $data ?? [], null);
-        $this->setIfExists('entityTypeReference', $data ?? [], null);
-        $this->setIfExists('entityReferences', $data ?? [], null);
-        $this->setIfExists('previousMigration', $data ?? [], null);
-        $this->setIfExists('initialSetup', $data ?? [], null);
-        $this->setIfExists('changedAfter', $data ?? [], null);
-        $this->setIfExists('dryRun', $data ?? [], null);
-        $this->setIfExists('skipSyndication', $data ?? [], null);
-        $this->setIfExists('flowMachineName', $data ?? [], null);
-        $this->setIfExists('entityTypeVersion', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('remoteUuid', $data ?? [], null);
+        $this->setIfExists('remoteUniqueId', $data ?? [], null);
+        $this->setIfExists('language', $data ?? [], null);
+        $this->setIfExists('directDependencies', $data ?? [], null);
+        $this->setIfExists('appType', $data ?? [], null);
+        $this->setIfExists('poolMachineNames', $data ?? [], null);
+        $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
+        $this->setIfExists('deleted', $data ?? [], null);
+        $this->setIfExists('embed', $data ?? [], null);
+        $this->setIfExists('properties', $data ?? [], null);
+        $this->setIfExists('allDependencies', $data ?? [], null);
         $this->setIfExists('entityType', $data ?? [], null);
-        $this->setIfExists('entities', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('entityTypeVersion', $data ?? [], null);
+        $this->setIfExists('pools', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
-        $this->setIfExists('site', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
-        $this->setIfExists('flow', $data ?? [], null);
+        $this->setIfExists('translationRoot', $data ?? [], null);
+        $this->setIfExists('previewHtml', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
     }
 
     /**
@@ -374,17 +402,32 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['type']) {
-            $invalidProperties[] = "'type' can't be null";
+        if (null === $this->container['language']) {
+            $invalidProperties[] = "'language' can't be null";
         }
-        if (null === $this->container['status']) {
-            $invalidProperties[] = "'status' can't be null";
+        if (null === $this->container['appType']) {
+            $invalidProperties[] = "'appType' can't be null";
+        }
+        if (null === $this->container['poolMachineNames']) {
+            $invalidProperties[] = "'poolMachineNames' can't be null";
+        }
+        if (null === $this->container['viewUrl']) {
+            $invalidProperties[] = "'viewUrl' can't be null";
+        }
+        if (null === $this->container['properties']) {
+            $invalidProperties[] = "'properties' can't be null";
+        }
+        if (null === $this->container['entityType']) {
+            $invalidProperties[] = "'entityType' can't be null";
+        }
+        if (null === $this->container['entityTypeVersion']) {
+            $invalidProperties[] = "'entityTypeVersion' can't be null";
+        }
+        if (null === $this->container['pools']) {
+            $invalidProperties[] = "'pools' can't be null";
         }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
-        }
-        if (null === $this->container['site']) {
-            $invalidProperties[] = "'site' can't be null";
         }
         if (null === $this->container['project']) {
             $invalidProperties[] = "'project' can't be null";
@@ -397,6 +440,9 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['updatedAt']) {
             $invalidProperties[] = "'updatedAt' can't be null";
+        }
+        if (null === $this->container['versionId']) {
+            $invalidProperties[] = "'versionId' can't be null";
         }
 
         return $invalidProperties;
@@ -414,334 +460,408 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets type.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationType
-     */
-    public function getType()
-    {
-        return $this->container['type'];
-    }
-
-    /**
-     * Sets type.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\MigrationType $type type
-     *
-     * @return self
-     */
-    public function setType($type)
-    {
-        if (is_null($type)) {
-            throw new \InvalidArgumentException('non-nullable type cannot be null');
-        }
-        $this->container['type'] = $type;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypeReference.
-     *
-     * @return null|EntityTypeVersionReference
-     */
-    public function getEntityTypeReference()
-    {
-        return $this->container['entityTypeReference'];
-    }
-
-    /**
-     * Sets entityTypeReference.
-     *
-     * @param null|EntityTypeVersionReference $entityTypeReference entityTypeReference
-     *
-     * @return self
-     */
-    public function setEntityTypeReference($entityTypeReference)
-    {
-        if (is_null($entityTypeReference)) {
-            array_push($this->openAPINullablesSetToNull, 'entityTypeReference');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entityTypeReference', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['entityTypeReference'] = $entityTypeReference;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityReferences.
-     *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]
-     */
-    public function getEntityReferences()
-    {
-        return $this->container['entityReferences'];
-    }
-
-    /**
-     * Sets entityReferences.
-     *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[] $entityReferences entityReferences
-     *
-     * @return self
-     */
-    public function setEntityReferences($entityReferences)
-    {
-        if (is_null($entityReferences)) {
-            array_push($this->openAPINullablesSetToNull, 'entityReferences');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entityReferences', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['entityReferences'] = $entityReferences;
-
-        return $this;
-    }
-
-    /**
-     * Gets previousMigration.
-     *
-     * @return null|DynamicReference
-     */
-    public function getPreviousMigration()
-    {
-        return $this->container['previousMigration'];
-    }
-
-    /**
-     * Sets previousMigration.
-     *
-     * @param null|DynamicReference $previousMigration previousMigration
-     *
-     * @return self
-     */
-    public function setPreviousMigration($previousMigration)
-    {
-        if (is_null($previousMigration)) {
-            array_push($this->openAPINullablesSetToNull, 'previousMigration');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('previousMigration', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['previousMigration'] = $previousMigration;
-
-        return $this;
-    }
-
-    /**
-     * Gets initialSetup.
-     *
-     * @return null|bool
-     */
-    public function getInitialSetup()
-    {
-        return $this->container['initialSetup'];
-    }
-
-    /**
-     * Sets initialSetup.
-     *
-     * @param null|bool $initialSetup initialSetup
-     *
-     * @return self
-     */
-    public function setInitialSetup($initialSetup)
-    {
-        if (is_null($initialSetup)) {
-            array_push($this->openAPINullablesSetToNull, 'initialSetup');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('initialSetup', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['initialSetup'] = $initialSetup;
-
-        return $this;
-    }
-
-    /**
-     * Gets changedAfter.
-     *
-     * @return null|float
-     */
-    public function getChangedAfter()
-    {
-        return $this->container['changedAfter'];
-    }
-
-    /**
-     * Sets changedAfter.
-     *
-     * @param null|float $changedAfter changedAfter
-     *
-     * @return self
-     */
-    public function setChangedAfter($changedAfter)
-    {
-        if (is_null($changedAfter)) {
-            array_push($this->openAPINullablesSetToNull, 'changedAfter');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('changedAfter', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['changedAfter'] = $changedAfter;
-
-        return $this;
-    }
-
-    /**
-     * Gets dryRun.
-     *
-     * @return null|bool
-     */
-    public function getDryRun()
-    {
-        return $this->container['dryRun'];
-    }
-
-    /**
-     * Sets dryRun.
-     *
-     * @param null|bool $dryRun dryRun
-     *
-     * @return self
-     */
-    public function setDryRun($dryRun)
-    {
-        if (is_null($dryRun)) {
-            array_push($this->openAPINullablesSetToNull, 'dryRun');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('dryRun', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['dryRun'] = $dryRun;
-
-        return $this;
-    }
-
-    /**
-     * Gets skipSyndication.
-     *
-     * @return null|bool
-     */
-    public function getSkipSyndication()
-    {
-        return $this->container['skipSyndication'];
-    }
-
-    /**
-     * Sets skipSyndication.
-     *
-     * @param null|bool $skipSyndication skipSyndication
-     *
-     * @return self
-     */
-    public function setSkipSyndication($skipSyndication)
-    {
-        if (is_null($skipSyndication)) {
-            array_push($this->openAPINullablesSetToNull, 'skipSyndication');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('skipSyndication', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['skipSyndication'] = $skipSyndication;
-
-        return $this;
-    }
-
-    /**
-     * Gets flowMachineName.
+     * Gets name.
      *
      * @return null|string
      */
-    public function getFlowMachineName()
+    public function getName()
     {
-        return $this->container['flowMachineName'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets flowMachineName.
+     * Sets name.
      *
-     * @param null|string $flowMachineName flowMachineName
+     * @param null|string $name name
      *
      * @return self
      */
-    public function setFlowMachineName($flowMachineName)
+    public function setName($name)
     {
-        if (is_null($flowMachineName)) {
-            array_push($this->openAPINullablesSetToNull, 'flowMachineName');
+        if (is_null($name)) {
+            array_push($this->openAPINullablesSetToNull, 'name');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('flowMachineName', $nullablesSetToNull);
+            $index = array_search('name', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['flowMachineName'] = $flowMachineName;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets entityTypeVersion.
+     * Gets remoteUuid.
      *
-     * @return null|DynamicReference
+     * @return null|string
      */
-    public function getEntityTypeVersion()
+    public function getRemoteUuid()
     {
-        return $this->container['entityTypeVersion'];
+        return $this->container['remoteUuid'];
     }
 
     /**
-     * Sets entityTypeVersion.
+     * Sets remoteUuid.
      *
-     * @param null|DynamicReference $entityTypeVersion entityTypeVersion
+     * @param null|string $remoteUuid remoteUuid
      *
      * @return self
      */
-    public function setEntityTypeVersion($entityTypeVersion)
+    public function setRemoteUuid($remoteUuid)
     {
-        if (is_null($entityTypeVersion)) {
-            array_push($this->openAPINullablesSetToNull, 'entityTypeVersion');
+        if (is_null($remoteUuid)) {
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entityTypeVersion', $nullablesSetToNull);
+            $index = array_search('remoteUuid', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['entityTypeVersion'] = $entityTypeVersion;
+        $this->container['remoteUuid'] = $remoteUuid;
+
+        return $this;
+    }
+
+    /**
+     * Gets remoteUniqueId.
+     *
+     * @return null|string
+     */
+    public function getRemoteUniqueId()
+    {
+        return $this->container['remoteUniqueId'];
+    }
+
+    /**
+     * Sets remoteUniqueId.
+     *
+     * @param null|string $remoteUniqueId remoteUniqueId
+     *
+     * @return self
+     */
+    public function setRemoteUniqueId($remoteUniqueId)
+    {
+        if (is_null($remoteUniqueId)) {
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['remoteUniqueId'] = $remoteUniqueId;
+
+        return $this;
+    }
+
+    /**
+     * Gets language.
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
+
+    /**
+     * Sets language.
+     *
+     * @param string $language language
+     *
+     * @return self
+     */
+    public function setLanguage($language)
+    {
+        if (is_null($language)) {
+            throw new \InvalidArgumentException('non-nullable language cannot be null');
+        }
+        $this->container['language'] = $language;
+
+        return $this;
+    }
+
+    /**
+     * Gets directDependencies.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     */
+    public function getDirectDependencies()
+    {
+        return $this->container['directDependencies'];
+    }
+
+    /**
+     * Sets directDependencies.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     *
+     * @return self
+     */
+    public function setDirectDependencies($directDependencies)
+    {
+        if (is_null($directDependencies)) {
+            array_push($this->openAPINullablesSetToNull, 'directDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('directDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['directDependencies'] = $directDependencies;
+
+        return $this;
+    }
+
+    /**
+     * Gets appType.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     */
+    public function getAppType()
+    {
+        return $this->container['appType'];
+    }
+
+    /**
+     * Sets appType.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     *
+     * @return self
+     */
+    public function setAppType($appType)
+    {
+        if (is_null($appType)) {
+            throw new \InvalidArgumentException('non-nullable appType cannot be null');
+        }
+        $this->container['appType'] = $appType;
+
+        return $this;
+    }
+
+    /**
+     * Gets poolMachineNames.
+     *
+     * @return string[]
+     */
+    public function getPoolMachineNames()
+    {
+        return $this->container['poolMachineNames'];
+    }
+
+    /**
+     * Sets poolMachineNames.
+     *
+     * @param string[] $poolMachineNames poolMachineNames
+     *
+     * @return self
+     */
+    public function setPoolMachineNames($poolMachineNames)
+    {
+        if (is_null($poolMachineNames)) {
+            throw new \InvalidArgumentException('non-nullable poolMachineNames cannot be null');
+        }
+        $this->container['poolMachineNames'] = $poolMachineNames;
+
+        return $this;
+    }
+
+    /**
+     * Gets isTranslationRoot.
+     *
+     * @return null|bool
+     */
+    public function getIsTranslationRoot()
+    {
+        return $this->container['isTranslationRoot'];
+    }
+
+    /**
+     * Sets isTranslationRoot.
+     *
+     * @param null|bool $isTranslationRoot isTranslationRoot
+     *
+     * @return self
+     */
+    public function setIsTranslationRoot($isTranslationRoot)
+    {
+        if (is_null($isTranslationRoot)) {
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isTranslationRoot'] = $isTranslationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+        }
+        $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleted.
+     *
+     * @return null|bool
+     */
+    public function getDeleted()
+    {
+        return $this->container['deleted'];
+    }
+
+    /**
+     * Sets deleted.
+     *
+     * @param null|bool $deleted deleted
+     *
+     * @return self
+     */
+    public function setDeleted($deleted)
+    {
+        if (is_null($deleted)) {
+            array_push($this->openAPINullablesSetToNull, 'deleted');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deleted', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['deleted'] = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Gets embed.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]
+     */
+    public function getEmbed()
+    {
+        return $this->container['embed'];
+    }
+
+    /**
+     * Sets embed.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[] $embed embed
+     *
+     * @return self
+     */
+    public function setEmbed($embed)
+    {
+        if (is_null($embed)) {
+            array_push($this->openAPINullablesSetToNull, 'embed');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('embed', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['embed'] = $embed;
+
+        return $this;
+    }
+
+    /**
+     * Gets properties.
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
+     */
+    public function getProperties()
+    {
+        return $this->container['properties'];
+    }
+
+    /**
+     * Sets properties.
+     *
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
+     *
+     * @return self
+     */
+    public function setProperties($properties)
+    {
+        if (is_null($properties)) {
+            throw new \InvalidArgumentException('non-nullable properties cannot be null');
+        }
+        $this->container['properties'] = $properties;
+
+        return $this;
+    }
+
+    /**
+     * Gets allDependencies.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
+     */
+    public function getAllDependencies()
+    {
+        return $this->container['allDependencies'];
+    }
+
+    /**
+     * Sets allDependencies.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
+     *
+     * @return self
+     */
+    public function setAllDependencies($allDependencies)
+    {
+        if (is_null($allDependencies)) {
+            array_push($this->openAPINullablesSetToNull, 'allDependencies');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allDependencies', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allDependencies'] = $allDependencies;
 
         return $this;
     }
@@ -749,7 +869,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entityType.
      *
-     * @return null|DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -759,21 +879,14 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entityType.
      *
-     * @param null|DynamicReference $entityType entityType
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
     public function setEntityType($entityType)
     {
         if (is_null($entityType)) {
-            array_push($this->openAPINullablesSetToNull, 'entityType');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entityType', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable entityType cannot be null');
         }
         $this->container['entityType'] = $entityType;
 
@@ -781,62 +894,55 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets entities.
+     * Gets entityTypeVersion.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
-    public function getEntities()
+    public function getEntityTypeVersion()
     {
-        return $this->container['entities'];
+        return $this->container['entityTypeVersion'];
     }
 
     /**
-     * Sets entities.
+     * Sets entityTypeVersion.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $entities entities
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
-    public function setEntities($entities)
+    public function setEntityTypeVersion($entityTypeVersion)
     {
-        if (is_null($entities)) {
-            array_push($this->openAPINullablesSetToNull, 'entities');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entities', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($entityTypeVersion)) {
+            throw new \InvalidArgumentException('non-nullable entityTypeVersion cannot be null');
         }
-        $this->container['entities'] = $entities;
+        $this->container['entityTypeVersion'] = $entityTypeVersion;
 
         return $this;
     }
 
     /**
-     * Gets status.
+     * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
      */
-    public function getStatus()
+    public function getPools()
     {
-        return $this->container['status'];
+        return $this->container['pools'];
     }
 
     /**
-     * Sets status.
+     * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setPools($pools)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($pools)) {
+            throw new \InvalidArgumentException('non-nullable pools cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['pools'] = $pools;
 
         return $this;
     }
@@ -869,33 +975,6 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets site.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
-     */
-    public function getSite()
-    {
-        return $this->container['site'];
-    }
-
-    /**
-     * Sets site.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
-     *
-     * @return self
-     */
-    public function setSite($site)
-    {
-        if (is_null($site)) {
-            throw new \InvalidArgumentException('non-nullable site cannot be null');
-        }
-        $this->container['site'] = $site;
-
-        return $this;
-    }
-
-    /**
      * Gets project.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
@@ -923,35 +1002,69 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets flow.
+     * Gets translationRoot.
      *
      * @return null|DynamicReference
      */
-    public function getFlow()
+    public function getTranslationRoot()
     {
-        return $this->container['flow'];
+        return $this->container['translationRoot'];
     }
 
     /**
-     * Sets flow.
+     * Sets translationRoot.
      *
-     * @param null|DynamicReference $flow flow
+     * @param null|DynamicReference $translationRoot translationRoot
      *
      * @return self
      */
-    public function setFlow($flow)
+    public function setTranslationRoot($translationRoot)
     {
-        if (is_null($flow)) {
-            array_push($this->openAPINullablesSetToNull, 'flow');
+        if (is_null($translationRoot)) {
+            array_push($this->openAPINullablesSetToNull, 'translationRoot');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('flow', $nullablesSetToNull);
+            $index = array_search('translationRoot', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['flow'] = $flow;
+        $this->container['translationRoot'] = $translationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets previewHtml.
+     *
+     * @return null|DynamicReference
+     */
+    public function getPreviewHtml()
+    {
+        return $this->container['previewHtml'];
+    }
+
+    /**
+     * Sets previewHtml.
+     *
+     * @param null|DynamicReference $previewHtml previewHtml
+     *
+     * @return self
+     */
+    public function setPreviewHtml($previewHtml)
+    {
+        if (is_null($previewHtml)) {
+            array_push($this->openAPINullablesSetToNull, 'previewHtml');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previewHtml', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['previewHtml'] = $previewHtml;
 
         return $this;
     }
@@ -1067,6 +1180,33 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            throw new \InvalidArgumentException('non-nullable versionId cannot be null');
+        }
+        $this->container['versionId'] = $versionId;
 
         return $this;
     }

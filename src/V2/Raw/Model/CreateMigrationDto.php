@@ -60,9 +60,9 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $openAPITypes = [
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
-        'entityTypeReference' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference',
+        'entityTypeReference' => 'EntityTypeVersionReference',
         'entityReferences' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
-        'previousMigration' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'previousMigration' => 'DynamicReference',
         'initialSetup' => 'bool',
         'changedAfter' => 'float',
         'dryRun' => 'bool',
@@ -96,14 +96,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static array $openAPINullables = [
         'type' => false,
-        'entityTypeReference' => false,
-        'entityReferences' => false,
-        'previousMigration' => false,
-        'initialSetup' => false,
-        'changedAfter' => false,
-        'dryRun' => false,
-        'skipSyndication' => false,
-        'flowMachineName' => false,
+        'entityTypeReference' => true,
+        'entityReferences' => true,
+        'previousMigration' => true,
+        'initialSetup' => true,
+        'changedAfter' => true,
+        'dryRun' => true,
+        'skipSyndication' => true,
+        'flowMachineName' => true,
     ];
 
     /**
@@ -338,7 +338,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityTypeReference.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference
+     * @return null|EntityTypeVersionReference
      */
     public function getEntityTypeReference()
     {
@@ -348,14 +348,21 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityTypeReference.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference $entityTypeReference entityTypeReference
+     * @param null|EntityTypeVersionReference $entityTypeReference entityTypeReference
      *
      * @return self
      */
     public function setEntityTypeReference($entityTypeReference)
     {
         if (is_null($entityTypeReference)) {
-            throw new \InvalidArgumentException('non-nullable entityTypeReference cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityTypeReference');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypeReference', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityTypeReference'] = $entityTypeReference;
 
@@ -382,7 +389,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setEntityReferences($entityReferences)
     {
         if (is_null($entityReferences)) {
-            throw new \InvalidArgumentException('non-nullable entityReferences cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'entityReferences');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityReferences', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['entityReferences'] = $entityReferences;
 
@@ -392,7 +406,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets previousMigration.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return null|DynamicReference
      */
     public function getPreviousMigration()
     {
@@ -402,14 +416,21 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets previousMigration.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $previousMigration previousMigration
+     * @param null|DynamicReference $previousMigration previousMigration
      *
      * @return self
      */
     public function setPreviousMigration($previousMigration)
     {
         if (is_null($previousMigration)) {
-            throw new \InvalidArgumentException('non-nullable previousMigration cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'previousMigration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('previousMigration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['previousMigration'] = $previousMigration;
 
@@ -436,7 +457,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setInitialSetup($initialSetup)
     {
         if (is_null($initialSetup)) {
-            throw new \InvalidArgumentException('non-nullable initialSetup cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'initialSetup');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('initialSetup', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['initialSetup'] = $initialSetup;
 
@@ -463,7 +491,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setChangedAfter($changedAfter)
     {
         if (is_null($changedAfter)) {
-            throw new \InvalidArgumentException('non-nullable changedAfter cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'changedAfter');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('changedAfter', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['changedAfter'] = $changedAfter;
 
@@ -490,7 +525,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setDryRun($dryRun)
     {
         if (is_null($dryRun)) {
-            throw new \InvalidArgumentException('non-nullable dryRun cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'dryRun');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('dryRun', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['dryRun'] = $dryRun;
 
@@ -517,7 +559,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setSkipSyndication($skipSyndication)
     {
         if (is_null($skipSyndication)) {
-            throw new \InvalidArgumentException('non-nullable skipSyndication cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'skipSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['skipSyndication'] = $skipSyndication;
 
@@ -544,7 +593,14 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setFlowMachineName($flowMachineName)
     {
         if (is_null($flowMachineName)) {
-            throw new \InvalidArgumentException('non-nullable flowMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'flowMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('flowMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['flowMachineName'] = $flowMachineName;
 

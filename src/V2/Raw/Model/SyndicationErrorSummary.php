@@ -59,7 +59,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $openAPITypes = [
-        'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
         'operationErrors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorOperation[]',
     ];
@@ -275,7 +275,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets syndication.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getSyndication()
     {
@@ -285,7 +285,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets syndication.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $syndication syndication
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $syndication syndication
      *
      * @return self
      */

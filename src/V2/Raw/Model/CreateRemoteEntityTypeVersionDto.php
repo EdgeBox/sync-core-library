@@ -96,7 +96,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => false,
         'machineName' => false,
         'versionId' => false,
-        'translatable' => false,
+        'translatable' => true,
         'properties' => false,
     ];
 
@@ -464,7 +464,14 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
     public function setTranslatable($translatable)
     {
         if (is_null($translatable)) {
-            throw new \InvalidArgumentException('non-nullable translatable cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translatable');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translatable', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translatable'] = $translatable;
 

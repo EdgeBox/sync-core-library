@@ -1,6 +1,6 @@
 <?php
 /**
- * LoggingIdsResponse.
+ * RegisterNewSiteDtoRestUrls.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * LoggingIdsResponse Class Doc Comment.
+ * RegisterNewSiteDtoRestUrls Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @var string
      */
-    protected static $openAPIModelName = 'LoggingIdsResponse';
+    protected static $openAPIModelName = 'RegisterNewSiteDto_restUrls';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'customerId' => 'string',
-        'contractId' => 'string',
-        'contractRevisionId' => 'string',
-        'projectId' => 'string',
-        'siteId' => 'string',
+        'retrieveEntity' => 'string',
+        'listEntities' => 'string',
+        'createEntity' => 'string',
+        'deleteEntity' => 'string',
     ];
 
     /**
@@ -74,11 +73,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'customerId' => null,
-        'contractId' => null,
-        'contractRevisionId' => null,
-        'projectId' => null,
-        'siteId' => null,
+        'retrieveEntity' => null,
+        'listEntities' => null,
+        'createEntity' => null,
+        'deleteEntity' => null,
     ];
 
     /**
@@ -87,11 +85,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'customerId' => true,
-        'contractId' => true,
-        'contractRevisionId' => true,
-        'projectId' => true,
-        'siteId' => true,
+        'retrieveEntity' => false,
+        'listEntities' => false,
+        'createEntity' => false,
+        'deleteEntity' => false,
     ];
 
     /**
@@ -108,11 +105,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'customerId' => 'customerId',
-        'contractId' => 'contractId',
-        'contractRevisionId' => 'contractRevisionId',
-        'projectId' => 'projectId',
-        'siteId' => 'siteId',
+        'retrieveEntity' => 'retrieveEntity',
+        'listEntities' => 'listEntities',
+        'createEntity' => 'createEntity',
+        'deleteEntity' => 'deleteEntity',
     ];
 
     /**
@@ -121,11 +117,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'customerId' => 'setCustomerId',
-        'contractId' => 'setContractId',
-        'contractRevisionId' => 'setContractRevisionId',
-        'projectId' => 'setProjectId',
-        'siteId' => 'setSiteId',
+        'retrieveEntity' => 'setRetrieveEntity',
+        'listEntities' => 'setListEntities',
+        'createEntity' => 'setCreateEntity',
+        'deleteEntity' => 'setDeleteEntity',
     ];
 
     /**
@@ -134,11 +129,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'customerId' => 'getCustomerId',
-        'contractId' => 'getContractId',
-        'contractRevisionId' => 'getContractRevisionId',
-        'projectId' => 'getProjectId',
-        'siteId' => 'getSiteId',
+        'retrieveEntity' => 'getRetrieveEntity',
+        'listEntities' => 'getListEntities',
+        'createEntity' => 'getCreateEntity',
+        'deleteEntity' => 'getDeleteEntity',
     ];
 
     /**
@@ -156,11 +150,10 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('customerId', $data ?? [], null);
-        $this->setIfExists('contractId', $data ?? [], null);
-        $this->setIfExists('contractRevisionId', $data ?? [], null);
-        $this->setIfExists('projectId', $data ?? [], null);
-        $this->setIfExists('siteId', $data ?? [], null);
+        $this->setIfExists('retrieveEntity', $data ?? [], null);
+        $this->setIfExists('listEntities', $data ?? [], null);
+        $this->setIfExists('createEntity', $data ?? [], null);
+        $this->setIfExists('deleteEntity', $data ?? [], null);
     }
 
     /**
@@ -260,7 +253,22 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        if (null === $this->container['retrieveEntity']) {
+            $invalidProperties[] = "'retrieveEntity' can't be null";
+        }
+        if (null === $this->container['listEntities']) {
+            $invalidProperties[] = "'listEntities' can't be null";
+        }
+        if (null === $this->container['createEntity']) {
+            $invalidProperties[] = "'createEntity' can't be null";
+        }
+        if (null === $this->container['deleteEntity']) {
+            $invalidProperties[] = "'deleteEntity' can't be null";
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -275,171 +283,109 @@ class LoggingIdsResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Gets customerId.
+     * Gets retrieveEntity.
      *
-     * @return null|string
+     * @return string
      */
-    public function getCustomerId()
+    public function getRetrieveEntity()
     {
-        return $this->container['customerId'];
+        return $this->container['retrieveEntity'];
     }
 
     /**
-     * Sets customerId.
+     * Sets retrieveEntity.
      *
-     * @param null|string $customerId customerId
+     * @param string $retrieveEntity retrieveEntity
      *
      * @return self
      */
-    public function setCustomerId($customerId)
+    public function setRetrieveEntity($retrieveEntity)
     {
-        if (is_null($customerId)) {
-            array_push($this->openAPINullablesSetToNull, 'customerId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('customerId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($retrieveEntity)) {
+            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
         }
-        $this->container['customerId'] = $customerId;
+        $this->container['retrieveEntity'] = $retrieveEntity;
 
         return $this;
     }
 
     /**
-     * Gets contractId.
+     * Gets listEntities.
      *
-     * @return null|string
+     * @return string
      */
-    public function getContractId()
+    public function getListEntities()
     {
-        return $this->container['contractId'];
+        return $this->container['listEntities'];
     }
 
     /**
-     * Sets contractId.
+     * Sets listEntities.
      *
-     * @param null|string $contractId contractId
+     * @param string $listEntities listEntities
      *
      * @return self
      */
-    public function setContractId($contractId)
+    public function setListEntities($listEntities)
     {
-        if (is_null($contractId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($listEntities)) {
+            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
         }
-        $this->container['contractId'] = $contractId;
+        $this->container['listEntities'] = $listEntities;
 
         return $this;
     }
 
     /**
-     * Gets contractRevisionId.
+     * Gets createEntity.
      *
-     * @return null|string
+     * @return string
      */
-    public function getContractRevisionId()
+    public function getCreateEntity()
     {
-        return $this->container['contractRevisionId'];
+        return $this->container['createEntity'];
     }
 
     /**
-     * Sets contractRevisionId.
+     * Sets createEntity.
      *
-     * @param null|string $contractRevisionId contractRevisionId
+     * @param string $createEntity createEntity
      *
      * @return self
      */
-    public function setContractRevisionId($contractRevisionId)
+    public function setCreateEntity($createEntity)
     {
-        if (is_null($contractRevisionId)) {
-            array_push($this->openAPINullablesSetToNull, 'contractRevisionId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('contractRevisionId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($createEntity)) {
+            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
         }
-        $this->container['contractRevisionId'] = $contractRevisionId;
+        $this->container['createEntity'] = $createEntity;
 
         return $this;
     }
 
     /**
-     * Gets projectId.
+     * Gets deleteEntity.
      *
-     * @return null|string
+     * @return string
      */
-    public function getProjectId()
+    public function getDeleteEntity()
     {
-        return $this->container['projectId'];
+        return $this->container['deleteEntity'];
     }
 
     /**
-     * Sets projectId.
+     * Sets deleteEntity.
      *
-     * @param null|string $projectId projectId
+     * @param string $deleteEntity deleteEntity
      *
      * @return self
      */
-    public function setProjectId($projectId)
+    public function setDeleteEntity($deleteEntity)
     {
-        if (is_null($projectId)) {
-            array_push($this->openAPINullablesSetToNull, 'projectId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('projectId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($deleteEntity)) {
+            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
         }
-        $this->container['projectId'] = $projectId;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteId.
-     *
-     * @return null|string
-     */
-    public function getSiteId()
-    {
-        return $this->container['siteId'];
-    }
-
-    /**
-     * Sets siteId.
-     *
-     * @param null|string $siteId siteId
-     *
-     * @return self
-     */
-    public function setSiteId($siteId)
-    {
-        if (is_null($siteId)) {
-            array_push($this->openAPINullablesSetToNull, 'siteId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['siteId'] = $siteId;
+        $this->container['deleteEntity'] = $deleteEntity;
 
         return $this;
     }

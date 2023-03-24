@@ -103,19 +103,19 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'language' => false,
         'entityTypeNamespaceMachineName' => false,
         'entityTypeMachineName' => false,
         'entityTypeVersion' => false,
         'poolMachineNames' => false,
         'referenceDetails' => true,
-        'name' => false,
+        'name' => true,
         'properties' => false,
         'directDependencies' => false,
-        'isTranslationRoot' => false,
-        'translations' => false,
+        'isTranslationRoot' => true,
+        'translations' => true,
     ];
 
     /**
@@ -374,7 +374,14 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -401,7 +408,14 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -597,7 +611,14 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -678,7 +699,14 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setIsTranslationRoot($isTranslationRoot)
     {
         if (is_null($isTranslationRoot)) {
-            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'isTranslationRoot');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isTranslationRoot', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
 
@@ -705,7 +733,14 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
     public function setTranslations($translations)
     {
         if (is_null($translations)) {
-            throw new \InvalidArgumentException('non-nullable translations cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translations'] = $translations;
 

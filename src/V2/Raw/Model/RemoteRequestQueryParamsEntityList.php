@@ -91,13 +91,13 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'page' => false,
-        'itemsPerPage' => false,
+        'page' => true,
+        'itemsPerPage' => true,
         'mode' => false,
-        'changedAfter' => false,
-        'namespaceMachineName' => false,
-        'machineName' => false,
-        'versionId' => false,
+        'changedAfter' => true,
+        'namespaceMachineName' => true,
+        'machineName' => true,
+        'versionId' => true,
     ];
 
     /**
@@ -314,7 +314,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setPage($page)
     {
         if (is_null($page)) {
-            throw new \InvalidArgumentException('non-nullable page cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'page');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('page', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['page'] = $page;
 
@@ -341,7 +348,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setItemsPerPage($itemsPerPage)
     {
         if (is_null($itemsPerPage)) {
-            throw new \InvalidArgumentException('non-nullable itemsPerPage cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'itemsPerPage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('itemsPerPage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['itemsPerPage'] = $itemsPerPage;
 
@@ -395,7 +409,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setChangedAfter($changedAfter)
     {
         if (is_null($changedAfter)) {
-            throw new \InvalidArgumentException('non-nullable changedAfter cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'changedAfter');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('changedAfter', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['changedAfter'] = $changedAfter;
 
@@ -422,7 +443,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setNamespaceMachineName($namespaceMachineName)
     {
         if (is_null($namespaceMachineName)) {
-            throw new \InvalidArgumentException('non-nullable namespaceMachineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'namespaceMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('namespaceMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['namespaceMachineName'] = $namespaceMachineName;
 
@@ -449,7 +477,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setMachineName($machineName)
     {
         if (is_null($machineName)) {
-            throw new \InvalidArgumentException('non-nullable machineName cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'machineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('machineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['machineName'] = $machineName;
 
@@ -476,7 +511,14 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     public function setVersionId($versionId)
     {
         if (is_null($versionId)) {
-            throw new \InvalidArgumentException('non-nullable versionId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['versionId'] = $versionId;
 

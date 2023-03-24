@@ -88,8 +88,8 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static array $openAPINullables = [
         'mode' => false,
-        'filters' => false,
-        'syndicateDeletions' => false,
+        'filters' => true,
+        'syndicateDeletions' => true,
         'poolMachineName' => false,
         'entityTypesByMachineName' => false,
     ];
@@ -333,7 +333,14 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setFilters($filters)
     {
         if (is_null($filters)) {
-            throw new \InvalidArgumentException('non-nullable filters cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'filters');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('filters', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['filters'] = $filters;
 
@@ -360,7 +367,14 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     public function setSyndicateDeletions($syndicateDeletions)
     {
         if (is_null($syndicateDeletions)) {
-            throw new \InvalidArgumentException('non-nullable syndicateDeletions cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'syndicateDeletions');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syndicateDeletions', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['syndicateDeletions'] = $syndicateDeletions;
 

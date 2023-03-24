@@ -87,8 +87,8 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     protected static array $openAPINullables = [
         'isDeleted' => false,
         'isSource' => false,
-        'viewUrl' => false,
-        'translations' => false,
+        'viewUrl' => true,
+        'translations' => true,
     ];
 
     /**
@@ -350,7 +350,14 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     public function setViewUrl($viewUrl)
     {
         if (is_null($viewUrl)) {
-            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['viewUrl'] = $viewUrl;
 
@@ -377,7 +384,14 @@ class RemoteEntityDetails implements ModelInterface, ArrayAccess, \JsonSerializa
     public function setTranslations($translations)
     {
         if (is_null($translations)) {
-            throw new \InvalidArgumentException('non-nullable translations cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'translations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('translations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['translations'] = $translations;
 

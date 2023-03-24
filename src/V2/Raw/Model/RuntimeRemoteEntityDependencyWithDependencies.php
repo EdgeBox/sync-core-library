@@ -69,7 +69,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'referenceDetails' => 'mixed',
         'name' => 'string',
         'dependencies' => 'string[]',
-        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference',
+        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
     ];
 
     /**
@@ -99,15 +99,15 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'remoteUuid' => false,
-        'remoteUniqueId' => false,
+        'remoteUuid' => true,
+        'remoteUniqueId' => true,
         'language' => false,
         'entityTypeNamespaceMachineName' => false,
         'entityTypeMachineName' => false,
         'entityTypeVersion' => false,
         'poolMachineNames' => false,
         'referenceDetails' => true,
-        'name' => false,
+        'name' => true,
         'dependencies' => false,
         'entity' => false,
     ];
@@ -360,7 +360,14 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
     public function setRemoteUuid($remoteUuid)
     {
         if (is_null($remoteUuid)) {
-            throw new \InvalidArgumentException('non-nullable remoteUuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUuid'] = $remoteUuid;
 
@@ -387,7 +394,14 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
     public function setRemoteUniqueId($remoteUniqueId)
     {
         if (is_null($remoteUniqueId)) {
-            throw new \InvalidArgumentException('non-nullable remoteUniqueId cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'remoteUniqueId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUniqueId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['remoteUniqueId'] = $remoteUniqueId;
 
@@ -583,7 +597,14 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -620,7 +641,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntity()
     {
@@ -630,7 +651,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference $entity entity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entity entity
      *
      * @return self
      */
