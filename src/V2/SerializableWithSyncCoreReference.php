@@ -17,6 +17,16 @@ abstract class SerializableWithSyncCoreReference implements \Serializable
         $this->core = $core;
     }
 
+    public function __serialize(): array
+    {
+        return unserialize($this->serialize());
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->unserialize(serialize($data));
+    }
+
     /**
      * @param string[] $serialized
      */
