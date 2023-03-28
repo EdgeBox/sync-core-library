@@ -46,6 +46,11 @@ class ObjectSerializer
     /** @var string */
     private static $dateTimeFormat = \DateTime::ATOM;
 
+    public static function guzzleJsonEncode($data)
+    {
+        return class_exists('\\GuzzleHttp\\Utils') && method_exists('\\GuzzleHttp\\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
+    }
+
     /**
      * Change the date format.
      *
