@@ -46,6 +46,13 @@ class ObjectSerializer
     /** @var string */
     private static $dateTimeFormat = \DateTime::ATOM;
 
+    /**
+     * Pass on to the correct json encoder depending on the used Guzzle version.
+     *
+     * @param mixed $data
+     *
+     * @return string
+     */
     public static function guzzleJsonEncode($data)
     {
         return class_exists('\\GuzzleHttp\\Utils') && method_exists('\\GuzzleHttp\\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
@@ -486,6 +493,11 @@ class ObjectSerializer
 
         if (is_array($data)) {
             $data = (object) $data;
+        }
+
+        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
+        if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
+            $class = '\\EdgeBox\\SyncCore\\V2\\Raw\\Model\\'.$class;
         }
 
         // If a discriminator is defined and points to a valid subclass, use it.
