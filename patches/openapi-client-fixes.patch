@@ -1,0 +1,922 @@
+From 1e04a1ca6bd2137b7e23534a42c2f0b5ebe79f13 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thiemo=20M=C3=BCller?= <thiemo@derthiemo.de>
+Date: Tue, 28 Mar 2023 12:46:36 +0000
+Subject: [PATCH 1/2] fix(guzzle): add support for older guzzle
+
+---
+ src/V2/Raw/Api/DefaultApi.php   | 188 ++++++++++++++++----------------
+ src/V2/Raw/ObjectSerializer.php |   5 +
+ 2 files changed, 99 insertions(+), 94 deletions(-)
+
+diff --git a/src/V2/Raw/Api/DefaultApi.php b/src/V2/Raw/Api/DefaultApi.php
+index fc343f4..c8db2ca 100644
+--- a/src/V2/Raw/Api/DefaultApi.php
++++ b/src/V2/Raw/Api/DefaultApi.php
+@@ -571,7 +571,7 @@ class DefaultApi
+         if (isset($createAuthenticationDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createAuthenticationDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createAuthenticationDto));
+             } else {
+                 $httpBody = $createAuthenticationDto;
+             }
+@@ -591,7 +591,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -855,7 +855,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -1118,7 +1118,7 @@ class DefaultApi
+         if (isset($setBasicAuthDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setBasicAuthDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setBasicAuthDto));
+             } else {
+                 $httpBody = $setBasicAuthDto;
+             }
+@@ -1138,7 +1138,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -1423,7 +1423,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -1708,7 +1708,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -1972,7 +1972,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -2236,7 +2236,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -2500,7 +2500,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -2785,7 +2785,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -3070,7 +3070,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -3355,7 +3355,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -3640,7 +3640,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -3925,7 +3925,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -4210,7 +4210,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -4474,7 +4474,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -4738,7 +4738,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -5042,7 +5042,7 @@ class DefaultApi
+         if (isset($setFeatureFlagDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setFeatureFlagDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setFeatureFlagDto));
+             } else {
+                 $httpBody = $setFeatureFlagDto;
+             }
+@@ -5062,7 +5062,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -5325,7 +5325,7 @@ class DefaultApi
+         if (isset($createFileDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createFileDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createFileDto));
+             } else {
+                 $httpBody = $createFileDto;
+             }
+@@ -5345,7 +5345,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -5630,7 +5630,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -5915,7 +5915,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -6200,7 +6200,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -6463,7 +6463,7 @@ class DefaultApi
+         if (isset($createFlowDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createFlowDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createFlowDto));
+             } else {
+                 $httpBody = $createFlowDto;
+             }
+@@ -6483,7 +6483,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -6746,7 +6746,7 @@ class DefaultApi
+         if (isset($flowDeleteRequest)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($flowDeleteRequest));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($flowDeleteRequest));
+             } else {
+                 $httpBody = $flowDeleteRequest;
+             }
+@@ -6766,7 +6766,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -7051,7 +7051,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -7372,7 +7372,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -7662,7 +7662,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -7947,7 +7947,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -8227,7 +8227,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -8525,7 +8525,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -8783,7 +8783,7 @@ class DefaultApi
+         if (isset($loggingIdsRequest)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($loggingIdsRequest));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($loggingIdsRequest));
+             } else {
+                 $httpBody = $loggingIdsRequest;
+             }
+@@ -8803,7 +8803,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -9066,7 +9066,7 @@ class DefaultApi
+         if (isset($createMigrationDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createMigrationDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createMigrationDto));
+             } else {
+                 $httpBody = $createMigrationDto;
+             }
+@@ -9086,7 +9086,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -9370,7 +9370,7 @@ class DefaultApi
+         if (isset($body)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+             } else {
+                 $httpBody = $body;
+             }
+@@ -9390,7 +9390,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -9675,7 +9675,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -10094,7 +10094,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -10379,7 +10379,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -10642,7 +10642,7 @@ class DefaultApi
+         if (isset($createPoolDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createPoolDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createPoolDto));
+             } else {
+                 $httpBody = $createPoolDto;
+             }
+@@ -10662,7 +10662,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -10947,7 +10947,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -11211,7 +11211,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -11644,7 +11644,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -12098,7 +12098,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -12383,7 +12383,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -12668,7 +12668,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -12931,7 +12931,7 @@ class DefaultApi
+         if (isset($createRemoteEntityRevisionDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityRevisionDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityRevisionDto));
+             } else {
+                 $httpBody = $createRemoteEntityRevisionDto;
+             }
+@@ -12951,7 +12951,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -13214,7 +13214,7 @@ class DefaultApi
+         if (isset($deleteRemoteEntityRevisionDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($deleteRemoteEntityRevisionDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($deleteRemoteEntityRevisionDto));
+             } else {
+                 $httpBody = $deleteRemoteEntityRevisionDto;
+             }
+@@ -13234,7 +13234,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -13519,7 +13519,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -13882,7 +13882,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -14167,7 +14167,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -14472,7 +14472,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -14757,7 +14757,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -15021,7 +15021,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -15284,7 +15284,7 @@ class DefaultApi
+         if (isset($createRemoteEntityTypeVersionDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityTypeVersionDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityTypeVersionDto));
+             } else {
+                 $httpBody = $createRemoteEntityTypeVersionDto;
+             }
+@@ -15304,7 +15304,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -15629,7 +15629,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -15914,7 +15914,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -16199,7 +16199,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -16562,7 +16562,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -16826,7 +16826,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -17111,7 +17111,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -17396,7 +17396,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -17659,7 +17659,7 @@ class DefaultApi
+         if (isset($registerSiteDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($registerSiteDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($registerSiteDto));
+             } else {
+                 $httpBody = $registerSiteDto;
+             }
+@@ -17679,7 +17679,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -17942,7 +17942,7 @@ class DefaultApi
+         if (isset($registerNewSiteDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
+             } else {
+                 $httpBody = $registerNewSiteDto;
+             }
+@@ -17962,7 +17962,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -18283,7 +18283,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -18546,7 +18546,7 @@ class DefaultApi
+         if (isset($setThrottlingDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setThrottlingDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setThrottlingDto));
+             } else {
+                 $httpBody = $setThrottlingDto;
+             }
+@@ -18566,7 +18566,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -18829,7 +18829,7 @@ class DefaultApi
+         if (isset($createSiteDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createSiteDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createSiteDto));
+             } else {
+                 $httpBody = $createSiteDto;
+             }
+@@ -18849,7 +18849,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -19112,7 +19112,7 @@ class DefaultApi
+         if (isset($createSyndicationDto)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createSyndicationDto));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createSyndicationDto));
+             } else {
+                 $httpBody = $createSyndicationDto;
+             }
+@@ -19132,7 +19132,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -19395,7 +19395,7 @@ class DefaultApi
+         if (isset($syndicationDeleteRequest)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
+             } else {
+                 $httpBody = $syndicationDeleteRequest;
+             }
+@@ -19415,7 +19415,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -19708,7 +19708,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -20008,7 +20008,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -20497,7 +20497,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -20781,7 +20781,7 @@ class DefaultApi
+         if (isset($body)) {
+             if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the body
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
++                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+             } else {
+                 $httpBody = $body;
+             }
+@@ -20801,7 +20801,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -21086,7 +21086,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -21442,7 +21442,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -21747,7 +21747,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -22032,7 +22032,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+@@ -22296,7 +22296,7 @@ class DefaultApi
+                 $httpBody = new MultipartStream($multipartContents);
+             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                 // if Content-Type contains "application/json", json_encode the form parameters
+-                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
++                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+             } else {
+                 // for HTTP post (form)
+                 $httpBody = ObjectSerializer::buildQuery($formParams);
+diff --git a/src/V2/Raw/ObjectSerializer.php b/src/V2/Raw/ObjectSerializer.php
+index 94ac049..3a8c16b 100644
+--- a/src/V2/Raw/ObjectSerializer.php
++++ b/src/V2/Raw/ObjectSerializer.php
+@@ -46,6 +46,11 @@ class ObjectSerializer
+     /** @var string */
+     private static $dateTimeFormat = \DateTime::ATOM;
+ 
++    public static function guzzleJsonEncode($data)
++    {
++        return class_exists('\\GuzzleHttp\\Utils') && method_exists('\\GuzzleHttp\\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
++    }
++
+     /**
+      * Change the date format.
+      *
+-- 
+2.37.3
+
+
+From cff18e53dd86eda97dd487677455f87546b8a124 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thiemo=20M=C3=BCller?= <thiemo@derthiemo.de>
+Date: Wed, 29 Mar 2023 12:29:49 +0000
+Subject: [PATCH 2/2] fix(openapi-client): missing namespace for some classes
+
+---
+ src/V2/Raw/ObjectSerializer.php | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/V2/Raw/ObjectSerializer.php b/src/V2/Raw/ObjectSerializer.php
+index 3a8c16b..dd808a4 100644
+--- a/src/V2/Raw/ObjectSerializer.php
++++ b/src/V2/Raw/ObjectSerializer.php
+@@ -46,6 +46,13 @@ class ObjectSerializer
+     /** @var string */
+     private static $dateTimeFormat = \DateTime::ATOM;
+ 
++    /**
++     * Pass on to the correct json encoder depending on the used Guzzle version.
++     *
++     * @param mixed $data
++     *
++     * @return string
++     */
+     public static function guzzleJsonEncode($data)
+     {
+         return class_exists('\\GuzzleHttp\\Utils') && method_exists('\\GuzzleHttp\\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
+@@ -488,6 +495,11 @@ class ObjectSerializer
+             $data = (object) $data;
+         }
+ 
++        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
++        if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
++            $class = '\\EdgeBox\\SyncCore\\V2\\Raw\\Model\\'.$class;
++        }
++
+         // If a discriminator is defined and points to a valid subclass, use it.
+         $discriminator = $class::DISCRIMINATOR;
+         if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
+-- 
+2.37.3
+
