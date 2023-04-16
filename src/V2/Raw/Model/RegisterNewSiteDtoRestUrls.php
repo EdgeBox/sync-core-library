@@ -63,6 +63,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => 'string',
         'createEntity' => 'string',
         'deleteEntity' => 'string',
+        'siteStatus' => 'string',
     ];
 
     /**
@@ -77,6 +78,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => null,
         'createEntity' => null,
         'deleteEntity' => null,
+        'siteStatus' => null,
     ];
 
     /**
@@ -89,6 +91,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => false,
         'createEntity' => false,
         'deleteEntity' => false,
+        'siteStatus' => true,
     ];
 
     /**
@@ -109,6 +112,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => 'listEntities',
         'createEntity' => 'createEntity',
         'deleteEntity' => 'deleteEntity',
+        'siteStatus' => 'siteStatus',
     ];
 
     /**
@@ -121,6 +125,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => 'setListEntities',
         'createEntity' => 'setCreateEntity',
         'deleteEntity' => 'setDeleteEntity',
+        'siteStatus' => 'setSiteStatus',
     ];
 
     /**
@@ -133,6 +138,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         'listEntities' => 'getListEntities',
         'createEntity' => 'getCreateEntity',
         'deleteEntity' => 'getDeleteEntity',
+        'siteStatus' => 'getSiteStatus',
     ];
 
     /**
@@ -154,6 +160,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
         $this->setIfExists('listEntities', $data ?? [], null);
         $this->setIfExists('createEntity', $data ?? [], null);
         $this->setIfExists('deleteEntity', $data ?? [], null);
+        $this->setIfExists('siteStatus', $data ?? [], null);
     }
 
     /**
@@ -386,6 +393,40 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
             throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
         }
         $this->container['deleteEntity'] = $deleteEntity;
+
+        return $this;
+    }
+
+    /**
+     * Gets siteStatus.
+     *
+     * @return null|string
+     */
+    public function getSiteStatus()
+    {
+        return $this->container['siteStatus'];
+    }
+
+    /**
+     * Sets siteStatus.
+     *
+     * @param null|string $siteStatus siteStatus
+     *
+     * @return self
+     */
+    public function setSiteStatus($siteStatus)
+    {
+        if (is_null($siteStatus)) {
+            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('siteStatus', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['siteStatus'] = $siteStatus;
 
         return $this;
     }
