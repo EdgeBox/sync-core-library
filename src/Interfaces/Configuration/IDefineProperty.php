@@ -12,7 +12,7 @@ interface IDefineProperty extends IBatchOperation
      *
      * @return $this
      */
-    public function addAllowedValue(string $name, mixed $value);
+    public function addAllowedValue(string $name, mixed $value = null);
 
     /**
      * Restrict values to a specific format e.g. expecting email addresses.

@@ -9,5 +9,5 @@ interface IDefineReferenceProperty extends IDefineProperty
      *
      * @return $this
      */
-    public function allowType(string $namespaceMachineName, ?string $machineName);
+    public function addAllowedType(string $namespaceMachineName, ?string $machineName = null);
 }

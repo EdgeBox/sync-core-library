@@ -137,14 +137,16 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
     /**
      * {@inheritdoc}
      */
-    public function addAllowedValue(string $name, mixed $value)
+    public function addAllowedValue(string $name, mixed $value = null)
     {
         $allowed_values = $this->dto->getAllowedValues() ?? [];
         $allowed_values[] = new RemoteEntityPropertyDraft([
             'name' => $name,
-            'value' => $value,
+            'value' => null === $value ? $name : $value,
         ]);
         $this->dto->setAllowedValues($allowed_values);
+
+        return $this;
     }
 
     /**
@@ -256,12 +258,14 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         ]);
 
         $this->dto->setRegularExpressionFormat($expression);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function allowType(string $namespaceMachineName, ?string $machineName)
+    public function addAllowedType(string $namespaceMachineName, ?string $machineName = null)
     {
         $allowed = $this->dto->getAllowedEntityTypes() ?? [];
         $restriction = new RemoteEntityTypeRestriction([
@@ -270,6 +274,8 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         ]);
         $allowed[] = $restriction;
         $this->dto->setAllowedEntityTypes($allowed);
+
+        return $this;
     }
 
     /**
