@@ -47,6 +47,13 @@ interface IApplicationInterface
      * the lists defined below.
      */
     public const REST_ACTION_LIST_ENTITIES = 'list';
+    /**
+     * @var string REST_ACTION_SITE_STATUS
+     *
+     * Provide some status information about the site like the CMS version and
+     * module/plugin version
+     */
+    public const REST_ACTION_SITE_STATUS = 'status';
 
     /**
      * @var string FLOW_NONE
@@ -160,13 +167,27 @@ interface IApplicationInterface
     /**
      * Provide the path/query that the site wants to be called for the individual actions.
      * So this must not include the base URL of the site. Actions are one of:
-     * IApplicationInterface::REST_ACTION_*.
+     * - IApplicationInterface::REST_ACTION_CREATE_ENTITY
+     * - IApplicationInterface::REST_ACTION_DELETE_ENTITY
+     * - IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY
+     * - IApplicationInterface::REST_ACTION_LIST_ENTITIES.
      *
      * Used by the Sync Core v2.
      *
      * @return string
      */
     public function getRelativeReferenceForRestCall(string $flow_machine_name, string $action);
+
+    /**
+     * Provide the path/query that the site wants to be called for the individual, global actions.
+     * So this must not include the base URL of the site. Actions are one of:
+     * IApplicationInterface::REST_ACTION_SITE_STATUS.
+     *
+     * Used by the Sync Core v2.
+     *
+     * @return string
+     */
+    public function getRelativeReferenceForSiteRestCall(string $action);
 
     /**
      * @return string

@@ -477,6 +477,7 @@ class SyncCore implements ISyncCore
         $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
         $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
         $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+        $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
 
         $dto->setRestUrls($urls);
 
@@ -765,6 +766,7 @@ class SyncCore implements ISyncCore
         $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
         $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
         $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+        $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
 
         $dto->setRestUrls($urls);
     }
@@ -803,10 +805,15 @@ class SyncCore implements ISyncCore
 
     protected function getRelativeReference(string $action)
     {
-        $relative = $this->application->getRelativeReferenceForRestCall(
-            self::PLACEHOLDER_FLOW_MACHINE_NAME,
-            $action
-        );
+        if (IApplicationInterface::REST_ACTION_SITE_STATUS === $action) {
+            $relative = $this->application->getRelativeReferenceForSiteRestCall($action);
+        } else {
+            $relative = $this->application->getRelativeReferenceForRestCall(
+                self::PLACEHOLDER_FLOW_MACHINE_NAME,
+                $action
+            );
+        }
+
         if ('/' !== $relative[0]) {
             throw new InternalContentSyncError('Relative reference must start with a slash /.');
         }
