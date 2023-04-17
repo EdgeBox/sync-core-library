@@ -55,9 +55,9 @@ class RemoteEntityTypePropertyFormat
 
     public const DOCUMENT_PDF = 'document.pdf';
 
-    public const URL = 'url';
+    public const URI = 'uri';
 
-    public const URL_WEB = 'url.web';
+    public const URI_WEB = 'uri.web';
 
     public const RICH_MARKDOWN = 'rich.markdown';
 
@@ -70,6 +70,8 @@ class RemoteEntityTypePropertyFormat
     public const COLOR_HEX = 'color.hex';
 
     public const UUID = 'uuid';
+
+    public const DATE_ISO8601 = 'date.iso8601';
 
     public const EMOJI = 'emoji';
 
@@ -97,14 +99,15 @@ class RemoteEntityTypePropertyFormat
             self::IMAGE_WEB,
             self::DOCUMENT,
             self::DOCUMENT_PDF,
-            self::URL,
-            self::URL_WEB,
+            self::URI,
+            self::URI_WEB,
             self::RICH_MARKDOWN,
             self::RICH_HTML,
             self::EMAIL_ADDRESS,
             self::PHONE_NUMBER,
             self::COLOR_HEX,
             self::UUID,
+            self::DATE_ISO8601,
             self::EMOJI,
             self::EMOJIS,
             self::MACHINE_NAME_UNDERSCORES,

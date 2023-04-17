@@ -78,6 +78,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'string',
         'nameProperty' => 'string',
         'unit' => 'string',
+        'allowedEntityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]',
+        'regularExpressionFormat' => 'RegularExpression',
     ];
 
     /**
@@ -107,6 +109,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => null,
         'nameProperty' => null,
         'unit' => null,
+        'allowedEntityTypes' => null,
+        'regularExpressionFormat' => null,
     ];
 
     /**
@@ -134,6 +138,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => true,
         'nameProperty' => true,
         'unit' => true,
+        'allowedEntityTypes' => true,
+        'regularExpressionFormat' => true,
     ];
 
     /**
@@ -169,6 +175,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'mainProperty',
         'nameProperty' => 'nameProperty',
         'unit' => 'unit',
+        'allowedEntityTypes' => 'allowedEntityTypes',
+        'regularExpressionFormat' => 'regularExpressionFormat',
     ];
 
     /**
@@ -196,6 +204,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'setMainProperty',
         'nameProperty' => 'setNameProperty',
         'unit' => 'setUnit',
+        'allowedEntityTypes' => 'setAllowedEntityTypes',
+        'regularExpressionFormat' => 'setRegularExpressionFormat',
     ];
 
     /**
@@ -223,6 +233,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'getMainProperty',
         'nameProperty' => 'getNameProperty',
         'unit' => 'getUnit',
+        'allowedEntityTypes' => 'getAllowedEntityTypes',
+        'regularExpressionFormat' => 'getRegularExpressionFormat',
     ];
 
     /**
@@ -259,6 +271,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('mainProperty', $data ?? [], null);
         $this->setIfExists('nameProperty', $data ?? [], null);
         $this->setIfExists('unit', $data ?? [], null);
+        $this->setIfExists('allowedEntityTypes', $data ?? [], null);
+        $this->setIfExists('regularExpressionFormat', $data ?? [], null);
     }
 
     /**
@@ -991,6 +1005,74 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             }
         }
         $this->container['unit'] = $unit;
+
+        return $this;
+    }
+
+    /**
+     * Gets allowedEntityTypes.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]
+     */
+    public function getAllowedEntityTypes()
+    {
+        return $this->container['allowedEntityTypes'];
+    }
+
+    /**
+     * Sets allowedEntityTypes.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[] $allowedEntityTypes allowedEntityTypes
+     *
+     * @return self
+     */
+    public function setAllowedEntityTypes($allowedEntityTypes)
+    {
+        if (is_null($allowedEntityTypes)) {
+            array_push($this->openAPINullablesSetToNull, 'allowedEntityTypes');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allowedEntityTypes', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allowedEntityTypes'] = $allowedEntityTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets regularExpressionFormat.
+     *
+     * @return null|RegularExpression
+     */
+    public function getRegularExpressionFormat()
+    {
+        return $this->container['regularExpressionFormat'];
+    }
+
+    /**
+     * Sets regularExpressionFormat.
+     *
+     * @param null|RegularExpression $regularExpressionFormat regularExpressionFormat
+     *
+     * @return self
+     */
+    public function setRegularExpressionFormat($regularExpressionFormat)
+    {
+        if (is_null($regularExpressionFormat)) {
+            array_push($this->openAPINullablesSetToNull, 'regularExpressionFormat');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('regularExpressionFormat', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['regularExpressionFormat'] = $regularExpressionFormat;
 
         return $this;
     }

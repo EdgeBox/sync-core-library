@@ -2,31 +2,37 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Configuration;
 
-use EdgeBox\SyncCore\Interfaces\IBatchOperation;
-
-interface IDefineObject extends IBatchOperation
+interface IDefineObject
 {
     /**
      * @param bool $multiple
      * @param bool $required
+     *
+     * @return IDefineBooleanProperty
      */
     public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 
     /**
      * @param bool $multiple
      * @param bool $required
+     *
+     * @return IDefineIntegerProperty
      */
     public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 
     /**
      * @param bool $multiple
      * @param bool $required
+     *
+     * @return IDefineFloatProperty
      */
     public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 
     /**
      * @param bool $multiple
      * @param bool $required
+     *
+     * @return IDefineStringProperty
      */
     public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 
@@ -34,13 +40,15 @@ interface IDefineObject extends IBatchOperation
      * @param bool $multiple
      * @param bool $required
      *
-     * @return IDefineObject
+     * @return IDefineObjectProperty
      */
     public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 
     /**
      * @param bool $multiple
      * @param bool $required
+     *
+     * @return IDefineReferenceProperty
      */
     public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null);
 }
