@@ -93,17 +93,6 @@ class DefineFlow extends BatchOperation implements IDefineFlow
 
         $allPools = $this->dto->getSitePullsByMachineName();
 
-        // TODO: SyncCore: Can't use optimization below as the config will be changed after being returned. Should optimize in the backend.
-        /*foreach ($allPools as &$config) {
-            if ($config->getPoolMachineName() === $poolMachineName) {
-                $allTypes = $config->getEntityTypesByMachineName();
-                $allTypes[] = $typeReference;
-                $config->setEntityTypesByMachineName($allTypes);
-
-                return $config;
-            }
-        }*/
-
         $config = new NewFlowSyndication();
         /**
          * @var FlowSyndicationMode $mode
@@ -133,17 +122,6 @@ class DefineFlow extends BatchOperation implements IDefineFlow
 
         $allPools = $this->dto->getSitePushesByMachineName();
 
-        // TODO: SyncCore: Can't use optimization below as the config will be changed after being returned. Should optimize in the backend.
-        /*foreach ($allPools as &$config) {
-            if ($config->getPoolMachineName() === $poolMachineName) {
-                $allTypes = $config->getEntityTypesByMachineName();
-                $allTypes[] = $typeReference;
-                $config->setEntityTypesByMachineName($allTypes);
-
-                return $config;
-            }
-        }*/
-
         $config = new NewFlowSyndication();
         /**
          * @var FlowSyndicationMode $mode
@@ -158,5 +136,68 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $this->dto->setSitePushesByMachineName($allPools);
 
         return $config;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Optimize the configuration prior to sending it to the Sync Core.
+     */
+    public function execute()
+    {
+        /**
+         * @var NewFlowSyndication[] $configs
+         */
+        $optimize = function ($configs) {
+            for ($i = count($configs) - 1; $i > 0; --$i) {
+                $check = $configs[$i];
+                if ($check->getFilters()) {
+                    continue;
+                }
+
+                // By serializing this, we can make sure that it will still work in
+                // future updates even if we add new properties.
+                // The only property we merge is entityTypesByMachineName, so we
+                // rather whitelist that.
+                $check_serialized = $check->jsonSerialize();
+                $check_serialized->entityTypesByMachineName = [];
+
+                for ($n = 0; $n < $i; ++$n) {
+                    $add_to = $configs[$n];
+                    if ($add_to->getFilters()) {
+                        continue;
+                    }
+
+                    $add_to_serialized = $add_to->jsonSerialize();
+                    $add_to_serialized->entityTypesByMachineName = [];
+
+                    // The order doesn't matter so we're using == instead of ===.
+                    if ($check_serialized == $add_to_serialized) {
+                        $types = array_merge($add_to->getEntityTypesByMachineName(), $check->getEntityTypesByMachineName());
+                        $add_to->setEntityTypesByMachineName($types);
+
+                        array_splice($configs, $i, 1);
+
+                        break;
+                    }
+                }
+            }
+
+            return $configs;
+        };
+
+        $pushes = $this->dto->getSitePushesByMachineName();
+        $pushes_optimized = $optimize($pushes);
+        if (count($pushes) !== count($pushes_optimized)) {
+            $this->dto->setSitePushesByMachineName($pushes_optimized);
+        }
+
+        $pulls = $this->dto->getSitePullsByMachineName();
+        $pulls_optimized = $optimize($pulls);
+        if (count($pulls) !== count($pulls_optimized)) {
+            $this->dto->setSitePullsByMachineName($pulls_optimized);
+        }
+
+        return parent::execute();
     }
 }
