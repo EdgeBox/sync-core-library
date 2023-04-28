@@ -411,7 +411,7 @@ class SyncCore implements ISyncCore
             'exp' => time() + self::JWT_LIFETIME,
         ];
 
-        return JWT::encode($payload, $secret);
+        return JWT::encode($payload, $secret, 'HS256');
     }
 
     public function getSyncCoreDomain()
