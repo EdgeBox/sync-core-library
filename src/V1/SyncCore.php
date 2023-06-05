@@ -253,6 +253,16 @@ class SyncCore implements ISyncCore
         return null;
     }
 
+    public function getInternalSiteId($id)
+    {
+        return $id;
+    }
+
+    public function getExternalSiteId($id)
+    {
+        return $id;
+    }
+
     /**
      * {@inheritdoc}
      */

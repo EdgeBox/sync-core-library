@@ -70,6 +70,24 @@ interface ISyncCore
     public function getSiteName($id = null);
 
     /**
+     * Get the Sync Core internal ID for the site.
+     *
+     * @param string $uuid
+     *
+     * @return string
+     */
+    public function getInternalSiteId($uuid);
+
+    /**
+     * Get the Sync Core external ID for the site (a UUID).
+     *
+     * @param string $id
+     *
+     * @return string
+     */
+    public function getExternalSiteId($id);
+
+    /**
      * Set the domains that are used for this site. Customers are invoiced per
      * domain.
      */
