@@ -563,6 +563,16 @@ class SyncCore implements ISyncCore
         return [];
     }
 
+    public function getInternalSiteId($uuid)
+    {
+        return $this->loadSiteByIdOrUuid($uuid)->getId();
+    }
+
+    public function getExternalSiteId($id)
+    {
+        return $this->loadSiteByIdOrUuid($id)->getUuid();
+    }
+
     public function getSiteName($uuid = null)
     {
         if (!$uuid) {
@@ -573,20 +583,7 @@ class SyncCore implements ISyncCore
             $uuid = $this->application->getSiteUuid();
         }
 
-        // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
-        // is a UUID and if it's not, the site must be re-registered first.
-        if (1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
-            $request = $this->client->siteControllerItemByUuidRequest(uuid: $uuid);
-        } else {
-            $request = $this->client->siteControllerItemRequest(id: $uuid);
-        }
-
-        /**
-         * @var SiteEntity $response
-         */
-        $response = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
-
-        return $response->getName();
+        return $this->loadSiteByIdOrUuid($uuid)->getName();
     }
 
     public function getSitesWithDifferentEntityTypeVersion(string $pool_id, string $entity_type, string $bundle, string $target_version)
@@ -742,6 +739,24 @@ class SyncCore implements ISyncCore
         // As sites are registered globally now, we don't need additional verification.
         // Sites can't be registered multiple times with the same ID or base URL.
         return null;
+    }
+
+    /**
+     * Load a site by either it's external or internal ID.
+     *
+     * @return SiteEntity
+     */
+    protected function loadSiteByIdOrUuid(string $uuid)
+    {
+        // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
+        // is a UUID and if it's not, the site must be re-registered first.
+        if (1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
+            $request = $this->client->siteControllerItemByUuidRequest($uuid);
+        } else {
+            $request = $this->client->siteControllerItemRequest($uuid);
+        }
+
+        return $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
     }
 
     /**
