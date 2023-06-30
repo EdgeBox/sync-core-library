@@ -70,6 +70,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'bool',
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'featureFlags' => 'mixed',
         'customer' => 'DynamicReference',
         'contract' => 'DynamicReference',
         'project' => 'DynamicReference',
@@ -99,6 +100,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => null,
         'domains' => null,
         'extensions' => null,
+        'featureFlags' => null,
         'customer' => null,
         'contract' => null,
         'project' => null,
@@ -126,6 +128,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => true,
         'domains' => true,
         'extensions' => true,
+        'featureFlags' => true,
         'customer' => true,
         'contract' => true,
         'project' => true,
@@ -161,6 +164,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'useProxy',
         'domains' => 'domains',
         'extensions' => 'extensions',
+        'featureFlags' => 'featureFlags',
         'customer' => 'customer',
         'contract' => 'contract',
         'project' => 'project',
@@ -188,6 +192,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'setUseProxy',
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
+        'featureFlags' => 'setFeatureFlags',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'project' => 'setProject',
@@ -215,6 +220,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'getUseProxy',
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
+        'featureFlags' => 'getFeatureFlags',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'project' => 'getProject',
@@ -251,6 +257,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -730,6 +737,40 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['extensions'] = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Gets featureFlags.
+     *
+     * @return null|mixed
+     */
+    public function getFeatureFlags()
+    {
+        return $this->container['featureFlags'];
+    }
+
+    /**
+     * Sets featureFlags.
+     *
+     * @param null|mixed $featureFlags featureFlags
+     *
+     * @return self
+     */
+    public function setFeatureFlags($featureFlags)
+    {
+        if (is_null($featureFlags)) {
+            array_push($this->openAPINullablesSetToNull, 'featureFlags');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('featureFlags', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['featureFlags'] = $featureFlags;
 
         return $this;
     }

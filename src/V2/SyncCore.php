@@ -24,10 +24,14 @@ use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
+use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Exception;
@@ -739,6 +743,40 @@ class SyncCore implements ISyncCore
         // As sites are registered globally now, we don't need additional verification.
         // Sites can't be registered multiple times with the same ID or base URL.
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function pollRequests($limit = 1)
+    {
+        $request = $this->client->siteControllerGetRequests($limit);
+        /**
+         * @var PagedRequestList $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, RequestResponseDto::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $response->getItems();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function respondToRequest(string $id, int $statusCode, string $statusText, array $headers, string $body)
+    {
+        $wrapper = new RequestResponseDto();
+        $dto = new RequestResponseDtoResponse();
+        $dto->setResponseStatusCode($statusCode);
+        $dto->setResponseStatusText($statusText);
+        $dto->setResponseHeaders($headers);
+        $dto->setResponseBody($body);
+        $request = $this->client->siteControllerRespondToRequest($id, $wrapper);
+        /**
+         * @var SuccessResponse $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, SuccessResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $response->getSuccess();
     }
 
     /**

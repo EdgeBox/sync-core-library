@@ -7,6 +7,7 @@ use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
 use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
+use EdgeBox\SyncCore\V2\Raw\Model\RequestPollDto;
 
 /**
  * Interface ISyncCore.
@@ -155,4 +156,20 @@ interface ISyncCore
      * @return float[]
      */
     public function getFeatures();
+
+    /**
+     * Poll for local requests that must be processed.
+     *
+     * @param number $limit
+     *
+     * @return RequestPollDto[]
+     */
+    public function pollRequests($limit = 1);
+
+    /**
+     * Respond to a polled request.
+     *
+     * @return bool
+     */
+    public function respondToRequest(string $id, int $statusCode, string $statusText, array $headers, string $body);
 }

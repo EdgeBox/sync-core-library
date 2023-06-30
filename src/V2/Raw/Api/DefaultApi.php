@@ -218,6 +218,9 @@ class DefaultApi
         'remoteEntityUsageControllerList' => [
             'application/json',
         ],
+        'siteControllerGetRequests' => [
+            'application/json',
+        ],
         'siteControllerGetThrottling' => [
             'application/json',
         ],
@@ -231,6 +234,9 @@ class DefaultApi
             'application/json',
         ],
         'siteControllerRegisterNew' => [
+            'application/json',
+        ],
+        'siteControllerRespondToRequest' => [
             'application/json',
         ],
         'siteControllerSearch' => [
@@ -13920,6 +13926,8 @@ class DefaultApi
      * Operation remoteEntityRevisionControllerSerialize.
      *
      * @param  string $id id (required)
+     * @param  string $values values (optional)
+     * @param  string $structure structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -13927,9 +13935,9 @@ class DefaultApi
      *
      * @return string
      */
-    public function remoteEntityRevisionControllerSerialize($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
+    public function remoteEntityRevisionControllerSerialize($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerSerializeWithHttpInfo($id, $contentType);
+        list($response) = $this->remoteEntityRevisionControllerSerializeWithHttpInfo($id, $values, $structure, $contentType);
 
         return $response;
     }
@@ -13938,6 +13946,8 @@ class DefaultApi
      * Operation remoteEntityRevisionControllerSerializeWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $values (optional)
+     * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -13945,9 +13955,9 @@ class DefaultApi
      *
      * @return array of string, HTTP status code, HTTP response headers (array of strings)
      */
-    public function remoteEntityRevisionControllerSerializeWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
+    public function remoteEntityRevisionControllerSerializeWithHttpInfo($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
-        $request = $this->remoteEntityRevisionControllerSerializeRequest($id, $contentType);
+        $request = $this->remoteEntityRevisionControllerSerializeRequest($id, $values, $structure, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -14039,15 +14049,17 @@ class DefaultApi
      * Operation remoteEntityRevisionControllerSerializeAsync.
      *
      * @param  string $id (required)
+     * @param  string $values (optional)
+     * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerSerializeAsync($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
+    public function remoteEntityRevisionControllerSerializeAsync($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
-        return $this->remoteEntityRevisionControllerSerializeAsyncWithHttpInfo($id, $contentType)
+        return $this->remoteEntityRevisionControllerSerializeAsyncWithHttpInfo($id, $values, $structure, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -14060,16 +14072,18 @@ class DefaultApi
      * Operation remoteEntityRevisionControllerSerializeAsyncWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $values (optional)
+     * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function remoteEntityRevisionControllerSerializeAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
+    public function remoteEntityRevisionControllerSerializeAsyncWithHttpInfo($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
         $returnType = 'string';
-        $request = $this->remoteEntityRevisionControllerSerializeRequest($id, $contentType);
+        $request = $this->remoteEntityRevisionControllerSerializeRequest($id, $values, $structure, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -14113,13 +14127,15 @@ class DefaultApi
      * Create request for operation 'remoteEntityRevisionControllerSerialize'.
      *
      * @param  string $id (required)
+     * @param  string $values (optional)
+     * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function remoteEntityRevisionControllerSerializeRequest($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
+    public function remoteEntityRevisionControllerSerializeRequest($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
@@ -14134,6 +14150,25 @@ class DefaultApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $values,
+            'values', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $structure,
+            'structure', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
 
         // path params
         if (null !== $id) {
@@ -16597,6 +16632,299 @@ class DefaultApi
     }
 
     /**
+     * Operation siteControllerGetRequests.
+     *
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList
+     */
+    public function siteControllerGetRequests($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
+    {
+        list($response) = $this->siteControllerGetRequestsWithHttpInfo($itemsPerPage, $page, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation siteControllerGetRequestsWithHttpInfo.
+     *
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function siteControllerGetRequestsWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
+    {
+        $request = $this->siteControllerGetRequestsRequest($itemsPerPage, $page, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation siteControllerGetRequestsAsync.
+     *
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerGetRequestsAsync($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
+    {
+        return $this->siteControllerGetRequestsAsyncWithHttpInfo($itemsPerPage, $page, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation siteControllerGetRequestsAsyncWithHttpInfo.
+     *
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerGetRequestsAsyncWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList';
+        $request = $this->siteControllerGetRequestsRequest($itemsPerPage, $page, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'siteControllerGetRequests'.
+     *
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function siteControllerGetRequestsRequest($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
+    {
+        $resourcePath = '/sync-core/site/requests';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation siteControllerGetThrottling.
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
@@ -17945,6 +18273,310 @@ class DefaultApi
                 $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
             } else {
                 $httpBody = $registerNewSiteDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation siteControllerRespondToRequest.
+     *
+     * @param  string $id id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto requestResponseDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     */
+    public function siteControllerRespondToRequest($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
+    {
+        list($response) = $this->siteControllerRespondToRequestWithHttpInfo($id, $requestResponseDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation siteControllerRespondToRequestWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function siteControllerRespondToRequestWithHttpInfo($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
+    {
+        $request = $this->siteControllerRespondToRequestRequest($id, $requestResponseDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation siteControllerRespondToRequestAsync.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerRespondToRequestAsync($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
+    {
+        return $this->siteControllerRespondToRequestAsyncWithHttpInfo($id, $requestResponseDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation siteControllerRespondToRequestAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerRespondToRequestAsyncWithHttpInfo($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+        $request = $this->siteControllerRespondToRequestRequest($id, $requestResponseDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'siteControllerRespondToRequest'.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function siteControllerRespondToRequestRequest($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling siteControllerRespondToRequest'
+            );
+        }
+
+        // verify the required parameter 'requestResponseDto' is set
+        if (null === $requestResponseDto || (is_array($requestResponseDto) && 0 === count($requestResponseDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $requestResponseDto when calling siteControllerRespondToRequest'
+            );
+        }
+
+        $resourcePath = '/sync-core/site/requests/{id}/respond';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($requestResponseDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($requestResponseDto));
+            } else {
+                $httpBody = $requestResponseDto;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

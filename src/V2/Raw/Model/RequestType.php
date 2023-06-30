@@ -1,6 +1,6 @@
 <?php
 /**
- * SyndicationErrorType.
+ * RequestType.
  *
  * PHP version 7.4
  *
@@ -30,7 +30,7 @@
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
 /**
- * SyndicationErrorType Class Doc Comment.
+ * RequestType Class Doc Comment.
  *
  * @category Class
  *
@@ -38,26 +38,22 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
  *
  * @see     https://openapi-generator.tech
  */
-class SyndicationErrorType
+class RequestType
 {
     /**
      * Possible values of this enum.
      */
-    public const UNEXPECTED = 'unexpected';
+    public const CREATE_ITEM = 'create-item';
 
-    public const REQUEST = 'request';
+    public const DELETE_ITEM = 'delete-item';
 
-    public const TIMEOUT = 'timeout';
+    public const RETRIEVE_ITEM = 'retrieve-item';
 
-    public const BAD_RESPONSE_CODE = 'bad-response-code';
+    public const RETRIEVE_LIST = 'retrieve-list';
 
-    public const BAD_RESPONSE_BODY = 'bad-response-body';
+    public const SITE_STATUS = 'site-status';
 
-    public const INVALID_DEPENDENCY = 'invalid-dependency';
-
-    public const SITE_MUST_POLL = 'site-must-poll';
-
-    public const SITE_FAILED_TO_POLL = 'site-failed-to-poll';
+    public const DOWNLOAD_FILE = 'download-file';
 
     /**
      * Gets allowable values of the enum.
@@ -67,14 +63,12 @@ class SyndicationErrorType
     public static function getAllowableEnumValues()
     {
         return [
-            self::UNEXPECTED,
-            self::REQUEST,
-            self::TIMEOUT,
-            self::BAD_RESPONSE_CODE,
-            self::BAD_RESPONSE_BODY,
-            self::INVALID_DEPENDENCY,
-            self::SITE_MUST_POLL,
-            self::SITE_FAILED_TO_POLL,
+            self::CREATE_ITEM,
+            self::DELETE_ITEM,
+            self::RETRIEVE_ITEM,
+            self::RETRIEVE_LIST,
+            self::SITE_STATUS,
+            self::DOWNLOAD_FILE,
         ];
     }
 }

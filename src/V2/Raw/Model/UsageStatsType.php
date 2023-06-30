@@ -49,6 +49,8 @@ class UsageStatsType
 
     public const PROJECT_MONTHLY = 'project.monthly';
 
+    public const CONTRACT_HOURLY = 'contract.hourly';
+
     public const CONTRACT_MONTHLY = 'contract.monthly';
 
     public const CUSTOMER_HOURLY = 'customer.hourly';
@@ -64,6 +66,7 @@ class UsageStatsType
             self::SITE_HOURLY,
             self::SITE_MONTHLY,
             self::PROJECT_MONTHLY,
+            self::CONTRACT_HOURLY,
             self::CONTRACT_MONTHLY,
             self::CUSTOMER_HOURLY,
         ];

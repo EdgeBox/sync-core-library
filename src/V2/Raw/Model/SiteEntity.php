@@ -70,6 +70,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'bool',
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'featureFlags' => 'mixed',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -106,6 +107,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => null,
         'domains' => null,
         'extensions' => null,
+        'featureFlags' => null,
         'uuid' => null,
         'environmentType' => null,
         'customer' => null,
@@ -140,6 +142,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => true,
         'domains' => true,
         'extensions' => true,
+        'featureFlags' => true,
         'uuid' => false,
         'environmentType' => false,
         'customer' => false,
@@ -182,6 +185,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'useProxy',
         'domains' => 'domains',
         'extensions' => 'extensions',
+        'featureFlags' => 'featureFlags',
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'customer' => 'customer',
@@ -216,6 +220,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'setUseProxy',
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
+        'featureFlags' => 'setFeatureFlags',
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'customer' => 'setCustomer',
@@ -250,6 +255,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'useProxy' => 'getUseProxy',
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
+        'featureFlags' => 'getFeatureFlags',
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'customer' => 'getCustomer',
@@ -293,6 +299,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('environmentType', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -800,6 +807,40 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['extensions'] = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Gets featureFlags.
+     *
+     * @return null|mixed
+     */
+    public function getFeatureFlags()
+    {
+        return $this->container['featureFlags'];
+    }
+
+    /**
+     * Sets featureFlags.
+     *
+     * @param null|mixed $featureFlags featureFlags
+     *
+     * @return self
+     */
+    public function setFeatureFlags($featureFlags)
+    {
+        if (is_null($featureFlags)) {
+            array_push($this->openAPINullablesSetToNull, 'featureFlags');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('featureFlags', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['featureFlags'] = $featureFlags;
 
         return $this;
     }
