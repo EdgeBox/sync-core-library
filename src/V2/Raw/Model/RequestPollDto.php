@@ -60,6 +60,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'init' => '\EdgeBox\SyncCore\V2\Raw\Model\RequestPollDtoInit',
+        'url' => 'string',
         'id' => 'string',
     ];
 
@@ -72,6 +73,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'init' => null,
+        'url' => null,
         'id' => null,
     ];
 
@@ -82,6 +84,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'init' => false,
+        'url' => false,
         'id' => false,
     ];
 
@@ -100,6 +103,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'init' => 'init',
+        'url' => 'url',
         'id' => 'id',
     ];
 
@@ -110,6 +114,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'init' => 'setInit',
+        'url' => 'setUrl',
         'id' => 'setId',
     ];
 
@@ -120,6 +125,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'init' => 'getInit',
+        'url' => 'getUrl',
         'id' => 'getId',
     ];
 
@@ -139,6 +145,7 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
     public function __construct(array $data = null)
     {
         $this->setIfExists('init', $data ?? [], null);
+        $this->setIfExists('url', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
     }
 
@@ -244,6 +251,9 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
         if (null === $this->container['init']) {
             $invalidProperties[] = "'init' can't be null";
         }
+        if (null === $this->container['url']) {
+            $invalidProperties[] = "'url' can't be null";
+        }
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
         }
@@ -285,6 +295,33 @@ class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable init cannot be null');
         }
         $this->container['init'] = $init;
+
+        return $this;
+    }
+
+    /**
+     * Gets url.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->container['url'];
+    }
+
+    /**
+     * Sets url.
+     *
+     * @param string $url url
+     *
+     * @return self
+     */
+    public function setUrl($url)
+    {
+        if (is_null($url)) {
+            throw new \InvalidArgumentException('non-nullable url cannot be null');
+        }
+        $this->container['url'] = $url;
 
         return $this;
     }

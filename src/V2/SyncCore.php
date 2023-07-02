@@ -750,11 +750,11 @@ class SyncCore implements ISyncCore
      */
     public function pollRequests($limit = 1)
     {
-        $request = $this->client->siteControllerGetRequests($limit);
+        $request = $this->client->siteControllerGetRequestsRequest($limit);
         /**
          * @var PagedRequestList $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, RequestResponseDto::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
         return $response->getItems();
     }
@@ -770,7 +770,8 @@ class SyncCore implements ISyncCore
         $dto->setResponseStatusText($statusText);
         $dto->setResponseHeaders($headers);
         $dto->setResponseBody($body);
-        $request = $this->client->siteControllerRespondToRequest($id, $wrapper);
+        $wrapper->setResponse($dto);
+        $request = $this->client->siteControllerRespondToRequestRequest($id, $wrapper);
         /**
          * @var SuccessResponse $response
          */
