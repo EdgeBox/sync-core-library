@@ -7,6 +7,7 @@ interface IEmbedService
     public const REGISTER_SITE = 'register-site';
     public const PULL_DASHBOARD = 'pull-dashboard';
     public const SITE_REGISTERED = 'site-registered';
+    public const SITE_SETTINGS = 'site-settings';
     public const ENTITY_STATUS = 'entity-status';
     public const BOX_UPDATE_STATUS = 'box.update-status';
     public const MIGRATE = 'migrate';
@@ -22,6 +23,11 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function siteRegistered(?array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function siteSettings(?array $params);
 
     /**
      * @return IEmbedFeature

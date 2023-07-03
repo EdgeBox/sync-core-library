@@ -39,6 +39,14 @@ class EmbedService implements IEmbedService
     /**
      * {@inheritDoc}
      */
+    public function siteSettings(?array $params)
+    {
+        return new SiteSettingsEmbed($this->core, $params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function pullDashboard(?array $params)
     {
         return new PullDashboardEmbed($this->core, $params);
