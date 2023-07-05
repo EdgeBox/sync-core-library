@@ -159,6 +159,15 @@ interface ISyncCore
     public function getFeatures();
 
     /**
+     * Enable the given feature.
+     *
+     * @param string $name see FEATURE_* constants
+     * @param float $value set 1 to enable a feature, 0 to disable it
+     * @param string $namespace either 'site' or 'project'
+     */
+    public function enableFeature(string $name, float $value = 1, $namespace = 'site');
+
+    /**
      * Poll for local requests that must be processed.
      *
      * @param number $limit

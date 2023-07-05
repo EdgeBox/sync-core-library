@@ -21,6 +21,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
@@ -29,6 +30,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
@@ -554,6 +556,25 @@ class SyncCore implements ISyncCore
         ] + $flags;
 
         return $features;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function enableFeature(string $name, float $value = 1, $namespace = 'site')
+    {
+        if ('site' === $namespace) {
+            $target_type = FeatureFlagTargetType::_500_SITE;
+        } elseif ('project' === $namespace) {
+            $target_type = FeatureFlagTargetType::_400_PROJECT;
+        } else {
+            throw new \Exception("Invalid namespace: {$namespace}.");
+        }
+        $dto = new SetFeatureFlagDto();
+        $dto->setValue($value);
+
+        $request = $this->client->featuresControllerUpdateRequest($target_type, $name, $dto);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
     }
 
     public function getApplication()
