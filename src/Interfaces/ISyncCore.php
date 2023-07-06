@@ -168,6 +168,13 @@ interface ISyncCore
     public function enableFeature(string $name, float $value = 1, $namespace = 'site');
 
     /**
+     * Count how many requests are waiting to be polled.
+     *
+     * @return int
+     */
+    public function countRequestsWaitingToBePolled();
+
+    /**
      * Poll for local requests that must be processed.
      *
      * @param number $limit

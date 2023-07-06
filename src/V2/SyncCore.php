@@ -769,6 +769,20 @@ class SyncCore implements ISyncCore
     /**
      * {@inheritDoc}
      */
+    public function countRequestsWaitingToBePolled()
+    {
+        $request = $this->client->siteControllerGetRequestsRequest(0);
+        /**
+         * @var PagedRequestList $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
+        return $response->getTotalNumberOfItems();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function pollRequests($limit = 1)
     {
         $request = $this->client->siteControllerGetRequestsRequest($limit);
