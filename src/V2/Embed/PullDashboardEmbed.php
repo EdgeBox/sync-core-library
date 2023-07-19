@@ -21,7 +21,7 @@ class PullDashboardEmbed extends Embed implements IEmbedFeature
         parent::__construct(
             $core,
             IEmbedService::PULL_DASHBOARD,
-            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
+            empty($params['configurationAccess']) ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION,
         );
     }
 
