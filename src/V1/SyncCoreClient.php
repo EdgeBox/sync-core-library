@@ -82,7 +82,7 @@ class SyncCoreClient
      */
     public static function getRelativeUrl($url)
     {
-        if ('http://' == substr($url, 0, 7) || 'https://' == substr($url, 0, 8)) {
+        if ('http://' == mb_substr($url, 0, 7) || 'https://' == mb_substr($url, 0, 8)) {
             // Remove protocol, host and path prefix so the path is relative and can be inserted into the normal Query classes.
             return preg_replace('@^https?://[^/]+/rest@', '', $url);
         }

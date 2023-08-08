@@ -88,7 +88,7 @@ class SyncCore implements ISyncCore
      */
     public function __construct(IApplicationInterface $application, string $base_url)
     {
-        if ('/sync-core' != substr($base_url, -10)) {
+        if ('/sync-core' != mb_substr($base_url, -10)) {
             throw new InternalContentSyncError("Invalid base URL doesn't end with /sync-core");
         }
 
@@ -101,7 +101,7 @@ class SyncCore implements ISyncCore
         // that is fed into the openapi generator, our library will already include
         // that prefix for all routes. So we need to cut it off or we would end up
         // with an incorrect double-prefix of /sync-core/sync-core.
-        $this->base_url = substr($base_url, 0, -10);
+        $this->base_url = mb_substr($base_url, 0, -10);
         $this->cloud_base_url = getenv('CONTENT_SYNC_CLOUD_BASE_URL')
         ? getenv('CONTENT_SYNC_CLOUD_BASE_URL')
         : 'https://app.cms-content-sync.io';
