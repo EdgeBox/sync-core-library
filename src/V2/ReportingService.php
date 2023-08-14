@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2;
 
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\IReportingService;
+use EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationError;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType;
@@ -84,8 +85,14 @@ class ReportingService implements IReportingService
          */
         $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
 
+        $version_request = $this->core->getClient()->configurationControllerInfoRequest();
+        /**
+         * @var SyncCoreInfo $version_response
+         */
+        $version_response = $this->core->sendToSyncCoreAndExpect($version_request, SyncCoreInfo::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+
         return [
-            'version' => '2.x',
+            'version' => $version_response->getVersion(),
             'usage' => [
                 'site' => [
                     'monthly' => [
