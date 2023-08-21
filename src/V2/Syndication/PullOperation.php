@@ -318,6 +318,60 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
+    public function loadReferencesByProperties(array $properties)
+    {
+        $result = [];
+
+        if ($this->parentPullOperation) {
+            return $this->parentPullOperation->loadReferencesByProperties($properties);
+        }
+
+        $embeds = $this->dto->getEmbed();
+        if (is_array($embeds)) {
+            for ($i = 0; $i < count($embeds); ++$i) {
+                $candidate = $embeds[$i];
+                $candidate_properties = $candidate->getProperties();
+                $all_match = true;
+                foreach ($properties as $name => $value) {
+                    $matches = false;
+                    foreach ($candidate_properties as $property) {
+                        if ($property->getName() === $name) {
+                            $prop_value = $property->getValue();
+                            $check_value = $value;
+                            while (is_array($check_value)) {
+                                $key = array_key_first($check_value);
+                                $prop_value = ((array) $prop_value)[$key] ?? null;
+                                $check_value = $check_value[$key];
+                            }
+                            if ($prop_value === $check_value) {
+                                $matches = true;
+
+                                break;
+                            }
+                        }
+                    }
+                    if (!$matches) {
+                        $all_match = false;
+
+                        break;
+                    }
+                }
+                if ($all_match) {
+                    /**
+                     * @var RemoteEntityDependency $referenceDto
+                     */
+                    $referenceDto = @ObjectSerializer::deserialize($candidate->__toString(), RemoteEntityDependency::class);
+                    $result[] = new PullOperationEmbed($this->core, $referenceDto, $this, $i, $candidate);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function downloadFile()
     {
         $reference = $this->getProperty(DefineEntityType::FILE_PROPERTY_NAME);
