@@ -40,6 +40,14 @@ interface IPullOperation
     public function loadReference(array $data);
 
     /**
+     * @param array $properties
+     *                    The properties that must match
+     *
+     * @return IEntityReference[]
+     */
+    public function loadReferencesByProperties(array $properties);
+
+    /**
      * When embedding entities, some of them will already be pulled when the main entity is pulled
      * because the entity references them and then they're imported so they can be de-referenced.
      * But some entities like menu items in Drupal are just embedded into the content without being
