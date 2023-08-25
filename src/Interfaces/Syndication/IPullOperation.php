@@ -64,7 +64,18 @@ interface IPullOperation
     public function getProperty(string $name, ?string $language = null);
 
     /**
+     * Return a file object that was uploaded on the remote site to get meta
+     * information like file name and size or to download the file.
+     *
+     * @return null|IFile
+     */
+    public function loadFile();
+
+    /**
      * Return the contents of the file that was uploaded on the remote site.
+     * Use `$this->loadFile()->download()` instead.
+     *
+     * @deprecated
      *
      * @return null|string
      */

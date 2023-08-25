@@ -211,6 +211,22 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
+    public function loadReferencesByProperties(array $properties)
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadFile()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function downloadFile()
     {
         $content = $this->getProperty('apiu_file_content');
