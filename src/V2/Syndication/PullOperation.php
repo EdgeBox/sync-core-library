@@ -48,7 +48,14 @@ class PullOperation implements IPullOperation
     protected $processedEmbeds = [];
 
     /**
-     * PushSingle constructor.
+     * Cached file entity.
+     *
+     * @var null|FileEntity
+     */
+    protected $fileEntity;
+
+    /**
+     * PullOperation constructor.
      *
      * @param array|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed $body
      */
@@ -372,24 +379,21 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
+    public function loadFile()
+    {
+        $file_entity = $this->loadFileEntity();
+
+        return $file_entity ? new File($file_entity) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function downloadFile()
     {
-        $reference = $this->getProperty(DefineEntityType::FILE_PROPERTY_NAME);
-        if (empty($reference) || empty($reference['id'])) {
-            return null;
-        }
+        $file = $this->loadFile();
 
-        $request = $this->core->getClient()->fileControllerItemRequest(id: $reference['id']);
-        /**
-         * @var FileEntity $file
-         */
-        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
-
-        if (empty($file->getDownloadUrl())) {
-            return null;
-        }
-
-        return file_get_contents($file->getDownloadUrl());
+        return $file ? $file->download() : null;
     }
 
     /**
@@ -421,5 +425,30 @@ class PullOperation implements IPullOperation
         }
 
         return $data;
+    }
+
+    /**
+     * Load the Sync Core file object.
+     *
+     * @return null|FileEntity
+     */
+    protected function loadFileEntity()
+    {
+        if ($this->fileEntity) {
+            return $this->fileEntity;
+        }
+
+        $reference = $this->getProperty(DefineEntityType::FILE_PROPERTY_NAME);
+        if (empty($reference) || empty($reference['id'])) {
+            return null;
+        }
+
+        $request = $this->core->getClient()->fileControllerItemRequest($reference['id']);
+        /**
+         * @var FileEntity $file
+         */
+        $this->fileEntity = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+
+        return $this->fileEntity;
     }
 }
