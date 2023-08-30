@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteRestUrls.
+ * RequestPollDtoInit.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SiteRestUrls Class Doc Comment.
+ * RequestPollDtoInit Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class RequestPollDtoInit implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SiteRestUrls';
+    protected static $openAPIModelName = 'RequestPollDto_init';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
+        'body' => 'string',
+        'headers' => 'mixed',
+        'method' => 'string',
+        'redirect' => 'string',
+        'compress' => 'bool',
+        'follow' => 'float',
+        'size' => 'float',
+        'timeout' => 'float',
     ];
 
     /**
@@ -74,11 +77,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
+        'body' => null,
+        'headers' => null,
+        'method' => null,
+        'redirect' => null,
+        'compress' => null,
+        'follow' => null,
+        'size' => null,
+        'timeout' => null,
     ];
 
     /**
@@ -87,11 +93,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
+        'body' => true,
+        'headers' => true,
+        'method' => true,
+        'redirect' => true,
+        'compress' => true,
+        'follow' => true,
+        'size' => true,
+        'timeout' => true,
     ];
 
     /**
@@ -108,11 +117,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
+        'body' => 'body',
+        'headers' => 'headers',
+        'method' => 'method',
+        'redirect' => 'redirect',
+        'compress' => 'compress',
+        'follow' => 'follow',
+        'size' => 'size',
+        'timeout' => 'timeout',
     ];
 
     /**
@@ -121,11 +133,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
+        'body' => 'setBody',
+        'headers' => 'setHeaders',
+        'method' => 'setMethod',
+        'redirect' => 'setRedirect',
+        'compress' => 'setCompress',
+        'follow' => 'setFollow',
+        'size' => 'setSize',
+        'timeout' => 'setTimeout',
     ];
 
     /**
@@ -134,11 +149,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
+        'body' => 'getBody',
+        'headers' => 'getHeaders',
+        'method' => 'getMethod',
+        'redirect' => 'getRedirect',
+        'compress' => 'getCompress',
+        'follow' => 'getFollow',
+        'size' => 'getSize',
+        'timeout' => 'getTimeout',
     ];
 
     /**
@@ -156,11 +174,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('body', $data ?? [], null);
+        $this->setIfExists('headers', $data ?? [], null);
+        $this->setIfExists('method', $data ?? [], null);
+        $this->setIfExists('redirect', $data ?? [], null);
+        $this->setIfExists('compress', $data ?? [], null);
+        $this->setIfExists('follow', $data ?? [], null);
+        $this->setIfExists('size', $data ?? [], null);
+        $this->setIfExists('timeout', $data ?? [], null);
     }
 
     /**
@@ -260,22 +281,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
-        }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
-        }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
-        }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
-        }
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -290,143 +296,273 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets retrieveEntity.
-     *
-     * @return string
-     */
-    public function getRetrieveEntity()
-    {
-        return $this->container['retrieveEntity'];
-    }
-
-    /**
-     * Sets retrieveEntity.
-     *
-     * @param string $retrieveEntity retrieveEntity
-     *
-     * @return self
-     */
-    public function setRetrieveEntity($retrieveEntity)
-    {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
-        }
-        $this->container['retrieveEntity'] = $retrieveEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets listEntities.
-     *
-     * @return string
-     */
-    public function getListEntities()
-    {
-        return $this->container['listEntities'];
-    }
-
-    /**
-     * Sets listEntities.
-     *
-     * @param string $listEntities listEntities
-     *
-     * @return self
-     */
-    public function setListEntities($listEntities)
-    {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
-        }
-        $this->container['listEntities'] = $listEntities;
-
-        return $this;
-    }
-
-    /**
-     * Gets createEntity.
-     *
-     * @return string
-     */
-    public function getCreateEntity()
-    {
-        return $this->container['createEntity'];
-    }
-
-    /**
-     * Sets createEntity.
-     *
-     * @param string $createEntity createEntity
-     *
-     * @return self
-     */
-    public function setCreateEntity($createEntity)
-    {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
-        }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
+     * Gets body.
      *
      * @return null|string
      */
-    public function getSiteStatus()
+    public function getBody()
     {
-        return $this->container['siteStatus'];
+        return $this->container['body'];
     }
 
     /**
-     * Sets siteStatus.
+     * Sets body.
      *
-     * @param null|string $siteStatus siteStatus
+     * @param null|string $body body
      *
      * @return self
      */
-    public function setSiteStatus($siteStatus)
+    public function setBody($body)
     {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($body)) {
+            array_push($this->openAPINullablesSetToNull, 'body');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('body', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['body'] = $body;
+
+        return $this;
+    }
+
+    /**
+     * Gets headers.
+     *
+     * @return null|mixed
+     */
+    public function getHeaders()
+    {
+        return $this->container['headers'];
+    }
+
+    /**
+     * Sets headers.
+     *
+     * @param null|mixed $headers headers
+     *
+     * @return self
+     */
+    public function setHeaders($headers)
+    {
+        if (is_null($headers)) {
+            array_push($this->openAPINullablesSetToNull, 'headers');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('headers', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['headers'] = $headers;
+
+        return $this;
+    }
+
+    /**
+     * Gets method.
+     *
+     * @return null|string
+     */
+    public function getMethod()
+    {
+        return $this->container['method'];
+    }
+
+    /**
+     * Sets method.
+     *
+     * @param null|string $method method
+     *
+     * @return self
+     */
+    public function setMethod($method)
+    {
+        if (is_null($method)) {
+            array_push($this->openAPINullablesSetToNull, 'method');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('method', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['method'] = $method;
+
+        return $this;
+    }
+
+    /**
+     * Gets redirect.
+     *
+     * @return null|string
+     */
+    public function getRedirect()
+    {
+        return $this->container['redirect'];
+    }
+
+    /**
+     * Sets redirect.
+     *
+     * @param null|string $redirect redirect
+     *
+     * @return self
+     */
+    public function setRedirect($redirect)
+    {
+        if (is_null($redirect)) {
+            array_push($this->openAPINullablesSetToNull, 'redirect');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('redirect', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['redirect'] = $redirect;
+
+        return $this;
+    }
+
+    /**
+     * Gets compress.
+     *
+     * @return null|bool
+     */
+    public function getCompress()
+    {
+        return $this->container['compress'];
+    }
+
+    /**
+     * Sets compress.
+     *
+     * @param null|bool $compress compress
+     *
+     * @return self
+     */
+    public function setCompress($compress)
+    {
+        if (is_null($compress)) {
+            array_push($this->openAPINullablesSetToNull, 'compress');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('compress', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['compress'] = $compress;
+
+        return $this;
+    }
+
+    /**
+     * Gets follow.
+     *
+     * @return null|float
+     */
+    public function getFollow()
+    {
+        return $this->container['follow'];
+    }
+
+    /**
+     * Sets follow.
+     *
+     * @param null|float $follow follow
+     *
+     * @return self
+     */
+    public function setFollow($follow)
+    {
+        if (is_null($follow)) {
+            array_push($this->openAPINullablesSetToNull, 'follow');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('follow', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['follow'] = $follow;
+
+        return $this;
+    }
+
+    /**
+     * Gets size.
+     *
+     * @return null|float
+     */
+    public function getSize()
+    {
+        return $this->container['size'];
+    }
+
+    /**
+     * Sets size.
+     *
+     * @param null|float $size size
+     *
+     * @return self
+     */
+    public function setSize($size)
+    {
+        if (is_null($size)) {
+            array_push($this->openAPINullablesSetToNull, 'size');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('size', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * Gets timeout.
+     *
+     * @return null|float
+     */
+    public function getTimeout()
+    {
+        return $this->container['timeout'];
+    }
+
+    /**
+     * Sets timeout.
+     *
+     * @param null|float $timeout timeout
+     *
+     * @return self
+     */
+    public function setTimeout($timeout)
+    {
+        if (is_null($timeout)) {
+            array_push($this->openAPINullablesSetToNull, 'timeout');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('timeout', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['timeout'] = $timeout;
 
         return $this;
     }

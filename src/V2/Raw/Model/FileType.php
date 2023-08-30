@@ -51,6 +51,8 @@ class FileType
 
     public const REQUEST_DETAILS = 'request-details';
 
+    public const POLLED_REQUEST = 'polled-request';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -63,6 +65,7 @@ class FileType
             self::ENTITY_PREVIEW,
             self::REMOTE_FLOW_CONFIG,
             self::REQUEST_DETAILS,
+            self::POLLED_REQUEST,
         ];
     }
 }

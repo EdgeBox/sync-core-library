@@ -1,6 +1,6 @@
 <?php
 /**
- * SyndicationErrorType.
+ * ProjectStatus.
  *
  * PHP version 7.4
  *
@@ -30,7 +30,7 @@
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
 /**
- * SyndicationErrorType Class Doc Comment.
+ * ProjectStatus Class Doc Comment.
  *
  * @category Class
  *
@@ -38,26 +38,14 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
  *
  * @see     https://openapi-generator.tech
  */
-class SyndicationErrorType
+class ProjectStatus
 {
     /**
      * Possible values of this enum.
      */
-    public const UNEXPECTED = 'unexpected';
+    public const _100_ACTIVE = '100-active';
 
-    public const REQUEST = 'request';
-
-    public const TIMEOUT = 'timeout';
-
-    public const BAD_RESPONSE_CODE = 'bad-response-code';
-
-    public const BAD_RESPONSE_BODY = 'bad-response-body';
-
-    public const INVALID_DEPENDENCY = 'invalid-dependency';
-
-    public const SITE_MUST_POLL = 'site-must-poll';
-
-    public const SITE_FAILED_TO_POLL = 'site-failed-to-poll';
+    public const _200_INACTIVE = '200-inactive';
 
     /**
      * Gets allowable values of the enum.
@@ -67,14 +55,8 @@ class SyndicationErrorType
     public static function getAllowableEnumValues()
     {
         return [
-            self::UNEXPECTED,
-            self::REQUEST,
-            self::TIMEOUT,
-            self::BAD_RESPONSE_CODE,
-            self::BAD_RESPONSE_BODY,
-            self::INVALID_DEPENDENCY,
-            self::SITE_MUST_POLL,
-            self::SITE_FAILED_TO_POLL,
+            self::_100_ACTIVE,
+            self::_200_INACTIVE,
         ];
     }
 }

@@ -80,6 +80,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'requestId' => 'string',
     ];
 
     /**
@@ -111,6 +112,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'requestId' => null,
     ];
 
     /**
@@ -140,6 +142,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'requestId' => true,
     ];
 
     /**
@@ -177,6 +180,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'requestId' => 'requestId',
     ];
 
     /**
@@ -206,6 +210,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'requestId' => 'setRequestId',
     ];
 
     /**
@@ -235,6 +240,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'requestId' => 'getRequestId',
     ];
 
     /**
@@ -273,6 +279,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('requestId', $data ?? [], null);
     }
 
     /**
@@ -1055,6 +1062,40 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets requestId.
+     *
+     * @return null|string
+     */
+    public function getRequestId()
+    {
+        return $this->container['requestId'];
+    }
+
+    /**
+     * Sets requestId.
+     *
+     * @param null|string $requestId requestId
+     *
+     * @return self
+     */
+    public function setRequestId($requestId)
+    {
+        if (is_null($requestId)) {
+            array_push($this->openAPINullablesSetToNull, 'requestId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['requestId'] = $requestId;
 
         return $this;
     }

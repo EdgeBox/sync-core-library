@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteRestUrls.
+ * PagedRequestList.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SiteRestUrls Class Doc Comment.
+ * PagedRequestList Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class PagedRequestList implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SiteRestUrls';
+    protected static $openAPIModelName = 'PagedRequestList';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
+        'page' => 'float',
+        'numberOfPages' => 'float',
+        'itemsPerPage' => 'float',
+        'totalNumberOfItems' => 'float',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\RequestPollDto[]',
     ];
 
     /**
@@ -74,11 +74,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
+        'page' => null,
+        'numberOfPages' => null,
+        'itemsPerPage' => null,
+        'totalNumberOfItems' => null,
+        'items' => null,
     ];
 
     /**
@@ -87,11 +87,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
+        'page' => false,
+        'numberOfPages' => false,
+        'itemsPerPage' => false,
+        'totalNumberOfItems' => false,
+        'items' => false,
     ];
 
     /**
@@ -108,11 +108,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
+        'page' => 'page',
+        'numberOfPages' => 'numberOfPages',
+        'itemsPerPage' => 'itemsPerPage',
+        'totalNumberOfItems' => 'totalNumberOfItems',
+        'items' => 'items',
     ];
 
     /**
@@ -121,11 +121,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
+        'page' => 'setPage',
+        'numberOfPages' => 'setNumberOfPages',
+        'itemsPerPage' => 'setItemsPerPage',
+        'totalNumberOfItems' => 'setTotalNumberOfItems',
+        'items' => 'setItems',
     ];
 
     /**
@@ -134,11 +134,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
+        'page' => 'getPage',
+        'numberOfPages' => 'getNumberOfPages',
+        'itemsPerPage' => 'getItemsPerPage',
+        'totalNumberOfItems' => 'getTotalNumberOfItems',
+        'items' => 'getItems',
     ];
 
     /**
@@ -156,11 +156,11 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('page', $data ?? [], null);
+        $this->setIfExists('numberOfPages', $data ?? [], null);
+        $this->setIfExists('itemsPerPage', $data ?? [], null);
+        $this->setIfExists('totalNumberOfItems', $data ?? [], null);
+        $this->setIfExists('items', $data ?? [], null);
     }
 
     /**
@@ -262,17 +262,20 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
+        if (null === $this->container['page']) {
+            $invalidProperties[] = "'page' can't be null";
         }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
+        if (null === $this->container['numberOfPages']) {
+            $invalidProperties[] = "'numberOfPages' can't be null";
         }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
+        if (null === $this->container['itemsPerPage']) {
+            $invalidProperties[] = "'itemsPerPage' can't be null";
         }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['totalNumberOfItems']) {
+            $invalidProperties[] = "'totalNumberOfItems' can't be null";
+        }
+        if (null === $this->container['items']) {
+            $invalidProperties[] = "'items' can't be null";
         }
 
         return $invalidProperties;
@@ -290,143 +293,136 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets page.
      *
-     * @return string
+     * @return float
      */
-    public function getRetrieveEntity()
+    public function getPage()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['page'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets page.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param float $page page
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setPage($page)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($page)) {
+            throw new \InvalidArgumentException('non-nullable page cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['page'] = $page;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets numberOfPages.
      *
-     * @return string
+     * @return float
      */
-    public function getListEntities()
+    public function getNumberOfPages()
     {
-        return $this->container['listEntities'];
+        return $this->container['numberOfPages'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets numberOfPages.
      *
-     * @param string $listEntities listEntities
+     * @param float $numberOfPages numberOfPages
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setNumberOfPages($numberOfPages)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
+        if (is_null($numberOfPages)) {
+            throw new \InvalidArgumentException('non-nullable numberOfPages cannot be null');
         }
-        $this->container['listEntities'] = $listEntities;
+        $this->container['numberOfPages'] = $numberOfPages;
 
         return $this;
     }
 
     /**
-     * Gets createEntity.
+     * Gets itemsPerPage.
      *
-     * @return string
+     * @return float
      */
-    public function getCreateEntity()
+    public function getItemsPerPage()
     {
-        return $this->container['createEntity'];
+        return $this->container['itemsPerPage'];
     }
 
     /**
-     * Sets createEntity.
+     * Sets itemsPerPage.
      *
-     * @param string $createEntity createEntity
+     * @param float $itemsPerPage itemsPerPage
      *
      * @return self
      */
-    public function setCreateEntity($createEntity)
+    public function setItemsPerPage($itemsPerPage)
     {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
+        if (is_null($itemsPerPage)) {
+            throw new \InvalidArgumentException('non-nullable itemsPerPage cannot be null');
         }
-        $this->container['createEntity'] = $createEntity;
+        $this->container['itemsPerPage'] = $itemsPerPage;
 
         return $this;
     }
 
     /**
-     * Gets deleteEntity.
+     * Gets totalNumberOfItems.
      *
-     * @return string
+     * @return float
      */
-    public function getDeleteEntity()
+    public function getTotalNumberOfItems()
     {
-        return $this->container['deleteEntity'];
+        return $this->container['totalNumberOfItems'];
     }
 
     /**
-     * Sets deleteEntity.
+     * Sets totalNumberOfItems.
      *
-     * @param string $deleteEntity deleteEntity
+     * @param float $totalNumberOfItems totalNumberOfItems
      *
      * @return self
      */
-    public function setDeleteEntity($deleteEntity)
+    public function setTotalNumberOfItems($totalNumberOfItems)
     {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
+        if (is_null($totalNumberOfItems)) {
+            throw new \InvalidArgumentException('non-nullable totalNumberOfItems cannot be null');
         }
-        $this->container['deleteEntity'] = $deleteEntity;
+        $this->container['totalNumberOfItems'] = $totalNumberOfItems;
 
         return $this;
     }
 
     /**
-     * Gets siteStatus.
+     * Gets items.
      *
-     * @return null|string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RequestPollDto[]
      */
-    public function getSiteStatus()
+    public function getItems()
     {
-        return $this->container['siteStatus'];
+        return $this->container['items'];
     }
 
     /**
-     * Sets siteStatus.
+     * Sets items.
      *
-     * @param null|string $siteStatus siteStatus
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RequestPollDto[] $items items
      *
      * @return self
      */
-    public function setSiteStatus($siteStatus)
+    public function setItems($items)
     {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($items)) {
+            throw new \InvalidArgumentException('non-nullable items cannot be null');
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['items'] = $items;
 
         return $this;
     }

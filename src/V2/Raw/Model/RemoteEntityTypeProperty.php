@@ -66,6 +66,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => 'bool',
         'remoteTypeName' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
+        'format' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat',
+        'encoding' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding',
+        'allowedValues' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
+        'minValue' => 'float',
+        'maxValue' => 'float',
+        'minLength' => 'float',
+        'maxLength' => 'float',
+        'minItems' => 'float',
+        'maxItems' => 'float',
+        'mainProperty' => 'string',
+        'nameProperty' => 'string',
+        'unit' => 'string',
+        'allowedEntityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]',
+        'regularExpressionFormat' => 'RegularExpression',
     ];
 
     /**
@@ -83,6 +97,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => null,
         'remoteTypeName' => null,
         'properties' => null,
+        'format' => null,
+        'encoding' => null,
+        'allowedValues' => null,
+        'minValue' => null,
+        'maxValue' => null,
+        'minLength' => null,
+        'maxLength' => null,
+        'minItems' => null,
+        'maxItems' => null,
+        'mainProperty' => null,
+        'nameProperty' => null,
+        'unit' => null,
+        'allowedEntityTypes' => null,
+        'regularExpressionFormat' => null,
     ];
 
     /**
@@ -98,6 +126,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => true,
         'remoteTypeName' => true,
         'properties' => true,
+        'format' => false,
+        'encoding' => false,
+        'allowedValues' => true,
+        'minValue' => true,
+        'maxValue' => true,
+        'minLength' => true,
+        'maxLength' => true,
+        'minItems' => true,
+        'maxItems' => true,
+        'mainProperty' => true,
+        'nameProperty' => true,
+        'unit' => true,
+        'allowedEntityTypes' => true,
+        'regularExpressionFormat' => true,
     ];
 
     /**
@@ -121,6 +163,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => 'multiple',
         'remoteTypeName' => 'remoteTypeName',
         'properties' => 'properties',
+        'format' => 'format',
+        'encoding' => 'encoding',
+        'allowedValues' => 'allowedValues',
+        'minValue' => 'minValue',
+        'maxValue' => 'maxValue',
+        'minLength' => 'minLength',
+        'maxLength' => 'maxLength',
+        'minItems' => 'minItems',
+        'maxItems' => 'maxItems',
+        'mainProperty' => 'mainProperty',
+        'nameProperty' => 'nameProperty',
+        'unit' => 'unit',
+        'allowedEntityTypes' => 'allowedEntityTypes',
+        'regularExpressionFormat' => 'regularExpressionFormat',
     ];
 
     /**
@@ -136,6 +192,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => 'setMultiple',
         'remoteTypeName' => 'setRemoteTypeName',
         'properties' => 'setProperties',
+        'format' => 'setFormat',
+        'encoding' => 'setEncoding',
+        'allowedValues' => 'setAllowedValues',
+        'minValue' => 'setMinValue',
+        'maxValue' => 'setMaxValue',
+        'minLength' => 'setMinLength',
+        'maxLength' => 'setMaxLength',
+        'minItems' => 'setMinItems',
+        'maxItems' => 'setMaxItems',
+        'mainProperty' => 'setMainProperty',
+        'nameProperty' => 'setNameProperty',
+        'unit' => 'setUnit',
+        'allowedEntityTypes' => 'setAllowedEntityTypes',
+        'regularExpressionFormat' => 'setRegularExpressionFormat',
     ];
 
     /**
@@ -151,6 +221,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'multiple' => 'getMultiple',
         'remoteTypeName' => 'getRemoteTypeName',
         'properties' => 'getProperties',
+        'format' => 'getFormat',
+        'encoding' => 'getEncoding',
+        'allowedValues' => 'getAllowedValues',
+        'minValue' => 'getMinValue',
+        'maxValue' => 'getMaxValue',
+        'minLength' => 'getMinLength',
+        'maxLength' => 'getMaxLength',
+        'minItems' => 'getMinItems',
+        'maxItems' => 'getMaxItems',
+        'mainProperty' => 'getMainProperty',
+        'nameProperty' => 'getNameProperty',
+        'unit' => 'getUnit',
+        'allowedEntityTypes' => 'getAllowedEntityTypes',
+        'regularExpressionFormat' => 'getRegularExpressionFormat',
     ];
 
     /**
@@ -175,6 +259,20 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('multiple', $data ?? [], null);
         $this->setIfExists('remoteTypeName', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
+        $this->setIfExists('format', $data ?? [], null);
+        $this->setIfExists('encoding', $data ?? [], null);
+        $this->setIfExists('allowedValues', $data ?? [], null);
+        $this->setIfExists('minValue', $data ?? [], null);
+        $this->setIfExists('maxValue', $data ?? [], null);
+        $this->setIfExists('minLength', $data ?? [], null);
+        $this->setIfExists('maxLength', $data ?? [], null);
+        $this->setIfExists('minItems', $data ?? [], null);
+        $this->setIfExists('maxItems', $data ?? [], null);
+        $this->setIfExists('mainProperty', $data ?? [], null);
+        $this->setIfExists('nameProperty', $data ?? [], null);
+        $this->setIfExists('unit', $data ?? [], null);
+        $this->setIfExists('allowedEntityTypes', $data ?? [], null);
+        $this->setIfExists('regularExpressionFormat', $data ?? [], null);
     }
 
     /**
@@ -513,6 +611,468 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             }
         }
         $this->container['properties'] = $properties;
+
+        return $this;
+    }
+
+    /**
+     * Gets format.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat
+     */
+    public function getFormat()
+    {
+        return $this->container['format'];
+    }
+
+    /**
+     * Sets format.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat $format format
+     *
+     * @return self
+     */
+    public function setFormat($format)
+    {
+        if (is_null($format)) {
+            throw new \InvalidArgumentException('non-nullable format cannot be null');
+        }
+        $this->container['format'] = $format;
+
+        return $this;
+    }
+
+    /**
+     * Gets encoding.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding
+     */
+    public function getEncoding()
+    {
+        return $this->container['encoding'];
+    }
+
+    /**
+     * Sets encoding.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding $encoding encoding
+     *
+     * @return self
+     */
+    public function setEncoding($encoding)
+    {
+        if (is_null($encoding)) {
+            throw new \InvalidArgumentException('non-nullable encoding cannot be null');
+        }
+        $this->container['encoding'] = $encoding;
+
+        return $this;
+    }
+
+    /**
+     * Gets allowedValues.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     */
+    public function getAllowedValues()
+    {
+        return $this->container['allowedValues'];
+    }
+
+    /**
+     * Sets allowedValues.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $allowedValues allowedValues
+     *
+     * @return self
+     */
+    public function setAllowedValues($allowedValues)
+    {
+        if (is_null($allowedValues)) {
+            array_push($this->openAPINullablesSetToNull, 'allowedValues');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allowedValues', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allowedValues'] = $allowedValues;
+
+        return $this;
+    }
+
+    /**
+     * Gets minValue.
+     *
+     * @return null|float
+     */
+    public function getMinValue()
+    {
+        return $this->container['minValue'];
+    }
+
+    /**
+     * Sets minValue.
+     *
+     * @param null|float $minValue minValue
+     *
+     * @return self
+     */
+    public function setMinValue($minValue)
+    {
+        if (is_null($minValue)) {
+            array_push($this->openAPINullablesSetToNull, 'minValue');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('minValue', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['minValue'] = $minValue;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxValue.
+     *
+     * @return null|float
+     */
+    public function getMaxValue()
+    {
+        return $this->container['maxValue'];
+    }
+
+    /**
+     * Sets maxValue.
+     *
+     * @param null|float $maxValue maxValue
+     *
+     * @return self
+     */
+    public function setMaxValue($maxValue)
+    {
+        if (is_null($maxValue)) {
+            array_push($this->openAPINullablesSetToNull, 'maxValue');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxValue', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['maxValue'] = $maxValue;
+
+        return $this;
+    }
+
+    /**
+     * Gets minLength.
+     *
+     * @return null|float
+     */
+    public function getMinLength()
+    {
+        return $this->container['minLength'];
+    }
+
+    /**
+     * Sets minLength.
+     *
+     * @param null|float $minLength minLength
+     *
+     * @return self
+     */
+    public function setMinLength($minLength)
+    {
+        if (is_null($minLength)) {
+            array_push($this->openAPINullablesSetToNull, 'minLength');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('minLength', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['minLength'] = $minLength;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxLength.
+     *
+     * @return null|float
+     */
+    public function getMaxLength()
+    {
+        return $this->container['maxLength'];
+    }
+
+    /**
+     * Sets maxLength.
+     *
+     * @param null|float $maxLength maxLength
+     *
+     * @return self
+     */
+    public function setMaxLength($maxLength)
+    {
+        if (is_null($maxLength)) {
+            array_push($this->openAPINullablesSetToNull, 'maxLength');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxLength', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['maxLength'] = $maxLength;
+
+        return $this;
+    }
+
+    /**
+     * Gets minItems.
+     *
+     * @return null|float
+     */
+    public function getMinItems()
+    {
+        return $this->container['minItems'];
+    }
+
+    /**
+     * Sets minItems.
+     *
+     * @param null|float $minItems minItems
+     *
+     * @return self
+     */
+    public function setMinItems($minItems)
+    {
+        if (is_null($minItems)) {
+            array_push($this->openAPINullablesSetToNull, 'minItems');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('minItems', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['minItems'] = $minItems;
+
+        return $this;
+    }
+
+    /**
+     * Gets maxItems.
+     *
+     * @return null|float
+     */
+    public function getMaxItems()
+    {
+        return $this->container['maxItems'];
+    }
+
+    /**
+     * Sets maxItems.
+     *
+     * @param null|float $maxItems maxItems
+     *
+     * @return self
+     */
+    public function setMaxItems($maxItems)
+    {
+        if (is_null($maxItems)) {
+            array_push($this->openAPINullablesSetToNull, 'maxItems');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('maxItems', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['maxItems'] = $maxItems;
+
+        return $this;
+    }
+
+    /**
+     * Gets mainProperty.
+     *
+     * @return null|string
+     */
+    public function getMainProperty()
+    {
+        return $this->container['mainProperty'];
+    }
+
+    /**
+     * Sets mainProperty.
+     *
+     * @param null|string $mainProperty mainProperty
+     *
+     * @return self
+     */
+    public function setMainProperty($mainProperty)
+    {
+        if (is_null($mainProperty)) {
+            array_push($this->openAPINullablesSetToNull, 'mainProperty');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('mainProperty', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['mainProperty'] = $mainProperty;
+
+        return $this;
+    }
+
+    /**
+     * Gets nameProperty.
+     *
+     * @return null|string
+     */
+    public function getNameProperty()
+    {
+        return $this->container['nameProperty'];
+    }
+
+    /**
+     * Sets nameProperty.
+     *
+     * @param null|string $nameProperty nameProperty
+     *
+     * @return self
+     */
+    public function setNameProperty($nameProperty)
+    {
+        if (is_null($nameProperty)) {
+            array_push($this->openAPINullablesSetToNull, 'nameProperty');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('nameProperty', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['nameProperty'] = $nameProperty;
+
+        return $this;
+    }
+
+    /**
+     * Gets unit.
+     *
+     * @return null|string
+     */
+    public function getUnit()
+    {
+        return $this->container['unit'];
+    }
+
+    /**
+     * Sets unit.
+     *
+     * @param null|string $unit unit
+     *
+     * @return self
+     */
+    public function setUnit($unit)
+    {
+        if (is_null($unit)) {
+            array_push($this->openAPINullablesSetToNull, 'unit');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('unit', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['unit'] = $unit;
+
+        return $this;
+    }
+
+    /**
+     * Gets allowedEntityTypes.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]
+     */
+    public function getAllowedEntityTypes()
+    {
+        return $this->container['allowedEntityTypes'];
+    }
+
+    /**
+     * Sets allowedEntityTypes.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[] $allowedEntityTypes allowedEntityTypes
+     *
+     * @return self
+     */
+    public function setAllowedEntityTypes($allowedEntityTypes)
+    {
+        if (is_null($allowedEntityTypes)) {
+            array_push($this->openAPINullablesSetToNull, 'allowedEntityTypes');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allowedEntityTypes', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allowedEntityTypes'] = $allowedEntityTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets regularExpressionFormat.
+     *
+     * @return null|RegularExpression
+     */
+    public function getRegularExpressionFormat()
+    {
+        return $this->container['regularExpressionFormat'];
+    }
+
+    /**
+     * Sets regularExpressionFormat.
+     *
+     * @param null|RegularExpression $regularExpressionFormat regularExpressionFormat
+     *
+     * @return self
+     */
+    public function setRegularExpressionFormat($regularExpressionFormat)
+    {
+        if (is_null($regularExpressionFormat)) {
+            array_push($this->openAPINullablesSetToNull, 'regularExpressionFormat');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('regularExpressionFormat', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['regularExpressionFormat'] = $regularExpressionFormat;
 
         return $this;
     }

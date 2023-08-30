@@ -69,6 +69,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
         'domains' => 'string[]',
+        'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'featureFlags' => 'mixed',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -83,6 +85,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
+        'notAvailableCounter' => 'float',
     ];
 
     /**
@@ -103,6 +106,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => null,
         'useProxy' => null,
         'domains' => null,
+        'extensions' => null,
+        'featureFlags' => null,
         'uuid' => null,
         'environmentType' => null,
         'customer' => null,
@@ -117,6 +122,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => null,
         'maxRequestsPerMinute' => null,
         'maxParallelRequests' => null,
+        'notAvailableCounter' => null,
     ];
 
     /**
@@ -135,6 +141,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => false,
         'useProxy' => true,
         'domains' => true,
+        'extensions' => true,
+        'featureFlags' => true,
         'uuid' => false,
         'environmentType' => false,
         'customer' => false,
@@ -149,6 +157,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => false,
         'maxRequestsPerMinute' => true,
         'maxParallelRequests' => true,
+        'notAvailableCounter' => true,
     ];
 
     /**
@@ -175,6 +184,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => 'appModuleVersion',
         'useProxy' => 'useProxy',
         'domains' => 'domains',
+        'extensions' => 'extensions',
+        'featureFlags' => 'featureFlags',
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'customer' => 'customer',
@@ -189,6 +200,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => 'restUrls',
         'maxRequestsPerMinute' => 'maxRequestsPerMinute',
         'maxParallelRequests' => 'maxParallelRequests',
+        'notAvailableCounter' => 'notAvailableCounter',
     ];
 
     /**
@@ -207,6 +219,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => 'setAppModuleVersion',
         'useProxy' => 'setUseProxy',
         'domains' => 'setDomains',
+        'extensions' => 'setExtensions',
+        'featureFlags' => 'setFeatureFlags',
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'customer' => 'setCustomer',
@@ -221,6 +235,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => 'setRestUrls',
         'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
         'maxParallelRequests' => 'setMaxParallelRequests',
+        'notAvailableCounter' => 'setNotAvailableCounter',
     ];
 
     /**
@@ -239,6 +254,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'appModuleVersion' => 'getAppModuleVersion',
         'useProxy' => 'getUseProxy',
         'domains' => 'getDomains',
+        'extensions' => 'getExtensions',
+        'featureFlags' => 'getFeatureFlags',
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'customer' => 'getCustomer',
@@ -253,6 +270,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'restUrls' => 'getRestUrls',
         'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
         'maxParallelRequests' => 'getMaxParallelRequests',
+        'notAvailableCounter' => 'getNotAvailableCounter',
     ];
 
     /**
@@ -280,6 +298,8 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('appModuleVersion', $data ?? [], null);
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
+        $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('environmentType', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -294,6 +314,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('restUrls', $data ?? [], null);
         $this->setIfExists('maxRequestsPerMinute', $data ?? [], null);
         $this->setIfExists('maxParallelRequests', $data ?? [], null);
+        $this->setIfExists('notAvailableCounter', $data ?? [], null);
     }
 
     /**
@@ -757,6 +778,74 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets extensions.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]
+     */
+    public function getExtensions()
+    {
+        return $this->container['extensions'];
+    }
+
+    /**
+     * Sets extensions.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[] $extensions extensions
+     *
+     * @return self
+     */
+    public function setExtensions($extensions)
+    {
+        if (is_null($extensions)) {
+            array_push($this->openAPINullablesSetToNull, 'extensions');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('extensions', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['extensions'] = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Gets featureFlags.
+     *
+     * @return null|mixed
+     */
+    public function getFeatureFlags()
+    {
+        return $this->container['featureFlags'];
+    }
+
+    /**
+     * Sets featureFlags.
+     *
+     * @param null|mixed $featureFlags featureFlags
+     *
+     * @return self
+     */
+    public function setFeatureFlags($featureFlags)
+    {
+        if (is_null($featureFlags)) {
+            array_push($this->openAPINullablesSetToNull, 'featureFlags');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('featureFlags', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['featureFlags'] = $featureFlags;
+
+        return $this;
+    }
+
+    /**
      * Gets uuid.
      *
      * @return string
@@ -1158,6 +1247,40 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['maxParallelRequests'] = $maxParallelRequests;
+
+        return $this;
+    }
+
+    /**
+     * Gets notAvailableCounter.
+     *
+     * @return null|float
+     */
+    public function getNotAvailableCounter()
+    {
+        return $this->container['notAvailableCounter'];
+    }
+
+    /**
+     * Sets notAvailableCounter.
+     *
+     * @param null|float $notAvailableCounter notAvailableCounter
+     *
+     * @return self
+     */
+    public function setNotAvailableCounter($notAvailableCounter)
+    {
+        if (is_null($notAvailableCounter)) {
+            array_push($this->openAPINullablesSetToNull, 'notAvailableCounter');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('notAvailableCounter', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['notAvailableCounter'] = $notAvailableCounter;
 
         return $this;
     }

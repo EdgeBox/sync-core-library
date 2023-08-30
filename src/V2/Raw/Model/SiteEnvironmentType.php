@@ -43,6 +43,8 @@ class SiteEnvironmentType
     /**
      * Possible values of this enum.
      */
+    public const LOCAL = 'local';
+
     public const TESTING = 'testing';
 
     public const STAGING = 'staging';
@@ -57,6 +59,7 @@ class SiteEnvironmentType
     public static function getAllowableEnumValues()
     {
         return [
+            self::LOCAL,
             self::TESTING,
             self::STAGING,
             self::PRODUCTION,

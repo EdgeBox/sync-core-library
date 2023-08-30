@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteRestUrls.
+ * SiteRequestResponse.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SiteRestUrls Class Doc Comment.
+ * SiteRequestResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteRequestResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SiteRestUrls';
+    protected static $openAPIModelName = 'SiteRequestResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
+        'responseBody' => 'string',
+        'responseHeaders' => 'mixed',
+        'responseStatusCode' => 'float',
+        'responseStatusText' => 'string',
     ];
 
     /**
@@ -74,11 +73,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
+        'responseBody' => null,
+        'responseHeaders' => null,
+        'responseStatusCode' => null,
+        'responseStatusText' => null,
     ];
 
     /**
@@ -87,11 +85,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
+        'responseBody' => false,
+        'responseHeaders' => true,
+        'responseStatusCode' => false,
+        'responseStatusText' => false,
     ];
 
     /**
@@ -108,11 +105,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
+        'responseBody' => 'responseBody',
+        'responseHeaders' => 'responseHeaders',
+        'responseStatusCode' => 'responseStatusCode',
+        'responseStatusText' => 'responseStatusText',
     ];
 
     /**
@@ -121,11 +117,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
+        'responseBody' => 'setResponseBody',
+        'responseHeaders' => 'setResponseHeaders',
+        'responseStatusCode' => 'setResponseStatusCode',
+        'responseStatusText' => 'setResponseStatusText',
     ];
 
     /**
@@ -134,11 +129,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
+        'responseBody' => 'getResponseBody',
+        'responseHeaders' => 'getResponseHeaders',
+        'responseStatusCode' => 'getResponseStatusCode',
+        'responseStatusText' => 'getResponseStatusText',
     ];
 
     /**
@@ -156,11 +150,10 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('responseBody', $data ?? [], null);
+        $this->setIfExists('responseHeaders', $data ?? [], null);
+        $this->setIfExists('responseStatusCode', $data ?? [], null);
+        $this->setIfExists('responseStatusText', $data ?? [], null);
     }
 
     /**
@@ -262,17 +255,17 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
+        if (null === $this->container['responseBody']) {
+            $invalidProperties[] = "'responseBody' can't be null";
         }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
+        if (null === $this->container['responseHeaders']) {
+            $invalidProperties[] = "'responseHeaders' can't be null";
         }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
+        if (null === $this->container['responseStatusCode']) {
+            $invalidProperties[] = "'responseStatusCode' can't be null";
         }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['responseStatusText']) {
+            $invalidProperties[] = "'responseStatusText' can't be null";
         }
 
         return $invalidProperties;
@@ -290,143 +283,116 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets responseBody.
      *
      * @return string
      */
-    public function getRetrieveEntity()
+    public function getResponseBody()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['responseBody'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets responseBody.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param string $responseBody responseBody
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setResponseBody($responseBody)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($responseBody)) {
+            throw new \InvalidArgumentException('non-nullable responseBody cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['responseBody'] = $responseBody;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets responseHeaders.
      *
-     * @return string
+     * @return mixed
      */
-    public function getListEntities()
+    public function getResponseHeaders()
     {
-        return $this->container['listEntities'];
+        return $this->container['responseHeaders'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets responseHeaders.
      *
-     * @param string $listEntities listEntities
+     * @param mixed $responseHeaders responseHeaders
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setResponseHeaders($responseHeaders)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
-        }
-        $this->container['listEntities'] = $listEntities;
-
-        return $this;
-    }
-
-    /**
-     * Gets createEntity.
-     *
-     * @return string
-     */
-    public function getCreateEntity()
-    {
-        return $this->container['createEntity'];
-    }
-
-    /**
-     * Sets createEntity.
-     *
-     * @param string $createEntity createEntity
-     *
-     * @return self
-     */
-    public function setCreateEntity($createEntity)
-    {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
-        }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
-     *
-     * @return null|string
-     */
-    public function getSiteStatus()
-    {
-        return $this->container['siteStatus'];
-    }
-
-    /**
-     * Sets siteStatus.
-     *
-     * @param null|string $siteStatus siteStatus
-     *
-     * @return self
-     */
-    public function setSiteStatus($siteStatus)
-    {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($responseHeaders)) {
+            array_push($this->openAPINullablesSetToNull, 'responseHeaders');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('responseHeaders', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['responseHeaders'] = $responseHeaders;
+
+        return $this;
+    }
+
+    /**
+     * Gets responseStatusCode.
+     *
+     * @return float
+     */
+    public function getResponseStatusCode()
+    {
+        return $this->container['responseStatusCode'];
+    }
+
+    /**
+     * Sets responseStatusCode.
+     *
+     * @param float $responseStatusCode responseStatusCode
+     *
+     * @return self
+     */
+    public function setResponseStatusCode($responseStatusCode)
+    {
+        if (is_null($responseStatusCode)) {
+            throw new \InvalidArgumentException('non-nullable responseStatusCode cannot be null');
+        }
+        $this->container['responseStatusCode'] = $responseStatusCode;
+
+        return $this;
+    }
+
+    /**
+     * Gets responseStatusText.
+     *
+     * @return string
+     */
+    public function getResponseStatusText()
+    {
+        return $this->container['responseStatusText'];
+    }
+
+    /**
+     * Sets responseStatusText.
+     *
+     * @param string $responseStatusText responseStatusText
+     *
+     * @return self
+     */
+    public function setResponseStatusText($responseStatusText)
+    {
+        if (is_null($responseStatusText)) {
+            throw new \InvalidArgumentException('non-nullable responseStatusText cannot be null');
+        }
+        $this->container['responseStatusText'] = $responseStatusText;
 
         return $this;
     }

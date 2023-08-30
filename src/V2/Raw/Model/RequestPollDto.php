@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteRestUrls.
+ * RequestPollDto.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SiteRestUrls Class Doc Comment.
+ * RequestPollDto Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class RequestPollDto implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SiteRestUrls';
+    protected static $openAPIModelName = 'RequestPollDto';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
+        'init' => '\EdgeBox\SyncCore\V2\Raw\Model\RequestPollDtoInit',
+        'url' => 'string',
+        'id' => 'string',
     ];
 
     /**
@@ -74,11 +72,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
+        'init' => null,
+        'url' => null,
+        'id' => null,
     ];
 
     /**
@@ -87,11 +83,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
+        'init' => false,
+        'url' => false,
+        'id' => false,
     ];
 
     /**
@@ -108,11 +102,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
+        'init' => 'init',
+        'url' => 'url',
+        'id' => 'id',
     ];
 
     /**
@@ -121,11 +113,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
+        'init' => 'setInit',
+        'url' => 'setUrl',
+        'id' => 'setId',
     ];
 
     /**
@@ -134,11 +124,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
+        'init' => 'getInit',
+        'url' => 'getUrl',
+        'id' => 'getId',
     ];
 
     /**
@@ -156,11 +144,9 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('init', $data ?? [], null);
+        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
     }
 
     /**
@@ -262,17 +248,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
+        if (null === $this->container['init']) {
+            $invalidProperties[] = "'init' can't be null";
         }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
+        if (null === $this->container['url']) {
+            $invalidProperties[] = "'url' can't be null";
         }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
-        }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['id']) {
+            $invalidProperties[] = "'id' can't be null";
         }
 
         return $invalidProperties;
@@ -290,143 +273,82 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets init.
      *
-     * @return string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RequestPollDtoInit
      */
-    public function getRetrieveEntity()
+    public function getInit()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['init'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets init.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RequestPollDtoInit $init init
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setInit($init)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($init)) {
+            throw new \InvalidArgumentException('non-nullable init cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['init'] = $init;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets url.
      *
      * @return string
      */
-    public function getListEntities()
+    public function getUrl()
     {
-        return $this->container['listEntities'];
+        return $this->container['url'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets url.
      *
-     * @param string $listEntities listEntities
+     * @param string $url url
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setUrl($url)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
+        if (is_null($url)) {
+            throw new \InvalidArgumentException('non-nullable url cannot be null');
         }
-        $this->container['listEntities'] = $listEntities;
+        $this->container['url'] = $url;
 
         return $this;
     }
 
     /**
-     * Gets createEntity.
+     * Gets id.
      *
      * @return string
      */
-    public function getCreateEntity()
+    public function getId()
     {
-        return $this->container['createEntity'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets createEntity.
+     * Sets id.
      *
-     * @param string $createEntity createEntity
+     * @param string $id id
      *
      * @return self
      */
-    public function setCreateEntity($createEntity)
+    public function setId($id)
     {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
         }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
-     *
-     * @return null|string
-     */
-    public function getSiteStatus()
-    {
-        return $this->container['siteStatus'];
-    }
-
-    /**
-     * Sets siteStatus.
-     *
-     * @param null|string $siteStatus siteStatus
-     *
-     * @return self
-     */
-    public function setSiteStatus($siteStatus)
-    {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['id'] = $id;
 
         return $this;
     }

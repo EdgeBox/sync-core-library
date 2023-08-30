@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteRestUrls.
+ * SiteStatusResponse.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * SiteRestUrls Class Doc Comment.
+ * SiteStatusResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'SiteRestUrls';
+    protected static $openAPIModelName = 'SiteStatusResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
+        'name' => 'string',
+        'baseUrl' => 'string',
+        'uuid' => 'string',
+        'appVersion' => 'string',
+        'appModuleVersion' => 'string',
+        'featureFlags' => 'mixed',
+        'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'domains' => 'string[]',
     ];
 
     /**
@@ -74,11 +77,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
+        'name' => null,
+        'baseUrl' => null,
+        'uuid' => null,
+        'appVersion' => null,
+        'appModuleVersion' => null,
+        'featureFlags' => null,
+        'extensions' => null,
+        'domains' => null,
     ];
 
     /**
@@ -87,11 +93,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
+        'name' => false,
+        'baseUrl' => false,
+        'uuid' => false,
+        'appVersion' => false,
+        'appModuleVersion' => false,
+        'featureFlags' => true,
+        'extensions' => true,
+        'domains' => true,
     ];
 
     /**
@@ -108,11 +117,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
+        'name' => 'name',
+        'baseUrl' => 'baseUrl',
+        'uuid' => 'uuid',
+        'appVersion' => 'appVersion',
+        'appModuleVersion' => 'appModuleVersion',
+        'featureFlags' => 'featureFlags',
+        'extensions' => 'extensions',
+        'domains' => 'domains',
     ];
 
     /**
@@ -121,11 +133,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
+        'name' => 'setName',
+        'baseUrl' => 'setBaseUrl',
+        'uuid' => 'setUuid',
+        'appVersion' => 'setAppVersion',
+        'appModuleVersion' => 'setAppModuleVersion',
+        'featureFlags' => 'setFeatureFlags',
+        'extensions' => 'setExtensions',
+        'domains' => 'setDomains',
     ];
 
     /**
@@ -134,11 +149,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
+        'name' => 'getName',
+        'baseUrl' => 'getBaseUrl',
+        'uuid' => 'getUuid',
+        'appVersion' => 'getAppVersion',
+        'appModuleVersion' => 'getAppModuleVersion',
+        'featureFlags' => 'getFeatureFlags',
+        'extensions' => 'getExtensions',
+        'domains' => 'getDomains',
     ];
 
     /**
@@ -156,11 +174,14 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('baseUrl', $data ?? [], null);
+        $this->setIfExists('uuid', $data ?? [], null);
+        $this->setIfExists('appVersion', $data ?? [], null);
+        $this->setIfExists('appModuleVersion', $data ?? [], null);
+        $this->setIfExists('featureFlags', $data ?? [], null);
+        $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('domains', $data ?? [], null);
     }
 
     /**
@@ -262,17 +283,23 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
+        if (null === $this->container['name']) {
+            $invalidProperties[] = "'name' can't be null";
         }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
+        if (null === $this->container['baseUrl']) {
+            $invalidProperties[] = "'baseUrl' can't be null";
         }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
+        if (null === $this->container['uuid']) {
+            $invalidProperties[] = "'uuid' can't be null";
         }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['appVersion']) {
+            $invalidProperties[] = "'appVersion' can't be null";
+        }
+        if (null === $this->container['appModuleVersion']) {
+            $invalidProperties[] = "'appModuleVersion' can't be null";
+        }
+        if (null === $this->container['featureFlags']) {
+            $invalidProperties[] = "'featureFlags' can't be null";
         }
 
         return $invalidProperties;
@@ -290,143 +317,238 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets name.
      *
      * @return string
      */
-    public function getRetrieveEntity()
+    public function getName()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets name.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param string $name name
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setName($name)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets baseUrl.
      *
      * @return string
      */
-    public function getListEntities()
+    public function getBaseUrl()
     {
-        return $this->container['listEntities'];
+        return $this->container['baseUrl'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets baseUrl.
      *
-     * @param string $listEntities listEntities
+     * @param string $baseUrl baseUrl
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setBaseUrl($baseUrl)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
+        if (is_null($baseUrl)) {
+            throw new \InvalidArgumentException('non-nullable baseUrl cannot be null');
         }
-        $this->container['listEntities'] = $listEntities;
+        $this->container['baseUrl'] = $baseUrl;
 
         return $this;
     }
 
     /**
-     * Gets createEntity.
+     * Gets uuid.
      *
      * @return string
      */
-    public function getCreateEntity()
+    public function getUuid()
     {
-        return $this->container['createEntity'];
+        return $this->container['uuid'];
     }
 
     /**
-     * Sets createEntity.
+     * Sets uuid.
      *
-     * @param string $createEntity createEntity
+     * @param string $uuid uuid
      *
      * @return self
      */
-    public function setCreateEntity($createEntity)
+    public function setUuid($uuid)
     {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
+        if (is_null($uuid)) {
+            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
         }
-        $this->container['createEntity'] = $createEntity;
+        $this->container['uuid'] = $uuid;
 
         return $this;
     }
 
     /**
-     * Gets deleteEntity.
+     * Gets appVersion.
      *
      * @return string
      */
-    public function getDeleteEntity()
+    public function getAppVersion()
     {
-        return $this->container['deleteEntity'];
+        return $this->container['appVersion'];
     }
 
     /**
-     * Sets deleteEntity.
+     * Sets appVersion.
      *
-     * @param string $deleteEntity deleteEntity
+     * @param string $appVersion appVersion
      *
      * @return self
      */
-    public function setDeleteEntity($deleteEntity)
+    public function setAppVersion($appVersion)
     {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
+        if (is_null($appVersion)) {
+            throw new \InvalidArgumentException('non-nullable appVersion cannot be null');
         }
-        $this->container['deleteEntity'] = $deleteEntity;
+        $this->container['appVersion'] = $appVersion;
 
         return $this;
     }
 
     /**
-     * Gets siteStatus.
+     * Gets appModuleVersion.
      *
-     * @return null|string
+     * @return string
      */
-    public function getSiteStatus()
+    public function getAppModuleVersion()
     {
-        return $this->container['siteStatus'];
+        return $this->container['appModuleVersion'];
     }
 
     /**
-     * Sets siteStatus.
+     * Sets appModuleVersion.
      *
-     * @param null|string $siteStatus siteStatus
+     * @param string $appModuleVersion appModuleVersion
      *
      * @return self
      */
-    public function setSiteStatus($siteStatus)
+    public function setAppModuleVersion($appModuleVersion)
     {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($appModuleVersion)) {
+            throw new \InvalidArgumentException('non-nullable appModuleVersion cannot be null');
+        }
+        $this->container['appModuleVersion'] = $appModuleVersion;
+
+        return $this;
+    }
+
+    /**
+     * Gets featureFlags.
+     *
+     * @return mixed
+     */
+    public function getFeatureFlags()
+    {
+        return $this->container['featureFlags'];
+    }
+
+    /**
+     * Sets featureFlags.
+     *
+     * @param mixed $featureFlags featureFlags
+     *
+     * @return self
+     */
+    public function setFeatureFlags($featureFlags)
+    {
+        if (is_null($featureFlags)) {
+            array_push($this->openAPINullablesSetToNull, 'featureFlags');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('featureFlags', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['featureFlags'] = $featureFlags;
+
+        return $this;
+    }
+
+    /**
+     * Gets extensions.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]
+     */
+    public function getExtensions()
+    {
+        return $this->container['extensions'];
+    }
+
+    /**
+     * Sets extensions.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[] $extensions extensions
+     *
+     * @return self
+     */
+    public function setExtensions($extensions)
+    {
+        if (is_null($extensions)) {
+            array_push($this->openAPINullablesSetToNull, 'extensions');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('extensions', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['extensions'] = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Gets domains.
+     *
+     * @return null|string[]
+     */
+    public function getDomains()
+    {
+        return $this->container['domains'];
+    }
+
+    /**
+     * Sets domains.
+     *
+     * @param null|string[] $domains domains
+     *
+     * @return self
+     */
+    public function setDomains($domains)
+    {
+        if (is_null($domains)) {
+            array_push($this->openAPINullablesSetToNull, 'domains');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('domains', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['domains'] = $domains;
 
         return $this;
     }
