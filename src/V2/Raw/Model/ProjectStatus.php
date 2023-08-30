@@ -1,6 +1,6 @@
 <?php
 /**
- * FileType.
+ * ProjectStatus.
  *
  * PHP version 7.4
  *
@@ -30,7 +30,7 @@
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
 /**
- * FileType Class Doc Comment.
+ * ProjectStatus Class Doc Comment.
  *
  * @category Class
  *
@@ -38,20 +38,14 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
  *
  * @see     https://openapi-generator.tech
  */
-class FileType
+class ProjectStatus
 {
     /**
      * Possible values of this enum.
      */
-    public const ENTITY_FILE = 'entity-file';
+    public const _100_ACTIVE = '100-active';
 
-    public const ENTITY_PREVIEW = 'entity-preview';
-
-    public const REMOTE_FLOW_CONFIG = 'remote-flow-config';
-
-    public const REQUEST_DETAILS = 'request-details';
-
-    public const POLLED_REQUEST = 'polled-request';
+    public const _200_INACTIVE = '200-inactive';
 
     /**
      * Gets allowable values of the enum.
@@ -61,11 +55,8 @@ class FileType
     public static function getAllowableEnumValues()
     {
         return [
-            self::ENTITY_FILE,
-            self::ENTITY_PREVIEW,
-            self::REMOTE_FLOW_CONFIG,
-            self::REQUEST_DETAILS,
-            self::POLLED_REQUEST,
+            self::_100_ACTIVE,
+            self::_200_INACTIVE,
         ];
     }
 }

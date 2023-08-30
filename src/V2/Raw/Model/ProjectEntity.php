@@ -60,6 +60,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
+        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus',
+        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'name' => 'string',
@@ -83,6 +85,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'type' => null,
+        'status' => null,
+        'appType' => null,
         'customer' => null,
         'contract' => null,
         'name' => null,
@@ -104,6 +108,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'type' => false,
+        'status' => false,
+        'appType' => false,
         'customer' => false,
         'contract' => false,
         'name' => false,
@@ -133,6 +139,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'type' => 'type',
+        'status' => 'status',
+        'appType' => 'appType',
         'customer' => 'customer',
         'contract' => 'contract',
         'name' => 'name',
@@ -154,6 +162,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'type' => 'setType',
+        'status' => 'setStatus',
+        'appType' => 'setAppType',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'name' => 'setName',
@@ -175,6 +185,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'type' => 'getType',
+        'status' => 'getStatus',
+        'appType' => 'getAppType',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'name' => 'getName',
@@ -205,6 +217,8 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     public function __construct(array $data = null)
     {
         $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('appType', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
@@ -380,6 +394,60 @@ class ProjectEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
         $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets status.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus
+     */
+    public function getStatus()
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus $status status
+     *
+     * @return self
+     */
+    public function setStatus($status)
+    {
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets appType.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     */
+    public function getAppType()
+    {
+        return $this->container['appType'];
+    }
+
+    /**
+     * Sets appType.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     *
+     * @return self
+     */
+    public function setAppType($appType)
+    {
+        if (is_null($appType)) {
+            throw new \InvalidArgumentException('non-nullable appType cannot be null');
+        }
+        $this->container['appType'] = $appType;
 
         return $this;
     }

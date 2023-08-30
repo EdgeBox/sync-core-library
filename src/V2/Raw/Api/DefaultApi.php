@@ -9130,7 +9130,6 @@ class DefaultApi
      * Operation migrationControllerDelete.
      *
      * @param  string $id id (required)
-     * @param  object $body body (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -9138,9 +9137,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity
      */
-    public function migrationControllerDelete($id, $body, string $contentType = self::contentTypes['migrationControllerDelete'][0])
+    public function migrationControllerDelete($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
-        list($response) = $this->migrationControllerDeleteWithHttpInfo($id, $body, $contentType);
+        list($response) = $this->migrationControllerDeleteWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -9149,7 +9148,6 @@ class DefaultApi
      * Operation migrationControllerDeleteWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -9157,9 +9155,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity, HTTP status code, HTTP response headers (array of strings)
      */
-    public function migrationControllerDeleteWithHttpInfo($id, $body, string $contentType = self::contentTypes['migrationControllerDelete'][0])
+    public function migrationControllerDeleteWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
-        $request = $this->migrationControllerDeleteRequest($id, $body, $contentType);
+        $request = $this->migrationControllerDeleteRequest($id, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -9251,16 +9249,15 @@ class DefaultApi
      * Operation migrationControllerDeleteAsync.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function migrationControllerDeleteAsync($id, $body, string $contentType = self::contentTypes['migrationControllerDelete'][0])
+    public function migrationControllerDeleteAsync($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
-        return $this->migrationControllerDeleteAsyncWithHttpInfo($id, $body, $contentType)
+        return $this->migrationControllerDeleteAsyncWithHttpInfo($id, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -9273,17 +9270,16 @@ class DefaultApi
      * Operation migrationControllerDeleteAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function migrationControllerDeleteAsyncWithHttpInfo($id, $body, string $contentType = self::contentTypes['migrationControllerDelete'][0])
+    public function migrationControllerDeleteAsyncWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
-        $request = $this->migrationControllerDeleteRequest($id, $body, $contentType);
+        $request = $this->migrationControllerDeleteRequest($id, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -9327,26 +9323,18 @@ class DefaultApi
      * Create request for operation 'migrationControllerDelete'.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function migrationControllerDeleteRequest($id, $body, string $contentType = self::contentTypes['migrationControllerDelete'][0])
+    public function migrationControllerDeleteRequest($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $id when calling migrationControllerDelete'
-            );
-        }
-
-        // verify the required parameter 'body' is set
-        if (null === $body || (is_array($body) && 0 === count($body))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $body when calling migrationControllerDelete'
             );
         }
 
@@ -9373,14 +9361,7 @@ class DefaultApi
         );
 
         // for model (json/xml)
-        if (isset($body)) {
-            if (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
-            } else {
-                $httpBody = $body;
-            }
-        } elseif (count($formParams) > 0) {
+        if (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
