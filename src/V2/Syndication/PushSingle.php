@@ -556,7 +556,7 @@ class PushSingle implements IPushSingle
     /**
      * @return $this|IPushSingle|PushSingle
      */
-    public function uploadFile(string $content, ?string $name = null)
+    public function uploadFile(string $content, ?string $name = null, ?string $mimetype = null)
     {
         if (!$name) {
             $name = $this->dto->getName();
@@ -565,7 +565,7 @@ class PushSingle implements IPushSingle
             }
         }
 
-        $file = $this->core->sendFile(FileType::ENTITY_FILE, $name, $content);
+        $file = $this->core->sendFile(FileType::ENTITY_FILE, $name, $content, true, false, $mimetype);
         $this->setProperty(DefineEntityType::FILE_PROPERTY_NAME, [
             'id' => $file->getId(),
         ]);

@@ -110,10 +110,12 @@ interface IPushSingle
     /**
      * @param string $content
      *                        The file content to store at the entity
+     * @param string $name The filename
+     * @param string $mimetype The mimetype
      *
      * @return $this
      */
-    public function uploadFile(string $content, ?string $name = null);
+    public function uploadFile(string $content, ?string $name = null, ?string $mimetype = null);
 
     /**
      * Get the serialized entity as it is sent to the Sync Core. Only needed for

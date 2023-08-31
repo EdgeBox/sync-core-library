@@ -167,6 +167,7 @@ class SyncCore implements ISyncCore
      * @param string $content
      * @param bool   $avoid_duplicates if set, the file hash will be sentand if an identical file already exists, it will not be uploaded again
      * @param bool   $is_configuration what permissions to set
+     * @param string $mimetype the mimetype. will be guessed if not given.
      *
      * @throws BadRequestException
      * @throws ForbiddenException
@@ -176,7 +177,7 @@ class SyncCore implements ISyncCore
      *
      * @return FileEntity
      */
-    public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false)
+    public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false, ?string $mimetype = null)
     {
         $fileDto = new CreateFileDto();
 
@@ -191,6 +192,9 @@ class SyncCore implements ISyncCore
         $fileDto->setType($type);
         $fileDto->setFileName($file_name);
         $fileDto->setFileSize($file_size);
+        if ($mimetype) {
+            $fileDto->setFixedMimeType($mimetype);
+        }
 
         if ($avoid_duplicates) {
             $hash = hash('sha1', $content);
