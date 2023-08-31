@@ -65,6 +65,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => 'string',
         'hash' => 'string',
         'fileSize' => 'float',
+        'fixedMimeType' => 'string',
     ];
 
     /**
@@ -81,6 +82,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => null,
         'hash' => null,
         'fileSize' => null,
+        'fixedMimeType' => null,
     ];
 
     /**
@@ -95,6 +97,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => true,
         'hash' => true,
         'fileSize' => true,
+        'fixedMimeType' => true,
     ];
 
     /**
@@ -117,6 +120,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => 'remoteDownloadUrl',
         'hash' => 'hash',
         'fileSize' => 'fileSize',
+        'fixedMimeType' => 'fixedMimeType',
     ];
 
     /**
@@ -131,6 +135,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => 'setRemoteDownloadUrl',
         'hash' => 'setHash',
         'fileSize' => 'setFileSize',
+        'fixedMimeType' => 'setFixedMimeType',
     ];
 
     /**
@@ -145,6 +150,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'remoteDownloadUrl' => 'getRemoteDownloadUrl',
         'hash' => 'getHash',
         'fileSize' => 'getFileSize',
+        'fixedMimeType' => 'getFixedMimeType',
     ];
 
     /**
@@ -168,6 +174,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('remoteDownloadUrl', $data ?? [], null);
         $this->setIfExists('hash', $data ?? [], null);
         $this->setIfExists('fileSize', $data ?? [], null);
+        $this->setIfExists('fixedMimeType', $data ?? [], null);
     }
 
     /**
@@ -476,6 +483,40 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['fileSize'] = $fileSize;
+
+        return $this;
+    }
+
+    /**
+     * Gets fixedMimeType.
+     *
+     * @return null|string
+     */
+    public function getFixedMimeType()
+    {
+        return $this->container['fixedMimeType'];
+    }
+
+    /**
+     * Sets fixedMimeType.
+     *
+     * @param null|string $fixedMimeType fixedMimeType
+     *
+     * @return self
+     */
+    public function setFixedMimeType($fixedMimeType)
+    {
+        if (is_null($fixedMimeType)) {
+            array_push($this->openAPINullablesSetToNull, 'fixedMimeType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fixedMimeType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fixedMimeType'] = $fixedMimeType;
 
         return $this;
     }
