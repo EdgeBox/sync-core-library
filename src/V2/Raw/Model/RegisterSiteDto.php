@@ -63,6 +63,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'baseUrl' => 'string',
+        'authenticationType' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
+        'authenticationUsername' => 'string',
     ];
 
     /**
@@ -77,6 +79,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => null,
         'restUrls' => null,
         'baseUrl' => null,
+        'authenticationType' => null,
+        'authenticationUsername' => null,
     ];
 
     /**
@@ -89,6 +93,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => false,
         'restUrls' => false,
         'baseUrl' => true,
+        'authenticationType' => false,
+        'authenticationUsername' => true,
     ];
 
     /**
@@ -109,6 +115,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => 'secret',
         'restUrls' => 'restUrls',
         'baseUrl' => 'baseUrl',
+        'authenticationType' => 'authenticationType',
+        'authenticationUsername' => 'authenticationUsername',
     ];
 
     /**
@@ -121,6 +129,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => 'setSecret',
         'restUrls' => 'setRestUrls',
         'baseUrl' => 'setBaseUrl',
+        'authenticationType' => 'setAuthenticationType',
+        'authenticationUsername' => 'setAuthenticationUsername',
     ];
 
     /**
@@ -133,6 +143,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'secret' => 'getSecret',
         'restUrls' => 'getRestUrls',
         'baseUrl' => 'getBaseUrl',
+        'authenticationType' => 'getAuthenticationType',
+        'authenticationUsername' => 'getAuthenticationUsername',
     ];
 
     /**
@@ -154,6 +166,8 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('secret', $data ?? [], null);
         $this->setIfExists('restUrls', $data ?? [], null);
         $this->setIfExists('baseUrl', $data ?? [], null);
+        $this->setIfExists('authenticationType', $data ?? [], null);
+        $this->setIfExists('authenticationUsername', $data ?? [], null);
     }
 
     /**
@@ -390,6 +404,67 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['baseUrl'] = $baseUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets authenticationType.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType
+     */
+    public function getAuthenticationType()
+    {
+        return $this->container['authenticationType'];
+    }
+
+    /**
+     * Sets authenticationType.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType $authenticationType authenticationType
+     *
+     * @return self
+     */
+    public function setAuthenticationType($authenticationType)
+    {
+        if (is_null($authenticationType)) {
+            throw new \InvalidArgumentException('non-nullable authenticationType cannot be null');
+        }
+        $this->container['authenticationType'] = $authenticationType;
+
+        return $this;
+    }
+
+    /**
+     * Gets authenticationUsername.
+     *
+     * @return null|string
+     */
+    public function getAuthenticationUsername()
+    {
+        return $this->container['authenticationUsername'];
+    }
+
+    /**
+     * Sets authenticationUsername.
+     *
+     * @param null|string $authenticationUsername authenticationUsername
+     *
+     * @return self
+     */
+    public function setAuthenticationUsername($authenticationUsername)
+    {
+        if (is_null($authenticationUsername)) {
+            array_push($this->openAPINullablesSetToNull, 'authenticationUsername');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('authenticationUsername', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['authenticationUsername'] = $authenticationUsername;
 
         return $this;
     }
