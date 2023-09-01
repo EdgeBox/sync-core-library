@@ -480,6 +480,17 @@ class SyncCore implements ISyncCore
 
         $dto->setRestUrls($urls);
 
+        $auth = $this->application->getAuthentication();
+        /**
+         * @var AuthenticationType $type
+         */
+        $type = IApplicationInterface::AUTHENTICATION_TYPE_COOKIE === $auth['type']
+        ? AuthenticationType::DRUPAL8_SERVICES
+        : AuthenticationType::BASIC_AUTH;
+
+        $dto->setAuthenticationType($type);
+        $dto->setAuthenticationUsername($auth['username']);
+
         $invalid = $dto->listInvalidProperties();
 
         if (count($invalid)) {
@@ -492,15 +503,11 @@ class SyncCore implements ISyncCore
         $siteId = $entity->getUuid();
         $this->application->setSiteUuid($siteId);
         // Save the credentials to the Sync Core so it can connect to the site as well.
-        $auth = $this->application->getAuthentication();
+        // This is only required for older Sync Cores that don't take this data
+        // from the request above at the initial site registration.
+        // Will be removed in the next major release.
 
         $authentication = new CreateAuthenticationDto();
-        /**
-         * @var AuthenticationType $type
-         */
-        $type = IApplicationInterface::AUTHENTICATION_TYPE_COOKIE === $auth['type']
-        ? AuthenticationType::DRUPAL8_SERVICES
-        : AuthenticationType::BASIC_AUTH;
         $authentication->setType($type);
         $authentication->setUsername($auth['username']);
         $authentication->setPassword($auth['password']);
