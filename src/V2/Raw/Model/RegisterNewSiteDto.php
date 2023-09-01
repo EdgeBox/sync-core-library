@@ -65,6 +65,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => 'string',
         'useProxy' => 'bool',
         'secret' => 'string',
+        'authenticationType' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
+        'authenticationUsername' => 'string',
         'token' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'name' => 'string',
@@ -88,6 +90,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => null,
         'useProxy' => null,
         'secret' => null,
+        'authenticationType' => null,
+        'authenticationUsername' => null,
         'token' => null,
         'restUrls' => null,
         'name' => null,
@@ -109,6 +113,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => true,
         'useProxy' => true,
         'secret' => false,
+        'authenticationType' => false,
+        'authenticationUsername' => true,
         'token' => false,
         'restUrls' => false,
         'name' => false,
@@ -138,6 +144,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => 'uuid',
         'useProxy' => 'useProxy',
         'secret' => 'secret',
+        'authenticationType' => 'authenticationType',
+        'authenticationUsername' => 'authenticationUsername',
         'token' => 'token',
         'restUrls' => 'restUrls',
         'name' => 'name',
@@ -159,6 +167,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => 'setUuid',
         'useProxy' => 'setUseProxy',
         'secret' => 'setSecret',
+        'authenticationType' => 'setAuthenticationType',
+        'authenticationUsername' => 'setAuthenticationUsername',
         'token' => 'setToken',
         'restUrls' => 'setRestUrls',
         'name' => 'setName',
@@ -180,6 +190,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => 'getUuid',
         'useProxy' => 'getUseProxy',
         'secret' => 'getSecret',
+        'authenticationType' => 'getAuthenticationType',
+        'authenticationUsername' => 'getAuthenticationUsername',
         'token' => 'getToken',
         'restUrls' => 'getRestUrls',
         'name' => 'getName',
@@ -210,6 +222,8 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('secret', $data ?? [], null);
+        $this->setIfExists('authenticationType', $data ?? [], null);
+        $this->setIfExists('authenticationUsername', $data ?? [], null);
         $this->setIfExists('token', $data ?? [], null);
         $this->setIfExists('restUrls', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
@@ -538,6 +552,67 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
             throw new \InvalidArgumentException('non-nullable secret cannot be null');
         }
         $this->container['secret'] = $secret;
+
+        return $this;
+    }
+
+    /**
+     * Gets authenticationType.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType
+     */
+    public function getAuthenticationType()
+    {
+        return $this->container['authenticationType'];
+    }
+
+    /**
+     * Sets authenticationType.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType $authenticationType authenticationType
+     *
+     * @return self
+     */
+    public function setAuthenticationType($authenticationType)
+    {
+        if (is_null($authenticationType)) {
+            throw new \InvalidArgumentException('non-nullable authenticationType cannot be null');
+        }
+        $this->container['authenticationType'] = $authenticationType;
+
+        return $this;
+    }
+
+    /**
+     * Gets authenticationUsername.
+     *
+     * @return null|string
+     */
+    public function getAuthenticationUsername()
+    {
+        return $this->container['authenticationUsername'];
+    }
+
+    /**
+     * Sets authenticationUsername.
+     *
+     * @param null|string $authenticationUsername authenticationUsername
+     *
+     * @return self
+     */
+    public function setAuthenticationUsername($authenticationUsername)
+    {
+        if (is_null($authenticationUsername)) {
+            array_push($this->openAPINullablesSetToNull, 'authenticationUsername');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('authenticationUsername', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['authenticationUsername'] = $authenticationUsername;
 
         return $this;
     }
