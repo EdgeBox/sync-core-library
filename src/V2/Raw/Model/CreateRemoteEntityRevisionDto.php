@@ -79,6 +79,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => 'string',
         'previewHtml' => 'DynamicReference',
         'allLanguages' => 'string[]',
+        'changedLanguages' => 'string[]',
+        'versionId' => 'string',
     ];
 
     /**
@@ -109,6 +111,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => null,
         'previewHtml' => null,
         'allLanguages' => null,
+        'changedLanguages' => null,
+        'versionId' => null,
     ];
 
     /**
@@ -137,6 +141,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => false,
         'previewHtml' => true,
         'allLanguages' => true,
+        'changedLanguages' => true,
+        'versionId' => true,
     ];
 
     /**
@@ -173,6 +179,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => 'flowMachineName',
         'previewHtml' => 'previewHtml',
         'allLanguages' => 'allLanguages',
+        'changedLanguages' => 'changedLanguages',
+        'versionId' => 'versionId',
     ];
 
     /**
@@ -201,6 +209,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => 'setFlowMachineName',
         'previewHtml' => 'setPreviewHtml',
         'allLanguages' => 'setAllLanguages',
+        'changedLanguages' => 'setChangedLanguages',
+        'versionId' => 'setVersionId',
     ];
 
     /**
@@ -229,6 +239,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'flowMachineName' => 'getFlowMachineName',
         'previewHtml' => 'getPreviewHtml',
         'allLanguages' => 'getAllLanguages',
+        'changedLanguages' => 'getChangedLanguages',
+        'versionId' => 'getVersionId',
     ];
 
     /**
@@ -266,6 +278,8 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('flowMachineName', $data ?? [], null);
         $this->setIfExists('previewHtml', $data ?? [], null);
         $this->setIfExists('allLanguages', $data ?? [], null);
+        $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
     }
 
     /**
@@ -1030,6 +1044,74 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['allLanguages'] = $allLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets changedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getChangedLanguages()
+    {
+        return $this->container['changedLanguages'];
+    }
+
+    /**
+     * Sets changedLanguages.
+     *
+     * @param null|string[] $changedLanguages changedLanguages
+     *
+     * @return self
+     */
+    public function setChangedLanguages($changedLanguages)
+    {
+        if (is_null($changedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'changedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('changedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
 
         return $this;
     }
