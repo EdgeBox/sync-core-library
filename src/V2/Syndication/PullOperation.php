@@ -233,7 +233,7 @@ class PullOperation implements IPullOperation
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return null;
         }
-        $properties = $language ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
+        $properties = $language && $language !== $this->dto->getLanguage() ? $this->translations[$language]->getProperties() : $this->dto->getProperties();
         foreach ($properties as $property) {
             if ($property->getName() === $name) {
                 // Turn objects into arrays.

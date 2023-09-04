@@ -29,6 +29,7 @@ class PushMultipleItem implements IPushMultipleItem
         $this->dto->setIsDeleted(false);
         $this->dto->setIsSource(true);
         $this->dto->setPoolMachineNames([]);
+        $this->dto->setChangedLanguages([$root_language]);
     }
 
     /**
@@ -46,13 +47,9 @@ class PushMultipleItem implements IPushMultipleItem
     }
 
     /**
-     * Add a Pool to the entity. Must provide at least one.
-     *
-     * @param string $pool_machine_name
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function addTranslation(string $language_id, string $view_url)
+    public function addTranslation(string $language_id, string $view_url, bool $changed = true)
     {
         $translationDto = new RemoteEntityTranslationDetails();
         $translationDto->setLanguage($language_id);
@@ -65,6 +62,31 @@ class PushMultipleItem implements IPushMultipleItem
         $translations[] = $translationDto;
 
         $this->dto->setTranslations($translations);
+
+        if ($changed) {
+            $languages = $this->dto->getChangedLanguages();
+            $languages[] = $language_id;
+            $this->dto->setChangedLanguages($languages);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasChanged(bool $changed)
+    {
+        $languages = $this->dto->getChangedLanguages();
+        $root_language = $this->dto->getLanguage();
+        if ($changed) {
+            if (!in_array($root_language, $languages)) {
+                $languages[] = $root_language;
+            }
+        } else {
+            $languages = array_diff($languages, [$root_language]);
+        }
+        $this->dto->setChangedLanguages($languages);
 
         return $this;
     }

@@ -12,13 +12,24 @@ interface IPushMultipleItem
     public function addPool(string $pool_machine_name);
 
     /**
-     * Add a Pool to the entity. Must provide at least one.
+     * Add a translation for the entity.
      *
-     * @param string $pool_machine_name
+     * @param string $language_id The ID of the language, e.g. "en" or "de".
+     * @param string $view_url the deep link to the entity at this site
+     * @param bool $changed Whether or not this translation has changed (i.e. requires an update).
      *
      * @return $this
      */
-    public function addTranslation(string $language_id, string $view_url);
+    public function addTranslation(string $language_id, string $view_url, bool $changed = true);
+
+    /**
+     * Whether or not the entity changed. If not and only changed translations are
+     * requested, this is skipped.
+     * Not allowed if the root entity has not been sent before at all.
+     *
+     * @return $this
+     */
+    public function hasChanged(bool $changed);
 
     /**
      * @return $this
