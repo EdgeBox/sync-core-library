@@ -78,6 +78,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => 'DynamicReference',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
+        'changedLanguages' => 'string[]',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -112,6 +113,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => null,
         'dryRun' => null,
         'skipSyndication' => null,
+        'changedLanguages' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -144,6 +146,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => true,
         'dryRun' => true,
         'skipSyndication' => true,
+        'changedLanguages' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -184,6 +187,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => 'dependsOnSyndication',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
+        'changedLanguages' => 'changedLanguages',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -216,6 +220,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
+        'changedLanguages' => 'setChangedLanguages',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -248,6 +253,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
+        'changedLanguages' => 'getChangedLanguages',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -289,6 +295,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
+        $this->setIfExists('changedLanguages', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -1030,6 +1037,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
             }
         }
         $this->container['skipSyndication'] = $skipSyndication;
+
+        return $this;
+    }
+
+    /**
+     * Gets changedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getChangedLanguages()
+    {
+        return $this->container['changedLanguages'];
+    }
+
+    /**
+     * Sets changedLanguages.
+     *
+     * @param null|string[] $changedLanguages changedLanguages
+     *
+     * @return self
+     */
+    public function setChangedLanguages($changedLanguages)
+    {
+        if (is_null($changedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'changedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('changedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['changedLanguages'] = $changedLanguages;
 
         return $this;
     }

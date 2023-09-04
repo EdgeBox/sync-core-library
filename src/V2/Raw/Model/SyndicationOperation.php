@@ -68,6 +68,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'language' => 'string',
         'isTranslationRoot' => 'bool',
+        'cloneExisting' => 'bool',
     ];
 
     /**
@@ -87,6 +88,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => null,
         'language' => null,
         'isTranslationRoot' => null,
+        'cloneExisting' => null,
     ];
 
     /**
@@ -104,6 +106,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => true,
         'language' => true,
         'isTranslationRoot' => true,
+        'cloneExisting' => true,
     ];
 
     /**
@@ -129,6 +132,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => 'pools',
         'language' => 'language',
         'isTranslationRoot' => 'isTranslationRoot',
+        'cloneExisting' => 'cloneExisting',
     ];
 
     /**
@@ -146,6 +150,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => 'setPools',
         'language' => 'setLanguage',
         'isTranslationRoot' => 'setIsTranslationRoot',
+        'cloneExisting' => 'setCloneExisting',
     ];
 
     /**
@@ -163,6 +168,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'pools' => 'getPools',
         'language' => 'getLanguage',
         'isTranslationRoot' => 'getIsTranslationRoot',
+        'cloneExisting' => 'getCloneExisting',
     ];
 
     /**
@@ -189,6 +195,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('pools', $data ?? [], null);
         $this->setIfExists('language', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('cloneExisting', $data ?? [], null);
     }
 
     /**
@@ -599,6 +606,40 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets cloneExisting.
+     *
+     * @return null|bool
+     */
+    public function getCloneExisting()
+    {
+        return $this->container['cloneExisting'];
+    }
+
+    /**
+     * Sets cloneExisting.
+     *
+     * @param null|bool $cloneExisting cloneExisting
+     *
+     * @return self
+     */
+    public function setCloneExisting($cloneExisting)
+    {
+        if (is_null($cloneExisting)) {
+            array_push($this->openAPINullablesSetToNull, 'cloneExisting');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('cloneExisting', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['cloneExisting'] = $cloneExisting;
 
         return $this;
     }

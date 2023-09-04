@@ -72,6 +72,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => 'bool',
         'viewUrl' => 'string',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTranslationDetails[]',
+        'changedLanguages' => 'string[]',
     ];
 
     /**
@@ -95,6 +96,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => null,
         'viewUrl' => null,
         'translations' => null,
+        'changedLanguages' => null,
     ];
 
     /**
@@ -116,6 +118,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => false,
         'viewUrl' => true,
         'translations' => true,
+        'changedLanguages' => true,
     ];
 
     /**
@@ -145,6 +148,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => 'isSource',
         'viewUrl' => 'viewUrl',
         'translations' => 'translations',
+        'changedLanguages' => 'changedLanguages',
     ];
 
     /**
@@ -166,6 +170,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => 'setIsSource',
         'viewUrl' => 'setViewUrl',
         'translations' => 'setTranslations',
+        'changedLanguages' => 'setChangedLanguages',
     ];
 
     /**
@@ -187,6 +192,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         'isSource' => 'getIsSource',
         'viewUrl' => 'getViewUrl',
         'translations' => 'getTranslations',
+        'changedLanguages' => 'getChangedLanguages',
     ];
 
     /**
@@ -217,6 +223,7 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
         $this->setIfExists('isSource', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
+        $this->setIfExists('changedLanguages', $data ?? [], null);
     }
 
     /**
@@ -743,6 +750,40 @@ class RemoteEntitySummary implements ModelInterface, ArrayAccess, \JsonSerializa
             }
         }
         $this->container['translations'] = $translations;
+
+        return $this;
+    }
+
+    /**
+     * Gets changedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getChangedLanguages()
+    {
+        return $this->container['changedLanguages'];
+    }
+
+    /**
+     * Sets changedLanguages.
+     *
+     * @param null|string[] $changedLanguages changedLanguages
+     *
+     * @return self
+     */
+    public function setChangedLanguages($changedLanguages)
+    {
+        if (is_null($changedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'changedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('changedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['changedLanguages'] = $changedLanguages;
 
         return $this;
     }
