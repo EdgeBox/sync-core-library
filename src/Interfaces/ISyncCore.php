@@ -24,6 +24,10 @@ interface ISyncCore
     // Dynamic features; availability is defined by the Sync Core.
     public const FEATURE_DYNAMIC_POOL_ASSIGNMENT = 'syndication:dynamic-pool-assignment';
     public const FEATURE_PUSH_ASYNC = 'syndication:push-async';
+    public const FEATURE_REQUEST_PER_TRANSLATION_AVAILABLE = 'syndication:request-per-translation:available';
+    public const FEATURE_REQUEST_PER_TRANSLATION = 'syndication:request-per-translation';
+    public const FEATURE_SKIP_UNCHANGED_TRANSLATIONS_AVAILABLE = 'syndication:skip-unchanged-translations:available';
+    public const FEATURE_SKIP_UNCHANGED_TRANSLATIONS = 'syndication:skip-unchanged-translations';
 
     /**
      * @return IReportingService
