@@ -185,6 +185,18 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
+    public function getVersionId()
+    {
+        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft || $this->dto instanceof RemoteEntityRootEmbed || $this->dto instanceof RemoteEntityEmbedRootDraft || $this->dto instanceof CreateRemoteEntityRevisionDto) {
+            return $this->dto->getVersionId() ?? null;
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSourceUrl(?string $language = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {

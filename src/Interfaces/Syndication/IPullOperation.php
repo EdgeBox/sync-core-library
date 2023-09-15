@@ -15,6 +15,11 @@ interface IPullOperation
     public function getUuid();
 
     /**
+     * @return null|string
+     */
+    public function getVersionId();
+
+    /**
      * @return string
      */
     public function getSourceUrl(?string $language = null);
