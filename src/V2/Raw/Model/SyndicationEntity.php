@@ -75,14 +75,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => 'DynamicReference',
         'migrationType' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
         'finishedAt' => 'float',
-        'dependsOnSyndication' => 'DynamicReference',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'changedLanguages' => 'string[]',
+        'dependsOnSyndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'originalType' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType',
+        'skipOptimization' => 'bool',
     ];
 
     /**
@@ -109,14 +111,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => null,
         'migrationType' => null,
         'finishedAt' => null,
-        'dependsOnSyndication' => null,
         'dryRun' => null,
         'skipSyndication' => null,
         'changedLanguages' => null,
+        'dependsOnSyndication' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'originalType' => null,
+        'skipOptimization' => null,
     ];
 
     /**
@@ -141,14 +145,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => true,
         'migrationType' => false,
         'finishedAt' => true,
-        'dependsOnSyndication' => true,
         'dryRun' => true,
         'skipSyndication' => true,
         'changedLanguages' => true,
+        'dependsOnSyndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'originalType' => false,
+        'skipOptimization' => true,
     ];
 
     /**
@@ -181,14 +187,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => 'migration',
         'migrationType' => 'migrationType',
         'finishedAt' => 'finishedAt',
-        'dependsOnSyndication' => 'dependsOnSyndication',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
         'changedLanguages' => 'changedLanguages',
+        'dependsOnSyndication' => 'dependsOnSyndication',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'originalType' => 'originalType',
+        'skipOptimization' => 'skipOptimization',
     ];
 
     /**
@@ -213,14 +221,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => 'setMigration',
         'migrationType' => 'setMigrationType',
         'finishedAt' => 'setFinishedAt',
-        'dependsOnSyndication' => 'setDependsOnSyndication',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
         'changedLanguages' => 'setChangedLanguages',
+        'dependsOnSyndication' => 'setDependsOnSyndication',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'originalType' => 'setOriginalType',
+        'skipOptimization' => 'setSkipOptimization',
     ];
 
     /**
@@ -245,14 +255,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'migration' => 'getMigration',
         'migrationType' => 'getMigrationType',
         'finishedAt' => 'getFinishedAt',
-        'dependsOnSyndication' => 'getDependsOnSyndication',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
         'changedLanguages' => 'getChangedLanguages',
+        'dependsOnSyndication' => 'getDependsOnSyndication',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'originalType' => 'getOriginalType',
+        'skipOptimization' => 'getSkipOptimization',
     ];
 
     /**
@@ -286,14 +298,16 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('migration', $data ?? [], null);
         $this->setIfExists('migrationType', $data ?? [], null);
         $this->setIfExists('finishedAt', $data ?? [], null);
-        $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('originalType', $data ?? [], null);
+        $this->setIfExists('skipOptimization', $data ?? [], null);
     }
 
     /**
@@ -933,40 +947,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
-     * Gets dependsOnSyndication.
-     *
-     * @return null|DynamicReference
-     */
-    public function getDependsOnSyndication()
-    {
-        return $this->container['dependsOnSyndication'];
-    }
-
-    /**
-     * Sets dependsOnSyndication.
-     *
-     * @param null|DynamicReference $dependsOnSyndication dependsOnSyndication
-     *
-     * @return self
-     */
-    public function setDependsOnSyndication($dependsOnSyndication)
-    {
-        if (is_null($dependsOnSyndication)) {
-            array_push($this->openAPINullablesSetToNull, 'dependsOnSyndication');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('dependsOnSyndication', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['dependsOnSyndication'] = $dependsOnSyndication;
-
-        return $this;
-    }
-
-    /**
      * Gets dryRun.
      *
      * @return null|bool
@@ -1064,6 +1044,40 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets dependsOnSyndication.
+     *
+     * @return null|DynamicReference
+     */
+    public function getDependsOnSyndication()
+    {
+        return $this->container['dependsOnSyndication'];
+    }
+
+    /**
+     * Sets dependsOnSyndication.
+     *
+     * @param null|DynamicReference $dependsOnSyndication dependsOnSyndication
+     *
+     * @return self
+     */
+    public function setDependsOnSyndication($dependsOnSyndication)
+    {
+        if (is_null($dependsOnSyndication)) {
+            array_push($this->openAPINullablesSetToNull, 'dependsOnSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('dependsOnSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['dependsOnSyndication'] = $dependsOnSyndication;
 
         return $this;
     }
@@ -1179,6 +1193,67 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets originalType.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType
+     */
+    public function getOriginalType()
+    {
+        return $this->container['originalType'];
+    }
+
+    /**
+     * Sets originalType.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType $originalType originalType
+     *
+     * @return self
+     */
+    public function setOriginalType($originalType)
+    {
+        if (is_null($originalType)) {
+            throw new \InvalidArgumentException('non-nullable originalType cannot be null');
+        }
+        $this->container['originalType'] = $originalType;
+
+        return $this;
+    }
+
+    /**
+     * Gets skipOptimization.
+     *
+     * @return null|bool
+     */
+    public function getSkipOptimization()
+    {
+        return $this->container['skipOptimization'];
+    }
+
+    /**
+     * Sets skipOptimization.
+     *
+     * @param null|bool $skipOptimization skipOptimization
+     *
+     * @return self
+     */
+    public function setSkipOptimization($skipOptimization)
+    {
+        if (is_null($skipOptimization)) {
+            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipOptimization', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['skipOptimization'] = $skipOptimization;
 
         return $this;
     }

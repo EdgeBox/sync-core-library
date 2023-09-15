@@ -83,6 +83,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'clonedFrom' => 'DynamicReference',
         'versionId' => 'string',
     ];
 
@@ -118,6 +119,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'clonedFrom' => null,
         'versionId' => null,
     ];
 
@@ -151,6 +153,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'clonedFrom' => true,
         'versionId' => false,
     ];
 
@@ -192,6 +195,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'clonedFrom' => 'clonedFrom',
         'versionId' => 'versionId',
     ];
 
@@ -225,6 +229,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'clonedFrom' => 'setClonedFrom',
         'versionId' => 'setVersionId',
     ];
 
@@ -258,6 +263,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'clonedFrom' => 'getClonedFrom',
         'versionId' => 'getVersionId',
     ];
 
@@ -300,6 +306,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('clonedFrom', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
     }
 
@@ -1180,6 +1187,40 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets clonedFrom.
+     *
+     * @return null|DynamicReference
+     */
+    public function getClonedFrom()
+    {
+        return $this->container['clonedFrom'];
+    }
+
+    /**
+     * Sets clonedFrom.
+     *
+     * @param null|DynamicReference $clonedFrom clonedFrom
+     *
+     * @return self
+     */
+    public function setClonedFrom($clonedFrom)
+    {
+        if (is_null($clonedFrom)) {
+            array_push($this->openAPINullablesSetToNull, 'clonedFrom');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('clonedFrom', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['clonedFrom'] = $clonedFrom;
 
         return $this;
     }
