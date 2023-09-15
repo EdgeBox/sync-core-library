@@ -69,6 +69,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => 'string',
         'isTranslationRoot' => 'bool',
         'cloneExisting' => 'bool',
+        'siteRequests' => 'float',
+        'startTime' => 'float',
     ];
 
     /**
@@ -89,6 +91,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => null,
         'isTranslationRoot' => null,
         'cloneExisting' => null,
+        'siteRequests' => null,
+        'startTime' => null,
     ];
 
     /**
@@ -107,6 +111,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => true,
         'isTranslationRoot' => true,
         'cloneExisting' => true,
+        'siteRequests' => true,
+        'startTime' => true,
     ];
 
     /**
@@ -133,6 +139,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => 'language',
         'isTranslationRoot' => 'isTranslationRoot',
         'cloneExisting' => 'cloneExisting',
+        'siteRequests' => 'siteRequests',
+        'startTime' => 'startTime',
     ];
 
     /**
@@ -151,6 +159,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => 'setLanguage',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'cloneExisting' => 'setCloneExisting',
+        'siteRequests' => 'setSiteRequests',
+        'startTime' => 'setStartTime',
     ];
 
     /**
@@ -169,6 +179,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'language' => 'getLanguage',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'cloneExisting' => 'getCloneExisting',
+        'siteRequests' => 'getSiteRequests',
+        'startTime' => 'getStartTime',
     ];
 
     /**
@@ -196,6 +208,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('language', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
         $this->setIfExists('cloneExisting', $data ?? [], null);
+        $this->setIfExists('siteRequests', $data ?? [], null);
+        $this->setIfExists('startTime', $data ?? [], null);
     }
 
     /**
@@ -640,6 +654,74 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             }
         }
         $this->container['cloneExisting'] = $cloneExisting;
+
+        return $this;
+    }
+
+    /**
+     * Gets siteRequests.
+     *
+     * @return null|float
+     */
+    public function getSiteRequests()
+    {
+        return $this->container['siteRequests'];
+    }
+
+    /**
+     * Sets siteRequests.
+     *
+     * @param null|float $siteRequests siteRequests
+     *
+     * @return self
+     */
+    public function setSiteRequests($siteRequests)
+    {
+        if (is_null($siteRequests)) {
+            array_push($this->openAPINullablesSetToNull, 'siteRequests');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('siteRequests', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['siteRequests'] = $siteRequests;
+
+        return $this;
+    }
+
+    /**
+     * Gets startTime.
+     *
+     * @return null|float
+     */
+    public function getStartTime()
+    {
+        return $this->container['startTime'];
+    }
+
+    /**
+     * Sets startTime.
+     *
+     * @param null|float $startTime startTime
+     *
+     * @return self
+     */
+    public function setStartTime($startTime)
+    {
+        if (is_null($startTime)) {
+            array_push($this->openAPINullablesSetToNull, 'startTime');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('startTime', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['startTime'] = $startTime;
 
         return $this;
     }

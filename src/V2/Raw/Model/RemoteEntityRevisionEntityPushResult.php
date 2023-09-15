@@ -83,6 +83,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'clonedFrom' => 'DynamicReference',
         'versionId' => 'string',
         'syndication' => 'DynamicReference',
     ];
@@ -119,6 +120,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'clonedFrom' => null,
         'versionId' => null,
         'syndication' => null,
     ];
@@ -153,6 +155,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'clonedFrom' => true,
         'versionId' => false,
         'syndication' => true,
     ];
@@ -195,6 +198,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'clonedFrom' => 'clonedFrom',
         'versionId' => 'versionId',
         'syndication' => 'syndication',
     ];
@@ -229,6 +233,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'clonedFrom' => 'setClonedFrom',
         'versionId' => 'setVersionId',
         'syndication' => 'setSyndication',
     ];
@@ -263,6 +268,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'clonedFrom' => 'getClonedFrom',
         'versionId' => 'getVersionId',
         'syndication' => 'getSyndication',
     ];
@@ -306,6 +312,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('clonedFrom', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('syndication', $data ?? [], null);
     }
@@ -1187,6 +1194,40 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets clonedFrom.
+     *
+     * @return null|DynamicReference
+     */
+    public function getClonedFrom()
+    {
+        return $this->container['clonedFrom'];
+    }
+
+    /**
+     * Sets clonedFrom.
+     *
+     * @param null|DynamicReference $clonedFrom clonedFrom
+     *
+     * @return self
+     */
+    public function setClonedFrom($clonedFrom)
+    {
+        if (is_null($clonedFrom)) {
+            array_push($this->openAPINullablesSetToNull, 'clonedFrom');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('clonedFrom', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['clonedFrom'] = $clonedFrom;
 
         return $this;
     }

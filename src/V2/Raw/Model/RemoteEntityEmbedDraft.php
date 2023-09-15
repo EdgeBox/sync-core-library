@@ -71,6 +71,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'isTranslationRoot' => 'bool',
+        'versionId' => 'string',
     ];
 
     /**
@@ -93,6 +94,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => null,
         'directDependencies' => null,
         'isTranslationRoot' => null,
+        'versionId' => null,
     ];
 
     /**
@@ -113,6 +115,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => false,
         'directDependencies' => false,
         'isTranslationRoot' => true,
+        'versionId' => true,
     ];
 
     /**
@@ -141,6 +144,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'isTranslationRoot' => 'isTranslationRoot',
+        'versionId' => 'versionId',
     ];
 
     /**
@@ -161,6 +165,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'isTranslationRoot' => 'setIsTranslationRoot',
+        'versionId' => 'setVersionId',
     ];
 
     /**
@@ -181,6 +186,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'isTranslationRoot' => 'getIsTranslationRoot',
+        'versionId' => 'getVersionId',
     ];
 
     /**
@@ -210,6 +216,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('directDependencies', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
     }
 
     /**
@@ -702,6 +709,40 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
             }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
 
         return $this;
     }
