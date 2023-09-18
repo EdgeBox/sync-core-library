@@ -185,12 +185,14 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getVersionId(?string $language = null)
+    public function getVersionId(?string $language = null, ?bool $including_translations = false)
     {
         $dto = $language ? (isset($this->translations[$language]) ? $this->translations[$language] : null) : $this->dto;
 
-        if ($dto && method_exists($dto, 'getVersionId')) {
-            return $dto->getVersionId() ?? null;
+        $method = $including_translations ? 'getVersionIdWithTranslations' : 'getVersionId';
+
+        if ($dto && method_exists($dto, $method)) {
+            return $dto->{$method}() ?? null;
         }
 
         return null;
