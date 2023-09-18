@@ -185,10 +185,12 @@ class PullOperation implements IPullOperation
     /**
      * {@inheritdoc}
      */
-    public function getVersionId()
+    public function getVersionId(?string $language = null)
     {
-        if ($this->dto instanceof RemoteEntityEmbed || $this->dto instanceof RemoteEntityEmbedDraft || $this->dto instanceof RemoteEntityRootEmbed || $this->dto instanceof RemoteEntityEmbedRootDraft || $this->dto instanceof CreateRemoteEntityRevisionDto) {
-            return $this->dto->getVersionId() ?? null;
+        $dto = $language ? (isset($this->translations[$language]) ? $this->translations[$language] : null) : $this->dto;
+
+        if ($dto && method_exists($dto, 'getVersionId')) {
+            return $dto->getVersionId() ?? null;
         }
 
         return null;
