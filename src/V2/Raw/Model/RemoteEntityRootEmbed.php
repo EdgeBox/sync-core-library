@@ -72,6 +72,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'isTranslationRoot' => 'bool',
         'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbed[]',
     ];
 
@@ -96,6 +97,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => null,
         'isTranslationRoot' => null,
         'versionId' => null,
+        'versionIdWithTranslations' => null,
         'translations' => null,
     ];
 
@@ -118,6 +120,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => false,
         'isTranslationRoot' => true,
         'versionId' => true,
+        'versionIdWithTranslations' => true,
         'translations' => true,
     ];
 
@@ -148,6 +151,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => 'directDependencies',
         'isTranslationRoot' => 'isTranslationRoot',
         'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
         'translations' => 'translations',
     ];
 
@@ -170,6 +174,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => 'setDirectDependencies',
         'isTranslationRoot' => 'setIsTranslationRoot',
         'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'translations' => 'setTranslations',
     ];
 
@@ -192,6 +197,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         'directDependencies' => 'getDirectDependencies',
         'isTranslationRoot' => 'getIsTranslationRoot',
         'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'translations' => 'getTranslations',
     ];
 
@@ -223,6 +229,7 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
         $this->setIfExists('directDependencies', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
     }
 
@@ -750,6 +757,40 @@ class RemoteEntityRootEmbed implements ModelInterface, ArrayAccess, \JsonSeriali
             }
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }

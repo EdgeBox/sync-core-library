@@ -64,6 +64,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => 'bool',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
         'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
         'viewUrl' => 'string',
     ];
 
@@ -80,6 +81,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => null,
         'status' => null,
         'versionId' => null,
+        'versionIdWithTranslations' => null,
         'viewUrl' => null,
     ];
 
@@ -94,6 +96,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => false,
         'status' => false,
         'versionId' => true,
+        'versionIdWithTranslations' => true,
         'viewUrl' => true,
     ];
 
@@ -116,6 +119,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => 'isTranslationRoot',
         'status' => 'status',
         'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
         'viewUrl' => 'viewUrl',
     ];
 
@@ -130,6 +134,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => 'setIsTranslationRoot',
         'status' => 'setStatus',
         'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'viewUrl' => 'setViewUrl',
     ];
 
@@ -144,6 +149,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'isTranslationRoot' => 'getIsTranslationRoot',
         'status' => 'getStatus',
         'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'viewUrl' => 'getViewUrl',
     ];
 
@@ -167,6 +173,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
     }
 
@@ -434,6 +441,40 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
             }
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }
