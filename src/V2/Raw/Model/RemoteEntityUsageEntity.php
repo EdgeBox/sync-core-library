@@ -70,6 +70,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => 'string',
         'lastPush' => 'float',
         'lastPull' => 'float',
+        'slowestUpdateDuration' => 'float',
+        'slowestUpdateDate' => 'float',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
@@ -98,6 +100,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => null,
         'lastPush' => null,
         'lastPull' => null,
+        'slowestUpdateDuration' => null,
+        'slowestUpdateDate' => null,
         'customer' => null,
         'project' => null,
         'pools' => null,
@@ -124,6 +128,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => true,
         'lastPush' => true,
         'lastPull' => true,
+        'slowestUpdateDuration' => true,
+        'slowestUpdateDate' => true,
         'customer' => false,
         'project' => false,
         'pools' => false,
@@ -158,6 +164,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => 'remoteUniqueId',
         'lastPush' => 'lastPush',
         'lastPull' => 'lastPull',
+        'slowestUpdateDuration' => 'slowestUpdateDuration',
+        'slowestUpdateDate' => 'slowestUpdateDate',
         'customer' => 'customer',
         'project' => 'project',
         'pools' => 'pools',
@@ -184,6 +192,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => 'setRemoteUniqueId',
         'lastPush' => 'setLastPush',
         'lastPull' => 'setLastPull',
+        'slowestUpdateDuration' => 'setSlowestUpdateDuration',
+        'slowestUpdateDate' => 'setSlowestUpdateDate',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'pools' => 'setPools',
@@ -210,6 +220,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         'remoteUniqueId' => 'getRemoteUniqueId',
         'lastPush' => 'getLastPush',
         'lastPull' => 'getLastPull',
+        'slowestUpdateDuration' => 'getSlowestUpdateDuration',
+        'slowestUpdateDate' => 'getSlowestUpdateDate',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'pools' => 'getPools',
@@ -245,6 +257,8 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
         $this->setIfExists('remoteUniqueId', $data ?? [], null);
         $this->setIfExists('lastPush', $data ?? [], null);
         $this->setIfExists('lastPull', $data ?? [], null);
+        $this->setIfExists('slowestUpdateDuration', $data ?? [], null);
+        $this->setIfExists('slowestUpdateDate', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('pools', $data ?? [], null);
@@ -724,6 +738,74 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
             }
         }
         $this->container['lastPull'] = $lastPull;
+
+        return $this;
+    }
+
+    /**
+     * Gets slowestUpdateDuration.
+     *
+     * @return null|float
+     */
+    public function getSlowestUpdateDuration()
+    {
+        return $this->container['slowestUpdateDuration'];
+    }
+
+    /**
+     * Sets slowestUpdateDuration.
+     *
+     * @param null|float $slowestUpdateDuration slowestUpdateDuration
+     *
+     * @return self
+     */
+    public function setSlowestUpdateDuration($slowestUpdateDuration)
+    {
+        if (is_null($slowestUpdateDuration)) {
+            array_push($this->openAPINullablesSetToNull, 'slowestUpdateDuration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('slowestUpdateDuration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['slowestUpdateDuration'] = $slowestUpdateDuration;
+
+        return $this;
+    }
+
+    /**
+     * Gets slowestUpdateDate.
+     *
+     * @return null|float
+     */
+    public function getSlowestUpdateDate()
+    {
+        return $this->container['slowestUpdateDate'];
+    }
+
+    /**
+     * Sets slowestUpdateDate.
+     *
+     * @param null|float $slowestUpdateDate slowestUpdateDate
+     *
+     * @return self
+     */
+    public function setSlowestUpdateDate($slowestUpdateDate)
+    {
+        if (is_null($slowestUpdateDate)) {
+            array_push($this->openAPINullablesSetToNull, 'slowestUpdateDate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('slowestUpdateDate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['slowestUpdateDate'] = $slowestUpdateDate;
 
         return $this;
     }

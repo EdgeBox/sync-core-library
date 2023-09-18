@@ -77,7 +77,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => 'float',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
+        'isUpdate' => 'bool',
+        'isRegularSyndication' => 'bool',
         'changedLanguages' => 'string[]',
+        'rdTotal' => 'float',
+        'rdCount' => 'float',
+        'rdAverage' => 'float',
+        'rdShortest' => 'float',
+        'rdLongest' => 'float',
+        'duration' => 'float',
+        'skipUnchanged' => 'bool',
         'dependsOnSyndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
@@ -114,7 +123,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => null,
         'dryRun' => null,
         'skipSyndication' => null,
+        'isUpdate' => null,
+        'isRegularSyndication' => null,
         'changedLanguages' => null,
+        'rdTotal' => null,
+        'rdCount' => null,
+        'rdAverage' => null,
+        'rdShortest' => null,
+        'rdLongest' => null,
+        'duration' => null,
+        'skipUnchanged' => null,
         'dependsOnSyndication' => null,
         'id' => null,
         'createdAt' => null,
@@ -149,7 +167,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => true,
         'dryRun' => true,
         'skipSyndication' => true,
+        'isUpdate' => true,
+        'isRegularSyndication' => true,
         'changedLanguages' => true,
+        'rdTotal' => true,
+        'rdCount' => true,
+        'rdAverage' => true,
+        'rdShortest' => true,
+        'rdLongest' => true,
+        'duration' => true,
+        'skipUnchanged' => true,
         'dependsOnSyndication' => true,
         'id' => false,
         'createdAt' => false,
@@ -192,7 +219,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => 'finishedAt',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
+        'isUpdate' => 'isUpdate',
+        'isRegularSyndication' => 'isRegularSyndication',
         'changedLanguages' => 'changedLanguages',
+        'rdTotal' => 'rdTotal',
+        'rdCount' => 'rdCount',
+        'rdAverage' => 'rdAverage',
+        'rdShortest' => 'rdShortest',
+        'rdLongest' => 'rdLongest',
+        'duration' => 'duration',
+        'skipUnchanged' => 'skipUnchanged',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'id' => 'id',
         'createdAt' => 'createdAt',
@@ -227,7 +263,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => 'setFinishedAt',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
+        'isUpdate' => 'setIsUpdate',
+        'isRegularSyndication' => 'setIsRegularSyndication',
         'changedLanguages' => 'setChangedLanguages',
+        'rdTotal' => 'setRdTotal',
+        'rdCount' => 'setRdCount',
+        'rdAverage' => 'setRdAverage',
+        'rdShortest' => 'setRdShortest',
+        'rdLongest' => 'setRdLongest',
+        'duration' => 'setDuration',
+        'skipUnchanged' => 'setSkipUnchanged',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
@@ -262,7 +307,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'finishedAt' => 'getFinishedAt',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
+        'isUpdate' => 'getIsUpdate',
+        'isRegularSyndication' => 'getIsRegularSyndication',
         'changedLanguages' => 'getChangedLanguages',
+        'rdTotal' => 'getRdTotal',
+        'rdCount' => 'getRdCount',
+        'rdAverage' => 'getRdAverage',
+        'rdShortest' => 'getRdShortest',
+        'rdLongest' => 'getRdLongest',
+        'duration' => 'getDuration',
+        'skipUnchanged' => 'getSkipUnchanged',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
@@ -306,7 +360,16 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('finishedAt', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
+        $this->setIfExists('isUpdate', $data ?? [], null);
+        $this->setIfExists('isRegularSyndication', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('rdTotal', $data ?? [], null);
+        $this->setIfExists('rdCount', $data ?? [], null);
+        $this->setIfExists('rdAverage', $data ?? [], null);
+        $this->setIfExists('rdShortest', $data ?? [], null);
+        $this->setIfExists('rdLongest', $data ?? [], null);
+        $this->setIfExists('duration', $data ?? [], null);
+        $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
@@ -1022,6 +1085,74 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
     }
 
     /**
+     * Gets isUpdate.
+     *
+     * @return null|bool
+     */
+    public function getIsUpdate()
+    {
+        return $this->container['isUpdate'];
+    }
+
+    /**
+     * Sets isUpdate.
+     *
+     * @param null|bool $isUpdate isUpdate
+     *
+     * @return self
+     */
+    public function setIsUpdate($isUpdate)
+    {
+        if (is_null($isUpdate)) {
+            array_push($this->openAPINullablesSetToNull, 'isUpdate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isUpdate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isUpdate'] = $isUpdate;
+
+        return $this;
+    }
+
+    /**
+     * Gets isRegularSyndication.
+     *
+     * @return null|bool
+     */
+    public function getIsRegularSyndication()
+    {
+        return $this->container['isRegularSyndication'];
+    }
+
+    /**
+     * Sets isRegularSyndication.
+     *
+     * @param null|bool $isRegularSyndication isRegularSyndication
+     *
+     * @return self
+     */
+    public function setIsRegularSyndication($isRegularSyndication)
+    {
+        if (is_null($isRegularSyndication)) {
+            array_push($this->openAPINullablesSetToNull, 'isRegularSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isRegularSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isRegularSyndication'] = $isRegularSyndication;
+
+        return $this;
+    }
+
+    /**
      * Gets changedLanguages.
      *
      * @return null|string[]
@@ -1051,6 +1182,244 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
             }
         }
         $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets rdTotal.
+     *
+     * @return null|float
+     */
+    public function getRdTotal()
+    {
+        return $this->container['rdTotal'];
+    }
+
+    /**
+     * Sets rdTotal.
+     *
+     * @param null|float $rdTotal rdTotal
+     *
+     * @return self
+     */
+    public function setRdTotal($rdTotal)
+    {
+        if (is_null($rdTotal)) {
+            array_push($this->openAPINullablesSetToNull, 'rdTotal');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rdTotal', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rdTotal'] = $rdTotal;
+
+        return $this;
+    }
+
+    /**
+     * Gets rdCount.
+     *
+     * @return null|float
+     */
+    public function getRdCount()
+    {
+        return $this->container['rdCount'];
+    }
+
+    /**
+     * Sets rdCount.
+     *
+     * @param null|float $rdCount rdCount
+     *
+     * @return self
+     */
+    public function setRdCount($rdCount)
+    {
+        if (is_null($rdCount)) {
+            array_push($this->openAPINullablesSetToNull, 'rdCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rdCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rdCount'] = $rdCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets rdAverage.
+     *
+     * @return null|float
+     */
+    public function getRdAverage()
+    {
+        return $this->container['rdAverage'];
+    }
+
+    /**
+     * Sets rdAverage.
+     *
+     * @param null|float $rdAverage rdAverage
+     *
+     * @return self
+     */
+    public function setRdAverage($rdAverage)
+    {
+        if (is_null($rdAverage)) {
+            array_push($this->openAPINullablesSetToNull, 'rdAverage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rdAverage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rdAverage'] = $rdAverage;
+
+        return $this;
+    }
+
+    /**
+     * Gets rdShortest.
+     *
+     * @return null|float
+     */
+    public function getRdShortest()
+    {
+        return $this->container['rdShortest'];
+    }
+
+    /**
+     * Sets rdShortest.
+     *
+     * @param null|float $rdShortest rdShortest
+     *
+     * @return self
+     */
+    public function setRdShortest($rdShortest)
+    {
+        if (is_null($rdShortest)) {
+            array_push($this->openAPINullablesSetToNull, 'rdShortest');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rdShortest', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rdShortest'] = $rdShortest;
+
+        return $this;
+    }
+
+    /**
+     * Gets rdLongest.
+     *
+     * @return null|float
+     */
+    public function getRdLongest()
+    {
+        return $this->container['rdLongest'];
+    }
+
+    /**
+     * Sets rdLongest.
+     *
+     * @param null|float $rdLongest rdLongest
+     *
+     * @return self
+     */
+    public function setRdLongest($rdLongest)
+    {
+        if (is_null($rdLongest)) {
+            array_push($this->openAPINullablesSetToNull, 'rdLongest');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rdLongest', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rdLongest'] = $rdLongest;
+
+        return $this;
+    }
+
+    /**
+     * Gets duration.
+     *
+     * @return null|float
+     */
+    public function getDuration()
+    {
+        return $this->container['duration'];
+    }
+
+    /**
+     * Sets duration.
+     *
+     * @param null|float $duration duration
+     *
+     * @return self
+     */
+    public function setDuration($duration)
+    {
+        if (is_null($duration)) {
+            array_push($this->openAPINullablesSetToNull, 'duration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('duration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['duration'] = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Gets skipUnchanged.
+     *
+     * @return null|bool
+     */
+    public function getSkipUnchanged()
+    {
+        return $this->container['skipUnchanged'];
+    }
+
+    /**
+     * Sets skipUnchanged.
+     *
+     * @param null|bool $skipUnchanged skipUnchanged
+     *
+     * @return self
+     */
+    public function setSkipUnchanged($skipUnchanged)
+    {
+        if (is_null($skipUnchanged)) {
+            array_push($this->openAPINullablesSetToNull, 'skipUnchanged');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipUnchanged', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['skipUnchanged'] = $skipUnchanged;
 
         return $this;
     }
