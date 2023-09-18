@@ -17,7 +17,7 @@ interface IPullOperation
     /**
      * @return null|string
      */
-    public function getVersionId(?string $language = null);
+    public function getVersionId(?string $language = null, ?bool $including_translations = false);
 
     /**
      * @return string
