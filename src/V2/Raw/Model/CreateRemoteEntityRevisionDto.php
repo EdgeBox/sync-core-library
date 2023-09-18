@@ -81,6 +81,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => 'string[]',
         'changedLanguages' => 'string[]',
         'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
     ];
 
     /**
@@ -113,6 +114,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => null,
         'changedLanguages' => null,
         'versionId' => null,
+        'versionIdWithTranslations' => null,
     ];
 
     /**
@@ -143,6 +145,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => true,
         'changedLanguages' => true,
         'versionId' => true,
+        'versionIdWithTranslations' => true,
     ];
 
     /**
@@ -181,6 +184,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => 'allLanguages',
         'changedLanguages' => 'changedLanguages',
         'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
     ];
 
     /**
@@ -211,6 +215,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => 'setAllLanguages',
         'changedLanguages' => 'setChangedLanguages',
         'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
     ];
 
     /**
@@ -241,6 +246,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allLanguages' => 'getAllLanguages',
         'changedLanguages' => 'getChangedLanguages',
         'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
     ];
 
     /**
@@ -280,6 +286,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('allLanguages', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
     }
 
     /**
@@ -1112,6 +1119,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }

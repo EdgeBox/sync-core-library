@@ -85,6 +85,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => 'float',
         'clonedFrom' => 'DynamicReference',
         'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
         'syndication' => 'DynamicReference',
     ];
 
@@ -122,6 +123,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => null,
         'clonedFrom' => null,
         'versionId' => null,
+        'versionIdWithTranslations' => null,
         'syndication' => null,
     ];
 
@@ -157,6 +159,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => true,
         'clonedFrom' => true,
         'versionId' => false,
+        'versionIdWithTranslations' => true,
         'syndication' => true,
     ];
 
@@ -200,6 +203,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => 'deletedAt',
         'clonedFrom' => 'clonedFrom',
         'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
         'syndication' => 'syndication',
     ];
 
@@ -235,6 +239,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => 'setDeletedAt',
         'clonedFrom' => 'setClonedFrom',
         'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'syndication' => 'setSyndication',
     ];
 
@@ -270,6 +275,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'deletedAt' => 'getDeletedAt',
         'clonedFrom' => 'getClonedFrom',
         'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'syndication' => 'getSyndication',
     ];
 
@@ -314,6 +320,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('clonedFrom', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('syndication', $data ?? [], null);
     }
 
@@ -1255,6 +1262,40 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
             throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }

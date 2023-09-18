@@ -85,6 +85,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => 'float',
         'clonedFrom' => 'DynamicReference',
         'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
     ];
 
     /**
@@ -121,6 +122,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => null,
         'clonedFrom' => null,
         'versionId' => null,
+        'versionIdWithTranslations' => null,
     ];
 
     /**
@@ -155,6 +157,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => true,
         'clonedFrom' => true,
         'versionId' => false,
+        'versionIdWithTranslations' => true,
     ];
 
     /**
@@ -197,6 +200,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => 'deletedAt',
         'clonedFrom' => 'clonedFrom',
         'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
     ];
 
     /**
@@ -231,6 +235,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => 'setDeletedAt',
         'clonedFrom' => 'setClonedFrom',
         'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
     ];
 
     /**
@@ -265,6 +270,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'deletedAt' => 'getDeletedAt',
         'clonedFrom' => 'getClonedFrom',
         'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
     ];
 
     /**
@@ -308,6 +314,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('clonedFrom', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
     }
 
     /**
@@ -1248,6 +1255,40 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
             throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }
