@@ -71,6 +71,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => 'bool',
         'siteRequests' => 'float',
         'startTime' => 'float',
+        'requestDuration' => 'float',
+        'slowestRequestDuration' => 'float',
     ];
 
     /**
@@ -93,6 +95,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => null,
         'siteRequests' => null,
         'startTime' => null,
+        'requestDuration' => null,
+        'slowestRequestDuration' => null,
     ];
 
     /**
@@ -113,6 +117,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => true,
         'siteRequests' => true,
         'startTime' => true,
+        'requestDuration' => true,
+        'slowestRequestDuration' => true,
     ];
 
     /**
@@ -141,6 +147,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => 'cloneExisting',
         'siteRequests' => 'siteRequests',
         'startTime' => 'startTime',
+        'requestDuration' => 'requestDuration',
+        'slowestRequestDuration' => 'slowestRequestDuration',
     ];
 
     /**
@@ -161,6 +169,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => 'setCloneExisting',
         'siteRequests' => 'setSiteRequests',
         'startTime' => 'setStartTime',
+        'requestDuration' => 'setRequestDuration',
+        'slowestRequestDuration' => 'setSlowestRequestDuration',
     ];
 
     /**
@@ -181,6 +191,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'cloneExisting' => 'getCloneExisting',
         'siteRequests' => 'getSiteRequests',
         'startTime' => 'getStartTime',
+        'requestDuration' => 'getRequestDuration',
+        'slowestRequestDuration' => 'getSlowestRequestDuration',
     ];
 
     /**
@@ -210,6 +222,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('cloneExisting', $data ?? [], null);
         $this->setIfExists('siteRequests', $data ?? [], null);
         $this->setIfExists('startTime', $data ?? [], null);
+        $this->setIfExists('requestDuration', $data ?? [], null);
+        $this->setIfExists('slowestRequestDuration', $data ?? [], null);
     }
 
     /**
@@ -722,6 +736,74 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             }
         }
         $this->container['startTime'] = $startTime;
+
+        return $this;
+    }
+
+    /**
+     * Gets requestDuration.
+     *
+     * @return null|float
+     */
+    public function getRequestDuration()
+    {
+        return $this->container['requestDuration'];
+    }
+
+    /**
+     * Sets requestDuration.
+     *
+     * @param null|float $requestDuration requestDuration
+     *
+     * @return self
+     */
+    public function setRequestDuration($requestDuration)
+    {
+        if (is_null($requestDuration)) {
+            array_push($this->openAPINullablesSetToNull, 'requestDuration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requestDuration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['requestDuration'] = $requestDuration;
+
+        return $this;
+    }
+
+    /**
+     * Gets slowestRequestDuration.
+     *
+     * @return null|float
+     */
+    public function getSlowestRequestDuration()
+    {
+        return $this->container['slowestRequestDuration'];
+    }
+
+    /**
+     * Sets slowestRequestDuration.
+     *
+     * @param null|float $slowestRequestDuration slowestRequestDuration
+     *
+     * @return self
+     */
+    public function setSlowestRequestDuration($slowestRequestDuration)
+    {
+        if (is_null($slowestRequestDuration)) {
+            array_push($this->openAPINullablesSetToNull, 'slowestRequestDuration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('slowestRequestDuration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['slowestRequestDuration'] = $slowestRequestDuration;
 
         return $this;
     }
