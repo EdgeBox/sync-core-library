@@ -75,7 +75,7 @@ abstract class Embed
         $is_page = 'page' === $size;
         $is_line = 'line' === $size;
 
-        $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.time().'-'.(self::$embed_count++);
+        $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.preg_replace('@[^a-z0-9-]@', '-', uniqid('', true));
 
         $html = '<style>
   #'.$id.' {
