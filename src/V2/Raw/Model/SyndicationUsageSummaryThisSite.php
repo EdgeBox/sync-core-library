@@ -78,6 +78,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'isUpdate' => 'bool',
+        'isAutoUpdate' => 'bool',
         'isRegularSyndication' => 'bool',
         'changedLanguages' => 'string[]',
         'rdTotal' => 'float',
@@ -86,6 +87,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => 'float',
         'rdLongest' => 'float',
         'duration' => 'float',
+        'fullDuration' => 'float',
         'skipUnchanged' => 'bool',
         'dependsOnSyndication' => 'DynamicReference',
         'id' => 'string',
@@ -124,6 +126,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => null,
         'skipSyndication' => null,
         'isUpdate' => null,
+        'isAutoUpdate' => null,
         'isRegularSyndication' => null,
         'changedLanguages' => null,
         'rdTotal' => null,
@@ -132,6 +135,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => null,
         'rdLongest' => null,
         'duration' => null,
+        'fullDuration' => null,
         'skipUnchanged' => null,
         'dependsOnSyndication' => null,
         'id' => null,
@@ -168,6 +172,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => true,
         'skipSyndication' => true,
         'isUpdate' => true,
+        'isAutoUpdate' => true,
         'isRegularSyndication' => true,
         'changedLanguages' => true,
         'rdTotal' => true,
@@ -176,6 +181,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => true,
         'rdLongest' => true,
         'duration' => true,
+        'fullDuration' => true,
         'skipUnchanged' => true,
         'dependsOnSyndication' => true,
         'id' => false,
@@ -220,6 +226,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
         'isUpdate' => 'isUpdate',
+        'isAutoUpdate' => 'isAutoUpdate',
         'isRegularSyndication' => 'isRegularSyndication',
         'changedLanguages' => 'changedLanguages',
         'rdTotal' => 'rdTotal',
@@ -228,6 +235,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => 'rdShortest',
         'rdLongest' => 'rdLongest',
         'duration' => 'duration',
+        'fullDuration' => 'fullDuration',
         'skipUnchanged' => 'skipUnchanged',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'id' => 'id',
@@ -264,6 +272,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
         'isUpdate' => 'setIsUpdate',
+        'isAutoUpdate' => 'setIsAutoUpdate',
         'isRegularSyndication' => 'setIsRegularSyndication',
         'changedLanguages' => 'setChangedLanguages',
         'rdTotal' => 'setRdTotal',
@@ -272,6 +281,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => 'setRdShortest',
         'rdLongest' => 'setRdLongest',
         'duration' => 'setDuration',
+        'fullDuration' => 'setFullDuration',
         'skipUnchanged' => 'setSkipUnchanged',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'id' => 'setId',
@@ -308,6 +318,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
         'isUpdate' => 'getIsUpdate',
+        'isAutoUpdate' => 'getIsAutoUpdate',
         'isRegularSyndication' => 'getIsRegularSyndication',
         'changedLanguages' => 'getChangedLanguages',
         'rdTotal' => 'getRdTotal',
@@ -316,6 +327,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'rdShortest' => 'getRdShortest',
         'rdLongest' => 'getRdLongest',
         'duration' => 'getDuration',
+        'fullDuration' => 'getFullDuration',
         'skipUnchanged' => 'getSkipUnchanged',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'id' => 'getId',
@@ -361,6 +373,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('isUpdate', $data ?? [], null);
+        $this->setIfExists('isAutoUpdate', $data ?? [], null);
         $this->setIfExists('isRegularSyndication', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
         $this->setIfExists('rdTotal', $data ?? [], null);
@@ -369,6 +382,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('rdShortest', $data ?? [], null);
         $this->setIfExists('rdLongest', $data ?? [], null);
         $this->setIfExists('duration', $data ?? [], null);
+        $this->setIfExists('fullDuration', $data ?? [], null);
         $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -1119,6 +1133,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
     }
 
     /**
+     * Gets isAutoUpdate.
+     *
+     * @return null|bool
+     */
+    public function getIsAutoUpdate()
+    {
+        return $this->container['isAutoUpdate'];
+    }
+
+    /**
+     * Sets isAutoUpdate.
+     *
+     * @param null|bool $isAutoUpdate isAutoUpdate
+     *
+     * @return self
+     */
+    public function setIsAutoUpdate($isAutoUpdate)
+    {
+        if (is_null($isAutoUpdate)) {
+            array_push($this->openAPINullablesSetToNull, 'isAutoUpdate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isAutoUpdate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isAutoUpdate'] = $isAutoUpdate;
+
+        return $this;
+    }
+
+    /**
      * Gets isRegularSyndication.
      *
      * @return null|bool
@@ -1386,6 +1434,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
             }
         }
         $this->container['duration'] = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Gets fullDuration.
+     *
+     * @return null|float
+     */
+    public function getFullDuration()
+    {
+        return $this->container['fullDuration'];
+    }
+
+    /**
+     * Sets fullDuration.
+     *
+     * @param null|float $fullDuration fullDuration
+     *
+     * @return self
+     */
+    public function setFullDuration($fullDuration)
+    {
+        if (is_null($fullDuration)) {
+            array_push($this->openAPINullablesSetToNull, 'fullDuration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fullDuration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fullDuration'] = $fullDuration;
 
         return $this;
     }
