@@ -78,6 +78,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'isUpdate' => 'bool',
+        'isAutoUpdate' => 'bool',
         'isRegularSyndication' => 'bool',
         'changedLanguages' => 'string[]',
         'rdTotal' => 'float',
@@ -86,6 +87,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => 'float',
         'rdLongest' => 'float',
         'duration' => 'float',
+        'fullDuration' => 'float',
         'skipUnchanged' => 'bool',
         'dependsOnSyndication' => 'DynamicReference',
         'id' => 'string',
@@ -123,6 +125,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => null,
         'skipSyndication' => null,
         'isUpdate' => null,
+        'isAutoUpdate' => null,
         'isRegularSyndication' => null,
         'changedLanguages' => null,
         'rdTotal' => null,
@@ -131,6 +134,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => null,
         'rdLongest' => null,
         'duration' => null,
+        'fullDuration' => null,
         'skipUnchanged' => null,
         'dependsOnSyndication' => null,
         'id' => null,
@@ -166,6 +170,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => true,
         'skipSyndication' => true,
         'isUpdate' => true,
+        'isAutoUpdate' => true,
         'isRegularSyndication' => true,
         'changedLanguages' => true,
         'rdTotal' => true,
@@ -174,6 +179,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => true,
         'rdLongest' => true,
         'duration' => true,
+        'fullDuration' => true,
         'skipUnchanged' => true,
         'dependsOnSyndication' => true,
         'id' => false,
@@ -217,6 +223,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
         'isUpdate' => 'isUpdate',
+        'isAutoUpdate' => 'isAutoUpdate',
         'isRegularSyndication' => 'isRegularSyndication',
         'changedLanguages' => 'changedLanguages',
         'rdTotal' => 'rdTotal',
@@ -225,6 +232,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => 'rdShortest',
         'rdLongest' => 'rdLongest',
         'duration' => 'duration',
+        'fullDuration' => 'fullDuration',
         'skipUnchanged' => 'skipUnchanged',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'id' => 'id',
@@ -260,6 +268,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
         'isUpdate' => 'setIsUpdate',
+        'isAutoUpdate' => 'setIsAutoUpdate',
         'isRegularSyndication' => 'setIsRegularSyndication',
         'changedLanguages' => 'setChangedLanguages',
         'rdTotal' => 'setRdTotal',
@@ -268,6 +277,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => 'setRdShortest',
         'rdLongest' => 'setRdLongest',
         'duration' => 'setDuration',
+        'fullDuration' => 'setFullDuration',
         'skipUnchanged' => 'setSkipUnchanged',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'id' => 'setId',
@@ -303,6 +313,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
         'isUpdate' => 'getIsUpdate',
+        'isAutoUpdate' => 'getIsAutoUpdate',
         'isRegularSyndication' => 'getIsRegularSyndication',
         'changedLanguages' => 'getChangedLanguages',
         'rdTotal' => 'getRdTotal',
@@ -311,6 +322,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rdShortest' => 'getRdShortest',
         'rdLongest' => 'getRdLongest',
         'duration' => 'getDuration',
+        'fullDuration' => 'getFullDuration',
         'skipUnchanged' => 'getSkipUnchanged',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'id' => 'getId',
@@ -355,6 +367,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('isUpdate', $data ?? [], null);
+        $this->setIfExists('isAutoUpdate', $data ?? [], null);
         $this->setIfExists('isRegularSyndication', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
         $this->setIfExists('rdTotal', $data ?? [], null);
@@ -363,6 +376,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('rdShortest', $data ?? [], null);
         $this->setIfExists('rdLongest', $data ?? [], null);
         $this->setIfExists('duration', $data ?? [], null);
+        $this->setIfExists('fullDuration', $data ?? [], null);
         $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -1112,6 +1126,40 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
+     * Gets isAutoUpdate.
+     *
+     * @return null|bool
+     */
+    public function getIsAutoUpdate()
+    {
+        return $this->container['isAutoUpdate'];
+    }
+
+    /**
+     * Sets isAutoUpdate.
+     *
+     * @param null|bool $isAutoUpdate isAutoUpdate
+     *
+     * @return self
+     */
+    public function setIsAutoUpdate($isAutoUpdate)
+    {
+        if (is_null($isAutoUpdate)) {
+            array_push($this->openAPINullablesSetToNull, 'isAutoUpdate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isAutoUpdate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isAutoUpdate'] = $isAutoUpdate;
+
+        return $this;
+    }
+
+    /**
      * Gets isRegularSyndication.
      *
      * @return null|bool
@@ -1379,6 +1427,40 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['duration'] = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Gets fullDuration.
+     *
+     * @return null|float
+     */
+    public function getFullDuration()
+    {
+        return $this->container['fullDuration'];
+    }
+
+    /**
+     * Sets fullDuration.
+     *
+     * @param null|float $fullDuration fullDuration
+     *
+     * @return self
+     */
+    public function setFullDuration($fullDuration)
+    {
+        if (is_null($fullDuration)) {
+            array_push($this->openAPINullablesSetToNull, 'fullDuration');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fullDuration', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fullDuration'] = $fullDuration;
 
         return $this;
     }
