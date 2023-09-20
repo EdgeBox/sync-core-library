@@ -9,6 +9,7 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class Embed
 {
+    public static $iframeResizerAdded = '';
     public static $embed_count = 0;
     /**
      * @var SyncCore
@@ -87,7 +88,7 @@ abstract class Embed
 <iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'" loading="lazy">
   The page could not be loaded as your browser does not support it.
 </iframe>
-<script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>
+'.(Embed::$iframeResizerAdded ? '' : Embed::$iframeResizerAdded = '<script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>').'
 <script>
 (function() {
   // Avoid "mixed content" error message in case the base url is given as http but the currrent site is loaded via https.
