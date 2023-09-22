@@ -217,6 +217,10 @@ abstract class Embed
             behavior: "smooth",
           });
         }
+        else if (message.type === "update-query") {
+          var query = Object.entries(message.query).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&");
+          window.history.replaceState(message.query, window.document.title, `?${query}`);
+        }
         else {
           throw new Error("Unknown message "+JSON.stringify(message));
         }
