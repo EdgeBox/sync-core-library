@@ -16,13 +16,14 @@ class PullDashboardEmbed extends Embed implements IEmbedFeature
 
     public function __construct(SyncCore $core, $params)
     {
-        $this->options = $params;
-
         parent::__construct(
             $core,
             IEmbedService::PULL_DASHBOARD,
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
         );
+
+        $this->options = $params;
+        $this->options['imagePreviewJwt'] = $this->core->createJwt('file-download', 'jwt-param');
     }
 
     public function run()

@@ -390,7 +390,7 @@ class SyncCore implements ISyncCore
         return $this->hasValidV2SiteId();
     }
 
-    public function createJwt($permissions)
+    public function createJwt($permissions, $provider = 'jwt-header')
     {
         $uuid = $this->application->getSiteUuid();
         if (!$uuid) {
@@ -406,7 +406,7 @@ class SyncCore implements ISyncCore
                     IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT,
                 ]
                 : [$permissions],
-            'provider' => 'jwt-header',
+            'provider' => $provider,
             'uuid' => $uuid,
             'exp' => time() + self::JWT_LIFETIME,
         ];
