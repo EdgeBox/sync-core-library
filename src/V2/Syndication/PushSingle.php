@@ -16,9 +16,11 @@ use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
+use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
+use EdgeBox\SyncCore\V2\SerializableWithSyncCoreReference;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class PushSingle implements IPushSingle
+class PushSingle extends SerializableWithSyncCoreReference implements IPushSingle
 {
     public const RESERVED_PROPERTY_NAMES = [];
 
@@ -571,6 +573,50 @@ class PushSingle implements IPushSingle
         ]);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize()
+    {
+        $translations = [];
+        foreach ($this->translations as $translation) {
+            $translations[] = [
+                'dtoClass' => get_class($translation),
+                'dtoSerialized' => $translation->jsonSerialize(),
+            ];
+        }
+
+        return serialize([
+            'syncCore' => $this->serializeSyncCore(),
+            'dtoClass' => $this->dto ? get_class($this->dto) : null,
+            'dtoClass' => $this->dto ? get_class($this->dto) : null,
+            'dtoSerialized' => $this->dto ? $this->dto->jsonSerialize() : null,
+            'translations' => $translations,
+            'isDependency' => $this->is_dependency,
+            'isDeletion' => $this->is_deletion,
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        $this->unserializeSyncCore($data['syncCore']);
+
+        $this->is_dependency = $data['isDependency'];
+        $this->is_deletion = $data['isDeletion'];
+
+        $this->dto = @ObjectSerializer::deserialize($data['dtoSerialized'], $data['dtoClass'], []);
+
+        $this->translations = [];
+        foreach ($data['translations'] as $translation) {
+            $this->translations[] = @ObjectSerializer::deserialize($translation['dtoSerialized'], $translation['dtoClass'], []);
+        }
     }
 
     protected function initEmptyDto(string $language, ?string $flowMachineName = null, ?EntityTypeVersionReference $typeReference = null, ?string $uuid = null, ?string $unique_id = null)
