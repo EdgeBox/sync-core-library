@@ -61,7 +61,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
 
         $response = $this
             ->core
-            ->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT)
+            ->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::CONFIG_GET_RETRY_COUNT)
         ;
 
         return $response['name'];
@@ -86,7 +86,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
              */
             $item = $this
                 ->core
-                ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+                ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_GET_RETRY_COUNT)
             ;
         }
 
@@ -104,7 +104,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         /**
          * @var FileEntity $file
          */
-        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $file = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_GET_RETRY_COUNT);
 
         if (empty($file->getDownloadUrl())) {
             return null;

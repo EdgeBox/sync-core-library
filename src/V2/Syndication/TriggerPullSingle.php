@@ -79,7 +79,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createSyndicationDto: $this->dto);
-        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
 
         return $this;
     }

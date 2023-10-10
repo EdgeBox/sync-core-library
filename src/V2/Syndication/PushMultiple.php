@@ -74,7 +74,7 @@ class PushMultiple implements IPushMultiple
 
         $this
             ->core
-            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT)
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PUSH_RETRY_COUNT)
         ;
 
         return $this;

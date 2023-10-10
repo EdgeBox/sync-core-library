@@ -463,7 +463,7 @@ class PullOperation implements IPullOperation
         /**
          * @var FileEntity $file
          */
-        $this->fileEntity = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $this->fileEntity = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::FILE_DOWNLOAD_RETRY_COUNT);
 
         return $this->fileEntity;
     }

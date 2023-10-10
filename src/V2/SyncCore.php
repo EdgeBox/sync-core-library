@@ -49,9 +49,33 @@ class SyncCore implements ISyncCore
 {
     // Keep tokens alive for 4 hours.
     public const JWT_LIFETIME = 60 * 60 * 4;
+    public const SITE_REGISTER_RETRY_COUNT = 2;
+    public const SITE_UPDATE_RETRY_COUNT = 3;
+    public const SITE_GET_RETRY_COUNT = 3;
+    public const FEATURE_ENABLE_RETRY_COUNT = 3;
+    public const FILE_UPLOAD_RETRY_COUNT = 2;
+    public const FILE_DOWNLOAD_RETRY_COUNT = 3;
+    public const FEATURES_GET_RETRY_COUNT = 3;
+    public const CONFIG_EXPORT_RETRY_COUNT = 3;
+    public const CONFIG_GET_RETRY_COUNT = 3;
+    public const LOG_GET_RETRY_COUNT = 3;
+    public const STATUS_GET_RETRY_COUNT = 3;
+    public const ENTITY_TYPE_DIFFERENCES_RETRY_COUNT = 2;
+    public const REQUEST_POLLING_RETRY_COUNT = 2;
+    public const PUSH_RETRY_COUNT = 4;
+    public const PULL_RETRY_COUNT = 4;
+    public const UPDATES_GET_RETRY_COUNT = 3;
     protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
     protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
     protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';
+    protected const RETRYABLE_STATUS_CODES = [
+        // Bad Gateway
+        502,
+        // Service Unavailable
+        503,
+        // Gateway Timeout
+        504,
+    ];
     /**
      * @var string
      *             The base URL of the remote Sync Core. See Pool::$backend_url
@@ -177,7 +201,7 @@ class SyncCore implements ISyncCore
      *
      * @return FileEntity
      */
-    public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false, ?string $mimetype = null)
+    public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false, ?string $mimetype = null, int $retry_count = self::FILE_UPLOAD_RETRY_COUNT)
     {
         $fileDto = new CreateFileDto();
 
@@ -209,7 +233,7 @@ class SyncCore implements ISyncCore
         /**
          * @var FileEntity $file
          */
-        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
+        $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions, false, $retry_count);
 
         $upload_url = $file->getUploadUrl();
         /**
@@ -266,12 +290,12 @@ class SyncCore implements ISyncCore
                 [],
                 $httpBody
             );
-            $this->sendRaw($request, []);
+            $this->sendRaw($request, [], $retry_count);
         }
 
         $request = $this->getClient()->fileControllerFileUploadedRequest(id: $file->getId());
 
-        return $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions);
+        return $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions, false, $retry_count);
     }
 
     /**
@@ -279,7 +303,9 @@ class SyncCore implements ISyncCore
      * of unnecessary nonsense, we only want the raw request and then handle status codes
      * etc ourselves.
      *
-     * @param array $options
+     * @param Request $request the request to send through Guzzle
+     * @param array $options Optional request options to provide to Guzzle along with the request e.g. to set a timeout.
+     * @param int $retry_count how often to retry the request if it fails
      *
      * @throws BadRequestException
      * @throws ForbiddenException
@@ -289,7 +315,7 @@ class SyncCore implements ISyncCore
      *
      * @return mixed
      */
-    public function sendRaw(Request $request, $options = [])
+    public function sendRaw(Request $request, array $options, int $retry_count)
     {
         try {
             $options = [
@@ -304,6 +330,10 @@ class SyncCore implements ISyncCore
 
             $response = $this->application->getHttpClient()->send($request, $options);
         } catch (ConnectException $e) {
+            if ($retry_count > 1) {
+                return $this->sendRaw($request, $options, $retry_count - 1);
+            }
+
             throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
         } catch (GuzzleException $e) {
             throw new SyncCoreException($e->getMessage());
@@ -316,6 +346,10 @@ class SyncCore implements ISyncCore
         $response_body = $response->getBody();
 
         if (200 !== $status && 201 !== $status) {
+            if ($retry_count > 1 && in_array($status, self::RETRYABLE_STATUS_CODES)) {
+                return $this->sendRaw($request, $options, $retry_count - 1);
+            }
+
             $data = json_decode($response_body, true);
             $message = isset($data['message']) ? $data['message'] : $response_body.'';
             if (!is_string($message)) {
@@ -345,6 +379,11 @@ class SyncCore implements ISyncCore
      * of unnecessary nonsense, we only want the raw request and then handle status codes
      * etc ourselves.
      *
+     * @param Request $request the request to send through Guzzle
+     * @param string $permissions "configuration" or "content"
+     * @param bool $quick Whether to prefer failing if a response can't be gotten quickly. E.g. if you do something optional or have a fallback.
+     * @param int $retry_count how often to retry the request if it fails
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
@@ -353,14 +392,22 @@ class SyncCore implements ISyncCore
      *
      * @return mixed
      */
-    public function sendToSyncCore(Request $request, string $permissions, bool $quick = false)
+    public function sendToSyncCore(Request $request, string $permissions, bool $quick, int $retry_count)
     {
         $jwt = $this->createJwt($permissions);
 
-        return $this->sendToSyncCoreWithJwt($request, $jwt, $quick);
+        return $this->sendToSyncCoreWithJwt($request, $jwt, $quick, $retry_count);
     }
 
-    public function sendToSyncCoreWithJwt(Request $request, string $jwt, bool $quick = false)
+    /**
+     * @param Request $request the request to send through Guzzle
+     * @param string $jwt "configuration" or "content"
+     * @param bool $quick Whether to prefer failing if a response can't be gotten quickly. E.g. if you do something optional or have a fallback.
+     * @param int $retry_count how often to retry the request if it fails
+     *
+     * @return mixed
+     */
+    public function sendToSyncCoreWithJwt(Request $request, string $jwt, bool $quick, int $retry_count)
     {
         $options = [];
         $options[RequestOptions::HEADERS]['Authorization'] = 'Bearer '.$jwt;
@@ -369,17 +416,31 @@ class SyncCore implements ISyncCore
             $options[RequestOptions::TIMEOUT] = $this->timeout_quick;
         }
 
-        return $this->sendRaw($request, $options);
+        return $this->sendRaw($request, $options, $quick ? 1 : $retry_count);
     }
 
-    public function sendToSyncCoreWithJwtAndExpect(Request $request, string $class, string $jwt)
+    /**
+     * @param Request $request the request to send through Guzzle
+     * @param string $class The expected response when deserialized. use Class::class to get the name reliably.
+     * @param string $jwt the JWT for authentication for "configuration" or "content"
+     * @param int $retry_count how often to retry the request if it fails
+     *
+     * @return object|Raw\Model\ModelInterface
+     */
+    public function sendToSyncCoreWithJwtAndExpect(Request $request, string $class, string $jwt, bool $quick, int $retry_count)
     {
-        $response = $this->sendToSyncCoreWithJwt($request, $jwt);
+        $response = $this->sendToSyncCoreWithJwt($request, $jwt, $quick, $retry_count);
 
         return @ObjectSerializer::deserialize($response, $class, []);
     }
 
     /**
+     * @param Request $request the request to send through Guzzle
+     * @param string $class The expected response when deserialized. use Class::class to get the name reliably.
+     * @param string $permissions "configuration" or "content"
+     * @param bool $quick Whether to prefer failing if a response can't be gotten quickly. E.g. if you do something optional or have a fallback.
+     * @param int $retry_count how often to retry the request if it fails
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
@@ -388,9 +449,9 @@ class SyncCore implements ISyncCore
      *
      * @return object|Raw\Model\ModelInterface
      */
-    public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions, bool $quick = false)
+    public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions, bool $quick, int $retry_count)
     {
-        $response = $this->sendToSyncCore($request, $permissions, $quick);
+        $response = $this->sendToSyncCore($request, $permissions, $quick, $retry_count);
 
         return @ObjectSerializer::deserialize($response, $class, []);
     }
@@ -463,7 +524,7 @@ class SyncCore implements ISyncCore
         }
 
         $request = $this->client->siteControllerRegisterNewRequest(registerNewSiteDto: $dto);
-        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $token);
+        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $token, false, self::SITE_REGISTER_RETRY_COUNT);
 
         $siteId = $entity->getUuid();
         $this->application->setSiteUuid($siteId);
@@ -478,7 +539,7 @@ class SyncCore implements ISyncCore
         $authentication->setPassword($auth['password']);
 
         $request = $this->client->authenticationControllerCreateRequest(createAuthenticationDto: $authentication);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_REGISTER_RETRY_COUNT);
     }
 
     public function registerSiteWithJwt($options)
@@ -518,7 +579,7 @@ class SyncCore implements ISyncCore
         }
 
         $request = $this->client->siteControllerRegisterRequest(registerSiteDto: $dto);
-        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt']);
+        $entity = $this->sendToSyncCoreWithJwtAndExpect($request, SiteEntity::class, $options['jwt'], false, self::SITE_REGISTER_RETRY_COUNT);
 
         $siteId = $entity->getUuid();
         $this->application->setSiteUuid($siteId);
@@ -533,7 +594,7 @@ class SyncCore implements ISyncCore
         $authentication->setPassword($auth['password']);
 
         $request = $this->client->authenticationControllerCreateRequest(createAuthenticationDto: $authentication);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_REGISTER_RETRY_COUNT);
     }
 
     public function getCloudEmbedUrl()
@@ -564,7 +625,7 @@ class SyncCore implements ISyncCore
         /**
          * @var FeatureFlagSummary $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, FeatureFlagSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick);
+        $response = $this->sendToSyncCoreAndExpect($request, FeatureFlagSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, self::FEATURES_GET_RETRY_COUNT);
 
         $flags = (array) $response->getFlags();
 
@@ -594,7 +655,7 @@ class SyncCore implements ISyncCore
         $dto->setValue($value);
 
         $request = $this->client->featuresControllerUpdateRequest($target_type, $name, $dto);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::FEATURE_ENABLE_RETRY_COUNT);
     }
 
     public function getApplication()
@@ -645,7 +706,9 @@ class SyncCore implements ISyncCore
         $response = $this->sendToSyncCoreAndExpect(
             $request,
             EntityTypeVersionUsage::class,
-            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
+            IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION,
+            false,
+            self::ENTITY_TYPE_DIFFERENCES_RETRY_COUNT
         );
 
         // FIXME: With the new Sync Core version we have a lot more helpful data available.
@@ -750,7 +813,7 @@ class SyncCore implements ISyncCore
             $dto->setDomains($domains);
         }
         $request = $this->client->siteControllerUpdateRequest(createSiteDto: $dto);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_UPDATE_RETRY_COUNT);
     }
 
     public function setSiteName(string $set)
@@ -762,7 +825,7 @@ class SyncCore implements ISyncCore
 
         $dto->setName($set);
         $request = $this->client->siteControllerUpdateRequest(createSiteDto: $dto);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_UPDATE_RETRY_COUNT);
     }
 
     public function updateSiteAtSyncCore()
@@ -776,7 +839,7 @@ class SyncCore implements ISyncCore
         $this->addSiteDetails($dto);
 
         $request = $this->client->siteControllerUpdateRequest($dto);
-        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_REGISTER_RETRY_COUNT);
     }
 
     public function verifySiteId()
@@ -795,7 +858,7 @@ class SyncCore implements ISyncCore
         /**
          * @var PagedRequestList $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::REQUEST_POLLING_RETRY_COUNT);
 
         return $response->getTotalNumberOfItems();
     }
@@ -809,7 +872,7 @@ class SyncCore implements ISyncCore
         /**
          * @var PagedRequestList $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->sendToSyncCoreAndExpect($request, PagedRequestList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::REQUEST_POLLING_RETRY_COUNT);
 
         return $response->getItems();
     }
@@ -830,7 +893,7 @@ class SyncCore implements ISyncCore
         /**
          * @var SuccessResponse $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, SuccessResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->sendToSyncCoreAndExpect($request, SuccessResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::REQUEST_POLLING_RETRY_COUNT);
 
         return $response->getSuccess();
     }
@@ -850,7 +913,7 @@ class SyncCore implements ISyncCore
             $request = $this->client->siteControllerItemRequest($uuid);
         }
 
-        return $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        return $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, self::SITE_GET_RETRY_COUNT);
     }
 
     /**
@@ -888,7 +951,7 @@ class SyncCore implements ISyncCore
 
         $id = $this->application->getSiteUuid();
         $request = $this->client->siteControllerItemByUuidRequest(uuid: $id);
-        $current = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $current = $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_GET_RETRY_COUNT);
 
         $serialized = json_decode(json_encode($current->jsonSerialize()), true);
 

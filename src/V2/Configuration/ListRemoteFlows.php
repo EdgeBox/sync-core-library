@@ -64,7 +64,7 @@ class ListRemoteFlows implements IListRemoteFlows
              */
             $response = $this
                 ->core
-                ->sendToSyncCoreAndExpect($request, PagedFlowList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+                ->sendToSyncCoreAndExpect($request, PagedFlowList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_GET_RETRY_COUNT)
             ;
 
             foreach ($response->getItems() as $item) {

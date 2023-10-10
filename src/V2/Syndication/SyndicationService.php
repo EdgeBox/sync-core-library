@@ -111,7 +111,7 @@ class SyndicationService implements ISyndicationService
             ->remoteEntityRevisionControllerDeleteRequest(deleteRemoteEntityRevisionDto: $dto)
         ;
 
-        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
     }
 
     /**
@@ -129,7 +129,7 @@ class SyndicationService implements ISyndicationService
             namespaceMachineName: $type
         );
         // TODO: Sync Core: Provide filter by pool name and entity type machine names.
-        $type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $type = $this->core->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
 
         do {
             $request = $this->core->getClient()->remoteEntityUsageControllerListRequest(
@@ -142,7 +142,7 @@ class SyndicationService implements ISyndicationService
             /**
              * @var PagedRemoteEntityUsageListResponse $response
              */
-            $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            $response = $this->core->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
 
             foreach ($response->getItems() as $item) {
                 if (EntityRemoteStatus::EXISTS === $item->getStatus()) {

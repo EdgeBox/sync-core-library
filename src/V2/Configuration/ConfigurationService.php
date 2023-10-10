@@ -46,7 +46,7 @@ class ConfigurationService implements IConfigurationService
          */
         $item = $this
             ->core
-            ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ->sendToSyncCoreAndExpect($request, FlowEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_GET_RETRY_COUNT)
         ;
 
         return new RemoteFlowItem($this->core, $item);
@@ -81,7 +81,7 @@ class ConfigurationService implements IConfigurationService
 
         $response = $this
             ->core
-            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_GET_RETRY_COUNT)
         ;
 
         $remote_pools = json_decode($response, true);
@@ -128,7 +128,7 @@ class ConfigurationService implements IConfigurationService
 
         $this
             ->core
-            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_EXPORT_RETRY_COUNT)
         ;
 
         return $this;

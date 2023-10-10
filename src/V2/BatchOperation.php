@@ -73,7 +73,7 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
 
         $this
             ->core
-            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION)
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::CONFIG_EXPORT_RETRY_COUNT)
         ;
     }
 

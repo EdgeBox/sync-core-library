@@ -211,7 +211,7 @@ abstract class MassUpdate
         $migrationDto->setEntityTypeReference($entityType);
 
         $request = $this->core->getClient()->migrationControllerCreateRequest(createMigrationDto: $migrationDto);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PUSH_RETRY_COUNT);
         $this->migrationId = $response->getId();
         $this->dtos = [$response];
 
@@ -265,7 +265,7 @@ abstract class MassUpdate
                     page: $page,
                     itemsPerPage: 25
                 );
-                $response = $this->core->sendToSyncCoreAndExpect($request, PagedMigrationList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+                $response = $this->core->sendToSyncCoreAndExpect($request, PagedMigrationList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
                 $dtos = array_merge($dtos, $response->getItems());
                 $number_of_pages = $response->getNumberOfPages();
                 ++$page;
@@ -277,7 +277,7 @@ abstract class MassUpdate
         $this->summaryDtos = [];
         foreach ($this->dtos as $dto) {
             $request = $this->core->getClient()->migrationControllerSummaryRequest(id: $dto->getId());
-            $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+            $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
             $this->summaryDtos[] = $response;
         }
     }

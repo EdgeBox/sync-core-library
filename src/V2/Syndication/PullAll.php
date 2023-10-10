@@ -187,7 +187,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $migrationDto->setEntityTypeReference($entityType);
 
         $request = $this->core->getClient()->migrationControllerCreateRequest(createMigrationDto: $migrationDto);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PULL_RETRY_COUNT);
         $this->dto = $response;
 
         $this->migrationId = $this->dto->getId();
@@ -229,7 +229,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         }
 
         $request = $this->core->getClient()->migrationControllerSummaryRequest(id: $this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
 
         return $this->summaryDto = $response;
     }
@@ -241,7 +241,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         }
 
         $request = $this->core->getClient()->migrationControllerItemRequest(id: $this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
 
         return $this->dto = $response;
     }

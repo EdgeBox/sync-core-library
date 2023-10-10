@@ -537,7 +537,7 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
                 ->remoteEntityRevisionControllerDeleteRequest(deleteRemoteEntityRevisionDto: $dto)
             ;
 
-            $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT);
+            $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PUSH_RETRY_COUNT);
 
             return $this;
         }
@@ -549,7 +549,7 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
 
         $this
             ->core
-            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT)
+            ->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PUSH_RETRY_COUNT)
         ;
 
         return $this;

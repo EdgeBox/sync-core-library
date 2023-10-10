@@ -40,7 +40,7 @@ class ReportingService implements IReportingService
         /**
          * @var SyndicationErrorList $response
          */
-        $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, SyndicationErrorList::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::LOG_GET_RETRY_COUNT);
 
         $messages = [];
         foreach ($response->getItems() as $item) {
@@ -83,13 +83,13 @@ class ReportingService implements IReportingService
         /**
          * @var UsageSummary $response
          */
-        $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::STATUS_GET_RETRY_COUNT);
 
         $version_request = $this->core->getClient()->configurationControllerInfoRequest();
         /**
          * @var SyncCoreInfo $version_response
          */
-        $version_response = $this->core->sendToSyncCoreAndExpect($version_request, SyncCoreInfo::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION);
+        $version_response = $this->core->sendToSyncCoreAndExpect($version_request, SyncCoreInfo::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::STATUS_GET_RETRY_COUNT);
 
         return [
             'version' => $version_response->getVersion(),
