@@ -444,6 +444,36 @@ class PullOperation implements IPullOperation
     }
 
     /**
+     * Try to load a file that was already embedded in the pull request to avoid
+     * additional requests to the Sync Core.
+     *
+     * @return null|FileEntity
+     */
+    public function loadEmbeddedFileEntity(string $id)
+    {
+        if ($this->parentPullOperation) {
+            return $this->parentPullOperation->loadEmbeddedFileEntity($id);
+        }
+
+        if (!($this->dto instanceof CreateRemoteEntityRevisionDto)) {
+            return null;
+        }
+
+        $files = $this->dto->getFiles();
+        if (!$files) {
+            return null;
+        }
+
+        foreach ($files as $file) {
+            if ($file->getId() === $id) {
+                return $file;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Load the Sync Core file object.
      *
      * @return null|FileEntity

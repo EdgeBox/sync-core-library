@@ -21,6 +21,7 @@ interface ISyncCore
     public const FEATURE_INDEPENDENT_FLOW_CONFIG = 'flow.independent-config';
     public const FEATURE_PULL_ALL_WITHOUT_POOL = 'migration.no-pool';
     public const FEATURE_PUSH_TO_MULTIPLE_POOLS = 'syndication.multiple-pools';
+    public const FEATURE_PULL_EMBED_FILES = 'syndication.pull-embed-files';
 
     // Dynamic features; availability is defined by the Sync Core.
     public const FEATURE_DYNAMIC_POOL_ASSIGNMENT = 'syndication:dynamic-pool-assignment';
