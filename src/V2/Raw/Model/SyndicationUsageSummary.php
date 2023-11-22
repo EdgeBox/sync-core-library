@@ -64,6 +64,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite',
         'sourceSite' => 'SyndicationEntityWithUsage',
         'targetSite' => 'SyndicationEntityWithUsage',
+        'targetSites' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[]',
         'targetSummary' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]',
     ];
 
@@ -80,6 +81,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => null,
         'sourceSite' => null,
         'targetSite' => null,
+        'targetSites' => null,
         'targetSummary' => null,
     ];
 
@@ -94,6 +96,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => false,
         'sourceSite' => true,
         'targetSite' => true,
+        'targetSites' => true,
         'targetSummary' => true,
     ];
 
@@ -116,6 +119,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => 'thisSite',
         'sourceSite' => 'sourceSite',
         'targetSite' => 'targetSite',
+        'targetSites' => 'targetSites',
         'targetSummary' => 'targetSummary',
     ];
 
@@ -130,6 +134,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => 'setThisSite',
         'sourceSite' => 'setSourceSite',
         'targetSite' => 'setTargetSite',
+        'targetSites' => 'setTargetSites',
         'targetSummary' => 'setTargetSummary',
     ];
 
@@ -144,6 +149,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         'thisSite' => 'getThisSite',
         'sourceSite' => 'getSourceSite',
         'targetSite' => 'getTargetSite',
+        'targetSites' => 'getTargetSites',
         'targetSummary' => 'getTargetSummary',
     ];
 
@@ -167,6 +173,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
         $this->setIfExists('thisSite', $data ?? [], null);
         $this->setIfExists('sourceSite', $data ?? [], null);
         $this->setIfExists('targetSite', $data ?? [], null);
+        $this->setIfExists('targetSites', $data ?? [], null);
         $this->setIfExists('targetSummary', $data ?? [], null);
     }
 
@@ -442,6 +449,40 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
             }
         }
         $this->container['targetSite'] = $targetSite;
+
+        return $this;
+    }
+
+    /**
+     * Gets targetSites.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[]
+     */
+    public function getTargetSites()
+    {
+        return $this->container['targetSites'];
+    }
+
+    /**
+     * Sets targetSites.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[] $targetSites targetSites
+     *
+     * @return self
+     */
+    public function setTargetSites($targetSites)
+    {
+        if (is_null($targetSites)) {
+            array_push($this->openAPINullablesSetToNull, 'targetSites');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('targetSites', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['targetSites'] = $targetSites;
 
         return $this;
     }

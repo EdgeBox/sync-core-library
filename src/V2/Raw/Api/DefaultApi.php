@@ -116,6 +116,9 @@ class DefaultApi
         'fileControllerItem' => [
             'application/json',
         ],
+        'fileControllerPreview' => [
+            'application/json',
+        ],
         'flowControllerCreate' => [
             'application/json',
         ],
@@ -6216,6 +6219,286 @@ class DefaultApi
         // this endpoint requires Bearer (JWT) authentication (access token)
         if (!empty($this->config->getAccessToken())) {
             $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation fileControllerPreview.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     */
+    public function fileControllerPreview($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
+    {
+        list($response) = $this->fileControllerPreviewWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation fileControllerPreviewWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function fileControllerPreviewWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
+    {
+        $request = $this->fileControllerPreviewRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation fileControllerPreviewAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function fileControllerPreviewAsync($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
+    {
+        return $this->fileControllerPreviewAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation fileControllerPreviewAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function fileControllerPreviewAsyncWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+        $request = $this->fileControllerPreviewRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'fileControllerPreview'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function fileControllerPreviewRequest($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling fileControllerPreview'
+            );
+        }
+
+        $resourcePath = '/sync-core/file/{id}/preview';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
         }
 
         $defaultHeaders = [];
@@ -20658,6 +20941,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerList.
      *
+     * @param  string $isRegularSyndication isRegularSyndication (optional)
+     * @param  string $isUpdate isUpdate (optional)
      * @param  string $statuses statuses (optional)
      * @param  string $migrationId migrationId (optional)
      * @param  string $includeUsage includeUsage (optional)
@@ -20681,9 +20966,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList
      */
-    public function syndicationControllerList($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerList($isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        list($response) = $this->syndicationControllerListWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        list($response) = $this->syndicationControllerListWithHttpInfo($isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -20691,6 +20976,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerListWithHttpInfo.
      *
+     * @param  string $isRegularSyndication (optional)
+     * @param  string $isUpdate (optional)
      * @param  string $statuses (optional)
      * @param  string $migrationId (optional)
      * @param  string $includeUsage (optional)
@@ -20714,9 +21001,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerListWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListWithHttpInfo($isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        $request = $this->syndicationControllerListRequest($isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -20807,6 +21094,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsync.
      *
+     * @param  string $isRegularSyndication (optional)
+     * @param  string $isUpdate (optional)
      * @param  string $statuses (optional)
      * @param  string $migrationId (optional)
      * @param  string $includeUsage (optional)
@@ -20829,9 +21118,9 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsync($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListAsync($isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        return $this->syndicationControllerListAsyncWithHttpInfo($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType)
+        return $this->syndicationControllerListAsyncWithHttpInfo($isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -20843,6 +21132,8 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsyncWithHttpInfo.
      *
+     * @param  string $isRegularSyndication (optional)
+     * @param  string $isUpdate (optional)
      * @param  string $statuses (optional)
      * @param  string $migrationId (optional)
      * @param  string $includeUsage (optional)
@@ -20865,10 +21156,10 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerListAsyncWithHttpInfo($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListAsyncWithHttpInfo($isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList';
-        $request = $this->syndicationControllerListRequest($statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        $request = $this->syndicationControllerListRequest($isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -20911,6 +21202,8 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerList'.
      *
+     * @param  string $isRegularSyndication (optional)
+     * @param  string $isUpdate (optional)
      * @param  string $statuses (optional)
      * @param  string $migrationId (optional)
      * @param  string $includeUsage (optional)
@@ -20933,7 +21226,7 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerListRequest($statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListRequest($isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
         $resourcePath = '/sync-core/syndication';
         $formParams = [];
@@ -20942,6 +21235,24 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $isRegularSyndication,
+            'isRegularSyndication', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $isUpdate,
+            'isUpdate', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $statuses,
@@ -21148,7 +21459,7 @@ class DefaultApi
      * Operation syndicationControllerRestart.
      *
      * @param  string $id id (required)
-     * @param  object $body body (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -21156,9 +21467,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
      */
-    public function syndicationControllerRestart($id, $body, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
+    public function syndicationControllerRestart($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
-        list($response) = $this->syndicationControllerRestartWithHttpInfo($id, $body, $contentType);
+        list($response) = $this->syndicationControllerRestartWithHttpInfo($id, $syndicationRetryRequest, $contentType);
 
         return $response;
     }
@@ -21167,7 +21478,7 @@ class DefaultApi
      * Operation syndicationControllerRestartWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -21175,9 +21486,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerRestartWithHttpInfo($id, $body, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
+    public function syndicationControllerRestartWithHttpInfo($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
-        $request = $this->syndicationControllerRestartRequest($id, $body, $contentType);
+        $request = $this->syndicationControllerRestartRequest($id, $syndicationRetryRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -21269,16 +21580,16 @@ class DefaultApi
      * Operation syndicationControllerRestartAsync.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerRestartAsync($id, $body, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
+    public function syndicationControllerRestartAsync($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
-        return $this->syndicationControllerRestartAsyncWithHttpInfo($id, $body, $contentType)
+        return $this->syndicationControllerRestartAsyncWithHttpInfo($id, $syndicationRetryRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -21291,17 +21602,17 @@ class DefaultApi
      * Operation syndicationControllerRestartAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerRestartAsyncWithHttpInfo($id, $body, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
+    public function syndicationControllerRestartAsyncWithHttpInfo($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
-        $request = $this->syndicationControllerRestartRequest($id, $body, $contentType);
+        $request = $this->syndicationControllerRestartRequest($id, $syndicationRetryRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -21345,14 +21656,14 @@ class DefaultApi
      * Create request for operation 'syndicationControllerRestart'.
      *
      * @param  string $id (required)
-     * @param  object $body (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerRestartRequest($id, $body, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
+    public function syndicationControllerRestartRequest($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
@@ -21361,10 +21672,10 @@ class DefaultApi
             );
         }
 
-        // verify the required parameter 'body' is set
-        if (null === $body || (is_array($body) && 0 === count($body))) {
+        // verify the required parameter 'syndicationRetryRequest' is set
+        if (null === $syndicationRetryRequest || (is_array($syndicationRetryRequest) && 0 === count($syndicationRetryRequest))) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $body when calling syndicationControllerRestart'
+                'Missing the required parameter $syndicationRetryRequest when calling syndicationControllerRestart'
             );
         }
 
@@ -21391,12 +21702,12 @@ class DefaultApi
         );
 
         // for model (json/xml)
-        if (isset($body)) {
+        if (isset($syndicationRetryRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationRetryRequest));
             } else {
-                $httpBody = $body;
+                $httpBody = $syndicationRetryRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -21741,7 +22052,9 @@ class DefaultApi
      * @param  string $remoteUniqueId remoteUniqueId (optional)
      * @param  string $namespaceMachineName namespaceMachineName (optional)
      * @param  string $machineName machineName (optional)
+     * @param  string $isRegularSyndication isRegularSyndication (optional)
      * @param  string $includingMigrations includingMigrations (optional)
+     * @param  string $separateUntil separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -21749,9 +22062,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse
      */
-    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
+    public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
-        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations, $contentType);
+        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType);
 
         return $response;
     }
@@ -21764,7 +22077,9 @@ class DefaultApi
      * @param  string $remoteUniqueId (optional)
      * @param  string $namespaceMachineName (optional)
      * @param  string $machineName (optional)
+     * @param  string $isRegularSyndication (optional)
      * @param  string $includingMigrations (optional)
+     * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
      * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
@@ -21772,9 +22087,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
+    public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations, $contentType);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -21870,16 +22185,18 @@ class DefaultApi
      * @param  string $remoteUniqueId (optional)
      * @param  string $namespaceMachineName (optional)
      * @param  string $machineName (optional)
+     * @param  string $isRegularSyndication (optional)
      * @param  string $includingMigrations (optional)
+     * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
+    public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
-        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations, $contentType)
+        return $this->syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -21896,17 +22213,19 @@ class DefaultApi
      * @param  string $remoteUniqueId (optional)
      * @param  string $namespaceMachineName (optional)
      * @param  string $machineName (optional)
+     * @param  string $isRegularSyndication (optional)
      * @param  string $includingMigrations (optional)
+     * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
+    public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse';
-        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $includingMigrations, $contentType);
+        $request = $this->syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -21954,14 +22273,16 @@ class DefaultApi
      * @param  string $remoteUniqueId (optional)
      * @param  string $namespaceMachineName (optional)
      * @param  string $machineName (optional)
+     * @param  string $isRegularSyndication (optional)
      * @param  string $includingMigrations (optional)
+     * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $includingMigrations = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
+    public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
         // verify the required parameter 'siteUuid' is set
         if (null === $siteUuid || (is_array($siteUuid) && 0 === count($siteUuid))) {
@@ -22015,8 +22336,26 @@ class DefaultApi
         ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $isRegularSyndication,
+            'isRegularSyndication', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $includingMigrations,
             'includingMigrations', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $separateUntil,
+            'separateUntil', // param base name
             'string', // openApiType
             'form', // style
             true, // explode

@@ -68,6 +68,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => 'string[]',
         'referenceDetails' => 'mixed',
         'name' => 'string',
+        'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
         'isDeleted' => 'bool',
         'isSource' => 'bool',
         'viewUrl' => 'string',
@@ -92,6 +94,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => null,
         'referenceDetails' => null,
         'name' => null,
+        'versionId' => null,
+        'versionIdWithTranslations' => null,
         'isDeleted' => null,
         'isSource' => null,
         'viewUrl' => null,
@@ -114,6 +118,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => false,
         'referenceDetails' => true,
         'name' => true,
+        'versionId' => true,
+        'versionIdWithTranslations' => true,
         'isDeleted' => false,
         'isSource' => false,
         'viewUrl' => true,
@@ -144,6 +150,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => 'poolMachineNames',
         'referenceDetails' => 'referenceDetails',
         'name' => 'name',
+        'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
         'isDeleted' => 'isDeleted',
         'isSource' => 'isSource',
         'viewUrl' => 'viewUrl',
@@ -166,6 +174,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => 'setPoolMachineNames',
         'referenceDetails' => 'setReferenceDetails',
         'name' => 'setName',
+        'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'isDeleted' => 'setIsDeleted',
         'isSource' => 'setIsSource',
         'viewUrl' => 'setViewUrl',
@@ -188,6 +198,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'poolMachineNames' => 'getPoolMachineNames',
         'referenceDetails' => 'getReferenceDetails',
         'name' => 'getName',
+        'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'isDeleted' => 'getIsDeleted',
         'isSource' => 'getIsSource',
         'viewUrl' => 'getViewUrl',
@@ -219,6 +231,8 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         $this->setIfExists('poolMachineNames', $data ?? [], null);
         $this->setIfExists('referenceDetails', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('isDeleted', $data ?? [], null);
         $this->setIfExists('isSource', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
@@ -628,6 +642,74 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
             }
         }
         $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }

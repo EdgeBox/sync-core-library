@@ -82,6 +82,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => 'string[]',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
+        'files' => '\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[]',
     ];
 
     /**
@@ -115,6 +116,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
+        'files' => null,
     ];
 
     /**
@@ -146,6 +148,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
+        'files' => true,
     ];
 
     /**
@@ -185,6 +188,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => 'changedLanguages',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'files' => 'files',
     ];
 
     /**
@@ -216,6 +220,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => 'setChangedLanguages',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'files' => 'setFiles',
     ];
 
     /**
@@ -247,6 +252,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'changedLanguages' => 'getChangedLanguages',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'files' => 'getFiles',
     ];
 
     /**
@@ -287,6 +293,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('changedLanguages', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('files', $data ?? [], null);
     }
 
     /**
@@ -1153,6 +1160,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets files.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[]
+     */
+    public function getFiles()
+    {
+        return $this->container['files'];
+    }
+
+    /**
+     * Sets files.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[] $files files
+     *
+     * @return self
+     */
+    public function setFiles($files)
+    {
+        if (is_null($files)) {
+            array_push($this->openAPINullablesSetToNull, 'files');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('files', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['files'] = $files;
 
         return $this;
     }

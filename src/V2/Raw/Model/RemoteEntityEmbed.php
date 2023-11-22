@@ -68,11 +68,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => 'string[]',
         'referenceDetails' => 'mixed',
         'name' => 'string',
+        'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'isTranslationRoot' => 'bool',
-        'versionId' => 'string',
-        'versionIdWithTranslations' => 'string',
     ];
 
     /**
@@ -92,11 +92,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => null,
         'referenceDetails' => null,
         'name' => null,
+        'versionId' => null,
+        'versionIdWithTranslations' => null,
         'properties' => null,
         'directDependencies' => null,
         'isTranslationRoot' => null,
-        'versionId' => null,
-        'versionIdWithTranslations' => null,
     ];
 
     /**
@@ -114,11 +114,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => false,
         'referenceDetails' => true,
         'name' => true,
+        'versionId' => true,
+        'versionIdWithTranslations' => true,
         'properties' => false,
         'directDependencies' => false,
         'isTranslationRoot' => true,
-        'versionId' => true,
-        'versionIdWithTranslations' => true,
     ];
 
     /**
@@ -144,11 +144,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => 'poolMachineNames',
         'referenceDetails' => 'referenceDetails',
         'name' => 'name',
+        'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
         'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'isTranslationRoot' => 'isTranslationRoot',
-        'versionId' => 'versionId',
-        'versionIdWithTranslations' => 'versionIdWithTranslations',
     ];
 
     /**
@@ -166,11 +166,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => 'setPoolMachineNames',
         'referenceDetails' => 'setReferenceDetails',
         'name' => 'setName',
+        'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'isTranslationRoot' => 'setIsTranslationRoot',
-        'versionId' => 'setVersionId',
-        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
     ];
 
     /**
@@ -188,11 +188,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'poolMachineNames' => 'getPoolMachineNames',
         'referenceDetails' => 'getReferenceDetails',
         'name' => 'getName',
+        'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'isTranslationRoot' => 'getIsTranslationRoot',
-        'versionId' => 'getVersionId',
-        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
     ];
 
     /**
@@ -219,11 +219,11 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('poolMachineNames', $data ?? [], null);
         $this->setIfExists('referenceDetails', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('directDependencies', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
-        $this->setIfExists('versionId', $data ?? [], null);
-        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
     }
 
     /**
@@ -633,6 +633,74 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
      * Gets properties.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
@@ -716,74 +784,6 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
-
-        return $this;
-    }
-
-    /**
-     * Gets versionId.
-     *
-     * @return null|string
-     */
-    public function getVersionId()
-    {
-        return $this->container['versionId'];
-    }
-
-    /**
-     * Sets versionId.
-     *
-     * @param null|string $versionId versionId
-     *
-     * @return self
-     */
-    public function setVersionId($versionId)
-    {
-        if (is_null($versionId)) {
-            array_push($this->openAPINullablesSetToNull, 'versionId');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('versionId', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['versionId'] = $versionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets versionIdWithTranslations.
-     *
-     * @return null|string
-     */
-    public function getVersionIdWithTranslations()
-    {
-        return $this->container['versionIdWithTranslations'];
-    }
-
-    /**
-     * Sets versionIdWithTranslations.
-     *
-     * @param null|string $versionIdWithTranslations versionIdWithTranslations
-     *
-     * @return self
-     */
-    public function setVersionIdWithTranslations($versionIdWithTranslations)
-    {
-        if (is_null($versionIdWithTranslations)) {
-            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
 
         return $this;
     }

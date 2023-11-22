@@ -66,6 +66,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
         'versionId' => 'string',
+        'force2xx' => 'string',
     ];
 
     /**
@@ -83,6 +84,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => null,
         'machineName' => null,
         'versionId' => null,
+        'force2xx' => null,
     ];
 
     /**
@@ -98,6 +100,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => true,
         'machineName' => true,
         'versionId' => true,
+        'force2xx' => true,
     ];
 
     /**
@@ -121,6 +124,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => 'namespaceMachineName',
         'machineName' => 'machineName',
         'versionId' => 'versionId',
+        'force2xx' => 'force2xx',
     ];
 
     /**
@@ -136,6 +140,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => 'setNamespaceMachineName',
         'machineName' => 'setMachineName',
         'versionId' => 'setVersionId',
+        'force2xx' => 'setForce2xx',
     ];
 
     /**
@@ -151,6 +156,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'namespaceMachineName' => 'getNamespaceMachineName',
         'machineName' => 'getMachineName',
         'versionId' => 'getVersionId',
+        'force2xx' => 'getForce2xx',
     ];
 
     /**
@@ -175,6 +181,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         $this->setIfExists('namespaceMachineName', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('force2xx', $data ?? [], null);
     }
 
     /**
@@ -521,6 +528,40 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
             }
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets force2xx.
+     *
+     * @return null|string
+     */
+    public function getForce2xx()
+    {
+        return $this->container['force2xx'];
+    }
+
+    /**
+     * Sets force2xx.
+     *
+     * @param null|string $force2xx force2xx
+     *
+     * @return self
+     */
+    public function setForce2xx($force2xx)
+    {
+        if (is_null($force2xx)) {
+            array_push($this->openAPINullablesSetToNull, 'force2xx');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('force2xx', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['force2xx'] = $force2xx;
 
         return $this;
     }
