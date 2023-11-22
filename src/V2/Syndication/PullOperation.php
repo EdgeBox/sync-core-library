@@ -489,6 +489,11 @@ class PullOperation implements IPullOperation
             return null;
         }
 
+        $embedded = $this->loadEmbeddedFileEntity($reference['id']);
+        if ($embedded) {
+            return $embedded;
+        }
+
         $request = $this->core->getClient()->fileControllerItemRequest($reference['id']);
         /**
          * @var FileEntity $file
