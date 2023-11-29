@@ -64,6 +64,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType',
         'required' => 'bool',
         'multiple' => 'bool',
+        'localized' => 'bool',
         'remoteTypeName' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
         'format' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat',
@@ -95,6 +96,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => null,
         'required' => null,
         'multiple' => null,
+        'localized' => null,
         'remoteTypeName' => null,
         'properties' => null,
         'format' => null,
@@ -124,6 +126,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => false,
         'required' => true,
         'multiple' => true,
+        'localized' => true,
         'remoteTypeName' => true,
         'properties' => true,
         'format' => false,
@@ -161,6 +164,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => 'type',
         'required' => 'required',
         'multiple' => 'multiple',
+        'localized' => 'localized',
         'remoteTypeName' => 'remoteTypeName',
         'properties' => 'properties',
         'format' => 'format',
@@ -190,6 +194,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => 'setType',
         'required' => 'setRequired',
         'multiple' => 'setMultiple',
+        'localized' => 'setLocalized',
         'remoteTypeName' => 'setRemoteTypeName',
         'properties' => 'setProperties',
         'format' => 'setFormat',
@@ -219,6 +224,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'type' => 'getType',
         'required' => 'getRequired',
         'multiple' => 'getMultiple',
+        'localized' => 'getLocalized',
         'remoteTypeName' => 'getRemoteTypeName',
         'properties' => 'getProperties',
         'format' => 'getFormat',
@@ -257,6 +263,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('type', $data ?? [], null);
         $this->setIfExists('required', $data ?? [], null);
         $this->setIfExists('multiple', $data ?? [], null);
+        $this->setIfExists('localized', $data ?? [], null);
         $this->setIfExists('remoteTypeName', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('format', $data ?? [], null);
@@ -543,6 +550,40 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             }
         }
         $this->container['multiple'] = $multiple;
+
+        return $this;
+    }
+
+    /**
+     * Gets localized.
+     *
+     * @return null|bool
+     */
+    public function getLocalized()
+    {
+        return $this->container['localized'];
+    }
+
+    /**
+     * Sets localized.
+     *
+     * @param null|bool $localized localized
+     *
+     * @return self
+     */
+    public function setLocalized($localized)
+    {
+        if (is_null($localized)) {
+            array_push($this->openAPINullablesSetToNull, 'localized');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('localized', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['localized'] = $localized;
 
         return $this;
     }
