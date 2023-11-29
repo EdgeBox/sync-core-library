@@ -182,6 +182,16 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
     /**
      * {@inheritdoc}
      */
+    public function setLocalized(bool $set)
+    {
+        $this->dto->setLocalized($set);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setMinValue(mixed $minValue)
     {
         $this->dto->setMinValue($minValue);

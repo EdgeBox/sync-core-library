@@ -38,4 +38,11 @@ interface IDefineProperty extends IBatchOperation
      * @return $this
      */
     public function setMaxItems(int $min);
+
+    /**
+     * Whether or not this property can be translated.
+     *
+     * @return $this
+     */
+    public function setLocalized(bool $set);
 }
