@@ -19,6 +19,13 @@ interface IDefineIntegerProperty extends IDefineProperty
     public function setMaxValue(int $maxValue);
 
     /**
+     * The given value fits within these many bytes.
+     *
+     * @return $this
+     */
+    public function setByteSize(int $byteCount);
+
+    /**
      * Declare the unit that the value is measured in.
      *
      * @return $this

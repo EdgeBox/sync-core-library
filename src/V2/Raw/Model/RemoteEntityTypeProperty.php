@@ -79,6 +79,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'string',
         'nameProperty' => 'string',
         'unit' => 'string',
+        'byteSize' => 'float',
         'allowedEntityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]',
         'regularExpressionFormat' => 'RegularExpression',
     ];
@@ -111,6 +112,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => null,
         'nameProperty' => null,
         'unit' => null,
+        'byteSize' => null,
         'allowedEntityTypes' => null,
         'regularExpressionFormat' => null,
     ];
@@ -141,6 +143,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => true,
         'nameProperty' => true,
         'unit' => true,
+        'byteSize' => true,
         'allowedEntityTypes' => true,
         'regularExpressionFormat' => true,
     ];
@@ -179,6 +182,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'mainProperty',
         'nameProperty' => 'nameProperty',
         'unit' => 'unit',
+        'byteSize' => 'byteSize',
         'allowedEntityTypes' => 'allowedEntityTypes',
         'regularExpressionFormat' => 'regularExpressionFormat',
     ];
@@ -209,6 +213,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'setMainProperty',
         'nameProperty' => 'setNameProperty',
         'unit' => 'setUnit',
+        'byteSize' => 'setByteSize',
         'allowedEntityTypes' => 'setAllowedEntityTypes',
         'regularExpressionFormat' => 'setRegularExpressionFormat',
     ];
@@ -239,6 +244,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'mainProperty' => 'getMainProperty',
         'nameProperty' => 'getNameProperty',
         'unit' => 'getUnit',
+        'byteSize' => 'getByteSize',
         'allowedEntityTypes' => 'getAllowedEntityTypes',
         'regularExpressionFormat' => 'getRegularExpressionFormat',
     ];
@@ -278,6 +284,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('mainProperty', $data ?? [], null);
         $this->setIfExists('nameProperty', $data ?? [], null);
         $this->setIfExists('unit', $data ?? [], null);
+        $this->setIfExists('byteSize', $data ?? [], null);
         $this->setIfExists('allowedEntityTypes', $data ?? [], null);
         $this->setIfExists('regularExpressionFormat', $data ?? [], null);
     }
@@ -1046,6 +1053,40 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             }
         }
         $this->container['unit'] = $unit;
+
+        return $this;
+    }
+
+    /**
+     * Gets byteSize.
+     *
+     * @return null|float
+     */
+    public function getByteSize()
+    {
+        return $this->container['byteSize'];
+    }
+
+    /**
+     * Sets byteSize.
+     *
+     * @param null|float $byteSize byteSize
+     *
+     * @return self
+     */
+    public function setByteSize($byteSize)
+    {
+        if (is_null($byteSize)) {
+            array_push($this->openAPINullablesSetToNull, 'byteSize');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('byteSize', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['byteSize'] = $byteSize;
 
         return $this;
     }

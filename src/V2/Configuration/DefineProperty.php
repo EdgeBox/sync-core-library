@@ -222,6 +222,16 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
     /**
      * {@inheritdoc}
      */
+    public function setByteSize(int $byteCount)
+    {
+        $this->dto->setByteSize($byteCount);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setMinLength(int $minLength)
     {
         $this->dto->setMinLength($minLength);
