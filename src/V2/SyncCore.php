@@ -923,6 +923,8 @@ class SyncCore implements ISyncCore
                 throw new SyncCoreException("Failed to update config: update status is {$response->getStatus()}.");
             }
         }
+
+        return $response->getId();
     }
 
     protected function getRestUrls()
@@ -938,6 +940,8 @@ class SyncCore implements ISyncCore
         if ($site_config_route) {
             $urls->setSiteConfig(self::PLACEHOLDER_SITE_BASE_URL.$site_config_route);
         }
+
+        return $urls;
     }
 
     /**

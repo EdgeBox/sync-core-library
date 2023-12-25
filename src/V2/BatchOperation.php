@@ -113,11 +113,13 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     /**
      * {@inheritDoc}
      */
-    public function getDto()
+    public function getSerializedDto()
     {
         $this->optimize();
 
-        return $this->dto;
+        $dto = $this->dto;
+
+        return ObjectSerializer::sanitizeForSerialization($dto);
     }
 
     /**

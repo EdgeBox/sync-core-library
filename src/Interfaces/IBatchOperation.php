@@ -24,5 +24,5 @@ interface IBatchOperation
      *
      * @return mixed
      */
-    public function getDto();
+    public function getSerializedDto();
 }
