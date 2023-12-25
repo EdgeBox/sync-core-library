@@ -59,6 +59,8 @@ class SyndicationType
 
     public const DELETE_EMBEDDED_ENTITY = 'delete-embedded-entity';
 
+    public const RETRIEVE_CONFIG = 'retrieve-config';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -75,6 +77,7 @@ class SyndicationType
             self::PUSH_ENTITY,
             self::DELETE_ENTITY,
             self::DELETE_EMBEDDED_ENTITY,
+            self::RETRIEVE_CONFIG,
         ];
     }
 }

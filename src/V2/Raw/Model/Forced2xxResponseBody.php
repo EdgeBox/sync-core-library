@@ -1,6 +1,6 @@
 <?php
 /**
- * RegisterNewSiteDtoRestUrls.
+ * Forced2xxResponseBody.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RegisterNewSiteDtoRestUrls Class Doc Comment.
+ * Forced2xxResponseBody Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class Forced2xxResponseBody implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RegisterNewSiteDto_restUrls';
+    protected static $openAPIModelName = 'Forced2xxResponseBody';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,12 +59,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
-        'siteConfig' => 'string',
+        'statusCode' => 'float',
+        'responseBody' => 'mixed',
     ];
 
     /**
@@ -75,12 +71,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
-        'siteConfig' => null,
+        'statusCode' => null,
+        'responseBody' => null,
     ];
 
     /**
@@ -89,12 +81,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
-        'siteConfig' => true,
+        'statusCode' => false,
+        'responseBody' => true,
     ];
 
     /**
@@ -111,12 +99,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
-        'siteConfig' => 'siteConfig',
+        'statusCode' => 'statusCode',
+        'responseBody' => 'responseBody',
     ];
 
     /**
@@ -125,12 +109,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
-        'siteConfig' => 'setSiteConfig',
+        'statusCode' => 'setStatusCode',
+        'responseBody' => 'setResponseBody',
     ];
 
     /**
@@ -139,12 +119,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
-        'siteConfig' => 'getSiteConfig',
+        'statusCode' => 'getStatusCode',
+        'responseBody' => 'getResponseBody',
     ];
 
     /**
@@ -162,12 +138,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
-        $this->setIfExists('siteConfig', $data ?? [], null);
+        $this->setIfExists('statusCode', $data ?? [], null);
+        $this->setIfExists('responseBody', $data ?? [], null);
     }
 
     /**
@@ -269,17 +241,11 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
+        if (null === $this->container['statusCode']) {
+            $invalidProperties[] = "'statusCode' can't be null";
         }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
-        }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
-        }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['responseBody']) {
+            $invalidProperties[] = "'responseBody' can't be null";
         }
 
         return $invalidProperties;
@@ -297,177 +263,62 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets statusCode.
      *
-     * @return string
+     * @return float
      */
-    public function getRetrieveEntity()
+    public function getStatusCode()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['statusCode'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets statusCode.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param float $statusCode statusCode
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setStatusCode($statusCode)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($statusCode)) {
+            throw new \InvalidArgumentException('non-nullable statusCode cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['statusCode'] = $statusCode;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets responseBody.
      *
-     * @return string
+     * @return mixed
      */
-    public function getListEntities()
+    public function getResponseBody()
     {
-        return $this->container['listEntities'];
+        return $this->container['responseBody'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets responseBody.
      *
-     * @param string $listEntities listEntities
+     * @param mixed $responseBody responseBody
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setResponseBody($responseBody)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
-        }
-        $this->container['listEntities'] = $listEntities;
-
-        return $this;
-    }
-
-    /**
-     * Gets createEntity.
-     *
-     * @return string
-     */
-    public function getCreateEntity()
-    {
-        return $this->container['createEntity'];
-    }
-
-    /**
-     * Sets createEntity.
-     *
-     * @param string $createEntity createEntity
-     *
-     * @return self
-     */
-    public function setCreateEntity($createEntity)
-    {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
-        }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
-     *
-     * @return null|string
-     */
-    public function getSiteStatus()
-    {
-        return $this->container['siteStatus'];
-    }
-
-    /**
-     * Sets siteStatus.
-     *
-     * @param null|string $siteStatus siteStatus
-     *
-     * @return self
-     */
-    public function setSiteStatus($siteStatus)
-    {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($responseBody)) {
+            array_push($this->openAPINullablesSetToNull, 'responseBody');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('responseBody', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteConfig.
-     *
-     * @return null|string
-     */
-    public function getSiteConfig()
-    {
-        return $this->container['siteConfig'];
-    }
-
-    /**
-     * Sets siteConfig.
-     *
-     * @param null|string $siteConfig siteConfig
-     *
-     * @return self
-     */
-    public function setSiteConfig($siteConfig)
-    {
-        if (is_null($siteConfig)) {
-            array_push($this->openAPINullablesSetToNull, 'siteConfig');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteConfig', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['siteConfig'] = $siteConfig;
+        $this->container['responseBody'] = $responseBody;
 
         return $this;
     }

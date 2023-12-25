@@ -251,6 +251,9 @@ class DefaultApi
         'siteControllerUpdate' => [
             'application/json',
         ],
+        'siteControllerUpdateConfig' => [
+            'application/json',
+        ],
         'syndicationControllerCreate' => [
             'application/json',
         ],
@@ -19773,6 +19776,289 @@ class DefaultApi
 
         return new Request(
             'PATCH',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation siteControllerUpdateConfig.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto siteConfigUpdateRequestDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     */
+    public function siteControllerUpdateConfig($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
+    {
+        list($response) = $this->siteControllerUpdateConfigWithHttpInfo($siteConfigUpdateRequestDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation siteControllerUpdateConfigWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function siteControllerUpdateConfigWithHttpInfo($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
+    {
+        $request = $this->siteControllerUpdateConfigRequest($siteConfigUpdateRequestDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation siteControllerUpdateConfigAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerUpdateConfigAsync($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
+    {
+        return $this->siteControllerUpdateConfigAsyncWithHttpInfo($siteConfigUpdateRequestDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation siteControllerUpdateConfigAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function siteControllerUpdateConfigAsyncWithHttpInfo($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
+        $request = $this->siteControllerUpdateConfigRequest($siteConfigUpdateRequestDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'siteControllerUpdateConfig'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function siteControllerUpdateConfigRequest($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
+    {
+        // verify the required parameter 'siteConfigUpdateRequestDto' is set
+        if (null === $siteConfigUpdateRequestDto || (is_array($siteConfigUpdateRequestDto) && 0 === count($siteConfigUpdateRequestDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $siteConfigUpdateRequestDto when calling siteControllerUpdateConfig'
+            );
+        }
+
+        $resourcePath = '/sync-core/site/config';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($siteConfigUpdateRequestDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($siteConfigUpdateRequestDto));
+            } else {
+                $httpBody = $siteConfigUpdateRequestDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody

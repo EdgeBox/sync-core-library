@@ -1,6 +1,6 @@
 <?php
 /**
- * RegisterNewSiteDtoRestUrls.
+ * RemoteRequestQueryParamsSiteConfig.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RegisterNewSiteDtoRestUrls Class Doc Comment.
+ * RemoteRequestQueryParamsSiteConfig Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteRequestQueryParamsSiteConfig implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RegisterNewSiteDto_restUrls';
+    protected static $openAPIModelName = 'RemoteRequestQueryParamsSiteConfig';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,12 +59,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
-        'siteConfig' => 'string',
+        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode',
+        'page' => 'float',
+        'itemsPerPage' => 'float',
+        'namespaceMachineName' => 'string',
+        'machineName' => 'string',
+        'versionId' => 'string',
+        'force2xx' => 'string',
     ];
 
     /**
@@ -75,12 +76,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
-        'siteConfig' => null,
+        'mode' => null,
+        'page' => null,
+        'itemsPerPage' => null,
+        'namespaceMachineName' => null,
+        'machineName' => null,
+        'versionId' => null,
+        'force2xx' => null,
     ];
 
     /**
@@ -89,12 +91,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
-        'siteConfig' => true,
+        'mode' => false,
+        'page' => true,
+        'itemsPerPage' => true,
+        'namespaceMachineName' => true,
+        'machineName' => true,
+        'versionId' => true,
+        'force2xx' => true,
     ];
 
     /**
@@ -111,12 +114,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
-        'siteConfig' => 'siteConfig',
+        'mode' => 'mode',
+        'page' => 'page',
+        'itemsPerPage' => 'itemsPerPage',
+        'namespaceMachineName' => 'namespaceMachineName',
+        'machineName' => 'machineName',
+        'versionId' => 'versionId',
+        'force2xx' => 'force2xx',
     ];
 
     /**
@@ -125,12 +129,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
-        'siteConfig' => 'setSiteConfig',
+        'mode' => 'setMode',
+        'page' => 'setPage',
+        'itemsPerPage' => 'setItemsPerPage',
+        'namespaceMachineName' => 'setNamespaceMachineName',
+        'machineName' => 'setMachineName',
+        'versionId' => 'setVersionId',
+        'force2xx' => 'setForce2xx',
     ];
 
     /**
@@ -139,12 +144,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
-        'siteConfig' => 'getSiteConfig',
+        'mode' => 'getMode',
+        'page' => 'getPage',
+        'itemsPerPage' => 'getItemsPerPage',
+        'namespaceMachineName' => 'getNamespaceMachineName',
+        'machineName' => 'getMachineName',
+        'versionId' => 'getVersionId',
+        'force2xx' => 'getForce2xx',
     ];
 
     /**
@@ -162,12 +168,13 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
-        $this->setIfExists('siteConfig', $data ?? [], null);
+        $this->setIfExists('mode', $data ?? [], null);
+        $this->setIfExists('page', $data ?? [], null);
+        $this->setIfExists('itemsPerPage', $data ?? [], null);
+        $this->setIfExists('namespaceMachineName', $data ?? [], null);
+        $this->setIfExists('machineName', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('force2xx', $data ?? [], null);
     }
 
     /**
@@ -269,17 +276,8 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
     {
         $invalidProperties = [];
 
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
-        }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
-        }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
-        }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
+        if (null === $this->container['mode']) {
+            $invalidProperties[] = "'mode' can't be null";
         }
 
         return $invalidProperties;
@@ -297,177 +295,232 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets mode.
      *
-     * @return string
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode
      */
-    public function getRetrieveEntity()
+    public function getMode()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['mode'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets mode.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode $mode mode
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setMode($mode)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
+        if (is_null($mode)) {
+            throw new \InvalidArgumentException('non-nullable mode cannot be null');
         }
-        $this->container['retrieveEntity'] = $retrieveEntity;
+        $this->container['mode'] = $mode;
 
         return $this;
     }
 
     /**
-     * Gets listEntities.
+     * Gets page.
      *
-     * @return string
+     * @return null|float
      */
-    public function getListEntities()
+    public function getPage()
     {
-        return $this->container['listEntities'];
+        return $this->container['page'];
     }
 
     /**
-     * Sets listEntities.
+     * Sets page.
      *
-     * @param string $listEntities listEntities
+     * @param null|float $page page
      *
      * @return self
      */
-    public function setListEntities($listEntities)
+    public function setPage($page)
     {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
-        }
-        $this->container['listEntities'] = $listEntities;
-
-        return $this;
-    }
-
-    /**
-     * Gets createEntity.
-     *
-     * @return string
-     */
-    public function getCreateEntity()
-    {
-        return $this->container['createEntity'];
-    }
-
-    /**
-     * Sets createEntity.
-     *
-     * @param string $createEntity createEntity
-     *
-     * @return self
-     */
-    public function setCreateEntity($createEntity)
-    {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
-        }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
-     *
-     * @return null|string
-     */
-    public function getSiteStatus()
-    {
-        return $this->container['siteStatus'];
-    }
-
-    /**
-     * Sets siteStatus.
-     *
-     * @param null|string $siteStatus siteStatus
-     *
-     * @return self
-     */
-    public function setSiteStatus($siteStatus)
-    {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($page)) {
+            array_push($this->openAPINullablesSetToNull, 'page');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('page', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['page'] = $page;
 
         return $this;
     }
 
     /**
-     * Gets siteConfig.
+     * Gets itemsPerPage.
      *
-     * @return null|string
+     * @return null|float
      */
-    public function getSiteConfig()
+    public function getItemsPerPage()
     {
-        return $this->container['siteConfig'];
+        return $this->container['itemsPerPage'];
     }
 
     /**
-     * Sets siteConfig.
+     * Sets itemsPerPage.
      *
-     * @param null|string $siteConfig siteConfig
+     * @param null|float $itemsPerPage itemsPerPage
      *
      * @return self
      */
-    public function setSiteConfig($siteConfig)
+    public function setItemsPerPage($itemsPerPage)
     {
-        if (is_null($siteConfig)) {
-            array_push($this->openAPINullablesSetToNull, 'siteConfig');
+        if (is_null($itemsPerPage)) {
+            array_push($this->openAPINullablesSetToNull, 'itemsPerPage');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteConfig', $nullablesSetToNull);
+            $index = array_search('itemsPerPage', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteConfig'] = $siteConfig;
+        $this->container['itemsPerPage'] = $itemsPerPage;
+
+        return $this;
+    }
+
+    /**
+     * Gets namespaceMachineName.
+     *
+     * @return null|string
+     */
+    public function getNamespaceMachineName()
+    {
+        return $this->container['namespaceMachineName'];
+    }
+
+    /**
+     * Sets namespaceMachineName.
+     *
+     * @param null|string $namespaceMachineName namespaceMachineName
+     *
+     * @return self
+     */
+    public function setNamespaceMachineName($namespaceMachineName)
+    {
+        if (is_null($namespaceMachineName)) {
+            array_push($this->openAPINullablesSetToNull, 'namespaceMachineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('namespaceMachineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['namespaceMachineName'] = $namespaceMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets machineName.
+     *
+     * @return null|string
+     */
+    public function getMachineName()
+    {
+        return $this->container['machineName'];
+    }
+
+    /**
+     * Sets machineName.
+     *
+     * @param null|string $machineName machineName
+     *
+     * @return self
+     */
+    public function setMachineName($machineName)
+    {
+        if (is_null($machineName)) {
+            array_push($this->openAPINullablesSetToNull, 'machineName');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('machineName', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['machineName'] = $machineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets force2xx.
+     *
+     * @return null|string
+     */
+    public function getForce2xx()
+    {
+        return $this->container['force2xx'];
+    }
+
+    /**
+     * Sets force2xx.
+     *
+     * @param null|string $force2xx force2xx
+     *
+     * @return self
+     */
+    public function setForce2xx($force2xx)
+    {
+        if (is_null($force2xx)) {
+            array_push($this->openAPINullablesSetToNull, 'force2xx');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('force2xx', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['force2xx'] = $force2xx;
 
         return $this;
     }

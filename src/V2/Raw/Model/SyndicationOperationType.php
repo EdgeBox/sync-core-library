@@ -43,21 +43,23 @@ class SyndicationOperationType
     /**
      * Possible values of this enum.
      */
+    public const RETRIEVE_ENTITY_LIST_PAGE = 'retrieve-entity-list-page';
+
+    public const RETRIEVE_ENTITY_LIST_INIT = 'retrieve-entity-list-init';
+
+    public const RETRIEVE_ENTITY = 'retrieve-entity';
+
+    public const RETRIEVE_ENTITY_TRANSLATION = 'retrieve-entity-translation';
+
+    public const RETRIEVE_FILE = 'retrieve-file';
+
     public const PUSH_ENTITY = 'push-entity';
 
     public const PUSH_ENTITY_TRANSLATION = 'push-entity-translation';
 
     public const DELETE_ENTITY = 'delete-entity';
 
-    public const RETRIEVE_ENTITY = 'retrieve-entity';
-
-    public const RETRIEVE_ENTITY_TRANSLATION = 'retrieve-entity-translation';
-
-    public const RETRIEVE_ENTITY_LIST_PAGE = 'retrieve-entity-list-page';
-
-    public const RETRIEVE_ENTITY_LIST_INIT = 'retrieve-entity-list-init';
-
-    public const RETRIEVE_FILE = 'retrieve-file';
+    public const RETRIEVE_CONFIG = 'retrieve-config';
 
     /**
      * Gets allowable values of the enum.
@@ -67,14 +69,15 @@ class SyndicationOperationType
     public static function getAllowableEnumValues()
     {
         return [
+            self::RETRIEVE_ENTITY_LIST_PAGE,
+            self::RETRIEVE_ENTITY_LIST_INIT,
+            self::RETRIEVE_ENTITY,
+            self::RETRIEVE_ENTITY_TRANSLATION,
+            self::RETRIEVE_FILE,
             self::PUSH_ENTITY,
             self::PUSH_ENTITY_TRANSLATION,
             self::DELETE_ENTITY,
-            self::RETRIEVE_ENTITY,
-            self::RETRIEVE_ENTITY_TRANSLATION,
-            self::RETRIEVE_ENTITY_LIST_PAGE,
-            self::RETRIEVE_ENTITY_LIST_INIT,
-            self::RETRIEVE_FILE,
+            self::RETRIEVE_CONFIG,
         ];
     }
 }

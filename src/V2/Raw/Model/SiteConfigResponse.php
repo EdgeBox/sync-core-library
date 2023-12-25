@@ -1,6 +1,6 @@
 <?php
 /**
- * RegisterNewSiteDtoRestUrls.
+ * SiteConfigResponse.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RegisterNewSiteDtoRestUrls Class Doc Comment.
+ * SiteConfigResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RegisterNewSiteDto_restUrls';
+    protected static $openAPIModelName = 'SiteConfigResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,12 +59,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $openAPITypes = [
-        'retrieveEntity' => 'string',
-        'listEntities' => 'string',
-        'createEntity' => 'string',
-        'deleteEntity' => 'string',
-        'siteStatus' => 'string',
-        'siteConfig' => 'string',
+        'poolCount' => 'float',
+        'flowCount' => 'float',
+        'entityTypeCount' => 'float',
+        'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[]',
+        'flows' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[]',
+        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]',
     ];
 
     /**
@@ -75,12 +75,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'retrieveEntity' => null,
-        'listEntities' => null,
-        'createEntity' => null,
-        'deleteEntity' => null,
-        'siteStatus' => null,
-        'siteConfig' => null,
+        'poolCount' => null,
+        'flowCount' => null,
+        'entityTypeCount' => null,
+        'pools' => null,
+        'flows' => null,
+        'entityTypes' => null,
     ];
 
     /**
@@ -89,12 +89,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'retrieveEntity' => false,
-        'listEntities' => false,
-        'createEntity' => false,
-        'deleteEntity' => false,
-        'siteStatus' => true,
-        'siteConfig' => true,
+        'poolCount' => true,
+        'flowCount' => true,
+        'entityTypeCount' => true,
+        'pools' => true,
+        'flows' => true,
+        'entityTypes' => true,
     ];
 
     /**
@@ -111,12 +111,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $attributeMap = [
-        'retrieveEntity' => 'retrieveEntity',
-        'listEntities' => 'listEntities',
-        'createEntity' => 'createEntity',
-        'deleteEntity' => 'deleteEntity',
-        'siteStatus' => 'siteStatus',
-        'siteConfig' => 'siteConfig',
+        'poolCount' => 'poolCount',
+        'flowCount' => 'flowCount',
+        'entityTypeCount' => 'entityTypeCount',
+        'pools' => 'pools',
+        'flows' => 'flows',
+        'entityTypes' => 'entityTypes',
     ];
 
     /**
@@ -125,12 +125,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $setters = [
-        'retrieveEntity' => 'setRetrieveEntity',
-        'listEntities' => 'setListEntities',
-        'createEntity' => 'setCreateEntity',
-        'deleteEntity' => 'setDeleteEntity',
-        'siteStatus' => 'setSiteStatus',
-        'siteConfig' => 'setSiteConfig',
+        'poolCount' => 'setPoolCount',
+        'flowCount' => 'setFlowCount',
+        'entityTypeCount' => 'setEntityTypeCount',
+        'pools' => 'setPools',
+        'flows' => 'setFlows',
+        'entityTypes' => 'setEntityTypes',
     ];
 
     /**
@@ -139,12 +139,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $getters = [
-        'retrieveEntity' => 'getRetrieveEntity',
-        'listEntities' => 'getListEntities',
-        'createEntity' => 'getCreateEntity',
-        'deleteEntity' => 'getDeleteEntity',
-        'siteStatus' => 'getSiteStatus',
-        'siteConfig' => 'getSiteConfig',
+        'poolCount' => 'getPoolCount',
+        'flowCount' => 'getFlowCount',
+        'entityTypeCount' => 'getEntityTypeCount',
+        'pools' => 'getPools',
+        'flows' => 'getFlows',
+        'entityTypes' => 'getEntityTypes',
     ];
 
     /**
@@ -162,12 +162,12 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('retrieveEntity', $data ?? [], null);
-        $this->setIfExists('listEntities', $data ?? [], null);
-        $this->setIfExists('createEntity', $data ?? [], null);
-        $this->setIfExists('deleteEntity', $data ?? [], null);
-        $this->setIfExists('siteStatus', $data ?? [], null);
-        $this->setIfExists('siteConfig', $data ?? [], null);
+        $this->setIfExists('poolCount', $data ?? [], null);
+        $this->setIfExists('flowCount', $data ?? [], null);
+        $this->setIfExists('entityTypeCount', $data ?? [], null);
+        $this->setIfExists('pools', $data ?? [], null);
+        $this->setIfExists('flows', $data ?? [], null);
+        $this->setIfExists('entityTypes', $data ?? [], null);
     }
 
     /**
@@ -267,22 +267,7 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        if (null === $this->container['retrieveEntity']) {
-            $invalidProperties[] = "'retrieveEntity' can't be null";
-        }
-        if (null === $this->container['listEntities']) {
-            $invalidProperties[] = "'listEntities' can't be null";
-        }
-        if (null === $this->container['createEntity']) {
-            $invalidProperties[] = "'createEntity' can't be null";
-        }
-        if (null === $this->container['deleteEntity']) {
-            $invalidProperties[] = "'deleteEntity' can't be null";
-        }
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -297,177 +282,205 @@ class RegisterNewSiteDtoRestUrls implements ModelInterface, ArrayAccess, \JsonSe
     }
 
     /**
-     * Gets retrieveEntity.
+     * Gets poolCount.
      *
-     * @return string
+     * @return null|float
      */
-    public function getRetrieveEntity()
+    public function getPoolCount()
     {
-        return $this->container['retrieveEntity'];
+        return $this->container['poolCount'];
     }
 
     /**
-     * Sets retrieveEntity.
+     * Sets poolCount.
      *
-     * @param string $retrieveEntity retrieveEntity
+     * @param null|float $poolCount poolCount
      *
      * @return self
      */
-    public function setRetrieveEntity($retrieveEntity)
+    public function setPoolCount($poolCount)
     {
-        if (is_null($retrieveEntity)) {
-            throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
-        }
-        $this->container['retrieveEntity'] = $retrieveEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets listEntities.
-     *
-     * @return string
-     */
-    public function getListEntities()
-    {
-        return $this->container['listEntities'];
-    }
-
-    /**
-     * Sets listEntities.
-     *
-     * @param string $listEntities listEntities
-     *
-     * @return self
-     */
-    public function setListEntities($listEntities)
-    {
-        if (is_null($listEntities)) {
-            throw new \InvalidArgumentException('non-nullable listEntities cannot be null');
-        }
-        $this->container['listEntities'] = $listEntities;
-
-        return $this;
-    }
-
-    /**
-     * Gets createEntity.
-     *
-     * @return string
-     */
-    public function getCreateEntity()
-    {
-        return $this->container['createEntity'];
-    }
-
-    /**
-     * Sets createEntity.
-     *
-     * @param string $createEntity createEntity
-     *
-     * @return self
-     */
-    public function setCreateEntity($createEntity)
-    {
-        if (is_null($createEntity)) {
-            throw new \InvalidArgumentException('non-nullable createEntity cannot be null');
-        }
-        $this->container['createEntity'] = $createEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets deleteEntity.
-     *
-     * @return string
-     */
-    public function getDeleteEntity()
-    {
-        return $this->container['deleteEntity'];
-    }
-
-    /**
-     * Sets deleteEntity.
-     *
-     * @param string $deleteEntity deleteEntity
-     *
-     * @return self
-     */
-    public function setDeleteEntity($deleteEntity)
-    {
-        if (is_null($deleteEntity)) {
-            throw new \InvalidArgumentException('non-nullable deleteEntity cannot be null');
-        }
-        $this->container['deleteEntity'] = $deleteEntity;
-
-        return $this;
-    }
-
-    /**
-     * Gets siteStatus.
-     *
-     * @return null|string
-     */
-    public function getSiteStatus()
-    {
-        return $this->container['siteStatus'];
-    }
-
-    /**
-     * Sets siteStatus.
-     *
-     * @param null|string $siteStatus siteStatus
-     *
-     * @return self
-     */
-    public function setSiteStatus($siteStatus)
-    {
-        if (is_null($siteStatus)) {
-            array_push($this->openAPINullablesSetToNull, 'siteStatus');
+        if (is_null($poolCount)) {
+            array_push($this->openAPINullablesSetToNull, 'poolCount');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteStatus', $nullablesSetToNull);
+            $index = array_search('poolCount', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteStatus'] = $siteStatus;
+        $this->container['poolCount'] = $poolCount;
 
         return $this;
     }
 
     /**
-     * Gets siteConfig.
+     * Gets flowCount.
      *
-     * @return null|string
+     * @return null|float
      */
-    public function getSiteConfig()
+    public function getFlowCount()
     {
-        return $this->container['siteConfig'];
+        return $this->container['flowCount'];
     }
 
     /**
-     * Sets siteConfig.
+     * Sets flowCount.
      *
-     * @param null|string $siteConfig siteConfig
+     * @param null|float $flowCount flowCount
      *
      * @return self
      */
-    public function setSiteConfig($siteConfig)
+    public function setFlowCount($flowCount)
     {
-        if (is_null($siteConfig)) {
-            array_push($this->openAPINullablesSetToNull, 'siteConfig');
+        if (is_null($flowCount)) {
+            array_push($this->openAPINullablesSetToNull, 'flowCount');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('siteConfig', $nullablesSetToNull);
+            $index = array_search('flowCount', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['siteConfig'] = $siteConfig;
+        $this->container['flowCount'] = $flowCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypeCount.
+     *
+     * @return null|float
+     */
+    public function getEntityTypeCount()
+    {
+        return $this->container['entityTypeCount'];
+    }
+
+    /**
+     * Sets entityTypeCount.
+     *
+     * @param null|float $entityTypeCount entityTypeCount
+     *
+     * @return self
+     */
+    public function setEntityTypeCount($entityTypeCount)
+    {
+        if (is_null($entityTypeCount)) {
+            array_push($this->openAPINullablesSetToNull, 'entityTypeCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypeCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['entityTypeCount'] = $entityTypeCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets pools.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[]
+     */
+    public function getPools()
+    {
+        return $this->container['pools'];
+    }
+
+    /**
+     * Sets pools.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[] $pools pools
+     *
+     * @return self
+     */
+    public function setPools($pools)
+    {
+        if (is_null($pools)) {
+            array_push($this->openAPINullablesSetToNull, 'pools');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pools', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['pools'] = $pools;
+
+        return $this;
+    }
+
+    /**
+     * Gets flows.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[]
+     */
+    public function getFlows()
+    {
+        return $this->container['flows'];
+    }
+
+    /**
+     * Sets flows.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[] $flows flows
+     *
+     * @return self
+     */
+    public function setFlows($flows)
+    {
+        if (is_null($flows)) {
+            array_push($this->openAPINullablesSetToNull, 'flows');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('flows', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['flows'] = $flows;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityTypes.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]
+     */
+    public function getEntityTypes()
+    {
+        return $this->container['entityTypes'];
+    }
+
+    /**
+     * Sets entityTypes.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[] $entityTypes entityTypes
+     *
+     * @return self
+     */
+    public function setEntityTypes($entityTypes)
+    {
+        if (is_null($entityTypes)) {
+            array_push($this->openAPINullablesSetToNull, 'entityTypes');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypes', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['entityTypes'] = $entityTypes;
 
         return $this;
     }

@@ -68,7 +68,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rootEntityTypeVersion' => 'DynamicReference',
         'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'flow' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'flow' => 'DynamicReference',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]',
@@ -160,7 +160,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'rootEntityTypeVersion' => true,
         'targetSite' => false,
         'pools' => true,
-        'flow' => false,
+        'flow' => true,
         'customer' => false,
         'project' => false,
         'operations' => true,
@@ -495,9 +495,6 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         if (null === $this->container['targetSite']) {
             $invalidProperties[] = "'targetSite' can't be null";
         }
-        if (null === $this->container['flow']) {
-            $invalidProperties[] = "'flow' can't be null";
-        }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
         }
@@ -816,7 +813,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets flow.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return null|DynamicReference
      */
     public function getFlow()
     {
@@ -826,14 +823,21 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets flow.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $flow flow
+     * @param null|DynamicReference $flow flow
      *
      * @return self
      */
     public function setFlow($flow)
     {
         if (is_null($flow)) {
-            throw new \InvalidArgumentException('non-nullable flow cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'flow');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('flow', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['flow'] = $flow;
 

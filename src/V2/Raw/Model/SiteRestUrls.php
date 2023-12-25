@@ -64,6 +64,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => 'string',
         'deleteEntity' => 'string',
         'siteStatus' => 'string',
+        'siteConfig' => 'string',
     ];
 
     /**
@@ -79,6 +80,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => null,
         'deleteEntity' => null,
         'siteStatus' => null,
+        'siteConfig' => null,
     ];
 
     /**
@@ -92,6 +94,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => false,
         'deleteEntity' => false,
         'siteStatus' => true,
+        'siteConfig' => true,
     ];
 
     /**
@@ -113,6 +116,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => 'createEntity',
         'deleteEntity' => 'deleteEntity',
         'siteStatus' => 'siteStatus',
+        'siteConfig' => 'siteConfig',
     ];
 
     /**
@@ -126,6 +130,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => 'setCreateEntity',
         'deleteEntity' => 'setDeleteEntity',
         'siteStatus' => 'setSiteStatus',
+        'siteConfig' => 'setSiteConfig',
     ];
 
     /**
@@ -139,6 +144,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         'createEntity' => 'getCreateEntity',
         'deleteEntity' => 'getDeleteEntity',
         'siteStatus' => 'getSiteStatus',
+        'siteConfig' => 'getSiteConfig',
     ];
 
     /**
@@ -161,6 +167,7 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('createEntity', $data ?? [], null);
         $this->setIfExists('deleteEntity', $data ?? [], null);
         $this->setIfExists('siteStatus', $data ?? [], null);
+        $this->setIfExists('siteConfig', $data ?? [], null);
     }
 
     /**
@@ -427,6 +434,40 @@ class SiteRestUrls implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['siteStatus'] = $siteStatus;
+
+        return $this;
+    }
+
+    /**
+     * Gets siteConfig.
+     *
+     * @return null|string
+     */
+    public function getSiteConfig()
+    {
+        return $this->container['siteConfig'];
+    }
+
+    /**
+     * Sets siteConfig.
+     *
+     * @param null|string $siteConfig siteConfig
+     *
+     * @return self
+     */
+    public function setSiteConfig($siteConfig)
+    {
+        if (is_null($siteConfig)) {
+            array_push($this->openAPINullablesSetToNull, 'siteConfig');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('siteConfig', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['siteConfig'] = $siteConfig;
 
         return $this;
     }
