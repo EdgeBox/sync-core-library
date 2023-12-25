@@ -31,6 +31,7 @@ interface ISyncCore
     public const FEATURE_REQUEST_PER_TRANSLATION = 'syndication:request-per-translation';
     public const FEATURE_SKIP_UNCHANGED_TRANSLATIONS_AVAILABLE = 'syndication:skip-unchanged-translations:available';
     public const FEATURE_SKIP_UNCHANGED_TRANSLATIONS = 'syndication:skip-unchanged-translations';
+    public const FEATURE_ASYNC_SITE_CONFIG_AVAILABLE = 'site:async-site-config:available';
 
     /**
      * @return IReportingService
@@ -194,4 +195,18 @@ interface ISyncCore
      * @return bool
      */
     public function respondToRequest(string $id, int $statusCode, string $statusText, array $headers, string $body);
+
+    /**
+     * Update the config asynchronously, meaning the Sync Core requests the
+     * config from the site in the background so the user can keep interacting
+     * with the site.
+     *
+     * @param string $mode @see RemoteSiteConfigRequestMode
+     * @param bool $wait Whether to wait for the update to finish so it can throw
+     *   an error as user feedback in case of failure. Returns the update ID either
+     *   way that can be used to display the progress to the user.
+     *
+     * @return string
+     */
+    public function updateSiteConfig(string $mode, $wait = false);
 }

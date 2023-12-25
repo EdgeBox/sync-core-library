@@ -54,6 +54,13 @@ interface IApplicationInterface
      * module/plugin version
      */
     public const REST_ACTION_SITE_STATUS = 'status';
+    /**
+     * @var string REST_ACTION_SITE_CONFIG
+     *
+     * Export relevant configuration from the site to the Sync Core like the
+     * entity type definitions, Pools and Flows
+     */
+    public const REST_ACTION_SITE_CONFIG = 'config';
 
     /**
      * @var string FLOW_NONE

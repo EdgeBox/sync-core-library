@@ -59,6 +59,8 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
             return;
         }
 
+        $this->optimize();
+
         $request_method = $this->requestMethod;
         $dto = $this->dto;
         if (self::REQUEST_FLOW_CREATE === $request_method) {
@@ -106,5 +108,22 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         } else {
             $this->dto = null;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDto()
+    {
+        $this->optimize();
+
+        return $this->dto;
+    }
+
+    /**
+     * Optimize the configuration prior to sending it to the Sync Core.
+     */
+    protected function optimize()
+    {
     }
 }

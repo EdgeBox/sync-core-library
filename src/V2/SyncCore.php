@@ -31,9 +31,12 @@ use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Exception;
@@ -551,15 +554,7 @@ class SyncCore implements ISyncCore
         $dto->setBaseUrl($this->application->getSiteBaseUrl());
         $dto->setSecret($this->getSiteSecret());
 
-        $urls = new SiteRestUrls();
-
-        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
-        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
-        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
-        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
-        $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
-
-        $dto->setRestUrls($urls);
+        $dto->setRestUrls($this->getRestUrls());
 
         $auth = $this->application->getAuthentication();
         /**
@@ -900,6 +895,52 @@ class SyncCore implements ISyncCore
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function updateSiteConfig(string $mode, $wait = false)
+    {
+        $dto = new SiteConfigUpdateRequestDto();
+        /**
+         * @var RemoteSiteConfigRequestMode $mode
+         */
+        $dto->setMode($mode);
+
+        $request = $this->client->siteControllerUpdateConfigRequest($dto);
+
+        /**
+         * @var SyndicationEntity $response
+         */
+        $response = $this->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 0);
+
+        if ($wait) {
+            $running_statuses = [SyndicationStatus::_100_INITIALIZING, SyndicationStatus::_200_RUNNING, SyndicationStatus::_300_RETRYING];
+            do {
+                sleep(3);
+                $request = $this->client->syndicationControllerItemRequest($response->getId());
+                $response = $this->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 3);
+            } while (in_array($response->getStatus(), $running_statuses));
+            if (SyndicationStatus::_400_FINISHED !== $response->getStatus()) {
+                throw new SyncCoreException("Failed to update config: update status is {$response->getStatus()}.");
+            }
+        }
+    }
+
+    protected function getRestUrls()
+    {
+        $urls = new SiteRestUrls();
+
+        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
+        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
+        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
+        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+        $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
+        $site_config_route = $this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_CONFIG);
+        if ($site_config_route) {
+            $urls->setSiteConfig(self::PLACEHOLDER_SITE_BASE_URL.$site_config_route);
+        }
+    }
+
+    /**
      * Load a site by either it's external or internal ID.
      *
      * @return SiteEntity
@@ -933,15 +974,7 @@ class SyncCore implements ISyncCore
         $dto->setAppVersion($this->application->getApplicationVersion());
         $dto->setAppModuleVersion($this->application->getApplicationModuleVersion());
 
-        $urls = new SiteRestUrls();
-
-        $urls->setCreateEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_CREATE_ENTITY));
-        $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
-        $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
-        $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
-        $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
-
-        $dto->setRestUrls($urls);
+        $dto->setRestUrls($this->getRestUrls());
     }
 
     protected function getSiteUpdateDto()
@@ -978,7 +1011,7 @@ class SyncCore implements ISyncCore
 
     protected function getRelativeReference(string $action)
     {
-        if (IApplicationInterface::REST_ACTION_SITE_STATUS === $action) {
+        if (IApplicationInterface::REST_ACTION_SITE_STATUS === $action || IApplicationInterface::REST_ACTION_SITE_CONFIG === $action) {
             $relative = $this->application->getRelativeReferenceForSiteRestCall($action);
         } else {
             $relative = $this->application->getRelativeReferenceForRestCall(
@@ -987,7 +1020,7 @@ class SyncCore implements ISyncCore
             );
         }
 
-        if ('/' !== $relative[0]) {
+        if ($relative && '/' !== $relative[0]) {
             throw new InternalContentSyncError('Relative reference must start with a slash /.');
         }
 

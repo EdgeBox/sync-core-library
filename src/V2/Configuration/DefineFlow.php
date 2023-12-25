@@ -12,6 +12,7 @@ use EdgeBox\SyncCore\V2\BatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
+use EdgeBox\SyncCore\V2\Raw\Model\FlowStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode;
 use EdgeBox\SyncCore\V2\Raw\Model\NewFlowSyndication;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -44,6 +45,11 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $dto->setName($name);
         $dto->setSitePullsByMachineName([]);
         $dto->setSitePushesByMachineName([]);
+        /**
+         * @var FlowStatus $status
+         */
+        $status = FlowStatus::_100_ACTIVE;
+        $dto->setStatus($status);
 
         parent::__construct(
             $core,
@@ -63,6 +69,25 @@ class DefineFlow extends BatchOperation implements IDefineFlow
             );
             $dto->setRemoteConfigFileId($file->getId());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive($set = null)
+    {
+        if (true === $set || false === $set) {
+            /**
+             * @var FlowStatus $status
+             */
+            $status = FlowStatus::_100_ACTIVE;
+            if (!$set) {
+                $status = FlowStatus::_200_INACTIVE;
+            }
+            $this->dto->setStatus($status);
+        }
+
+        return FlowStatus::_200_INACTIVE !== $this->dto->getStatus();
     }
 
     /**
@@ -91,7 +116,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $typeReference->setMachineName($type->getMachineName());
         $typeReference->setVersionId($type->getVersionId());
 
-        $allPools = $this->dto->getSitePullsByMachineName();
+        $all = $this->dto->getSitePullsByMachineName();
 
         $config = new NewFlowSyndication();
         /**
@@ -104,8 +129,8 @@ class DefineFlow extends BatchOperation implements IDefineFlow
             $typeReference,
         ]);
 
-        $allPools[] = $config;
-        $this->dto->setSitePullsByMachineName($allPools);
+        $all[] = $config;
+        $this->dto->setSitePullsByMachineName($all);
 
         return $config;
     }
@@ -120,7 +145,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $typeReference->setMachineName($type->getMachineName());
         $typeReference->setVersionId($type->getVersionId());
 
-        $allPools = $this->dto->getSitePushesByMachineName();
+        $all = $this->dto->getSitePushesByMachineName();
 
         $config = new NewFlowSyndication();
         /**
@@ -132,18 +157,16 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $config->setEntityTypesByMachineName([
             $typeReference,
         ]);
-        $allPools[] = $config;
-        $this->dto->setSitePushesByMachineName($allPools);
+        $all[] = $config;
+        $this->dto->setSitePushesByMachineName($all);
 
         return $config;
     }
 
     /**
      * {@inheritDoc}
-     *
-     * Optimize the configuration prior to sending it to the Sync Core.
      */
-    public function execute()
+    protected function optimize()
     {
         /**
          * @var NewFlowSyndication[] $configs
@@ -198,6 +221,6 @@ class DefineFlow extends BatchOperation implements IDefineFlow
             $this->dto->setSitePullsByMachineName($pulls_optimized);
         }
 
-        return parent::execute();
+        parent::optimize();
     }
 }
