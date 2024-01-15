@@ -64,7 +64,17 @@ class PushMultiple implements IPushMultiple
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function runInOrder(bool $set)
+    {
+        $this->dto->setRunInOrder($set);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute($in_order = false)
     {
         $request = $this
             ->core

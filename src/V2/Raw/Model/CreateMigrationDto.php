@@ -68,6 +68,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'flowMachineName' => 'string',
+        'runInOrder' => 'bool',
     ];
 
     /**
@@ -87,6 +88,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => null,
         'skipSyndication' => null,
         'flowMachineName' => null,
+        'runInOrder' => null,
     ];
 
     /**
@@ -104,6 +106,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => true,
         'skipSyndication' => true,
         'flowMachineName' => true,
+        'runInOrder' => true,
     ];
 
     /**
@@ -129,6 +132,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
         'flowMachineName' => 'flowMachineName',
+        'runInOrder' => 'runInOrder',
     ];
 
     /**
@@ -146,6 +150,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
         'flowMachineName' => 'setFlowMachineName',
+        'runInOrder' => 'setRunInOrder',
     ];
 
     /**
@@ -163,6 +168,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
         'flowMachineName' => 'getFlowMachineName',
+        'runInOrder' => 'getRunInOrder',
     ];
 
     /**
@@ -189,6 +195,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
+        $this->setIfExists('runInOrder', $data ?? [], null);
     }
 
     /**
@@ -603,6 +610,40 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['flowMachineName'] = $flowMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets runInOrder.
+     *
+     * @return null|bool
+     */
+    public function getRunInOrder()
+    {
+        return $this->container['runInOrder'];
+    }
+
+    /**
+     * Sets runInOrder.
+     *
+     * @param null|bool $runInOrder runInOrder
+     *
+     * @return self
+     */
+    public function setRunInOrder($runInOrder)
+    {
+        if (is_null($runInOrder)) {
+            array_push($this->openAPINullablesSetToNull, 'runInOrder');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('runInOrder', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['runInOrder'] = $runInOrder;
 
         return $this;
     }

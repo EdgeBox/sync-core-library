@@ -14,6 +14,17 @@ interface IPushMultiple
     public function addEntity(string $type, string $bundle, string $version_id, string $root_language, ?string $entity_uuid, ?string $entity_id);
 
     /**
+     * Define whether the entities should be processed one after
+     * another rather than in parallel. Keep in mind that this opens the door
+     * to cascading update failures, so it's not preferred. Should only be used
+     * for important publishing events where the order of updates has a
+     * significant impact and outweighs the risks.
+     *
+     * @return $this
+     */
+    public function runInOrder(bool $set);
+
+    /**
      * @throws SyncCoreException
      *
      * @return $this

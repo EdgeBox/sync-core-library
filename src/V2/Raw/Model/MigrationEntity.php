@@ -68,6 +68,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
         'flowMachineName' => 'string',
+        'runInOrder' => 'bool',
         'entityTypeVersion' => 'DynamicReference',
         'entityType' => 'DynamicReference',
         'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
@@ -99,6 +100,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => null,
         'skipSyndication' => null,
         'flowMachineName' => null,
+        'runInOrder' => null,
         'entityTypeVersion' => null,
         'entityType' => null,
         'entities' => null,
@@ -128,6 +130,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => true,
         'skipSyndication' => true,
         'flowMachineName' => true,
+        'runInOrder' => true,
         'entityTypeVersion' => true,
         'entityType' => true,
         'entities' => true,
@@ -165,6 +168,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
         'flowMachineName' => 'flowMachineName',
+        'runInOrder' => 'runInOrder',
         'entityTypeVersion' => 'entityTypeVersion',
         'entityType' => 'entityType',
         'entities' => 'entities',
@@ -194,6 +198,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
         'flowMachineName' => 'setFlowMachineName',
+        'runInOrder' => 'setRunInOrder',
         'entityTypeVersion' => 'setEntityTypeVersion',
         'entityType' => 'setEntityType',
         'entities' => 'setEntities',
@@ -223,6 +228,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
         'flowMachineName' => 'getFlowMachineName',
+        'runInOrder' => 'getRunInOrder',
         'entityTypeVersion' => 'getEntityTypeVersion',
         'entityType' => 'getEntityType',
         'entities' => 'getEntities',
@@ -261,6 +267,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
+        $this->setIfExists('runInOrder', $data ?? [], null);
         $this->setIfExists('entityTypeVersion', $data ?? [], null);
         $this->setIfExists('entityType', $data ?? [], null);
         $this->setIfExists('entities', $data ?? [], null);
@@ -708,6 +715,40 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['flowMachineName'] = $flowMachineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets runInOrder.
+     *
+     * @return null|bool
+     */
+    public function getRunInOrder()
+    {
+        return $this->container['runInOrder'];
+    }
+
+    /**
+     * Sets runInOrder.
+     *
+     * @param null|bool $runInOrder runInOrder
+     *
+     * @return self
+     */
+    public function setRunInOrder($runInOrder)
+    {
+        if (is_null($runInOrder)) {
+            array_push($this->openAPINullablesSetToNull, 'runInOrder');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('runInOrder', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['runInOrder'] = $runInOrder;
 
         return $this;
     }
