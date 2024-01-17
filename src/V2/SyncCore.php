@@ -26,6 +26,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList;
+use EdgeBox\SyncCore\V2\Raw\Model\Product;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
@@ -33,7 +34,9 @@ use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
@@ -925,6 +928,110 @@ class SyncCore implements ISyncCore
         }
 
         return $response->getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isStagingSite($quick = true)
+    {
+        $site = $this->getThisSite($quick);
+
+        return $site ? SiteEnvironmentType::STAGING === $site->getEnvironmentType() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isProductionSite($quick = true)
+    {
+        $site = $this->getThisSite($quick);
+
+        return $site ? SiteEnvironmentType::PRODUCTION === $site->getEnvironmentType() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isLocalSite($quick = true)
+    {
+        $site = $this->getThisSite($quick);
+
+        return $site ? SiteEnvironmentType::LOCAL === $site->getEnvironmentType() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isTestingSite($quick = true)
+    {
+        $site = $this->getThisSite($quick);
+
+        return $site ? SiteEnvironmentType::TESTING === $site->getEnvironmentType() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isStagingContract($quick = true)
+    {
+        $current = $this->getCurrentContractRevision($quick);
+
+        return $current ? Product::STAGING === $current->getProduct() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isSyndicationContract($quick = true)
+    {
+        $current = $this->getCurrentContractRevision($quick);
+
+        return $current ? Product::SYNDICATION === $current->getProduct() : null;
+    }
+
+    protected function getCurrentContractRevision($quick = true)
+    {
+        $self = $this->getSiteSelf($quick);
+        if (!$self) {
+            return null;
+        }
+
+        return $self->getCurrentContractRevision();
+    }
+
+    protected function getThisSite($quick = true)
+    {
+        $self = $this->getSiteSelf($quick);
+        if (!$self) {
+            return null;
+        }
+
+        return $self->getSite();
+    }
+
+    /**
+     * Get information about the site, customer, project, contract and latest
+     * contract revisions.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return SiteSelfDto
+     */
+    protected function getSiteSelf($quick = true)
+    {
+        static $self = null;
+
+        $request = $this->client->siteControllerSelfRequest();
+
+        try {
+            $self = $this->sendToSyncCoreAndExpect($request, SiteSelfDto::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
+
+            return $self;
+        } catch (\Exception $e) {
+        }
+
+        return null;
     }
 
     protected function getRestUrls()

@@ -209,4 +209,59 @@ interface ISyncCore
      * @return string
      */
     public function updateSiteConfig(string $mode, $wait = false);
+
+    /**
+     * Whether this site is registered as a staging site.
+     * Only available in staging contracts.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isStagingSite($quick = true);
+
+    /**
+     * Whether this site is registered as a production site.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isProductionSite($quick = true);
+
+    /**
+     * Whether this site is registered as a local site.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isLocalSite($quick = true);
+
+    /**
+     * Whether this site is registered as a testing site.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isTestingSite($quick = true);
+
+    /**
+     * Whether this site is registered in a staging contract.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isStagingContract($quick = true);
+
+    /**
+     * Whether this site is registered in a syndication contract.
+     *
+     * @param bool $quick pass TRUE if this is used in the UI that editors use where we have a simple fallback
+     *
+     * @return null|bool
+     */
+    public function isSyndicationContract($quick = true);
 }
