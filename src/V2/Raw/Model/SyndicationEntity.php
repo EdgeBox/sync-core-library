@@ -90,6 +90,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'float',
         'skipUnchanged' => 'bool',
         'dependsOnSyndication' => 'DynamicReference',
+        'runAfterSyndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -137,6 +138,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => null,
         'skipUnchanged' => null,
         'dependsOnSyndication' => null,
+        'runAfterSyndication' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -182,6 +184,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => true,
         'skipUnchanged' => true,
         'dependsOnSyndication' => true,
+        'runAfterSyndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -235,6 +238,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'fullDuration',
         'skipUnchanged' => 'skipUnchanged',
         'dependsOnSyndication' => 'dependsOnSyndication',
+        'runAfterSyndication' => 'runAfterSyndication',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -280,6 +284,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'setFullDuration',
         'skipUnchanged' => 'setSkipUnchanged',
         'dependsOnSyndication' => 'setDependsOnSyndication',
+        'runAfterSyndication' => 'setRunAfterSyndication',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -325,6 +330,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'getFullDuration',
         'skipUnchanged' => 'getSkipUnchanged',
         'dependsOnSyndication' => 'getDependsOnSyndication',
+        'runAfterSyndication' => 'getRunAfterSyndication',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -379,6 +385,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('fullDuration', $data ?? [], null);
         $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
+        $this->setIfExists('runAfterSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -1533,6 +1540,40 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['dependsOnSyndication'] = $dependsOnSyndication;
+
+        return $this;
+    }
+
+    /**
+     * Gets runAfterSyndication.
+     *
+     * @return null|DynamicReference
+     */
+    public function getRunAfterSyndication()
+    {
+        return $this->container['runAfterSyndication'];
+    }
+
+    /**
+     * Sets runAfterSyndication.
+     *
+     * @param null|DynamicReference $runAfterSyndication runAfterSyndication
+     *
+     * @return self
+     */
+    public function setRunAfterSyndication($runAfterSyndication)
+    {
+        if (is_null($runAfterSyndication)) {
+            array_push($this->openAPINullablesSetToNull, 'runAfterSyndication');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('runAfterSyndication', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['runAfterSyndication'] = $runAfterSyndication;
 
         return $this;
     }
