@@ -6,6 +6,7 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
 use EdgeBox\SyncCore\V2\Helper;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class TriggerPullSingle implements ITriggerPullSingle
@@ -19,6 +20,13 @@ class TriggerPullSingle implements ITriggerPullSingle
      * @var CreateSyndicationDto
      */
     protected $dto;
+
+    /**
+     * The Syndication Entity, set when running ->execute().
+     *
+     * @var SyndicationEntity
+     */
+    protected $syndication;
 
     /**
      * TriggerPullSingle constructor.
@@ -79,7 +87,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createSyndicationDto: $this->dto);
-        $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
+        $this->syndication = $this->core->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
 
         return $this;
     }
@@ -90,5 +98,15 @@ class TriggerPullSingle implements ITriggerPullSingle
     public function getPullDashboardSearchResultItem()
     {
         return null;
+    }
+
+    /**
+     * @return null|string the update ID to query for the status
+     */
+    public function getId()
+    {
+        if ($this->syndication) {
+            return $this->syndication->getId();
+        }
     }
 }

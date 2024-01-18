@@ -206,7 +206,7 @@ interface ISyncCore
      *   an error as user feedback in case of failure. Returns the update ID either
      *   way that can be used to display the progress to the user.
      *
-     * @return string
+     * @return string the update ID you can use to query for the status
      */
     public function updateSiteConfig(string $mode, $wait = false);
 

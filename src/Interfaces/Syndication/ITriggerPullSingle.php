@@ -32,4 +32,9 @@ interface ITriggerPullSingle
      * @return null|IPullDashboardSearchResultItem
      */
     public function getPullDashboardSearchResultItem();
+
+    /**
+     * @return null|string the update ID to query for the status
+     */
+    public function getId();
 }
