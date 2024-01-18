@@ -656,7 +656,7 @@ class SyncCore implements ISyncCore
         $dto = new SetFeatureFlagDto();
         $dto->setValue($value);
 
-        $request = $this->client->featuresControllerUpdateRequest($target_type, $name, $dto);
+        $request = $this->client->featuresControllerUpdateRequest(targetType: $target_type, featureName: $name, setFeatureFlagDto: $dto);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::FEATURE_ENABLE_RETRY_COUNT);
     }
 
@@ -840,7 +840,7 @@ class SyncCore implements ISyncCore
 
         $this->addSiteDetails($dto);
 
-        $request = $this->client->siteControllerUpdateRequest($dto);
+        $request = $this->client->siteControllerUpdateRequest(createSiteDto: $dto);
         $this->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, self::SITE_REGISTER_RETRY_COUNT);
     }
 
@@ -856,7 +856,7 @@ class SyncCore implements ISyncCore
      */
     public function countRequestsWaitingToBePolled()
     {
-        $request = $this->client->siteControllerGetRequestsRequest(0);
+        $request = $this->client->siteControllerGetRequestsRequest(itemsPerPage: 0);
         /**
          * @var PagedRequestList $response
          */
@@ -870,7 +870,7 @@ class SyncCore implements ISyncCore
      */
     public function pollRequests($limit = 1)
     {
-        $request = $this->client->siteControllerGetRequestsRequest($limit);
+        $request = $this->client->siteControllerGetRequestsRequest(itemsPerPage: $limit);
         /**
          * @var PagedRequestList $response
          */
@@ -891,7 +891,7 @@ class SyncCore implements ISyncCore
         $dto->setResponseHeaders($headers);
         $dto->setResponseBody($body);
         $wrapper->setResponse($dto);
-        $request = $this->client->siteControllerRespondToRequestRequest($id, $wrapper);
+        $request = $this->client->siteControllerRespondToRequestRequest(id: $id, requestResponseDto: $wrapper);
         /**
          * @var SuccessResponse $response
          */
@@ -911,7 +911,7 @@ class SyncCore implements ISyncCore
          */
         $dto->setMode($mode);
 
-        $request = $this->client->siteControllerUpdateConfigRequest($dto);
+        $request = $this->client->siteControllerUpdateConfigRequest(siteConfigUpdateRequestDto: $dto);
 
         /**
          * @var SyndicationEntity $response
@@ -1108,9 +1108,9 @@ class SyncCore implements ISyncCore
         // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
         // is a UUID and if it's not, the site must be re-registered first.
         if (self::isUuid($uuid)) {
-            $request = $this->client->siteControllerItemByUuidRequest($uuid);
+            $request = $this->client->siteControllerItemByUuidRequest(uuid: $uuid);
         } else {
-            $request = $this->client->siteControllerItemRequest($uuid);
+            $request = $this->client->siteControllerItemRequest(id: $uuid);
         }
 
         return $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, self::SITE_GET_RETRY_COUNT);
