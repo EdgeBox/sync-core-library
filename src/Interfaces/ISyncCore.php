@@ -264,4 +264,14 @@ interface ISyncCore
      * @return null|bool
      */
     public function isSyndicationContract($quick = true);
+
+    /**
+     * Get the translations that this site is expected to use for the given
+     * entity based on what the Sync Core knows.
+     *
+     * @param bool $quick
+     *
+     * @return null|string[]
+     */
+    public function getUsedLanguages(string $namespace_machine_name, string $machine_name, string $shared_id, $quick = true);
 }

@@ -25,10 +25,13 @@ use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagTargetType;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\FileStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\FileType;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList;
 use EdgeBox\SyncCore\V2\Raw\Model\Product;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
@@ -990,6 +993,45 @@ class SyncCore implements ISyncCore
         return $current ? Product::SYNDICATION === $current->getProduct() : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getUsedLanguages(string $namespace_machine_name, string $machine_name, string $shared_id, $quick = true)
+    {
+        try {
+            $request = $this->client->remoteEntityTypeControllerByMachineNameRequest(machineName: $machine_name, namespaceMachineName: $namespace_machine_name);
+            $type = $this->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
+
+            $self = $this->getSiteSelf($quick);
+
+            if (self::isUuid($shared_id)) {
+                $request = $this->client->remoteEntityUsageControllerListRequest(itemsPerPage: 1, entityTypeId: $type->getId(), remoteUuid: $shared_id, siteId: $self->getSite()->getId());
+            } else {
+                $request = $this->client->remoteEntityUsageControllerListRequest(itemsPerPage: 1, entityTypeId: $type->getId(), remoteUniqueId: $shared_id, siteId: $self->getSite()->getId());
+            }
+            $usage_page = $this->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
+
+            if (!$usage_page->getTotalNumberOfItems()) {
+                return [];
+            }
+
+            /**
+             * @var RemoteEntityUsageEntity $usage
+             */
+            $usage = $usage_page->getItems()[0];
+
+            $languages = [];
+            foreach ($usage->getTranslations() as $translation) {
+                $languages[] = $translation->getLanguage();
+            }
+
+            return $languages;
+        } catch (\Exception $e) {
+        }
+
+        return null;
+    }
+
     protected function getCurrentContractRevision($quick = true)
     {
         $self = $this->getSiteSelf($quick);
@@ -1051,6 +1093,11 @@ class SyncCore implements ISyncCore
         return $urls;
     }
 
+    protected static function isUuid(string $uuid)
+    {
+        return 1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid);
+    }
+
     /**
      * Load a site by either it's external or internal ID.
      *
@@ -1060,7 +1107,7 @@ class SyncCore implements ISyncCore
     {
         // Site IDs from Sync Core V1 are not a UUID, so we check whether the given site ID
         // is a UUID and if it's not, the site must be re-registered first.
-        if (1 === preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i', $uuid)) {
+        if (self::isUuid($uuid)) {
             $request = $this->client->siteControllerItemByUuidRequest($uuid);
         } else {
             $request = $this->client->siteControllerItemRequest($uuid);
