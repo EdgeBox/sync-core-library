@@ -65,6 +65,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => 'bool',
         'multiple' => 'bool',
         'localized' => 'bool',
+        'shared' => 'bool',
         'remoteTypeName' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
         'format' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat',
@@ -98,6 +99,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => null,
         'multiple' => null,
         'localized' => null,
+        'shared' => null,
         'remoteTypeName' => null,
         'properties' => null,
         'format' => null,
@@ -129,6 +131,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => true,
         'multiple' => true,
         'localized' => true,
+        'shared' => true,
         'remoteTypeName' => true,
         'properties' => true,
         'format' => false,
@@ -168,6 +171,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => 'required',
         'multiple' => 'multiple',
         'localized' => 'localized',
+        'shared' => 'shared',
         'remoteTypeName' => 'remoteTypeName',
         'properties' => 'properties',
         'format' => 'format',
@@ -199,6 +203,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => 'setRequired',
         'multiple' => 'setMultiple',
         'localized' => 'setLocalized',
+        'shared' => 'setShared',
         'remoteTypeName' => 'setRemoteTypeName',
         'properties' => 'setProperties',
         'format' => 'setFormat',
@@ -230,6 +235,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'required' => 'getRequired',
         'multiple' => 'getMultiple',
         'localized' => 'getLocalized',
+        'shared' => 'getShared',
         'remoteTypeName' => 'getRemoteTypeName',
         'properties' => 'getProperties',
         'format' => 'getFormat',
@@ -270,6 +276,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('required', $data ?? [], null);
         $this->setIfExists('multiple', $data ?? [], null);
         $this->setIfExists('localized', $data ?? [], null);
+        $this->setIfExists('shared', $data ?? [], null);
         $this->setIfExists('remoteTypeName', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('format', $data ?? [], null);
@@ -591,6 +598,40 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             }
         }
         $this->container['localized'] = $localized;
+
+        return $this;
+    }
+
+    /**
+     * Gets shared.
+     *
+     * @return null|bool
+     */
+    public function getShared()
+    {
+        return $this->container['shared'];
+    }
+
+    /**
+     * Sets shared.
+     *
+     * @param null|bool $shared shared
+     *
+     * @return self
+     */
+    public function setShared($shared)
+    {
+        if (is_null($shared)) {
+            array_push($this->openAPINullablesSetToNull, 'shared');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('shared', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['shared'] = $shared;
 
         return $this;
     }

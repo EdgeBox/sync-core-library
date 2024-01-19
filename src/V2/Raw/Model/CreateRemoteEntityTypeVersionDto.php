@@ -66,7 +66,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => 'string',
         'translatable' => 'bool',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
-        'nameProperty' => 'string',
     ];
 
     /**
@@ -84,7 +83,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => null,
         'translatable' => null,
         'properties' => null,
-        'nameProperty' => null,
     ];
 
     /**
@@ -100,7 +98,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => false,
         'translatable' => true,
         'properties' => false,
-        'nameProperty' => true,
     ];
 
     /**
@@ -124,7 +121,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => 'versionId',
         'translatable' => 'translatable',
         'properties' => 'properties',
-        'nameProperty' => 'nameProperty',
     ];
 
     /**
@@ -140,7 +136,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => 'setVersionId',
         'translatable' => 'setTranslatable',
         'properties' => 'setProperties',
-        'nameProperty' => 'setNameProperty',
     ];
 
     /**
@@ -156,7 +151,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'versionId' => 'getVersionId',
         'translatable' => 'getTranslatable',
         'properties' => 'getProperties',
-        'nameProperty' => 'getNameProperty',
     ];
 
     /**
@@ -181,7 +175,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('translatable', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
-        $this->setIfExists('nameProperty', $data ?? [], null);
     }
 
     /**
@@ -508,40 +501,6 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
             throw new \InvalidArgumentException('non-nullable properties cannot be null');
         }
         $this->container['properties'] = $properties;
-
-        return $this;
-    }
-
-    /**
-     * Gets nameProperty.
-     *
-     * @return null|string
-     */
-    public function getNameProperty()
-    {
-        return $this->container['nameProperty'];
-    }
-
-    /**
-     * Sets nameProperty.
-     *
-     * @param null|string $nameProperty nameProperty
-     *
-     * @return self
-     */
-    public function setNameProperty($nameProperty)
-    {
-        if (is_null($nameProperty)) {
-            array_push($this->openAPINullablesSetToNull, 'nameProperty');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('nameProperty', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['nameProperty'] = $nameProperty;
 
         return $this;
     }

@@ -192,6 +192,16 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
     /**
      * {@inheritdoc}
      */
+    public function setShared(bool $set)
+    {
+        $this->dto->setShared($set);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setMinValue(mixed $minValue)
     {
         $this->dto->setMinValue($minValue);

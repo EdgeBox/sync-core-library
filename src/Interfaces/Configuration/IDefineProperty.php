@@ -45,4 +45,13 @@ interface IDefineProperty extends IBatchOperation
      * @return $this
      */
     public function setLocalized(bool $set);
+
+    /**
+     * Whether or not this property is shared across the namespace.
+     * E.g. in Drupal, the "label" property is shared across all bundles of an
+     * entity type.
+     *
+     * @return $this
+     */
+    public function setShared(bool $set);
 }

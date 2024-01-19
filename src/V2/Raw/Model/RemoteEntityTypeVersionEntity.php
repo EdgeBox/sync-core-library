@@ -66,7 +66,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => 'string',
         'translatable' => 'bool',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
-        'nameProperty' => 'string',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'entityType' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -91,7 +90,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => null,
         'translatable' => null,
         'properties' => null,
-        'nameProperty' => null,
         'customer' => null,
         'entityType' => null,
         'project' => null,
@@ -114,7 +112,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => false,
         'translatable' => true,
         'properties' => false,
-        'nameProperty' => true,
         'customer' => false,
         'entityType' => false,
         'project' => false,
@@ -145,7 +142,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => 'versionId',
         'translatable' => 'translatable',
         'properties' => 'properties',
-        'nameProperty' => 'nameProperty',
         'customer' => 'customer',
         'entityType' => 'entityType',
         'project' => 'project',
@@ -168,7 +164,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => 'setVersionId',
         'translatable' => 'setTranslatable',
         'properties' => 'setProperties',
-        'nameProperty' => 'setNameProperty',
         'customer' => 'setCustomer',
         'entityType' => 'setEntityType',
         'project' => 'setProject',
@@ -191,7 +186,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         'versionId' => 'getVersionId',
         'translatable' => 'getTranslatable',
         'properties' => 'getProperties',
-        'nameProperty' => 'getNameProperty',
         'customer' => 'getCustomer',
         'entityType' => 'getEntityType',
         'project' => 'getProject',
@@ -223,7 +217,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('translatable', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
-        $this->setIfExists('nameProperty', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('entityType', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -575,40 +568,6 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
             throw new \InvalidArgumentException('non-nullable properties cannot be null');
         }
         $this->container['properties'] = $properties;
-
-        return $this;
-    }
-
-    /**
-     * Gets nameProperty.
-     *
-     * @return null|string
-     */
-    public function getNameProperty()
-    {
-        return $this->container['nameProperty'];
-    }
-
-    /**
-     * Sets nameProperty.
-     *
-     * @param null|string $nameProperty nameProperty
-     *
-     * @return self
-     */
-    public function setNameProperty($nameProperty)
-    {
-        if (is_null($nameProperty)) {
-            array_push($this->openAPINullablesSetToNull, 'nameProperty');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('nameProperty', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['nameProperty'] = $nameProperty;
 
         return $this;
     }
