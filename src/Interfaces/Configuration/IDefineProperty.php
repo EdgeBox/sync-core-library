@@ -15,6 +15,13 @@ interface IDefineProperty extends IBatchOperation
     public function addAllowedValue(string $name, mixed $value = null);
 
     /**
+     * Provide an optional description for the property.
+     *
+     * @return $this
+     */
+    public function setDescription(string $description);
+
+    /**
      * Restrict values to a specific format e.g. expecting email addresses.
      *
      * @see RemoteEntityTypePropertyFormat

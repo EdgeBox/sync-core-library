@@ -119,6 +119,16 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
     /**
      * {@inheritdoc}
      */
+    public function setDescription(string $description)
+    {
+        $this->dto->setDescription($description);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required, $type_name);

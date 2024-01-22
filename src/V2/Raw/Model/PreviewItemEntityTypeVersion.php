@@ -64,6 +64,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
         'versionId' => 'string',
+        'description' => 'string',
         'translatable' => 'bool',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -88,6 +89,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => null,
         'machineName' => null,
         'versionId' => null,
+        'description' => null,
         'translatable' => null,
         'properties' => null,
         'customer' => null,
@@ -110,6 +112,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => false,
         'machineName' => false,
         'versionId' => false,
+        'description' => true,
         'translatable' => true,
         'properties' => false,
         'customer' => false,
@@ -140,6 +143,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => 'namespaceMachineName',
         'machineName' => 'machineName',
         'versionId' => 'versionId',
+        'description' => 'description',
         'translatable' => 'translatable',
         'properties' => 'properties',
         'customer' => 'customer',
@@ -162,6 +166,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => 'setNamespaceMachineName',
         'machineName' => 'setMachineName',
         'versionId' => 'setVersionId',
+        'description' => 'setDescription',
         'translatable' => 'setTranslatable',
         'properties' => 'setProperties',
         'customer' => 'setCustomer',
@@ -184,6 +189,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         'namespaceMachineName' => 'getNamespaceMachineName',
         'machineName' => 'getMachineName',
         'versionId' => 'getVersionId',
+        'description' => 'getDescription',
         'translatable' => 'getTranslatable',
         'properties' => 'getProperties',
         'customer' => 'getCustomer',
@@ -215,6 +221,7 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
         $this->setIfExists('namespaceMachineName', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('translatable', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -507,6 +514,40 @@ class PreviewItemEntityTypeVersion implements ModelInterface, ArrayAccess, \Json
             throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets description.
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description.
+     *
+     * @param null|string $description description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        if (is_null($description)) {
+            array_push($this->openAPINullablesSetToNull, 'description');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('description', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['description'] = $description;
 
         return $this;
     }

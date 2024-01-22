@@ -127,6 +127,16 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
     /**
      * {@inheritdoc}
      */
+    public function setDescription(string $description)
+    {
+        $this->dto->setDescription($description);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setNameProperty(string $machine_name)
     {
         $this->dto->setNameProperty($machine_name);

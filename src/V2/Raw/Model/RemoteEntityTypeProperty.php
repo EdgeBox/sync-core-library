@@ -62,6 +62,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => 'string',
         'name' => 'string',
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType',
+        'description' => 'string',
         'required' => 'bool',
         'multiple' => 'bool',
         'localized' => 'bool',
@@ -96,6 +97,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => null,
         'name' => null,
         'type' => null,
+        'description' => null,
         'required' => null,
         'multiple' => null,
         'localized' => null,
@@ -128,6 +130,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => false,
         'name' => false,
         'type' => false,
+        'description' => true,
         'required' => true,
         'multiple' => true,
         'localized' => true,
@@ -168,6 +171,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => 'machineName',
         'name' => 'name',
         'type' => 'type',
+        'description' => 'description',
         'required' => 'required',
         'multiple' => 'multiple',
         'localized' => 'localized',
@@ -200,6 +204,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => 'setMachineName',
         'name' => 'setName',
         'type' => 'setType',
+        'description' => 'setDescription',
         'required' => 'setRequired',
         'multiple' => 'setMultiple',
         'localized' => 'setLocalized',
@@ -232,6 +237,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'machineName' => 'getMachineName',
         'name' => 'getName',
         'type' => 'getType',
+        'description' => 'getDescription',
         'required' => 'getRequired',
         'multiple' => 'getMultiple',
         'localized' => 'getLocalized',
@@ -273,6 +279,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('required', $data ?? [], null);
         $this->setIfExists('multiple', $data ?? [], null);
         $this->setIfExists('localized', $data ?? [], null);
@@ -496,6 +503,40 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
             throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
         $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets description.
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description.
+     *
+     * @param null|string $description description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        if (is_null($description)) {
+            array_push($this->openAPINullablesSetToNull, 'description');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('description', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['description'] = $description;
 
         return $this;
     }

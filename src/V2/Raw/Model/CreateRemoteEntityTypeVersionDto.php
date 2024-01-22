@@ -64,6 +64,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
         'versionId' => 'string',
+        'description' => 'string',
         'translatable' => 'bool',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
     ];
@@ -81,6 +82,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => null,
         'machineName' => null,
         'versionId' => null,
+        'description' => null,
         'translatable' => null,
         'properties' => null,
     ];
@@ -96,6 +98,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => false,
         'machineName' => false,
         'versionId' => false,
+        'description' => true,
         'translatable' => true,
         'properties' => false,
     ];
@@ -119,6 +122,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => 'namespaceMachineName',
         'machineName' => 'machineName',
         'versionId' => 'versionId',
+        'description' => 'description',
         'translatable' => 'translatable',
         'properties' => 'properties',
     ];
@@ -134,6 +138,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => 'setNamespaceMachineName',
         'machineName' => 'setMachineName',
         'versionId' => 'setVersionId',
+        'description' => 'setDescription',
         'translatable' => 'setTranslatable',
         'properties' => 'setProperties',
     ];
@@ -149,6 +154,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         'namespaceMachineName' => 'getNamespaceMachineName',
         'machineName' => 'getMachineName',
         'versionId' => 'getVersionId',
+        'description' => 'getDescription',
         'translatable' => 'getTranslatable',
         'properties' => 'getProperties',
     ];
@@ -173,6 +179,7 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
         $this->setIfExists('namespaceMachineName', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('translatable', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
     }
@@ -440,6 +447,40 @@ class CreateRemoteEntityTypeVersionDto implements ModelInterface, ArrayAccess, \
             throw new \InvalidArgumentException('non-nullable versionId cannot be null');
         }
         $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets description.
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description.
+     *
+     * @param null|string $description description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        if (is_null($description)) {
+            array_push($this->openAPINullablesSetToNull, 'description');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('description', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['description'] = $description;
 
         return $this;
     }
