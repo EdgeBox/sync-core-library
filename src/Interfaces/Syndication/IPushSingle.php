@@ -84,6 +84,13 @@ interface IPushSingle
      *
      * @return $this
      */
+    public function setPublished(bool $value, $language = null);
+
+    /**
+     * @param null|string $language
+     *
+     * @return $this
+     */
     public function setPreviewHtml(string $value, $language = null);
 
     /**

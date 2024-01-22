@@ -60,6 +60,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static $openAPITypes = [
         'name' => 'string',
+        'published' => 'bool',
         'remoteUuid' => 'string',
         'remoteUniqueId' => 'string',
         'language' => 'string',
@@ -94,6 +95,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static $openAPIFormats = [
         'name' => null,
+        'published' => null,
         'remoteUuid' => null,
         'remoteUniqueId' => null,
         'language' => null,
@@ -126,6 +128,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static array $openAPINullables = [
         'name' => true,
+        'published' => true,
         'remoteUuid' => true,
         'remoteUniqueId' => true,
         'language' => false,
@@ -166,6 +169,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static $attributeMap = [
         'name' => 'name',
+        'published' => 'published',
         'remoteUuid' => 'remoteUuid',
         'remoteUniqueId' => 'remoteUniqueId',
         'language' => 'language',
@@ -198,6 +202,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static $setters = [
         'name' => 'setName',
+        'published' => 'setPublished',
         'remoteUuid' => 'setRemoteUuid',
         'remoteUniqueId' => 'setRemoteUniqueId',
         'language' => 'setLanguage',
@@ -230,6 +235,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      */
     protected static $getters = [
         'name' => 'getName',
+        'published' => 'getPublished',
         'remoteUuid' => 'getRemoteUuid',
         'remoteUniqueId' => 'getRemoteUniqueId',
         'language' => 'getLanguage',
@@ -271,6 +277,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     public function __construct(array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('published', $data ?? [], null);
         $this->setIfExists('remoteUuid', $data ?? [], null);
         $this->setIfExists('remoteUniqueId', $data ?? [], null);
         $this->setIfExists('language', $data ?? [], null);
@@ -461,6 +468,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets published.
+     *
+     * @return null|bool
+     */
+    public function getPublished()
+    {
+        return $this->container['published'];
+    }
+
+    /**
+     * Sets published.
+     *
+     * @param null|bool $published published
+     *
+     * @return self
+     */
+    public function setPublished($published)
+    {
+        if (is_null($published)) {
+            array_push($this->openAPINullablesSetToNull, 'published');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('published', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['published'] = $published;
 
         return $this;
     }

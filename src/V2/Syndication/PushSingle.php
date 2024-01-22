@@ -476,6 +476,17 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
     /**
      * {@inheritdoc}
      */
+    public function setPublished(bool $value, $language = null)
+    {
+        $dto = $language ? $this->getTranslation($language) : $this->dto;
+        $dto->setPublished($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setPreviewHtml(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;

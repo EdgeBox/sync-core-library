@@ -73,6 +73,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'isTranslationRoot' => 'bool',
+        'published' => 'bool',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]',
     ];
 
@@ -98,6 +99,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => null,
         'directDependencies' => null,
         'isTranslationRoot' => null,
+        'published' => null,
         'translations' => null,
     ];
 
@@ -121,6 +123,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => false,
         'directDependencies' => false,
         'isTranslationRoot' => true,
+        'published' => true,
         'translations' => true,
     ];
 
@@ -152,6 +155,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'isTranslationRoot' => 'isTranslationRoot',
+        'published' => 'published',
         'translations' => 'translations',
     ];
 
@@ -175,6 +179,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'isTranslationRoot' => 'setIsTranslationRoot',
+        'published' => 'setPublished',
         'translations' => 'setTranslations',
     ];
 
@@ -198,6 +203,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'isTranslationRoot' => 'getIsTranslationRoot',
+        'published' => 'getPublished',
         'translations' => 'getTranslations',
     ];
 
@@ -230,6 +236,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('directDependencies', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('published', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
     }
 
@@ -791,6 +798,40 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
             }
         }
         $this->container['isTranslationRoot'] = $isTranslationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets published.
+     *
+     * @return null|bool
+     */
+    public function getPublished()
+    {
+        return $this->container['published'];
+    }
+
+    /**
+     * Sets published.
+     *
+     * @param null|bool $published published
+     *
+     * @return self
+     */
+    public function setPublished($published)
+    {
+        if (is_null($published)) {
+            array_push($this->openAPINullablesSetToNull, 'published');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('published', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['published'] = $published;
 
         return $this;
     }
