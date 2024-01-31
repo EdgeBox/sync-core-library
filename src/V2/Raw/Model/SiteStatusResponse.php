@@ -67,6 +67,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => 'mixed',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
         'domains' => 'string[]',
+        'requirements' => 'mixed',
     ];
 
     /**
@@ -85,6 +86,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => null,
         'extensions' => null,
         'domains' => null,
+        'requirements' => null,
     ];
 
     /**
@@ -101,6 +103,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => true,
         'extensions' => true,
         'domains' => true,
+        'requirements' => true,
     ];
 
     /**
@@ -125,6 +128,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => 'featureFlags',
         'extensions' => 'extensions',
         'domains' => 'domains',
+        'requirements' => 'requirements',
     ];
 
     /**
@@ -141,6 +145,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => 'setFeatureFlags',
         'extensions' => 'setExtensions',
         'domains' => 'setDomains',
+        'requirements' => 'setRequirements',
     ];
 
     /**
@@ -157,6 +162,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         'featureFlags' => 'getFeatureFlags',
         'extensions' => 'getExtensions',
         'domains' => 'getDomains',
+        'requirements' => 'getRequirements',
     ];
 
     /**
@@ -182,6 +188,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
+        $this->setIfExists('requirements', $data ?? [], null);
     }
 
     /**
@@ -549,6 +556,40 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['domains'] = $domains;
+
+        return $this;
+    }
+
+    /**
+     * Gets requirements.
+     *
+     * @return null|mixed
+     */
+    public function getRequirements()
+    {
+        return $this->container['requirements'];
+    }
+
+    /**
+     * Sets requirements.
+     *
+     * @param null|mixed $requirements requirements
+     *
+     * @return self
+     */
+    public function setRequirements($requirements)
+    {
+        if (is_null($requirements)) {
+            array_push($this->openAPINullablesSetToNull, 'requirements');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requirements', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['requirements'] = $requirements;
 
         return $this;
     }

@@ -86,6 +86,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
         'notAvailableCounter' => 'float',
+        'requirementsReportFrom' => 'float',
+        'requirementsReport' => 'mixed',
     ];
 
     /**
@@ -123,6 +125,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => null,
         'maxParallelRequests' => null,
         'notAvailableCounter' => null,
+        'requirementsReportFrom' => null,
+        'requirementsReport' => null,
     ];
 
     /**
@@ -158,6 +162,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => true,
         'maxParallelRequests' => true,
         'notAvailableCounter' => true,
+        'requirementsReportFrom' => true,
+        'requirementsReport' => true,
     ];
 
     /**
@@ -201,6 +207,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'maxRequestsPerMinute',
         'maxParallelRequests' => 'maxParallelRequests',
         'notAvailableCounter' => 'notAvailableCounter',
+        'requirementsReportFrom' => 'requirementsReportFrom',
+        'requirementsReport' => 'requirementsReport',
     ];
 
     /**
@@ -236,6 +244,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
         'maxParallelRequests' => 'setMaxParallelRequests',
         'notAvailableCounter' => 'setNotAvailableCounter',
+        'requirementsReportFrom' => 'setRequirementsReportFrom',
+        'requirementsReport' => 'setRequirementsReport',
     ];
 
     /**
@@ -271,6 +281,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
         'maxParallelRequests' => 'getMaxParallelRequests',
         'notAvailableCounter' => 'getNotAvailableCounter',
+        'requirementsReportFrom' => 'getRequirementsReportFrom',
+        'requirementsReport' => 'getRequirementsReport',
     ];
 
     /**
@@ -315,6 +327,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('maxRequestsPerMinute', $data ?? [], null);
         $this->setIfExists('maxParallelRequests', $data ?? [], null);
         $this->setIfExists('notAvailableCounter', $data ?? [], null);
+        $this->setIfExists('requirementsReportFrom', $data ?? [], null);
+        $this->setIfExists('requirementsReport', $data ?? [], null);
     }
 
     /**
@@ -1281,6 +1295,74 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['notAvailableCounter'] = $notAvailableCounter;
+
+        return $this;
+    }
+
+    /**
+     * Gets requirementsReportFrom.
+     *
+     * @return null|float
+     */
+    public function getRequirementsReportFrom()
+    {
+        return $this->container['requirementsReportFrom'];
+    }
+
+    /**
+     * Sets requirementsReportFrom.
+     *
+     * @param null|float $requirementsReportFrom requirementsReportFrom
+     *
+     * @return self
+     */
+    public function setRequirementsReportFrom($requirementsReportFrom)
+    {
+        if (is_null($requirementsReportFrom)) {
+            array_push($this->openAPINullablesSetToNull, 'requirementsReportFrom');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requirementsReportFrom', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['requirementsReportFrom'] = $requirementsReportFrom;
+
+        return $this;
+    }
+
+    /**
+     * Gets requirementsReport.
+     *
+     * @return null|mixed
+     */
+    public function getRequirementsReport()
+    {
+        return $this->container['requirementsReport'];
+    }
+
+    /**
+     * Sets requirementsReport.
+     *
+     * @param null|mixed $requirementsReport requirementsReport
+     *
+     * @return self
+     */
+    public function setRequirementsReport($requirementsReport)
+    {
+        if (is_null($requirementsReport)) {
+            array_push($this->openAPINullablesSetToNull, 'requirementsReport');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('requirementsReport', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['requirementsReport'] = $requirementsReport;
 
         return $this;
     }
