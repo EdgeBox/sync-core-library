@@ -998,6 +998,11 @@ class SyncCore implements ISyncCore
      */
     public function getUsedLanguages(string $namespace_machine_name, string $machine_name, string $shared_id, $quick = true)
     {
+        static $cache = [];
+        if (isset($cache[$namespace_machine_name][$machine_name][$shared_id])) {
+            return $cache[$namespace_machine_name][$machine_name][$shared_id];
+        }
+
         try {
             $request = $this->client->remoteEntityTypeControllerByMachineNameRequest(machineName: $machine_name, namespaceMachineName: $namespace_machine_name);
             $type = $this->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
@@ -1012,7 +1017,7 @@ class SyncCore implements ISyncCore
             $usage_page = $this->sendToSyncCoreAndExpect($request, PagedRemoteEntityUsageListResponse::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
 
             if (!$usage_page->getTotalNumberOfItems()) {
-                return [];
+                return $cache[$namespace_machine_name][$machine_name][$shared_id] = [];
             }
 
             /**
@@ -1025,7 +1030,7 @@ class SyncCore implements ISyncCore
                 $languages[] = $translation->getLanguage();
             }
 
-            return $languages;
+            return $cache[$namespace_machine_name][$machine_name][$shared_id] = $languages;
         } catch (\Exception $e) {
         }
 
