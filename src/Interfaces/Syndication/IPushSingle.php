@@ -44,7 +44,7 @@ interface IPushSingle
      *
      * @return array|object
      */
-    public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null);
+    public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null);
 
     /**
      * @param null|array $details
@@ -52,7 +52,7 @@ interface IPushSingle
      *
      * @return array|object
      */
-    public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null);
+    public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null);
 
     /**
      * @param IPushSingle $embed_entity

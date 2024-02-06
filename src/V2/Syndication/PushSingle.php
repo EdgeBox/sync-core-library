@@ -167,10 +167,12 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
      *                                       ID.
      * @param null|array $details
      *                                       Additional details you would like to push
+     * @param null|string $view_url
+     *                                       The canonical URL / deep link to the entity on the source site, if any
      *
      * @return array|object the definition to be pushed
      */
-    public function getEntityReferenceDto(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
+    public function getEntityReferenceDto(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null)
     {
         $entityReference = new RemoteEntityDependency();
 
@@ -195,6 +197,10 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $entityReference->setReferenceDetails($details);
         }
 
+        if ($view_url) {
+            $entityReference->setViewUrl($view_url);
+        }
+
         return $entityReference;
     }
 
@@ -215,6 +221,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
      *                                   {@see SyncIntent::getEmbedEntityDefinition}
      * @param null   $details
      *                                   {@see SyncIntent::getEmbedEntityDefinition}
+     * @param null|string $view_url
+     *                                   The canonical URL / deep link to the entity on the source site, if any
      *
      * @return array The definition you can store via {@see SyncIntent::setField}
      *
@@ -230,7 +238,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         array $pool_machine_names,
         string $language,
         ?string $name,
-        $details = null
+        $details = null,
+        ?string $view_url = null
     ) {
         $direct_dependencies = $this->dto->getEmbed();
 
@@ -249,7 +258,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
                         $pool_machine_names,
                         $language,
                         $name,
-                        $details
+                        $details,
+                        $view_url
                     );
                 }
             }
@@ -264,7 +274,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $pool_machine_names,
             $language,
             $name,
-            $details
+            $details,
+            $view_url
         );
 
         $direct_dependencies[] = $dto;
@@ -302,7 +313,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
                 $dependency->getPoolMachineNames(),
                 $dependency->getLanguage(),
                 $dependency->getName(),
-                $dependency->getReferenceDetails()
+                $dependency->getReferenceDetails(),
+                $dependency->getViewUrl()
             );
         }
 
@@ -360,6 +372,7 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $embed_dto->setName($previous_dto->getName());
             $embed_dto->setProperties($previous_dto->getProperties());
             $embed_dto->setIsTranslationRoot($previous_dto->getIsTranslationRoot());
+            $embed_dto->setViewUrl($previous_dto->getViewUrl());
 
             if ($embed_dto instanceof RemoteEntityEmbedRootDraft) {
                 $translations = $previous_dto->getTranslations();
@@ -393,14 +406,15 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $embed_entity->getDto()->getPoolMachineNames(),
             $embed_entity->getDto()->getLanguage(),
             $embed_entity->getDto()->getName(),
-            $details
+            $details,
+            $embed_entity->getDto()->getViewUrl()
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
+    public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null)
     {
         return $this->addDirectDependency(
             $type,
@@ -411,14 +425,15 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $pool_machine_names,
             $language,
             $name,
-            $details
+            $details,
+            $view_url
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null)
+    public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null)
     {
         return $this->getEntityReferenceDto(
             $type,
@@ -429,7 +444,8 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
             $pool_machine_names,
             $language,
             $name,
-            $details
+            $details,
+            $view_url
         );
     }
 
