@@ -70,6 +70,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => 'string',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
+        'viewUrl' => 'string',
     ];
 
     /**
@@ -91,6 +92,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
+        'viewUrl' => null,
     ];
 
     /**
@@ -110,6 +112,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
+        'viewUrl' => true,
     ];
 
     /**
@@ -137,6 +140,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => 'name',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'viewUrl' => 'viewUrl',
     ];
 
     /**
@@ -156,6 +160,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => 'setName',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'viewUrl' => 'setViewUrl',
     ];
 
     /**
@@ -175,6 +180,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         'name' => 'getName',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'viewUrl' => 'getViewUrl',
     ];
 
     /**
@@ -203,6 +209,7 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
     }
 
     /**
@@ -669,6 +676,40 @@ class RemoteEntityReference implements ModelInterface, ArrayAccess, \JsonSeriali
             }
         }
         $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param null|string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['viewUrl'] = $viewUrl;
 
         return $this;
     }

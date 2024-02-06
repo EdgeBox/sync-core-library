@@ -70,6 +70,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => 'string',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
+        'viewUrl' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
         'isTranslationRoot' => 'bool',
@@ -94,6 +95,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
+        'viewUrl' => null,
         'properties' => null,
         'directDependencies' => null,
         'isTranslationRoot' => null,
@@ -116,6 +118,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
+        'viewUrl' => true,
         'properties' => false,
         'directDependencies' => false,
         'isTranslationRoot' => true,
@@ -146,6 +149,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => 'name',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'viewUrl' => 'viewUrl',
         'properties' => 'properties',
         'directDependencies' => 'directDependencies',
         'isTranslationRoot' => 'isTranslationRoot',
@@ -168,6 +172,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => 'setName',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'viewUrl' => 'setViewUrl',
         'properties' => 'setProperties',
         'directDependencies' => 'setDirectDependencies',
         'isTranslationRoot' => 'setIsTranslationRoot',
@@ -190,6 +195,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         'name' => 'getName',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'viewUrl' => 'getViewUrl',
         'properties' => 'getProperties',
         'directDependencies' => 'getDirectDependencies',
         'isTranslationRoot' => 'getIsTranslationRoot',
@@ -221,6 +227,7 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('directDependencies', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
@@ -696,6 +703,40 @@ class RemoteEntityEmbed implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param null|string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['viewUrl'] = $viewUrl;
 
         return $this;
     }

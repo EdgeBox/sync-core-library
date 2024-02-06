@@ -70,9 +70,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => 'string',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
+        'viewUrl' => 'string',
         'isDeleted' => 'bool',
         'isSource' => 'bool',
-        'viewUrl' => 'string',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[]',
         'changedLanguages' => 'string[]',
     ];
@@ -96,9 +96,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
+        'viewUrl' => null,
         'isDeleted' => null,
         'isSource' => null,
-        'viewUrl' => null,
         'translations' => null,
         'changedLanguages' => null,
     ];
@@ -120,9 +120,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
+        'viewUrl' => true,
         'isDeleted' => false,
         'isSource' => false,
-        'viewUrl' => true,
         'translations' => true,
         'changedLanguages' => true,
     ];
@@ -152,9 +152,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => 'name',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'viewUrl' => 'viewUrl',
         'isDeleted' => 'isDeleted',
         'isSource' => 'isSource',
-        'viewUrl' => 'viewUrl',
         'translations' => 'translations',
         'changedLanguages' => 'changedLanguages',
     ];
@@ -176,9 +176,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => 'setName',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'viewUrl' => 'setViewUrl',
         'isDeleted' => 'setIsDeleted',
         'isSource' => 'setIsSource',
-        'viewUrl' => 'setViewUrl',
         'translations' => 'setTranslations',
         'changedLanguages' => 'setChangedLanguages',
     ];
@@ -200,9 +200,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'name' => 'getName',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'viewUrl' => 'getViewUrl',
         'isDeleted' => 'getIsDeleted',
         'isSource' => 'getIsSource',
-        'viewUrl' => 'getViewUrl',
         'translations' => 'getTranslations',
         'changedLanguages' => 'getChangedLanguages',
     ];
@@ -233,9 +233,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('isDeleted', $data ?? [], null);
         $this->setIfExists('isSource', $data ?? [], null);
-        $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
     }
@@ -715,6 +715,40 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
     }
 
     /**
+     * Gets viewUrl.
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param null|string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
      * Gets isDeleted.
      *
      * @return bool
@@ -764,40 +798,6 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
             throw new \InvalidArgumentException('non-nullable isSource cannot be null');
         }
         $this->container['isSource'] = $isSource;
-
-        return $this;
-    }
-
-    /**
-     * Gets viewUrl.
-     *
-     * @return null|string
-     */
-    public function getViewUrl()
-    {
-        return $this->container['viewUrl'];
-    }
-
-    /**
-     * Sets viewUrl.
-     *
-     * @param null|string $viewUrl viewUrl
-     *
-     * @return self
-     */
-    public function setViewUrl($viewUrl)
-    {
-        if (is_null($viewUrl)) {
-            array_push($this->openAPINullablesSetToNull, 'viewUrl');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('viewUrl', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['viewUrl'] = $viewUrl;
 
         return $this;
     }

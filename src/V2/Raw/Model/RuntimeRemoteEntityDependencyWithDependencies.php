@@ -70,6 +70,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => 'string',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
+        'viewUrl' => 'string',
         'dependencies' => 'string[]',
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
     ];
@@ -93,6 +94,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
+        'viewUrl' => null,
         'dependencies' => null,
         'entity' => null,
     ];
@@ -114,6 +116,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
+        'viewUrl' => true,
         'dependencies' => false,
         'entity' => false,
     ];
@@ -143,6 +146,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => 'name',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'viewUrl' => 'viewUrl',
         'dependencies' => 'dependencies',
         'entity' => 'entity',
     ];
@@ -164,6 +168,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => 'setName',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'viewUrl' => 'setViewUrl',
         'dependencies' => 'setDependencies',
         'entity' => 'setEntity',
     ];
@@ -185,6 +190,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         'name' => 'getName',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'viewUrl' => 'getViewUrl',
         'dependencies' => 'getDependencies',
         'entity' => 'getEntity',
     ];
@@ -215,6 +221,7 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('dependencies', $data ?? [], null);
         $this->setIfExists('entity', $data ?? [], null);
     }
@@ -689,6 +696,40 @@ class RuntimeRemoteEntityDependencyWithDependencies implements ModelInterface, A
             }
         }
         $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param null|string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['viewUrl'] = $viewUrl;
 
         return $this;
     }
