@@ -73,6 +73,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => 'float',
         'requestDuration' => 'float',
         'slowestRequestDuration' => 'float',
+        'traceRequestDetails' => 'DynamicReference',
     ];
 
     /**
@@ -97,6 +98,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => null,
         'requestDuration' => null,
         'slowestRequestDuration' => null,
+        'traceRequestDetails' => null,
     ];
 
     /**
@@ -119,6 +121,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => true,
         'requestDuration' => true,
         'slowestRequestDuration' => true,
+        'traceRequestDetails' => true,
     ];
 
     /**
@@ -149,6 +152,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => 'startTime',
         'requestDuration' => 'requestDuration',
         'slowestRequestDuration' => 'slowestRequestDuration',
+        'traceRequestDetails' => 'traceRequestDetails',
     ];
 
     /**
@@ -171,6 +175,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => 'setStartTime',
         'requestDuration' => 'setRequestDuration',
         'slowestRequestDuration' => 'setSlowestRequestDuration',
+        'traceRequestDetails' => 'setTraceRequestDetails',
     ];
 
     /**
@@ -193,6 +198,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'startTime' => 'getStartTime',
         'requestDuration' => 'getRequestDuration',
         'slowestRequestDuration' => 'getSlowestRequestDuration',
+        'traceRequestDetails' => 'getTraceRequestDetails',
     ];
 
     /**
@@ -224,6 +230,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('startTime', $data ?? [], null);
         $this->setIfExists('requestDuration', $data ?? [], null);
         $this->setIfExists('slowestRequestDuration', $data ?? [], null);
+        $this->setIfExists('traceRequestDetails', $data ?? [], null);
     }
 
     /**
@@ -804,6 +811,40 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             }
         }
         $this->container['slowestRequestDuration'] = $slowestRequestDuration;
+
+        return $this;
+    }
+
+    /**
+     * Gets traceRequestDetails.
+     *
+     * @return null|DynamicReference
+     */
+    public function getTraceRequestDetails()
+    {
+        return $this->container['traceRequestDetails'];
+    }
+
+    /**
+     * Sets traceRequestDetails.
+     *
+     * @param null|DynamicReference $traceRequestDetails traceRequestDetails
+     *
+     * @return self
+     */
+    public function setTraceRequestDetails($traceRequestDetails)
+    {
+        if (is_null($traceRequestDetails)) {
+            array_push($this->openAPINullablesSetToNull, 'traceRequestDetails');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('traceRequestDetails', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['traceRequestDetails'] = $traceRequestDetails;
 
         return $this;
     }

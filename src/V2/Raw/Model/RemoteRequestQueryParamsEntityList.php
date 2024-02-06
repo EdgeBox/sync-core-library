@@ -67,6 +67,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => 'string',
         'versionId' => 'string',
         'force2xx' => 'string',
+        'trace' => 'string',
     ];
 
     /**
@@ -85,6 +86,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => null,
         'versionId' => null,
         'force2xx' => null,
+        'trace' => null,
     ];
 
     /**
@@ -101,6 +103,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => true,
         'versionId' => true,
         'force2xx' => true,
+        'trace' => true,
     ];
 
     /**
@@ -125,6 +128,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => 'machineName',
         'versionId' => 'versionId',
         'force2xx' => 'force2xx',
+        'trace' => 'trace',
     ];
 
     /**
@@ -141,6 +145,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => 'setMachineName',
         'versionId' => 'setVersionId',
         'force2xx' => 'setForce2xx',
+        'trace' => 'setTrace',
     ];
 
     /**
@@ -157,6 +162,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         'machineName' => 'getMachineName',
         'versionId' => 'getVersionId',
         'force2xx' => 'getForce2xx',
+        'trace' => 'getTrace',
     ];
 
     /**
@@ -182,6 +188,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('force2xx', $data ?? [], null);
+        $this->setIfExists('trace', $data ?? [], null);
     }
 
     /**
@@ -562,6 +569,40 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
             }
         }
         $this->container['force2xx'] = $force2xx;
+
+        return $this;
+    }
+
+    /**
+     * Gets trace.
+     *
+     * @return null|string
+     */
+    public function getTrace()
+    {
+        return $this->container['trace'];
+    }
+
+    /**
+     * Sets trace.
+     *
+     * @param null|string $trace trace
+     *
+     * @return self
+     */
+    public function setTrace($trace)
+    {
+        if (is_null($trace)) {
+            array_push($this->openAPINullablesSetToNull, 'trace');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('trace', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['trace'] = $trace;
 
         return $this;
     }

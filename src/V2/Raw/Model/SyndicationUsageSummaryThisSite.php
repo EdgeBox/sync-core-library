@@ -89,6 +89,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => 'float',
         'fullDuration' => 'float',
         'skipUnchanged' => 'bool',
+        'trace' => 'bool',
         'dependsOnSyndication' => 'DynamicReference',
         'runAfterSyndication' => 'DynamicReference',
         'id' => 'string',
@@ -138,6 +139,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => null,
         'fullDuration' => null,
         'skipUnchanged' => null,
+        'trace' => null,
         'dependsOnSyndication' => null,
         'runAfterSyndication' => null,
         'id' => null,
@@ -185,6 +187,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => true,
         'fullDuration' => true,
         'skipUnchanged' => true,
+        'trace' => true,
         'dependsOnSyndication' => true,
         'runAfterSyndication' => true,
         'id' => false,
@@ -240,6 +243,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => 'duration',
         'fullDuration' => 'fullDuration',
         'skipUnchanged' => 'skipUnchanged',
+        'trace' => 'trace',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'runAfterSyndication' => 'runAfterSyndication',
         'id' => 'id',
@@ -287,6 +291,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => 'setDuration',
         'fullDuration' => 'setFullDuration',
         'skipUnchanged' => 'setSkipUnchanged',
+        'trace' => 'setTrace',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'runAfterSyndication' => 'setRunAfterSyndication',
         'id' => 'setId',
@@ -334,6 +339,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'duration' => 'getDuration',
         'fullDuration' => 'getFullDuration',
         'skipUnchanged' => 'getSkipUnchanged',
+        'trace' => 'getTrace',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'runAfterSyndication' => 'getRunAfterSyndication',
         'id' => 'getId',
@@ -390,6 +396,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('duration', $data ?? [], null);
         $this->setIfExists('fullDuration', $data ?? [], null);
         $this->setIfExists('skipUnchanged', $data ?? [], null);
+        $this->setIfExists('trace', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('runAfterSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -1513,6 +1520,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
             }
         }
         $this->container['skipUnchanged'] = $skipUnchanged;
+
+        return $this;
+    }
+
+    /**
+     * Gets trace.
+     *
+     * @return null|bool
+     */
+    public function getTrace()
+    {
+        return $this->container['trace'];
+    }
+
+    /**
+     * Sets trace.
+     *
+     * @param null|bool $trace trace
+     *
+     * @return self
+     */
+    public function setTrace($trace)
+    {
+        if (is_null($trace)) {
+            array_push($this->openAPINullablesSetToNull, 'trace');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('trace', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['trace'] = $trace;
 
         return $this;
     }

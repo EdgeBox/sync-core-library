@@ -72,6 +72,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => 'float',
         'slowestUpdateDuration' => 'float',
         'slowestUpdateDate' => 'float',
+        'traceNext' => 'bool',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
@@ -102,6 +103,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => null,
         'slowestUpdateDuration' => null,
         'slowestUpdateDate' => null,
+        'traceNext' => null,
         'customer' => null,
         'project' => null,
         'pools' => null,
@@ -130,6 +132,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => true,
         'slowestUpdateDuration' => true,
         'slowestUpdateDate' => true,
+        'traceNext' => true,
         'customer' => false,
         'project' => false,
         'pools' => false,
@@ -166,6 +169,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => 'lastPull',
         'slowestUpdateDuration' => 'slowestUpdateDuration',
         'slowestUpdateDate' => 'slowestUpdateDate',
+        'traceNext' => 'traceNext',
         'customer' => 'customer',
         'project' => 'project',
         'pools' => 'pools',
@@ -194,6 +198,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => 'setLastPull',
         'slowestUpdateDuration' => 'setSlowestUpdateDuration',
         'slowestUpdateDate' => 'setSlowestUpdateDate',
+        'traceNext' => 'setTraceNext',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'pools' => 'setPools',
@@ -222,6 +227,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         'lastPull' => 'getLastPull',
         'slowestUpdateDuration' => 'getSlowestUpdateDuration',
         'slowestUpdateDate' => 'getSlowestUpdateDate',
+        'traceNext' => 'getTraceNext',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'pools' => 'getPools',
@@ -259,6 +265,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
         $this->setIfExists('lastPull', $data ?? [], null);
         $this->setIfExists('slowestUpdateDuration', $data ?? [], null);
         $this->setIfExists('slowestUpdateDate', $data ?? [], null);
+        $this->setIfExists('traceNext', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('pools', $data ?? [], null);
@@ -806,6 +813,40 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
             }
         }
         $this->container['slowestUpdateDate'] = $slowestUpdateDate;
+
+        return $this;
+    }
+
+    /**
+     * Gets traceNext.
+     *
+     * @return null|bool
+     */
+    public function getTraceNext()
+    {
+        return $this->container['traceNext'];
+    }
+
+    /**
+     * Sets traceNext.
+     *
+     * @param null|bool $traceNext traceNext
+     *
+     * @return self
+     */
+    public function setTraceNext($traceNext)
+    {
+        if (is_null($traceNext)) {
+            array_push($this->openAPINullablesSetToNull, 'traceNext');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('traceNext', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['traceNext'] = $traceNext;
 
         return $this;
     }
