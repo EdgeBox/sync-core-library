@@ -417,7 +417,7 @@ class PullOperation implements IPullOperation
      */
     public function getName(?string $language = null)
     {
-        $dto = $language ? $this->translations[$language] : $this->dto;
+        $dto = $language && isset($this->translations[$language]) ? $this->translations[$language] : $this->dto;
 
         return $dto->getName();
     }
