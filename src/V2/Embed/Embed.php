@@ -98,6 +98,10 @@ abstract class Embed
 
   var iframe = undefined;
   function initIframe() {
+    if(typeof iFrameResize==="undefined") {
+      setTimeout(iFrameResize,200);
+      return;
+    }
     iFrameResize({
       //log: true,
       checkOrigin: false,
