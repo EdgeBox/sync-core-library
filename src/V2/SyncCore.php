@@ -40,6 +40,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
@@ -681,6 +682,16 @@ class SyncCore implements ISyncCore
         return $this->loadSiteByIdOrUuid($id)->getUuid();
     }
 
+    /**
+     * Get the site's priority for publishing.
+     *
+     * @return null|int
+     */
+    public function getSitePriority()
+    {
+        return $this->loadSiteByIdOrUuid($this->application->getSiteUuid())->getPriority();
+    }
+
     public function getSiteName($uuid = null)
     {
         if (!$uuid) {
@@ -1106,7 +1117,7 @@ class SyncCore implements ISyncCore
     /**
      * Load a site by either it's external or internal ID.
      *
-     * @return SiteEntity
+     * @return SmallSiteEntityWithDetails
      */
     protected function loadSiteByIdOrUuid(string $uuid)
     {
@@ -1118,7 +1129,7 @@ class SyncCore implements ISyncCore
             $request = $this->client->siteControllerItemRequest(id: $uuid);
         }
 
-        return $this->sendToSyncCoreAndExpect($request, SiteEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, self::SITE_GET_RETRY_COUNT);
+        return $this->sendToSyncCoreAndExpect($request, SmallSiteEntityWithDetails::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, self::SITE_GET_RETRY_COUNT);
     }
 
     /**

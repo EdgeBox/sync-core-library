@@ -90,6 +90,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'float',
         'skipUnchanged' => 'bool',
         'trace' => 'bool',
+        'priority' => 'float',
         'dependsOnSyndication' => 'DynamicReference',
         'runAfterSyndication' => 'DynamicReference',
         'id' => 'string',
@@ -139,6 +140,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => null,
         'skipUnchanged' => null,
         'trace' => null,
+        'priority' => null,
         'dependsOnSyndication' => null,
         'runAfterSyndication' => null,
         'id' => null,
@@ -186,6 +188,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => true,
         'skipUnchanged' => true,
         'trace' => true,
+        'priority' => true,
         'dependsOnSyndication' => true,
         'runAfterSyndication' => true,
         'id' => false,
@@ -241,6 +244,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'fullDuration',
         'skipUnchanged' => 'skipUnchanged',
         'trace' => 'trace',
+        'priority' => 'priority',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'runAfterSyndication' => 'runAfterSyndication',
         'id' => 'id',
@@ -288,6 +292,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'setFullDuration',
         'skipUnchanged' => 'setSkipUnchanged',
         'trace' => 'setTrace',
+        'priority' => 'setPriority',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'runAfterSyndication' => 'setRunAfterSyndication',
         'id' => 'setId',
@@ -335,6 +340,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'fullDuration' => 'getFullDuration',
         'skipUnchanged' => 'getSkipUnchanged',
         'trace' => 'getTrace',
+        'priority' => 'getPriority',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'runAfterSyndication' => 'getRunAfterSyndication',
         'id' => 'getId',
@@ -391,6 +397,7 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('fullDuration', $data ?? [], null);
         $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('trace', $data ?? [], null);
+        $this->setIfExists('priority', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('runAfterSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -1547,6 +1554,40 @@ class SyndicationEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['trace'] = $trace;
+
+        return $this;
+    }
+
+    /**
+     * Gets priority.
+     *
+     * @return null|float
+     */
+    public function getPriority()
+    {
+        return $this->container['priority'];
+    }
+
+    /**
+     * Sets priority.
+     *
+     * @param null|float $priority priority
+     *
+     * @return self
+     */
+    public function setPriority($priority)
+    {
+        if (is_null($priority)) {
+            array_push($this->openAPINullablesSetToNull, 'priority');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('priority', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['priority'] = $priority;
 
         return $this;
     }

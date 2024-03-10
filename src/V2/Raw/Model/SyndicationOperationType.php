@@ -61,6 +61,10 @@ class SyndicationOperationType
 
     public const RETRIEVE_CONFIG = 'retrieve-config';
 
+    public const RECOVER = 'recover';
+
+    public const VERIFY = 'verify';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -78,6 +82,8 @@ class SyndicationOperationType
             self::PUSH_ENTITY_TRANSLATION,
             self::DELETE_ENTITY,
             self::RETRIEVE_CONFIG,
+            self::RECOVER,
+            self::VERIFY,
         ];
     }
 }

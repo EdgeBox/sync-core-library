@@ -73,6 +73,15 @@ interface IApplicationInterface
     public const FLOW_NONE = '_';
 
     /**
+     * @var string FLOW_OPERATION
+     *
+     * Some per-entity requests don't require a Flow e.g. when the Sync Core
+     * requests an entity cache to be purged after an update as an
+     * auto-recovery mechanism.
+     */
+    public const FLOW_OPERATION = '_operation';
+
+    /**
      * @return IApplicationInterface
      */
     public static function get();

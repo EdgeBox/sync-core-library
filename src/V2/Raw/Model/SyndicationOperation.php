@@ -61,6 +61,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPITypes = [
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
         'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType',
+        'subType' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType',
         'page' => 'float',
         'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]',
         'entity' => 'DynamicReference',
@@ -86,6 +87,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPIFormats = [
         'status' => null,
         'type' => null,
+        'subType' => null,
         'page' => null,
         'errors' => null,
         'entity' => null,
@@ -109,6 +111,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static array $openAPINullables = [
         'status' => false,
         'type' => false,
+        'subType' => false,
         'page' => true,
         'errors' => true,
         'entity' => true,
@@ -140,6 +143,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $attributeMap = [
         'status' => 'status',
         'type' => 'type',
+        'subType' => 'subType',
         'page' => 'page',
         'errors' => 'errors',
         'entity' => 'entity',
@@ -163,6 +167,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $setters = [
         'status' => 'setStatus',
         'type' => 'setType',
+        'subType' => 'setSubType',
         'page' => 'setPage',
         'errors' => 'setErrors',
         'entity' => 'setEntity',
@@ -186,6 +191,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $getters = [
         'status' => 'getStatus',
         'type' => 'getType',
+        'subType' => 'getSubType',
         'page' => 'getPage',
         'errors' => 'getErrors',
         'entity' => 'getEntity',
@@ -218,6 +224,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     {
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('subType', $data ?? [], null);
         $this->setIfExists('page', $data ?? [], null);
         $this->setIfExists('errors', $data ?? [], null);
         $this->setIfExists('entity', $data ?? [], null);
@@ -403,6 +410,33 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
         $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets subType.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType
+     */
+    public function getSubType()
+    {
+        return $this->container['subType'];
+    }
+
+    /**
+     * Sets subType.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType $subType subType
+     *
+     * @return self
+     */
+    public function setSubType($subType)
+    {
+        if (is_null($subType)) {
+            throw new \InvalidArgumentException('non-nullable subType cannot be null');
+        }
+        $this->container['subType'] = $subType;
 
         return $this;
     }

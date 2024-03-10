@@ -36,16 +36,16 @@ interface ISyncCore
     /**
      * Default for dev environments.
      */
-    public const PRIORITY_NONE = 0;
+    public const PRIORITY_LOW = 0;
     /**
      * Default for staging+production environments.
      */
-    public const PRIORITY_REGULAR = 1;
+    public const PRIORITY_NORMAL = 1;
     /**
      * A regular environment publishing an important update or an important
      * environment publishing a regular update.
      */
-    public const PRIORITY_IMPORTANT = 2;
+    public const PRIORITY_HIGH = 2;
     /**
      * An important environment publishing an important update.
      */
