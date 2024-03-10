@@ -69,6 +69,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => 'bool',
         'flowMachineName' => 'string',
         'runInOrder' => 'bool',
+        'priority' => 'float',
         'entityTypeVersion' => 'DynamicReference',
         'entityType' => 'DynamicReference',
         'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
@@ -101,6 +102,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => null,
         'flowMachineName' => null,
         'runInOrder' => null,
+        'priority' => null,
         'entityTypeVersion' => null,
         'entityType' => null,
         'entities' => null,
@@ -131,6 +133,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => true,
         'flowMachineName' => true,
         'runInOrder' => true,
+        'priority' => true,
         'entityTypeVersion' => true,
         'entityType' => true,
         'entities' => true,
@@ -169,6 +172,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => 'skipSyndication',
         'flowMachineName' => 'flowMachineName',
         'runInOrder' => 'runInOrder',
+        'priority' => 'priority',
         'entityTypeVersion' => 'entityTypeVersion',
         'entityType' => 'entityType',
         'entities' => 'entities',
@@ -199,6 +203,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => 'setSkipSyndication',
         'flowMachineName' => 'setFlowMachineName',
         'runInOrder' => 'setRunInOrder',
+        'priority' => 'setPriority',
         'entityTypeVersion' => 'setEntityTypeVersion',
         'entityType' => 'setEntityType',
         'entities' => 'setEntities',
@@ -229,6 +234,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'skipSyndication' => 'getSkipSyndication',
         'flowMachineName' => 'getFlowMachineName',
         'runInOrder' => 'getRunInOrder',
+        'priority' => 'getPriority',
         'entityTypeVersion' => 'getEntityTypeVersion',
         'entityType' => 'getEntityType',
         'entities' => 'getEntities',
@@ -268,6 +274,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
         $this->setIfExists('runInOrder', $data ?? [], null);
+        $this->setIfExists('priority', $data ?? [], null);
         $this->setIfExists('entityTypeVersion', $data ?? [], null);
         $this->setIfExists('entityType', $data ?? [], null);
         $this->setIfExists('entities', $data ?? [], null);
@@ -749,6 +756,40 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['runInOrder'] = $runInOrder;
+
+        return $this;
+    }
+
+    /**
+     * Gets priority.
+     *
+     * @return null|float
+     */
+    public function getPriority()
+    {
+        return $this->container['priority'];
+    }
+
+    /**
+     * Sets priority.
+     *
+     * @param null|float $priority priority
+     *
+     * @return self
+     */
+    public function setPriority($priority)
+    {
+        if (is_null($priority)) {
+            array_push($this->openAPINullablesSetToNull, 'priority');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('priority', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['priority'] = $priority;
 
         return $this;
     }

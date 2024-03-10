@@ -74,6 +74,16 @@ class PushMultiple implements IPushMultiple
     /**
      * {@inheritdoc}
      */
+    public function setPriority(int $set)
+    {
+        $this->dto->setPriority($set);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function execute($in_order = false)
     {
         $request = $this

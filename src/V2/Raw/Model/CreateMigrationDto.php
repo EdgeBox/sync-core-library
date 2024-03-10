@@ -69,6 +69,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => 'bool',
         'flowMachineName' => 'string',
         'runInOrder' => 'bool',
+        'priority' => 'float',
     ];
 
     /**
@@ -89,6 +90,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => null,
         'flowMachineName' => null,
         'runInOrder' => null,
+        'priority' => null,
     ];
 
     /**
@@ -107,6 +109,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => true,
         'flowMachineName' => true,
         'runInOrder' => true,
+        'priority' => true,
     ];
 
     /**
@@ -133,6 +136,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => 'skipSyndication',
         'flowMachineName' => 'flowMachineName',
         'runInOrder' => 'runInOrder',
+        'priority' => 'priority',
     ];
 
     /**
@@ -151,6 +155,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => 'setSkipSyndication',
         'flowMachineName' => 'setFlowMachineName',
         'runInOrder' => 'setRunInOrder',
+        'priority' => 'setPriority',
     ];
 
     /**
@@ -169,6 +174,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'skipSyndication' => 'getSkipSyndication',
         'flowMachineName' => 'getFlowMachineName',
         'runInOrder' => 'getRunInOrder',
+        'priority' => 'getPriority',
     ];
 
     /**
@@ -196,6 +202,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->setIfExists('skipSyndication', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
         $this->setIfExists('runInOrder', $data ?? [], null);
+        $this->setIfExists('priority', $data ?? [], null);
     }
 
     /**
@@ -644,6 +651,40 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['runInOrder'] = $runInOrder;
+
+        return $this;
+    }
+
+    /**
+     * Gets priority.
+     *
+     * @return null|float
+     */
+    public function getPriority()
+    {
+        return $this->container['priority'];
+    }
+
+    /**
+     * Sets priority.
+     *
+     * @param null|float $priority priority
+     *
+     * @return self
+     */
+    public function setPriority($priority)
+    {
+        if (is_null($priority)) {
+            array_push($this->openAPINullablesSetToNull, 'priority');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('priority', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['priority'] = $priority;
 
         return $this;
     }

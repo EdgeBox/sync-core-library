@@ -25,6 +25,15 @@ interface IPushMultiple
     public function runInOrder(bool $set);
 
     /**
+     * Define whether this is a priority publication.
+     *
+     * @param int $priority see ISyncCore::PRIORITY_* constants
+     *
+     * @return $this
+     */
+    public function setPriority(int $priority);
+
+    /**
      * @throws SyncCoreException
      *
      * @return $this

@@ -1,6 +1,6 @@
 <?php
 /**
- * PagedSiteList.
+ * SyndicationTraceRequest.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * PagedSiteList Class Doc Comment.
+ * SyndicationTraceRequest Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationTraceRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'PagedSiteList';
+    protected static $openAPIModelName = 'SyndicationTraceRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,11 +59,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'page' => 'float',
-        'numberOfPages' => 'float',
-        'itemsPerPage' => 'float',
-        'totalNumberOfItems' => 'float',
-        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntity[]',
+        'trace' => 'string',
     ];
 
     /**
@@ -74,11 +70,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'page' => null,
-        'numberOfPages' => null,
-        'itemsPerPage' => null,
-        'totalNumberOfItems' => null,
-        'items' => null,
+        'trace' => null,
     ];
 
     /**
@@ -87,11 +79,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'page' => false,
-        'numberOfPages' => false,
-        'itemsPerPage' => false,
-        'totalNumberOfItems' => false,
-        'items' => false,
+        'trace' => true,
     ];
 
     /**
@@ -108,11 +96,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'page' => 'page',
-        'numberOfPages' => 'numberOfPages',
-        'itemsPerPage' => 'itemsPerPage',
-        'totalNumberOfItems' => 'totalNumberOfItems',
-        'items' => 'items',
+        'trace' => 'trace',
     ];
 
     /**
@@ -121,11 +105,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'page' => 'setPage',
-        'numberOfPages' => 'setNumberOfPages',
-        'itemsPerPage' => 'setItemsPerPage',
-        'totalNumberOfItems' => 'setTotalNumberOfItems',
-        'items' => 'setItems',
+        'trace' => 'setTrace',
     ];
 
     /**
@@ -134,11 +114,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'page' => 'getPage',
-        'numberOfPages' => 'getNumberOfPages',
-        'itemsPerPage' => 'getItemsPerPage',
-        'totalNumberOfItems' => 'getTotalNumberOfItems',
-        'items' => 'getItems',
+        'trace' => 'getTrace',
     ];
 
     /**
@@ -156,11 +132,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('page', $data ?? [], null);
-        $this->setIfExists('numberOfPages', $data ?? [], null);
-        $this->setIfExists('itemsPerPage', $data ?? [], null);
-        $this->setIfExists('totalNumberOfItems', $data ?? [], null);
-        $this->setIfExists('items', $data ?? [], null);
+        $this->setIfExists('trace', $data ?? [], null);
     }
 
     /**
@@ -260,25 +232,7 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
-
-        if (null === $this->container['page']) {
-            $invalidProperties[] = "'page' can't be null";
-        }
-        if (null === $this->container['numberOfPages']) {
-            $invalidProperties[] = "'numberOfPages' can't be null";
-        }
-        if (null === $this->container['itemsPerPage']) {
-            $invalidProperties[] = "'itemsPerPage' can't be null";
-        }
-        if (null === $this->container['totalNumberOfItems']) {
-            $invalidProperties[] = "'totalNumberOfItems' can't be null";
-        }
-        if (null === $this->container['items']) {
-            $invalidProperties[] = "'items' can't be null";
-        }
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -293,136 +247,35 @@ class PagedSiteList implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets page.
+     * Gets trace.
      *
-     * @return float
+     * @return null|string
      */
-    public function getPage()
+    public function getTrace()
     {
-        return $this->container['page'];
+        return $this->container['trace'];
     }
 
     /**
-     * Sets page.
+     * Sets trace.
      *
-     * @param float $page page
+     * @param null|string $trace trace
      *
      * @return self
      */
-    public function setPage($page)
+    public function setTrace($trace)
     {
-        if (is_null($page)) {
-            throw new \InvalidArgumentException('non-nullable page cannot be null');
+        if (is_null($trace)) {
+            array_push($this->openAPINullablesSetToNull, 'trace');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('trace', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
-        $this->container['page'] = $page;
-
-        return $this;
-    }
-
-    /**
-     * Gets numberOfPages.
-     *
-     * @return float
-     */
-    public function getNumberOfPages()
-    {
-        return $this->container['numberOfPages'];
-    }
-
-    /**
-     * Sets numberOfPages.
-     *
-     * @param float $numberOfPages numberOfPages
-     *
-     * @return self
-     */
-    public function setNumberOfPages($numberOfPages)
-    {
-        if (is_null($numberOfPages)) {
-            throw new \InvalidArgumentException('non-nullable numberOfPages cannot be null');
-        }
-        $this->container['numberOfPages'] = $numberOfPages;
-
-        return $this;
-    }
-
-    /**
-     * Gets itemsPerPage.
-     *
-     * @return float
-     */
-    public function getItemsPerPage()
-    {
-        return $this->container['itemsPerPage'];
-    }
-
-    /**
-     * Sets itemsPerPage.
-     *
-     * @param float $itemsPerPage itemsPerPage
-     *
-     * @return self
-     */
-    public function setItemsPerPage($itemsPerPage)
-    {
-        if (is_null($itemsPerPage)) {
-            throw new \InvalidArgumentException('non-nullable itemsPerPage cannot be null');
-        }
-        $this->container['itemsPerPage'] = $itemsPerPage;
-
-        return $this;
-    }
-
-    /**
-     * Gets totalNumberOfItems.
-     *
-     * @return float
-     */
-    public function getTotalNumberOfItems()
-    {
-        return $this->container['totalNumberOfItems'];
-    }
-
-    /**
-     * Sets totalNumberOfItems.
-     *
-     * @param float $totalNumberOfItems totalNumberOfItems
-     *
-     * @return self
-     */
-    public function setTotalNumberOfItems($totalNumberOfItems)
-    {
-        if (is_null($totalNumberOfItems)) {
-            throw new \InvalidArgumentException('non-nullable totalNumberOfItems cannot be null');
-        }
-        $this->container['totalNumberOfItems'] = $totalNumberOfItems;
-
-        return $this;
-    }
-
-    /**
-     * Gets items.
-     *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntity[]
-     */
-    public function getItems()
-    {
-        return $this->container['items'];
-    }
-
-    /**
-     * Sets items.
-     *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntity[] $items items
-     *
-     * @return self
-     */
-    public function setItems($items)
-    {
-        if (is_null($items)) {
-            throw new \InvalidArgumentException('non-nullable items cannot be null');
-        }
-        $this->container['items'] = $items;
+        $this->container['trace'] = $trace;
 
         return $this;
     }
