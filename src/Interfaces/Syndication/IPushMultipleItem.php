@@ -23,6 +23,15 @@ interface IPushMultipleItem
     public function addTranslation(string $language_id, string $view_url, bool $changed = true);
 
     /**
+     * Delete a translation for the entity.
+     *
+     * @param string $language_id The ID of the language, e.g. "en" or "de".
+     *
+     * @return $this
+     */
+    public function deleteTranslation(string $language_id);
+
+    /**
      * Whether or not the entity changed. If not and only changed translations are
      * requested, this is skipped.
      * Not allowed if the root entity has not been sent before at all.

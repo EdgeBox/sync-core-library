@@ -75,6 +75,25 @@ class PushMultipleItem implements IPushMultipleItem
     /**
      * {@inheritDoc}
      */
+    public function deleteTranslation(string $language_id)
+    {
+        $languages = $this->dto->getChangedLanguages();
+        foreach ($languages as $language) {
+            if ($language === $language_id) {
+                throw new \Exception("A translation can't be both updated and deleted.");
+            }
+        }
+
+        $languages = $this->dto->getDeletedLanguages() ?? [];
+        $languages[] = $language_id;
+        $this->dto->setDeletedLanguages($languages);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function hasChanged(bool $changed)
     {
         $languages = $this->dto->getChangedLanguages();
