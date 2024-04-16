@@ -75,6 +75,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => 'bool',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[]',
         'changedLanguages' => 'string[]',
+        'deletedLanguages' => 'string[]',
     ];
 
     /**
@@ -101,6 +102,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => null,
         'translations' => null,
         'changedLanguages' => null,
+        'deletedLanguages' => null,
     ];
 
     /**
@@ -125,6 +127,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => false,
         'translations' => true,
         'changedLanguages' => true,
+        'deletedLanguages' => true,
     ];
 
     /**
@@ -157,6 +160,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => 'isSource',
         'translations' => 'translations',
         'changedLanguages' => 'changedLanguages',
+        'deletedLanguages' => 'deletedLanguages',
     ];
 
     /**
@@ -181,6 +185,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => 'setIsSource',
         'translations' => 'setTranslations',
         'changedLanguages' => 'setChangedLanguages',
+        'deletedLanguages' => 'setDeletedLanguages',
     ];
 
     /**
@@ -205,6 +210,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         'isSource' => 'getIsSource',
         'translations' => 'getTranslations',
         'changedLanguages' => 'getChangedLanguages',
+        'deletedLanguages' => 'getDeletedLanguages',
     ];
 
     /**
@@ -238,6 +244,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
         $this->setIfExists('isSource', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('deletedLanguages', $data ?? [], null);
     }
 
     /**
@@ -866,6 +873,40 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
             }
         }
         $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets deletedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getDeletedLanguages()
+    {
+        return $this->container['deletedLanguages'];
+    }
+
+    /**
+     * Sets deletedLanguages.
+     *
+     * @param null|string[] $deletedLanguages deletedLanguages
+     *
+     * @return self
+     */
+    public function setDeletedLanguages($deletedLanguages)
+    {
+        if (is_null($deletedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'deletedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['deletedLanguages'] = $deletedLanguages;
 
         return $this;
     }

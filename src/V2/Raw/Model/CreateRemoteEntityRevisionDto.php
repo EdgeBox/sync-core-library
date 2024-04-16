@@ -70,6 +70,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
         'deleted' => 'bool',
+        'incomplete' => 'bool',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
@@ -105,6 +106,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => null,
         'viewUrl' => null,
         'deleted' => null,
+        'incomplete' => null,
         'embed' => null,
         'properties' => null,
         'allDependencies' => null,
@@ -138,6 +140,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => true,
         'viewUrl' => false,
         'deleted' => true,
+        'incomplete' => true,
         'embed' => true,
         'properties' => false,
         'allDependencies' => true,
@@ -179,6 +182,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
         'deleted' => 'deleted',
+        'incomplete' => 'incomplete',
         'embed' => 'embed',
         'properties' => 'properties',
         'allDependencies' => 'allDependencies',
@@ -212,6 +216,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
         'deleted' => 'setDeleted',
+        'incomplete' => 'setIncomplete',
         'embed' => 'setEmbed',
         'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
@@ -245,6 +250,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
         'deleted' => 'getDeleted',
+        'incomplete' => 'getIncomplete',
         'embed' => 'getEmbed',
         'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
@@ -287,6 +293,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('deleted', $data ?? [], null);
+        $this->setIfExists('incomplete', $data ?? [], null);
         $this->setIfExists('embed', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('allDependencies', $data ?? [], null);
@@ -780,6 +787,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['deleted'] = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Gets incomplete.
+     *
+     * @return null|bool
+     */
+    public function getIncomplete()
+    {
+        return $this->container['incomplete'];
+    }
+
+    /**
+     * Sets incomplete.
+     *
+     * @param null|bool $incomplete incomplete
+     *
+     * @return self
+     */
+    public function setIncomplete($incomplete)
+    {
+        if (is_null($incomplete)) {
+            array_push($this->openAPINullablesSetToNull, 'incomplete');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('incomplete', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['incomplete'] = $incomplete;
 
         return $this;
     }

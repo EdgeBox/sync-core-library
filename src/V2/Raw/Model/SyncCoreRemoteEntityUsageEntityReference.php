@@ -62,10 +62,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'language' => 'string',
         'isTranslationRoot' => 'bool',
+        'match' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType',
         'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
         'viewUrl' => 'string',
+        'lastPush' => 'float',
+        'lastPull' => 'float',
     ];
 
     /**
@@ -79,10 +82,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => null,
         'language' => null,
         'isTranslationRoot' => null,
+        'match' => null,
         'status' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
         'viewUrl' => null,
+        'lastPush' => null,
+        'lastPull' => null,
     ];
 
     /**
@@ -94,10 +100,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => false,
         'language' => false,
         'isTranslationRoot' => false,
+        'match' => false,
         'status' => false,
         'versionId' => true,
         'versionIdWithTranslations' => true,
         'viewUrl' => true,
+        'lastPush' => true,
+        'lastPull' => true,
     ];
 
     /**
@@ -117,10 +126,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => 'entity',
         'language' => 'language',
         'isTranslationRoot' => 'isTranslationRoot',
+        'match' => 'match',
         'status' => 'status',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
         'viewUrl' => 'viewUrl',
+        'lastPush' => 'lastPush',
+        'lastPull' => 'lastPull',
     ];
 
     /**
@@ -132,10 +144,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => 'setEntity',
         'language' => 'setLanguage',
         'isTranslationRoot' => 'setIsTranslationRoot',
+        'match' => 'setMatch',
         'status' => 'setStatus',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'viewUrl' => 'setViewUrl',
+        'lastPush' => 'setLastPush',
+        'lastPull' => 'setLastPull',
     ];
 
     /**
@@ -147,10 +162,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => 'getEntity',
         'language' => 'getLanguage',
         'isTranslationRoot' => 'getIsTranslationRoot',
+        'match' => 'getMatch',
         'status' => 'getStatus',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'viewUrl' => 'getViewUrl',
+        'lastPush' => 'getLastPush',
+        'lastPull' => 'getLastPull',
     ];
 
     /**
@@ -171,10 +189,13 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         $this->setIfExists('entity', $data ?? [], null);
         $this->setIfExists('language', $data ?? [], null);
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('match', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
+        $this->setIfExists('lastPush', $data ?? [], null);
+        $this->setIfExists('lastPull', $data ?? [], null);
     }
 
     /**
@@ -385,6 +406,33 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     }
 
     /**
+     * Gets match.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType
+     */
+    public function getMatch()
+    {
+        return $this->container['match'];
+    }
+
+    /**
+     * Sets match.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType $match match
+     *
+     * @return self
+     */
+    public function setMatch($match)
+    {
+        if (is_null($match)) {
+            throw new \InvalidArgumentException('non-nullable match cannot be null');
+        }
+        $this->container['match'] = $match;
+
+        return $this;
+    }
+
+    /**
      * Gets status.
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
@@ -509,6 +557,74 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
             }
         }
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastPush.
+     *
+     * @return null|float
+     */
+    public function getLastPush()
+    {
+        return $this->container['lastPush'];
+    }
+
+    /**
+     * Sets lastPush.
+     *
+     * @param null|float $lastPush lastPush
+     *
+     * @return self
+     */
+    public function setLastPush($lastPush)
+    {
+        if (is_null($lastPush)) {
+            array_push($this->openAPINullablesSetToNull, 'lastPush');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastPush', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['lastPush'] = $lastPush;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastPull.
+     *
+     * @return null|float
+     */
+    public function getLastPull()
+    {
+        return $this->container['lastPull'];
+    }
+
+    /**
+     * Sets lastPull.
+     *
+     * @param null|float $lastPull lastPull
+     *
+     * @return self
+     */
+    public function setLastPull($lastPull)
+    {
+        if (is_null($lastPull)) {
+            array_push($this->openAPINullablesSetToNull, 'lastPull');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastPull', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['lastPull'] = $lastPull;
 
         return $this;
     }

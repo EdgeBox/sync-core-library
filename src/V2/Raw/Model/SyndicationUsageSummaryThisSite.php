@@ -81,6 +81,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => 'bool',
         'isRegularSyndication' => 'bool',
         'changedLanguages' => 'string[]',
+        'deletedLanguages' => 'string[]',
         'rdTotal' => 'float',
         'rdCount' => 'float',
         'rdAverage' => 'float',
@@ -132,6 +133,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => null,
         'isRegularSyndication' => null,
         'changedLanguages' => null,
+        'deletedLanguages' => null,
         'rdTotal' => null,
         'rdCount' => null,
         'rdAverage' => null,
@@ -181,6 +183,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => true,
         'isRegularSyndication' => true,
         'changedLanguages' => true,
+        'deletedLanguages' => true,
         'rdTotal' => true,
         'rdCount' => true,
         'rdAverage' => true,
@@ -238,6 +241,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => 'isAutoUpdate',
         'isRegularSyndication' => 'isRegularSyndication',
         'changedLanguages' => 'changedLanguages',
+        'deletedLanguages' => 'deletedLanguages',
         'rdTotal' => 'rdTotal',
         'rdCount' => 'rdCount',
         'rdAverage' => 'rdAverage',
@@ -287,6 +291,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => 'setIsAutoUpdate',
         'isRegularSyndication' => 'setIsRegularSyndication',
         'changedLanguages' => 'setChangedLanguages',
+        'deletedLanguages' => 'setDeletedLanguages',
         'rdTotal' => 'setRdTotal',
         'rdCount' => 'setRdCount',
         'rdAverage' => 'setRdAverage',
@@ -336,6 +341,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         'isAutoUpdate' => 'getIsAutoUpdate',
         'isRegularSyndication' => 'getIsRegularSyndication',
         'changedLanguages' => 'getChangedLanguages',
+        'deletedLanguages' => 'getDeletedLanguages',
         'rdTotal' => 'getRdTotal',
         'rdCount' => 'getRdCount',
         'rdAverage' => 'getRdAverage',
@@ -394,6 +400,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('isAutoUpdate', $data ?? [], null);
         $this->setIfExists('isRegularSyndication', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('deletedLanguages', $data ?? [], null);
         $this->setIfExists('rdTotal', $data ?? [], null);
         $this->setIfExists('rdCount', $data ?? [], null);
         $this->setIfExists('rdAverage', $data ?? [], null);
@@ -1255,6 +1262,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, ArrayAccess, \J
             }
         }
         $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets deletedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getDeletedLanguages()
+    {
+        return $this->container['deletedLanguages'];
+    }
+
+    /**
+     * Sets deletedLanguages.
+     *
+     * @param null|string[] $deletedLanguages deletedLanguages
+     *
+     * @return self
+     */
+    public function setDeletedLanguages($deletedLanguages)
+    {
+        if (is_null($deletedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'deletedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['deletedLanguages'] = $deletedLanguages;
 
         return $this;
     }

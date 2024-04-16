@@ -70,6 +70,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
         'deleted' => 'bool',
+        'incomplete' => 'bool',
         'embed' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]',
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
@@ -109,6 +110,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => null,
         'viewUrl' => null,
         'deleted' => null,
+        'incomplete' => null,
         'embed' => null,
         'properties' => null,
         'allDependencies' => null,
@@ -146,6 +148,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => true,
         'viewUrl' => false,
         'deleted' => true,
+        'incomplete' => true,
         'embed' => true,
         'properties' => false,
         'allDependencies' => true,
@@ -191,6 +194,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => 'isTranslationRoot',
         'viewUrl' => 'viewUrl',
         'deleted' => 'deleted',
+        'incomplete' => 'incomplete',
         'embed' => 'embed',
         'properties' => 'properties',
         'allDependencies' => 'allDependencies',
@@ -228,6 +232,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => 'setIsTranslationRoot',
         'viewUrl' => 'setViewUrl',
         'deleted' => 'setDeleted',
+        'incomplete' => 'setIncomplete',
         'embed' => 'setEmbed',
         'properties' => 'setProperties',
         'allDependencies' => 'setAllDependencies',
@@ -265,6 +270,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'isTranslationRoot' => 'getIsTranslationRoot',
         'viewUrl' => 'getViewUrl',
         'deleted' => 'getDeleted',
+        'incomplete' => 'getIncomplete',
         'embed' => 'getEmbed',
         'properties' => 'getProperties',
         'allDependencies' => 'getAllDependencies',
@@ -311,6 +317,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         $this->setIfExists('isTranslationRoot', $data ?? [], null);
         $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('deleted', $data ?? [], null);
+        $this->setIfExists('incomplete', $data ?? [], null);
         $this->setIfExists('embed', $data ?? [], null);
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('allDependencies', $data ?? [], null);
@@ -829,6 +836,40 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
             }
         }
         $this->container['deleted'] = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Gets incomplete.
+     *
+     * @return null|bool
+     */
+    public function getIncomplete()
+    {
+        return $this->container['incomplete'];
+    }
+
+    /**
+     * Sets incomplete.
+     *
+     * @param null|bool $incomplete incomplete
+     *
+     * @return self
+     */
+    public function setIncomplete($incomplete)
+    {
+        if (is_null($incomplete)) {
+            array_push($this->openAPINullablesSetToNull, 'incomplete');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('incomplete', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['incomplete'] = $incomplete;
 
         return $this;
     }
