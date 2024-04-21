@@ -85,7 +85,7 @@ abstract class Embed
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
 </style>
-<iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'" loading="lazy">
+<iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'" loading="lazy" allow="fullscreen">
   The page could not be loaded as your browser does not support it.
 </iframe>
 '.(Embed::$iframeResizerAdded ? '' : Embed::$iframeResizerAdded = '<script type="text/javascript" src="'.$this->core->getCloudEmbedUrl().'/iframeResizer.js"></script>').'
