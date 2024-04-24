@@ -1019,6 +1019,9 @@ class SyncCore implements ISyncCore
             $type = $this->sendToSyncCoreAndExpect($request, RemoteEntityTypeEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, $quick, $quick ? 0 : 3);
 
             $self = $this->getSiteSelf($quick);
+            if (!$self) {
+                return null;
+            }
 
             if (self::isUuid($shared_id)) {
                 $request = $this->client->remoteEntityUsageControllerListRequest(itemsPerPage: 1, entityTypeId: $type->getId(), remoteUuid: $shared_id, siteId: $self->getSite()->getId());
@@ -1079,6 +1082,9 @@ class SyncCore implements ISyncCore
     protected function getSiteSelf($quick = true)
     {
         static $self = null;
+        if ($self) {
+            return $self;
+        }
 
         $request = $this->client->siteControllerSelfRequest();
 
