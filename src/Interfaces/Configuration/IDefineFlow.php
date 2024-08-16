@@ -19,4 +19,13 @@ interface IDefineFlow extends IBatchOperation
      * @return bool
      */
     public function isActive($set = null);
+
+    /**
+     * Define what language codes are allowed. NULL means all are allowed.
+     *
+     * @param null|string[] $set
+     *
+     * @return string[]
+     */
+    public function allowedLanguages($set = null);
 }

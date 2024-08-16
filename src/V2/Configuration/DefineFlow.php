@@ -107,6 +107,16 @@ class DefineFlow extends BatchOperation implements IDefineFlow
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function allowedLanguages($set = null)
+    {
+        $this->dto->setAllowedLanguages($set);
+
+        return $this->dto->getAllowedLanguages();
+    }
+
+    /**
      * @return NewFlowSyndication
      */
     public function enablePull(DefineEntityType $type, string $poolMachineName)
