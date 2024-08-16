@@ -215,6 +215,9 @@ class DefaultApi
         'remoteEntityTypeVersionControllerItem' => [
             'application/json',
         ],
+        'remoteEntityTypeVersionControllerItemByMachineName' => [
+            'application/json',
+        ],
         'remoteEntityUsageControllerItem' => [
             'application/json',
         ],
@@ -16195,6 +16198,331 @@ class DefaultApi
             $resourcePath = str_replace(
                 '{'.'id'.'}',
                 ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation remoteEntityTypeVersionControllerItemByMachineName.
+     *
+     * @param  string $versionId versionId (required)
+     * @param  string $machineName machineName (required)
+     * @param  string $namespaceMachineName namespaceMachineName (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity
+     */
+    public function remoteEntityTypeVersionControllerItemByMachineName($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
+    {
+        list($response) = $this->remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo.
+     *
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
+    {
+        $request = $this->remoteEntityTypeVersionControllerItemByMachineNameRequest($versionId, $machineName, $namespaceMachineName, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityTypeVersionControllerItemByMachineNameAsync.
+     *
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function remoteEntityTypeVersionControllerItemByMachineNameAsync($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
+    {
+        return $this->remoteEntityTypeVersionControllerItemByMachineNameAsyncWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation remoteEntityTypeVersionControllerItemByMachineNameAsyncWithHttpInfo.
+     *
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function remoteEntityTypeVersionControllerItemByMachineNameAsyncWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity';
+        $request = $this->remoteEntityTypeVersionControllerItemByMachineNameRequest($versionId, $machineName, $namespaceMachineName, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'remoteEntityTypeVersionControllerItemByMachineName'.
+     *
+     * @param  string $versionId (required)
+     * @param  string $machineName (required)
+     * @param  string $namespaceMachineName (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function remoteEntityTypeVersionControllerItemByMachineNameRequest($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
+    {
+        // verify the required parameter 'versionId' is set
+        if (null === $versionId || (is_array($versionId) && 0 === count($versionId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $versionId when calling remoteEntityTypeVersionControllerItemByMachineName'
+            );
+        }
+
+        // verify the required parameter 'machineName' is set
+        if (null === $machineName || (is_array($machineName) && 0 === count($machineName))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $machineName when calling remoteEntityTypeVersionControllerItemByMachineName'
+            );
+        }
+
+        // verify the required parameter 'namespaceMachineName' is set
+        if (null === $namespaceMachineName || (is_array($namespaceMachineName) && 0 === count($namespaceMachineName))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $namespaceMachineName when calling remoteEntityTypeVersionControllerItemByMachineName'
+            );
+        }
+
+        $resourcePath = '/sync-core/remote-entity-type-version/by-machine-name/{namespaceMachineName}/{machineName}/{versionId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $versionId) {
+            $resourcePath = str_replace(
+                '{'.'versionId'.'}',
+                ObjectSerializer::toPathValue($versionId),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $machineName) {
+            $resourcePath = str_replace(
+                '{'.'machineName'.'}',
+                ObjectSerializer::toPathValue($machineName),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $namespaceMachineName) {
+            $resourcePath = str_replace(
+                '{'.'namespaceMachineName'.'}',
+                ObjectSerializer::toPathValue($namespaceMachineName),
                 $resourcePath
             );
         }

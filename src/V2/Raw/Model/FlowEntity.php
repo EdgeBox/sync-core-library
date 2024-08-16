@@ -62,6 +62,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'machineName' => 'string',
         'containsPreviews' => 'bool',
+        'allowedLanguages' => 'string[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -86,6 +87,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => null,
         'machineName' => null,
         'containsPreviews' => null,
+        'allowedLanguages' => null,
         'customer' => null,
         'site' => null,
         'project' => null,
@@ -108,6 +110,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => false,
         'machineName' => false,
         'containsPreviews' => true,
+        'allowedLanguages' => true,
         'customer' => false,
         'site' => false,
         'project' => false,
@@ -138,6 +141,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'name',
         'machineName' => 'machineName',
         'containsPreviews' => 'containsPreviews',
+        'allowedLanguages' => 'allowedLanguages',
         'customer' => 'customer',
         'site' => 'site',
         'project' => 'project',
@@ -160,6 +164,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'setName',
         'machineName' => 'setMachineName',
         'containsPreviews' => 'setContainsPreviews',
+        'allowedLanguages' => 'setAllowedLanguages',
         'customer' => 'setCustomer',
         'site' => 'setSite',
         'project' => 'setProject',
@@ -182,6 +187,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'getName',
         'machineName' => 'getMachineName',
         'containsPreviews' => 'getContainsPreviews',
+        'allowedLanguages' => 'getAllowedLanguages',
         'customer' => 'getCustomer',
         'site' => 'getSite',
         'project' => 'getProject',
@@ -213,6 +219,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('containsPreviews', $data ?? [], null);
+        $this->setIfExists('allowedLanguages', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('site', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -457,6 +464,40 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['containsPreviews'] = $containsPreviews;
+
+        return $this;
+    }
+
+    /**
+     * Gets allowedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getAllowedLanguages()
+    {
+        return $this->container['allowedLanguages'];
+    }
+
+    /**
+     * Sets allowedLanguages.
+     *
+     * @param null|string[] $allowedLanguages allowedLanguages
+     *
+     * @return self
+     */
+    public function setAllowedLanguages($allowedLanguages)
+    {
+        if (is_null($allowedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'allowedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allowedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allowedLanguages'] = $allowedLanguages;
 
         return $this;
     }

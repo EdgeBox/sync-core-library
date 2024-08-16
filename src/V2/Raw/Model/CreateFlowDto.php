@@ -62,6 +62,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'machineName' => 'string',
         'containsPreviews' => 'bool',
+        'allowedLanguages' => 'string[]',
         'sitePushesByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\NewFlowSyndication[]',
         'sitePullsByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\NewFlowSyndication[]',
         'remoteConfigFileId' => 'string',
@@ -79,6 +80,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => null,
         'machineName' => null,
         'containsPreviews' => null,
+        'allowedLanguages' => null,
         'sitePushesByMachineName' => null,
         'sitePullsByMachineName' => null,
         'remoteConfigFileId' => null,
@@ -94,6 +96,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => false,
         'machineName' => false,
         'containsPreviews' => true,
+        'allowedLanguages' => true,
         'sitePushesByMachineName' => false,
         'sitePullsByMachineName' => false,
         'remoteConfigFileId' => true,
@@ -117,6 +120,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'name',
         'machineName' => 'machineName',
         'containsPreviews' => 'containsPreviews',
+        'allowedLanguages' => 'allowedLanguages',
         'sitePushesByMachineName' => 'sitePushesByMachineName',
         'sitePullsByMachineName' => 'sitePullsByMachineName',
         'remoteConfigFileId' => 'remoteConfigFileId',
@@ -132,6 +136,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'setName',
         'machineName' => 'setMachineName',
         'containsPreviews' => 'setContainsPreviews',
+        'allowedLanguages' => 'setAllowedLanguages',
         'sitePushesByMachineName' => 'setSitePushesByMachineName',
         'sitePullsByMachineName' => 'setSitePullsByMachineName',
         'remoteConfigFileId' => 'setRemoteConfigFileId',
@@ -147,6 +152,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'getName',
         'machineName' => 'getMachineName',
         'containsPreviews' => 'getContainsPreviews',
+        'allowedLanguages' => 'getAllowedLanguages',
         'sitePushesByMachineName' => 'getSitePushesByMachineName',
         'sitePullsByMachineName' => 'getSitePullsByMachineName',
         'remoteConfigFileId' => 'getRemoteConfigFileId',
@@ -171,6 +177,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('containsPreviews', $data ?? [], null);
+        $this->setIfExists('allowedLanguages', $data ?? [], null);
         $this->setIfExists('sitePushesByMachineName', $data ?? [], null);
         $this->setIfExists('sitePullsByMachineName', $data ?? [], null);
         $this->setIfExists('remoteConfigFileId', $data ?? [], null);
@@ -387,6 +394,40 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['containsPreviews'] = $containsPreviews;
+
+        return $this;
+    }
+
+    /**
+     * Gets allowedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getAllowedLanguages()
+    {
+        return $this->container['allowedLanguages'];
+    }
+
+    /**
+     * Sets allowedLanguages.
+     *
+     * @param null|string[] $allowedLanguages allowedLanguages
+     *
+     * @return self
+     */
+    public function setAllowedLanguages($allowedLanguages)
+    {
+        if (is_null($allowedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'allowedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('allowedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['allowedLanguages'] = $allowedLanguages;
 
         return $this;
     }

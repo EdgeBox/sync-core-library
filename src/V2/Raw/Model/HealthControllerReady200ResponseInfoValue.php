@@ -232,7 +232,13 @@ class HealthControllerReady200ResponseInfoValue implements ModelInterface, Array
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        if (null === $this->container['status']) {
+            $invalidProperties[] = "'status' can't be null";
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -249,7 +255,7 @@ class HealthControllerReady200ResponseInfoValue implements ModelInterface, Array
     /**
      * Gets status.
      *
-     * @return null|string
+     * @return string
      */
     public function getStatus()
     {
@@ -259,7 +265,7 @@ class HealthControllerReady200ResponseInfoValue implements ModelInterface, Array
     /**
      * Sets status.
      *
-     * @param null|string $status status
+     * @param string $status status
      *
      * @return self
      */

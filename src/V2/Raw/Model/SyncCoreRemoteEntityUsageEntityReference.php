@@ -69,6 +69,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => 'string',
         'lastPush' => 'float',
         'lastPull' => 'float',
+        'revisionId' => 'float',
+        'isLatest' => 'bool',
+        'updateStatus' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus',
     ];
 
     /**
@@ -89,6 +92,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => null,
         'lastPush' => null,
         'lastPull' => null,
+        'revisionId' => null,
+        'isLatest' => null,
+        'updateStatus' => null,
     ];
 
     /**
@@ -107,6 +113,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => true,
         'lastPush' => true,
         'lastPull' => true,
+        'revisionId' => true,
+        'isLatest' => true,
+        'updateStatus' => false,
     ];
 
     /**
@@ -133,6 +142,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => 'viewUrl',
         'lastPush' => 'lastPush',
         'lastPull' => 'lastPull',
+        'revisionId' => 'revisionId',
+        'isLatest' => 'isLatest',
+        'updateStatus' => 'updateStatus',
     ];
 
     /**
@@ -151,6 +163,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => 'setViewUrl',
         'lastPush' => 'setLastPush',
         'lastPull' => 'setLastPull',
+        'revisionId' => 'setRevisionId',
+        'isLatest' => 'setIsLatest',
+        'updateStatus' => 'setUpdateStatus',
     ];
 
     /**
@@ -169,6 +184,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'viewUrl' => 'getViewUrl',
         'lastPush' => 'getLastPush',
         'lastPull' => 'getLastPull',
+        'revisionId' => 'getRevisionId',
+        'isLatest' => 'getIsLatest',
+        'updateStatus' => 'getUpdateStatus',
     ];
 
     /**
@@ -196,6 +214,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         $this->setIfExists('viewUrl', $data ?? [], null);
         $this->setIfExists('lastPush', $data ?? [], null);
         $this->setIfExists('lastPull', $data ?? [], null);
+        $this->setIfExists('revisionId', $data ?? [], null);
+        $this->setIfExists('isLatest', $data ?? [], null);
+        $this->setIfExists('updateStatus', $data ?? [], null);
     }
 
     /**
@@ -625,6 +646,101 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
             }
         }
         $this->container['lastPull'] = $lastPull;
+
+        return $this;
+    }
+
+    /**
+     * Gets revisionId.
+     *
+     * @return null|float
+     */
+    public function getRevisionId()
+    {
+        return $this->container['revisionId'];
+    }
+
+    /**
+     * Sets revisionId.
+     *
+     * @param null|float $revisionId revisionId
+     *
+     * @return self
+     */
+    public function setRevisionId($revisionId)
+    {
+        if (is_null($revisionId)) {
+            array_push($this->openAPINullablesSetToNull, 'revisionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('revisionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['revisionId'] = $revisionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets isLatest.
+     *
+     * @return null|bool
+     */
+    public function getIsLatest()
+    {
+        return $this->container['isLatest'];
+    }
+
+    /**
+     * Sets isLatest.
+     *
+     * @param null|bool $isLatest isLatest
+     *
+     * @return self
+     */
+    public function setIsLatest($isLatest)
+    {
+        if (is_null($isLatest)) {
+            array_push($this->openAPINullablesSetToNull, 'isLatest');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isLatest', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isLatest'] = $isLatest;
+
+        return $this;
+    }
+
+    /**
+     * Gets updateStatus.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus
+     */
+    public function getUpdateStatus()
+    {
+        return $this->container['updateStatus'];
+    }
+
+    /**
+     * Sets updateStatus.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus $updateStatus updateStatus
+     *
+     * @return self
+     */
+    public function setUpdateStatus($updateStatus)
+    {
+        if (is_null($updateStatus)) {
+            throw new \InvalidArgumentException('non-nullable updateStatus cannot be null');
+        }
+        $this->container['updateStatus'] = $updateStatus;
 
         return $this;
     }

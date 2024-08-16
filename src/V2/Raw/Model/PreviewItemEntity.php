@@ -81,6 +81,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'translationRoot' => 'DynamicReference',
         'previewHtml' => 'DynamicReference',
+        'revisionId' => 'float',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -120,6 +121,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => null,
         'translationRoot' => null,
         'previewHtml' => null,
+        'revisionId' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -157,6 +159,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => false,
         'translationRoot' => true,
         'previewHtml' => true,
+        'revisionId' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -202,6 +205,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => 'project',
         'translationRoot' => 'translationRoot',
         'previewHtml' => 'previewHtml',
+        'revisionId' => 'revisionId',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -239,6 +243,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => 'setProject',
         'translationRoot' => 'setTranslationRoot',
         'previewHtml' => 'setPreviewHtml',
+        'revisionId' => 'setRevisionId',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -276,6 +281,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         'project' => 'getProject',
         'translationRoot' => 'getTranslationRoot',
         'previewHtml' => 'getPreviewHtml',
+        'revisionId' => 'getRevisionId',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -322,6 +328,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('translationRoot', $data ?? [], null);
         $this->setIfExists('previewHtml', $data ?? [], null);
+        $this->setIfExists('revisionId', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -1161,6 +1168,40 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['previewHtml'] = $previewHtml;
+
+        return $this;
+    }
+
+    /**
+     * Gets revisionId.
+     *
+     * @return null|float
+     */
+    public function getRevisionId()
+    {
+        return $this->container['revisionId'];
+    }
+
+    /**
+     * Sets revisionId.
+     *
+     * @param null|float $revisionId revisionId
+     *
+     * @return self
+     */
+    public function setRevisionId($revisionId)
+    {
+        if (is_null($revisionId)) {
+            array_push($this->openAPINullablesSetToNull, 'revisionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('revisionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['revisionId'] = $revisionId;
 
         return $this;
     }

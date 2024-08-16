@@ -51,6 +51,8 @@ class SyndicationOperationType
 
     public const RETRIEVE_ENTITY_TRANSLATION = 'retrieve-entity-translation';
 
+    public const DELETE_ENTITY_TRANSLATION = 'delete-entity-translation';
+
     public const RETRIEVE_FILE = 'retrieve-file';
 
     public const PUBLISH = 'publish';
@@ -79,6 +81,7 @@ class SyndicationOperationType
             self::RETRIEVE_ENTITY_LIST_INIT,
             self::RETRIEVE_ENTITY,
             self::RETRIEVE_ENTITY_TRANSLATION,
+            self::DELETE_ENTITY_TRANSLATION,
             self::RETRIEVE_FILE,
             self::PUBLISH,
             self::PUSH_ENTITY,

@@ -76,12 +76,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]',
         'entityTypeByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName',
         'translationRoot' => 'DynamicReference',
+        'revisionId' => 'float',
         'previewHtmlFileId' => 'string',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]',
         'flowMachineName' => 'string',
         'previewHtml' => 'DynamicReference',
         'allLanguages' => 'string[]',
         'changedLanguages' => 'string[]',
+        'deletedLanguages' => 'string[]',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
         'files' => '\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[]',
@@ -112,12 +114,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => null,
         'entityTypeByMachineName' => null,
         'translationRoot' => null,
+        'revisionId' => null,
         'previewHtmlFileId' => null,
         'translations' => null,
         'flowMachineName' => null,
         'previewHtml' => null,
         'allLanguages' => null,
         'changedLanguages' => null,
+        'deletedLanguages' => null,
         'versionId' => null,
         'versionIdWithTranslations' => null,
         'files' => null,
@@ -146,12 +150,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => true,
         'entityTypeByMachineName' => false,
         'translationRoot' => true,
+        'revisionId' => true,
         'previewHtmlFileId' => true,
         'translations' => true,
         'flowMachineName' => false,
         'previewHtml' => true,
         'allLanguages' => true,
         'changedLanguages' => true,
+        'deletedLanguages' => true,
         'versionId' => true,
         'versionIdWithTranslations' => true,
         'files' => true,
@@ -188,12 +194,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => 'allDependencies',
         'entityTypeByMachineName' => 'entityTypeByMachineName',
         'translationRoot' => 'translationRoot',
+        'revisionId' => 'revisionId',
         'previewHtmlFileId' => 'previewHtmlFileId',
         'translations' => 'translations',
         'flowMachineName' => 'flowMachineName',
         'previewHtml' => 'previewHtml',
         'allLanguages' => 'allLanguages',
         'changedLanguages' => 'changedLanguages',
+        'deletedLanguages' => 'deletedLanguages',
         'versionId' => 'versionId',
         'versionIdWithTranslations' => 'versionIdWithTranslations',
         'files' => 'files',
@@ -222,12 +230,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => 'setAllDependencies',
         'entityTypeByMachineName' => 'setEntityTypeByMachineName',
         'translationRoot' => 'setTranslationRoot',
+        'revisionId' => 'setRevisionId',
         'previewHtmlFileId' => 'setPreviewHtmlFileId',
         'translations' => 'setTranslations',
         'flowMachineName' => 'setFlowMachineName',
         'previewHtml' => 'setPreviewHtml',
         'allLanguages' => 'setAllLanguages',
         'changedLanguages' => 'setChangedLanguages',
+        'deletedLanguages' => 'setDeletedLanguages',
         'versionId' => 'setVersionId',
         'versionIdWithTranslations' => 'setVersionIdWithTranslations',
         'files' => 'setFiles',
@@ -256,12 +266,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'allDependencies' => 'getAllDependencies',
         'entityTypeByMachineName' => 'getEntityTypeByMachineName',
         'translationRoot' => 'getTranslationRoot',
+        'revisionId' => 'getRevisionId',
         'previewHtmlFileId' => 'getPreviewHtmlFileId',
         'translations' => 'getTranslations',
         'flowMachineName' => 'getFlowMachineName',
         'previewHtml' => 'getPreviewHtml',
         'allLanguages' => 'getAllLanguages',
         'changedLanguages' => 'getChangedLanguages',
+        'deletedLanguages' => 'getDeletedLanguages',
         'versionId' => 'getVersionId',
         'versionIdWithTranslations' => 'getVersionIdWithTranslations',
         'files' => 'getFiles',
@@ -299,12 +311,14 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         $this->setIfExists('allDependencies', $data ?? [], null);
         $this->setIfExists('entityTypeByMachineName', $data ?? [], null);
         $this->setIfExists('translationRoot', $data ?? [], null);
+        $this->setIfExists('revisionId', $data ?? [], null);
         $this->setIfExists('previewHtmlFileId', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
         $this->setIfExists('previewHtml', $data ?? [], null);
         $this->setIfExists('allLanguages', $data ?? [], null);
         $this->setIfExists('changedLanguages', $data ?? [], null);
+        $this->setIfExists('deletedLanguages', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
         $this->setIfExists('files', $data ?? [], null);
@@ -982,6 +996,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
+     * Gets revisionId.
+     *
+     * @return null|float
+     */
+    public function getRevisionId()
+    {
+        return $this->container['revisionId'];
+    }
+
+    /**
+     * Sets revisionId.
+     *
+     * @param null|float $revisionId revisionId
+     *
+     * @return self
+     */
+    public function setRevisionId($revisionId)
+    {
+        if (is_null($revisionId)) {
+            array_push($this->openAPINullablesSetToNull, 'revisionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('revisionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['revisionId'] = $revisionId;
+
+        return $this;
+    }
+
+    /**
      * Gets previewHtmlFileId.
      *
      * @return null|string
@@ -1174,6 +1222,40 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
             }
         }
         $this->container['changedLanguages'] = $changedLanguages;
+
+        return $this;
+    }
+
+    /**
+     * Gets deletedLanguages.
+     *
+     * @return null|string[]
+     */
+    public function getDeletedLanguages()
+    {
+        return $this->container['deletedLanguages'];
+    }
+
+    /**
+     * Sets deletedLanguages.
+     *
+     * @param null|string[] $deletedLanguages deletedLanguages
+     *
+     * @return self
+     */
+    public function setDeletedLanguages($deletedLanguages)
+    {
+        if (is_null($deletedLanguages)) {
+            array_push($this->openAPINullablesSetToNull, 'deletedLanguages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('deletedLanguages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['deletedLanguages'] = $deletedLanguages;
 
         return $this;
     }
