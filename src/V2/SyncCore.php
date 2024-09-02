@@ -144,10 +144,10 @@ class SyncCore implements ISyncCore
         $this->base_url = mb_substr($base_url, 0, -10);
         $this->cloud_base_url = getenv('CONTENT_SYNC_CLOUD_BASE_URL')
         ? getenv('CONTENT_SYNC_CLOUD_BASE_URL')
-        : 'https://app.cms-content-sync.io';
+        : 'https://app.content-sync.io';
         $this->cloud_embed_url = getenv('CONTENT_SYNC_CLOUD_EMBED_URL')
         ? getenv('CONTENT_SYNC_CLOUD_EMBED_URL')
-        : 'https://embed.cms-content-sync.io';
+        : 'https://embed.content-sync.io';
 
         $configuration = new Configuration();
         $configuration->setHost($this->base_url);
