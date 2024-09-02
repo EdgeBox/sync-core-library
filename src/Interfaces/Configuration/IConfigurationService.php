@@ -43,6 +43,11 @@ interface IConfigurationService
     public function defineFlow(string $machine_name, string $name, ?string $config);
 
     /**
+     * @return IDefineLanguage
+     */
+    public function defineLanguage(string $code, string $name);
+
+    /**
      * @return IDefineEntityType
      */
     public function defineEntityType(?string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, ?string $name = null);

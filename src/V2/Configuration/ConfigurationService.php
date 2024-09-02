@@ -63,6 +63,14 @@ class ConfigurationService implements IConfigurationService
     /**
      * {@inheritdoc}
      */
+    public function defineLanguage(string $code, string $name)
+    {
+        return new DefineLanguage($this->core, code: $code, name: $name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function defineEntityType(?string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, ?string $name = null)
     {
         return new DefineEntityType($this->core, $type_machine_name, $bundle_machine_name, $version_id, $name);
