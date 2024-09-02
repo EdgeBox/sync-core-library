@@ -75,6 +75,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => 'float',
         'slowestRequestDuration' => 'float',
         'traceRequestDetails' => 'DynamicReference',
+        'updateCount' => 'float',
+        'ignoreCount' => 'float',
     ];
 
     /**
@@ -101,6 +103,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => null,
         'slowestRequestDuration' => null,
         'traceRequestDetails' => null,
+        'updateCount' => null,
+        'ignoreCount' => null,
     ];
 
     /**
@@ -125,6 +129,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => true,
         'slowestRequestDuration' => true,
         'traceRequestDetails' => true,
+        'updateCount' => true,
+        'ignoreCount' => true,
     ];
 
     /**
@@ -157,6 +163,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => 'requestDuration',
         'slowestRequestDuration' => 'slowestRequestDuration',
         'traceRequestDetails' => 'traceRequestDetails',
+        'updateCount' => 'updateCount',
+        'ignoreCount' => 'ignoreCount',
     ];
 
     /**
@@ -181,6 +189,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => 'setRequestDuration',
         'slowestRequestDuration' => 'setSlowestRequestDuration',
         'traceRequestDetails' => 'setTraceRequestDetails',
+        'updateCount' => 'setUpdateCount',
+        'ignoreCount' => 'setIgnoreCount',
     ];
 
     /**
@@ -205,6 +215,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'requestDuration' => 'getRequestDuration',
         'slowestRequestDuration' => 'getSlowestRequestDuration',
         'traceRequestDetails' => 'getTraceRequestDetails',
+        'updateCount' => 'getUpdateCount',
+        'ignoreCount' => 'getIgnoreCount',
     ];
 
     /**
@@ -238,6 +250,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('requestDuration', $data ?? [], null);
         $this->setIfExists('slowestRequestDuration', $data ?? [], null);
         $this->setIfExists('traceRequestDetails', $data ?? [], null);
+        $this->setIfExists('updateCount', $data ?? [], null);
+        $this->setIfExists('ignoreCount', $data ?? [], null);
     }
 
     /**
@@ -879,6 +893,74 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
             }
         }
         $this->container['traceRequestDetails'] = $traceRequestDetails;
+
+        return $this;
+    }
+
+    /**
+     * Gets updateCount.
+     *
+     * @return null|float
+     */
+    public function getUpdateCount()
+    {
+        return $this->container['updateCount'];
+    }
+
+    /**
+     * Sets updateCount.
+     *
+     * @param null|float $updateCount updateCount
+     *
+     * @return self
+     */
+    public function setUpdateCount($updateCount)
+    {
+        if (is_null($updateCount)) {
+            array_push($this->openAPINullablesSetToNull, 'updateCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('updateCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['updateCount'] = $updateCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets ignoreCount.
+     *
+     * @return null|float
+     */
+    public function getIgnoreCount()
+    {
+        return $this->container['ignoreCount'];
+    }
+
+    /**
+     * Sets ignoreCount.
+     *
+     * @param null|float $ignoreCount ignoreCount
+     *
+     * @return self
+     */
+    public function setIgnoreCount($ignoreCount)
+    {
+        if (is_null($ignoreCount)) {
+            array_push($this->openAPINullablesSetToNull, 'ignoreCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('ignoreCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['ignoreCount'] = $ignoreCount;
 
         return $this;
     }

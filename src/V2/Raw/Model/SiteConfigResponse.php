@@ -60,11 +60,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $openAPITypes = [
         'poolCount' => 'float',
-        'flowCount' => 'float',
-        'entityTypeCount' => 'float',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[]',
+        'flowCount' => 'float',
         'flows' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[]',
+        'entityTypeCount' => 'float',
         'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]',
+        'languageCount' => 'float',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'defaultLanguageCode' => 'string',
     ];
 
     /**
@@ -76,11 +79,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $openAPIFormats = [
         'poolCount' => null,
-        'flowCount' => null,
-        'entityTypeCount' => null,
         'pools' => null,
+        'flowCount' => null,
         'flows' => null,
+        'entityTypeCount' => null,
         'entityTypes' => null,
+        'languageCount' => null,
+        'languages' => null,
+        'defaultLanguageCode' => null,
     ];
 
     /**
@@ -90,11 +96,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static array $openAPINullables = [
         'poolCount' => true,
-        'flowCount' => true,
-        'entityTypeCount' => true,
         'pools' => true,
+        'flowCount' => true,
         'flows' => true,
+        'entityTypeCount' => true,
         'entityTypes' => true,
+        'languageCount' => true,
+        'languages' => true,
+        'defaultLanguageCode' => true,
     ];
 
     /**
@@ -112,11 +121,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $attributeMap = [
         'poolCount' => 'poolCount',
-        'flowCount' => 'flowCount',
-        'entityTypeCount' => 'entityTypeCount',
         'pools' => 'pools',
+        'flowCount' => 'flowCount',
         'flows' => 'flows',
+        'entityTypeCount' => 'entityTypeCount',
         'entityTypes' => 'entityTypes',
+        'languageCount' => 'languageCount',
+        'languages' => 'languages',
+        'defaultLanguageCode' => 'defaultLanguageCode',
     ];
 
     /**
@@ -126,11 +138,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $setters = [
         'poolCount' => 'setPoolCount',
-        'flowCount' => 'setFlowCount',
-        'entityTypeCount' => 'setEntityTypeCount',
         'pools' => 'setPools',
+        'flowCount' => 'setFlowCount',
         'flows' => 'setFlows',
+        'entityTypeCount' => 'setEntityTypeCount',
         'entityTypes' => 'setEntityTypes',
+        'languageCount' => 'setLanguageCount',
+        'languages' => 'setLanguages',
+        'defaultLanguageCode' => 'setDefaultLanguageCode',
     ];
 
     /**
@@ -140,11 +155,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $getters = [
         'poolCount' => 'getPoolCount',
-        'flowCount' => 'getFlowCount',
-        'entityTypeCount' => 'getEntityTypeCount',
         'pools' => 'getPools',
+        'flowCount' => 'getFlowCount',
         'flows' => 'getFlows',
+        'entityTypeCount' => 'getEntityTypeCount',
         'entityTypes' => 'getEntityTypes',
+        'languageCount' => 'getLanguageCount',
+        'languages' => 'getLanguages',
+        'defaultLanguageCode' => 'getDefaultLanguageCode',
     ];
 
     /**
@@ -163,11 +181,14 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     public function __construct(array $data = null)
     {
         $this->setIfExists('poolCount', $data ?? [], null);
-        $this->setIfExists('flowCount', $data ?? [], null);
-        $this->setIfExists('entityTypeCount', $data ?? [], null);
         $this->setIfExists('pools', $data ?? [], null);
+        $this->setIfExists('flowCount', $data ?? [], null);
         $this->setIfExists('flows', $data ?? [], null);
+        $this->setIfExists('entityTypeCount', $data ?? [], null);
         $this->setIfExists('entityTypes', $data ?? [], null);
+        $this->setIfExists('languageCount', $data ?? [], null);
+        $this->setIfExists('languages', $data ?? [], null);
+        $this->setIfExists('defaultLanguageCode', $data ?? [], null);
     }
 
     /**
@@ -316,74 +337,6 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Gets flowCount.
-     *
-     * @return null|float
-     */
-    public function getFlowCount()
-    {
-        return $this->container['flowCount'];
-    }
-
-    /**
-     * Sets flowCount.
-     *
-     * @param null|float $flowCount flowCount
-     *
-     * @return self
-     */
-    public function setFlowCount($flowCount)
-    {
-        if (is_null($flowCount)) {
-            array_push($this->openAPINullablesSetToNull, 'flowCount');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('flowCount', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['flowCount'] = $flowCount;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypeCount.
-     *
-     * @return null|float
-     */
-    public function getEntityTypeCount()
-    {
-        return $this->container['entityTypeCount'];
-    }
-
-    /**
-     * Sets entityTypeCount.
-     *
-     * @param null|float $entityTypeCount entityTypeCount
-     *
-     * @return self
-     */
-    public function setEntityTypeCount($entityTypeCount)
-    {
-        if (is_null($entityTypeCount)) {
-            array_push($this->openAPINullablesSetToNull, 'entityTypeCount');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('entityTypeCount', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['entityTypeCount'] = $entityTypeCount;
-
-        return $this;
-    }
-
-    /**
      * Gets pools.
      *
      * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[]
@@ -413,6 +366,40 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['pools'] = $pools;
+
+        return $this;
+    }
+
+    /**
+     * Gets flowCount.
+     *
+     * @return null|float
+     */
+    public function getFlowCount()
+    {
+        return $this->container['flowCount'];
+    }
+
+    /**
+     * Sets flowCount.
+     *
+     * @param null|float $flowCount flowCount
+     *
+     * @return self
+     */
+    public function setFlowCount($flowCount)
+    {
+        if (is_null($flowCount)) {
+            array_push($this->openAPINullablesSetToNull, 'flowCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('flowCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['flowCount'] = $flowCount;
 
         return $this;
     }
@@ -452,6 +439,40 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
+     * Gets entityTypeCount.
+     *
+     * @return null|float
+     */
+    public function getEntityTypeCount()
+    {
+        return $this->container['entityTypeCount'];
+    }
+
+    /**
+     * Sets entityTypeCount.
+     *
+     * @param null|float $entityTypeCount entityTypeCount
+     *
+     * @return self
+     */
+    public function setEntityTypeCount($entityTypeCount)
+    {
+        if (is_null($entityTypeCount)) {
+            array_push($this->openAPINullablesSetToNull, 'entityTypeCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityTypeCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['entityTypeCount'] = $entityTypeCount;
+
+        return $this;
+    }
+
+    /**
      * Gets entityTypes.
      *
      * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]
@@ -481,6 +502,108 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['entityTypes'] = $entityTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets languageCount.
+     *
+     * @return null|float
+     */
+    public function getLanguageCount()
+    {
+        return $this->container['languageCount'];
+    }
+
+    /**
+     * Sets languageCount.
+     *
+     * @param null|float $languageCount languageCount
+     *
+     * @return self
+     */
+    public function setLanguageCount($languageCount)
+    {
+        if (is_null($languageCount)) {
+            array_push($this->openAPINullablesSetToNull, 'languageCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('languageCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['languageCount'] = $languageCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets languages.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     */
+    public function getLanguages()
+    {
+        return $this->container['languages'];
+    }
+
+    /**
+     * Sets languages.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     *
+     * @return self
+     */
+    public function setLanguages($languages)
+    {
+        if (is_null($languages)) {
+            array_push($this->openAPINullablesSetToNull, 'languages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('languages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['languages'] = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultLanguageCode.
+     *
+     * @return null|string
+     */
+    public function getDefaultLanguageCode()
+    {
+        return $this->container['defaultLanguageCode'];
+    }
+
+    /**
+     * Sets defaultLanguageCode.
+     *
+     * @param null|string $defaultLanguageCode defaultLanguageCode
+     *
+     * @return self
+     */
+    public function setDefaultLanguageCode($defaultLanguageCode)
+    {
+        if (is_null($defaultLanguageCode)) {
+            array_push($this->openAPINullablesSetToNull, 'defaultLanguageCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultLanguageCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['defaultLanguageCode'] = $defaultLanguageCode;
 
         return $this;
     }

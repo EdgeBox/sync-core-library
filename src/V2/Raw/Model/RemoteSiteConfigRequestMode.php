@@ -53,6 +53,8 @@ class RemoteSiteConfigRequestMode
 
     public const ENTITY_TYPES = 'entity-types';
 
+    public const LANGUAGES = 'languages';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -66,6 +68,7 @@ class RemoteSiteConfigRequestMode
             self::POOLS,
             self::FLOWS,
             self::ENTITY_TYPES,
+            self::LANGUAGES,
         ];
     }
 }

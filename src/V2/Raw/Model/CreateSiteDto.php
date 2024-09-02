@@ -71,6 +71,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
         'featureFlags' => 'mixed',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'defaultLanguageCode' => 'string',
         'customer' => 'DynamicReference',
         'contract' => 'DynamicReference',
         'project' => 'DynamicReference',
@@ -101,6 +103,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => null,
         'extensions' => null,
         'featureFlags' => null,
+        'languages' => null,
+        'defaultLanguageCode' => null,
         'customer' => null,
         'contract' => null,
         'project' => null,
@@ -129,6 +133,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => true,
         'extensions' => true,
         'featureFlags' => true,
+        'languages' => true,
+        'defaultLanguageCode' => true,
         'customer' => true,
         'contract' => true,
         'project' => true,
@@ -165,6 +171,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'domains',
         'extensions' => 'extensions',
         'featureFlags' => 'featureFlags',
+        'languages' => 'languages',
+        'defaultLanguageCode' => 'defaultLanguageCode',
         'customer' => 'customer',
         'contract' => 'contract',
         'project' => 'project',
@@ -193,6 +201,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
         'featureFlags' => 'setFeatureFlags',
+        'languages' => 'setLanguages',
+        'defaultLanguageCode' => 'setDefaultLanguageCode',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'project' => 'setProject',
@@ -221,6 +231,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
         'featureFlags' => 'getFeatureFlags',
+        'languages' => 'getLanguages',
+        'defaultLanguageCode' => 'getDefaultLanguageCode',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'project' => 'getProject',
@@ -258,6 +270,8 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
         $this->setIfExists('featureFlags', $data ?? [], null);
+        $this->setIfExists('languages', $data ?? [], null);
+        $this->setIfExists('defaultLanguageCode', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -771,6 +785,74 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['featureFlags'] = $featureFlags;
+
+        return $this;
+    }
+
+    /**
+     * Gets languages.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     */
+    public function getLanguages()
+    {
+        return $this->container['languages'];
+    }
+
+    /**
+     * Sets languages.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     *
+     * @return self
+     */
+    public function setLanguages($languages)
+    {
+        if (is_null($languages)) {
+            array_push($this->openAPINullablesSetToNull, 'languages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('languages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['languages'] = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultLanguageCode.
+     *
+     * @return null|string
+     */
+    public function getDefaultLanguageCode()
+    {
+        return $this->container['defaultLanguageCode'];
+    }
+
+    /**
+     * Sets defaultLanguageCode.
+     *
+     * @param null|string $defaultLanguageCode defaultLanguageCode
+     *
+     * @return self
+     */
+    public function setDefaultLanguageCode($defaultLanguageCode)
+    {
+        if (is_null($defaultLanguageCode)) {
+            array_push($this->openAPINullablesSetToNull, 'defaultLanguageCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultLanguageCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['defaultLanguageCode'] = $defaultLanguageCode;
 
         return $this;
     }

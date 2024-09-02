@@ -1,6 +1,6 @@
 <?php
 /**
- * RemoteCreateEntityResponse.
+ * LanguageDefinition.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RemoteCreateEntityResponse Class Doc Comment.
+ * LanguageDefinition Class Doc Comment.
  *
  * @category Class
  *
@@ -42,7 +42,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @see     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -51,7 +51,7 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RemoteCreateEntityResponse';
+    protected static $openAPIModelName = 'LanguageDefinition';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -59,10 +59,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $openAPITypes = [
-        'viewUrl' => 'string',
-        'updateCount' => 'float',
-        'ignoreCount' => 'float',
-        'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[]',
+        'code' => 'string',
+        'name' => 'string',
+        'nativeName' => 'string',
+        'isRightToLeft' => 'bool',
     ];
 
     /**
@@ -73,10 +73,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'viewUrl' => null,
-        'updateCount' => null,
-        'ignoreCount' => null,
-        'translations' => null,
+        'code' => null,
+        'name' => null,
+        'nativeName' => null,
+        'isRightToLeft' => null,
     ];
 
     /**
@@ -85,10 +85,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'viewUrl' => false,
-        'updateCount' => true,
-        'ignoreCount' => true,
-        'translations' => true,
+        'code' => false,
+        'name' => false,
+        'nativeName' => true,
+        'isRightToLeft' => true,
     ];
 
     /**
@@ -105,10 +105,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $attributeMap = [
-        'viewUrl' => 'viewUrl',
-        'updateCount' => 'updateCount',
-        'ignoreCount' => 'ignoreCount',
-        'translations' => 'translations',
+        'code' => 'code',
+        'name' => 'name',
+        'nativeName' => 'nativeName',
+        'isRightToLeft' => 'isRightToLeft',
     ];
 
     /**
@@ -117,10 +117,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $setters = [
-        'viewUrl' => 'setViewUrl',
-        'updateCount' => 'setUpdateCount',
-        'ignoreCount' => 'setIgnoreCount',
-        'translations' => 'setTranslations',
+        'code' => 'setCode',
+        'name' => 'setName',
+        'nativeName' => 'setNativeName',
+        'isRightToLeft' => 'setIsRightToLeft',
     ];
 
     /**
@@ -129,10 +129,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $getters = [
-        'viewUrl' => 'getViewUrl',
-        'updateCount' => 'getUpdateCount',
-        'ignoreCount' => 'getIgnoreCount',
-        'translations' => 'getTranslations',
+        'code' => 'getCode',
+        'name' => 'getName',
+        'nativeName' => 'getNativeName',
+        'isRightToLeft' => 'getIsRightToLeft',
     ];
 
     /**
@@ -150,10 +150,10 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('viewUrl', $data ?? [], null);
-        $this->setIfExists('updateCount', $data ?? [], null);
-        $this->setIfExists('ignoreCount', $data ?? [], null);
-        $this->setIfExists('translations', $data ?? [], null);
+        $this->setIfExists('code', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('nativeName', $data ?? [], null);
+        $this->setIfExists('isRightToLeft', $data ?? [], null);
     }
 
     /**
@@ -255,8 +255,11 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
     {
         $invalidProperties = [];
 
-        if (null === $this->container['viewUrl']) {
-            $invalidProperties[] = "'viewUrl' can't be null";
+        if (null === $this->container['code']) {
+            $invalidProperties[] = "'code' can't be null";
+        }
+        if (null === $this->container['name']) {
+            $invalidProperties[] = "'name' can't be null";
         }
 
         return $invalidProperties;
@@ -274,130 +277,123 @@ class RemoteCreateEntityResponse implements ModelInterface, ArrayAccess, \JsonSe
     }
 
     /**
-     * Gets viewUrl.
+     * Gets code.
      *
      * @return string
      */
-    public function getViewUrl()
+    public function getCode()
     {
-        return $this->container['viewUrl'];
+        return $this->container['code'];
     }
 
     /**
-     * Sets viewUrl.
+     * Sets code.
      *
-     * @param string $viewUrl viewUrl
+     * @param string $code code
      *
      * @return self
      */
-    public function setViewUrl($viewUrl)
+    public function setCode($code)
     {
-        if (is_null($viewUrl)) {
-            throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
+        if (is_null($code)) {
+            throw new \InvalidArgumentException('non-nullable code cannot be null');
         }
-        $this->container['viewUrl'] = $viewUrl;
+        $this->container['code'] = $code;
 
         return $this;
     }
 
     /**
-     * Gets updateCount.
+     * Gets name.
      *
-     * @return null|float
+     * @return string
      */
-    public function getUpdateCount()
+    public function getName()
     {
-        return $this->container['updateCount'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets updateCount.
+     * Sets name.
      *
-     * @param null|float $updateCount updateCount
+     * @param string $name name
      *
      * @return self
      */
-    public function setUpdateCount($updateCount)
+    public function setName($name)
     {
-        if (is_null($updateCount)) {
-            array_push($this->openAPINullablesSetToNull, 'updateCount');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('updateCount', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['updateCount'] = $updateCount;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets ignoreCount.
+     * Gets nativeName.
      *
-     * @return null|float
+     * @return null|string
      */
-    public function getIgnoreCount()
+    public function getNativeName()
     {
-        return $this->container['ignoreCount'];
+        return $this->container['nativeName'];
     }
 
     /**
-     * Sets ignoreCount.
+     * Sets nativeName.
      *
-     * @param null|float $ignoreCount ignoreCount
+     * @param null|string $nativeName nativeName
      *
      * @return self
      */
-    public function setIgnoreCount($ignoreCount)
+    public function setNativeName($nativeName)
     {
-        if (is_null($ignoreCount)) {
-            array_push($this->openAPINullablesSetToNull, 'ignoreCount');
+        if (is_null($nativeName)) {
+            array_push($this->openAPINullablesSetToNull, 'nativeName');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('ignoreCount', $nullablesSetToNull);
+            $index = array_search('nativeName', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['ignoreCount'] = $ignoreCount;
+        $this->container['nativeName'] = $nativeName;
 
         return $this;
     }
 
     /**
-     * Gets translations.
+     * Gets isRightToLeft.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[]
+     * @return null|bool
      */
-    public function getTranslations()
+    public function getIsRightToLeft()
     {
-        return $this->container['translations'];
+        return $this->container['isRightToLeft'];
     }
 
     /**
-     * Sets translations.
+     * Sets isRightToLeft.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[] $translations translations
+     * @param null|bool $isRightToLeft isRightToLeft
      *
      * @return self
      */
-    public function setTranslations($translations)
+    public function setIsRightToLeft($isRightToLeft)
     {
-        if (is_null($translations)) {
-            array_push($this->openAPINullablesSetToNull, 'translations');
+        if (is_null($isRightToLeft)) {
+            array_push($this->openAPINullablesSetToNull, 'isRightToLeft');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('translations', $nullablesSetToNull);
+            $index = array_search('isRightToLeft', $nullablesSetToNull);
             if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['translations'] = $translations;
+        $this->container['isRightToLeft'] = $isRightToLeft;
 
         return $this;
     }

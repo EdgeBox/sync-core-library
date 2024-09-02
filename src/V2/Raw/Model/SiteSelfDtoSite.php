@@ -71,6 +71,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
         'featureFlags' => 'mixed',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'defaultLanguageCode' => 'string',
         'uuid' => 'string',
         'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -110,6 +112,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => null,
         'extensions' => null,
         'featureFlags' => null,
+        'languages' => null,
+        'defaultLanguageCode' => null,
         'uuid' => null,
         'environmentType' => null,
         'customer' => null,
@@ -147,6 +151,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => true,
         'extensions' => true,
         'featureFlags' => true,
+        'languages' => true,
+        'defaultLanguageCode' => true,
         'uuid' => false,
         'environmentType' => false,
         'customer' => false,
@@ -192,6 +198,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'domains',
         'extensions' => 'extensions',
         'featureFlags' => 'featureFlags',
+        'languages' => 'languages',
+        'defaultLanguageCode' => 'defaultLanguageCode',
         'uuid' => 'uuid',
         'environmentType' => 'environmentType',
         'customer' => 'customer',
@@ -229,6 +237,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
         'featureFlags' => 'setFeatureFlags',
+        'languages' => 'setLanguages',
+        'defaultLanguageCode' => 'setDefaultLanguageCode',
         'uuid' => 'setUuid',
         'environmentType' => 'setEnvironmentType',
         'customer' => 'setCustomer',
@@ -266,6 +276,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
         'featureFlags' => 'getFeatureFlags',
+        'languages' => 'getLanguages',
+        'defaultLanguageCode' => 'getDefaultLanguageCode',
         'uuid' => 'getUuid',
         'environmentType' => 'getEnvironmentType',
         'customer' => 'getCustomer',
@@ -312,6 +324,8 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
         $this->setIfExists('featureFlags', $data ?? [], null);
+        $this->setIfExists('languages', $data ?? [], null);
+        $this->setIfExists('defaultLanguageCode', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('environmentType', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -855,6 +869,74 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['featureFlags'] = $featureFlags;
+
+        return $this;
+    }
+
+    /**
+     * Gets languages.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     */
+    public function getLanguages()
+    {
+        return $this->container['languages'];
+    }
+
+    /**
+     * Sets languages.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     *
+     * @return self
+     */
+    public function setLanguages($languages)
+    {
+        if (is_null($languages)) {
+            array_push($this->openAPINullablesSetToNull, 'languages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('languages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['languages'] = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultLanguageCode.
+     *
+     * @return null|string
+     */
+    public function getDefaultLanguageCode()
+    {
+        return $this->container['defaultLanguageCode'];
+    }
+
+    /**
+     * Sets defaultLanguageCode.
+     *
+     * @param null|string $defaultLanguageCode defaultLanguageCode
+     *
+     * @return self
+     */
+    public function setDefaultLanguageCode($defaultLanguageCode)
+    {
+        if (is_null($defaultLanguageCode)) {
+            array_push($this->openAPINullablesSetToNull, 'defaultLanguageCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultLanguageCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['defaultLanguageCode'] = $defaultLanguageCode;
 
         return $this;
     }
