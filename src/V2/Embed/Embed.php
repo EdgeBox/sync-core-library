@@ -84,6 +84,16 @@ abstract class Embed
     '.($is_page ? 'min-height: 200px;' : 'height: 32px; max-height: 40px;').'
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
+  #'.$id.'.iframe-modal {
+    z-index: 1000000000;
+    position: fixed;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    width: 100vh !important;
+  }
 </style>
 <iframe id="'.$id.'" src="'.($is_line ? '' : $this->url).'" frameborder="0" class="content-sync-embed size-'.$size.'" loading="lazy" allow="fullscreen">
   The page could not be loaded as your browser does not support it.
@@ -224,6 +234,12 @@ abstract class Embed
         else if (message.type === "update-query") {
           var query = Object.entries(message.query).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&");
           window.history.replaceState(message.query, window.document.title, `?${query}`);
+        }
+        else if (message.type === "modal-open") {
+          iframe.className = iframe.className + " iframe-modal";
+        }
+        else if (message.type === "modal-close") {
+          iframe.className = iframe.className.replace(/iframe-modal/g, "");
         }
         else {
           throw new Error("Unknown message "+JSON.stringify(message));
