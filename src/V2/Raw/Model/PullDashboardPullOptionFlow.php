@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PullDashboardPullOptionFlow.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonSerializable
+class PullDashboardPullOptionFlow implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -69,7 +70,9 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -148,7 +151,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
@@ -339,7 +342,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Gets entityTypes.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[]
+     * @return PullDashboardPullEntityType[]
      */
     public function getEntityTypes()
     {
@@ -349,7 +352,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets entityTypes.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullEntityType[] $entityTypes entityTypes
+     * @param PullDashboardPullEntityType[] $entityTypes entityTypes
      *
      * @return self
      */
@@ -366,7 +369,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[]
+     * @return PullDashboardPullOptionPool[]
      */
     public function getPools()
     {
@@ -376,7 +379,7 @@ class PullDashboardPullOptionFlow implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionPool[] $pools pools
+     * @param PullDashboardPullOptionPool[] $pools pools
      *
      * @return self
      */

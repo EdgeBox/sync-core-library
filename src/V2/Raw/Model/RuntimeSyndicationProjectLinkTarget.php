@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RuntimeSyndicationProjectLinkTarget.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess, \JsonSerializable
+class RuntimeSyndicationProjectLinkTarget implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -69,7 +70,9 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -148,7 +151,7 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('targetAppType', $data ?? [], null);
         $this->setIfExists('targetPoolMachineName', $data ?? [], null);
@@ -339,7 +342,7 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
     /**
      * Gets projectLink.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProjectLink()
     {
@@ -349,7 +352,7 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
     /**
      * Sets projectLink.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $projectLink projectLink
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $projectLink projectLink
      *
      * @return self
      */
@@ -366,7 +369,7 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
     /**
      * Gets targetProject.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getTargetProject()
     {
@@ -376,7 +379,7 @@ class RuntimeSyndicationProjectLinkTarget implements ModelInterface, ArrayAccess
     /**
      * Sets targetProject.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $targetProject targetProject
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $targetProject targetProject
      *
      * @return self
      */

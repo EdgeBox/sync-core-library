@@ -166,28 +166,19 @@ class PullOperation implements IPullOperation
         return $this->dto->getEntityTypeByMachineName()->getVersionId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->dto->getRemoteUniqueId() ?? $this->dto->getRemoteUuid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUuid()
     {
         return $this->dto->getRemoteUuid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionId(?string $language = null, ?bool $including_translations = false)
     {
-        $dto = $language ? (isset($this->translations[$language]) ? $this->translations[$language] : null) : $this->dto;
+        $dto = $language ? ($this->translations[$language] ?? null) : $this->dto;
 
         $method = $including_translations ? 'getVersionIdWithTranslations' : 'getVersionId';
 
@@ -198,9 +189,6 @@ class PullOperation implements IPullOperation
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceUrl(?string $language = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
@@ -223,9 +211,6 @@ class PullOperation implements IPullOperation
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsedTranslationLanguages()
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
@@ -234,6 +219,7 @@ class PullOperation implements IPullOperation
 
         if ($this->dto instanceof CreateRemoteEntityRevisionDto && !empty($this->dto->getAllLanguages())) {
             $languages = $this->dto->getAllLanguages();
+
             // Exclude the root language.
             return array_diff($languages, [$this->dto->getLanguage()]);
         }
@@ -241,9 +227,6 @@ class PullOperation implements IPullOperation
         return array_keys($this->translations);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProperty(string $name, ?string $language = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
@@ -292,9 +275,6 @@ class PullOperation implements IPullOperation
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadReference(array $data)
     {
         if ($this->parentPullOperation) {
@@ -303,6 +283,7 @@ class PullOperation implements IPullOperation
 
         // Need to turn arrays into objects.
         $data = json_decode(json_encode($data));
+
         /**
          * @var RemoteEntityDependency $referenceDto
          */
@@ -338,9 +319,6 @@ class PullOperation implements IPullOperation
         return new PullOperationEmbed($this->core, $referenceDto, $this, $embedIndex, $embed);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadReferencesByProperties(array $properties)
     {
         $result = [];
@@ -392,9 +370,6 @@ class PullOperation implements IPullOperation
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadFile()
     {
         $file_entity = $this->loadFileEntity();
@@ -402,9 +377,6 @@ class PullOperation implements IPullOperation
         return $file_entity ? new File($file_entity) : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function downloadFile()
     {
         $file = $this->loadFile();
@@ -412,9 +384,6 @@ class PullOperation implements IPullOperation
         return $file ? $file->download() : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(?string $language = null)
     {
         $dto = $language && isset($this->translations[$language]) ? $this->translations[$language] : $this->dto;
@@ -422,9 +391,6 @@ class PullOperation implements IPullOperation
         return $dto->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponseBody(?string $entity_deep_link)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
@@ -455,7 +421,7 @@ class PullOperation implements IPullOperation
             return $this->parentPullOperation->loadEmbeddedFileEntity($id);
         }
 
-        if (!($this->dto instanceof CreateRemoteEntityRevisionDto)) {
+        if (!$this->dto instanceof CreateRemoteEntityRevisionDto) {
             return null;
         }
 
@@ -495,6 +461,7 @@ class PullOperation implements IPullOperation
         }
 
         $request = $this->core->getClient()->fileControllerItemRequest($reference['id']);
+
         /**
          * @var FileEntity $file
          */

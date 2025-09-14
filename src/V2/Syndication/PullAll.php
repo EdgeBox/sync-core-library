@@ -69,17 +69,11 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $this->versionId = $versionId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fromPool(string $pool_id)
     {
         throw new InternalContentSyncError("The Sync Core v2 doesn't distinguish between pools for Pull All operations.");
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function force(bool $set)
     {
         $this->pullAll = $set;
@@ -103,9 +97,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         return SyndicationStatus::_600_ABORTED === $this->getDto()->getStatus();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function total($clearCache = false)
     {
         $summary = $this->getSummaryDto(!$clearCache);
@@ -117,9 +108,6 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         return $total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function progress($fromCache = false)
     {
         if (!$this->migrationId) {
@@ -141,36 +129,25 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         return $total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceName()
     {
         return $this->flow;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTypeMachineName()
     {
         return $this->namespaceMachineName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBundleMachineName()
     {
         return $this->machineName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         $migrationDto = new CreateMigrationDto();
+
         /**
          * @var MigrationType $type
          */

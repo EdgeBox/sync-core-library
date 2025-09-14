@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NewFlowSyndication.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
+class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -70,7 +71,9 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -154,7 +157,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('mode', $data ?? [], null);
         $this->setIfExists('filters', $data ?? [], null);
@@ -316,7 +319,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets filters.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]
+     * @return null|FlowSyndicationFilter[]
      */
     public function getFilters()
     {
@@ -326,7 +329,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets filters.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[] $filters filters
+     * @param null|FlowSyndicationFilter[] $filters filters
      *
      * @return self
      */
@@ -411,7 +414,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityTypesByMachineName.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference[]
+     * @return EntityTypeVersionReference[]
      */
     public function getEntityTypesByMachineName()
     {
@@ -421,7 +424,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityTypesByMachineName.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference[] $entityTypesByMachineName entityTypesByMachineName
+     * @param EntityTypeVersionReference[] $entityTypesByMachineName entityTypesByMachineName
      *
      * @return self
      */

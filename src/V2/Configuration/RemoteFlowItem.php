@@ -67,9 +67,6 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         return $response['name'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConfig()
     {
         if ($this->item instanceof FlowEntity) {
@@ -101,6 +98,7 @@ class RemoteFlowItem implements IRemoteFlowListItem, IRemoteFlow
         }
 
         $request = $this->core->getClient()->fileControllerItemRequest(id: $file_id);
+
         /**
          * @var FileEntity $file
          */

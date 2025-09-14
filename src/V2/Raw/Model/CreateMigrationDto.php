@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CreateMigrationDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateMigrationDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -76,7 +77,9 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -190,7 +193,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('type', $data ?? [], null);
         $this->setIfExists('entityTypeReference', $data ?? [], null);
@@ -386,7 +389,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityReferences.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]
+     * @return null|RemoteEntitySummary[]
      */
     public function getEntityReferences()
     {
@@ -396,7 +399,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityReferences.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[] $entityReferences entityReferences
+     * @param null|RemoteEntitySummary[] $entityReferences entityReferences
      *
      * @return self
      */

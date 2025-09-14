@@ -51,6 +51,7 @@ class RegisterSiteEmbed extends Embed implements IEmbedFeature
         $application = $this->core->getApplication();
 
         $siteDto = new CreateSiteDto();
+
         /**
          * @var SiteApplicationType $app_type
          */

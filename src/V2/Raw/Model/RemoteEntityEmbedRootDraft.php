@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityEmbedRootDraft.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityEmbedRootDraft implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -82,7 +83,9 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -226,7 +229,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('remoteUuid', $data ?? [], null);
         $this->setIfExists('remoteUniqueId', $data ?? [], null);
@@ -758,7 +761,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     * @return RemoteEntityPropertyDraft[]
      */
     public function getProperties()
     {
@@ -768,7 +771,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $properties properties
+     * @param RemoteEntityPropertyDraft[] $properties properties
      *
      * @return self
      */
@@ -785,7 +788,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets directDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -795,7 +798,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets directDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -880,7 +883,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets translations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[]
+     * @return null|RemoteEntityEmbedDraft[]
      */
     public function getTranslations()
     {
@@ -890,7 +893,7 @@ class RemoteEntityEmbedRootDraft implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets translations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedDraft[] $translations translations
+     * @param null|RemoteEntityEmbedDraft[] $translations translations
      *
      * @return self
      */

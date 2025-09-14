@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configuration
  * PHP version 7.4.
@@ -157,7 +158,7 @@ class Configuration
      */
     public function getApiKey($apiKeyIdentifier)
     {
-        return isset($this->apiKeys[$apiKeyIdentifier]) ? $this->apiKeys[$apiKeyIdentifier] : null;
+        return $this->apiKeys[$apiKeyIdentifier] ?? null;
     }
 
     /**
@@ -184,7 +185,7 @@ class Configuration
      */
     public function getApiKeyPrefix($apiKeyIdentifier)
     {
-        return isset($this->apiKeyPrefixes[$apiKeyIdentifier]) ? $this->apiKeyPrefixes[$apiKeyIdentifier] : null;
+        return $this->apiKeyPrefixes[$apiKeyIdentifier] ?? null;
     }
 
     /**
@@ -213,8 +214,6 @@ class Configuration
 
     /**
      * Sets boolean format for query string.
-     *
-     * @param string $booleanFormatForQueryString Boolean format for query string
      *
      * @return $this
      */
@@ -312,9 +311,9 @@ class Configuration
      *
      * @param string $userAgent the user agent of the api client
      *
-     * @throws \InvalidArgumentException
-     *
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function setUserAgent($userAgent)
     {
@@ -492,7 +491,6 @@ class Configuration
     /**
      * Returns URL based on host settings, index and variables.
      *
-     * @param array      $hostSettings array of host settings, generated from getHostSettings() or equivalent from the API clients
      * @param int        $hostIndex    index of the host settings
      * @param null|array $variables    hash of variable and the corresponding value (optional)
      *

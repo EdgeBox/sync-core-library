@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CreateWebhookDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateWebhookDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -71,7 +72,9 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -160,7 +163,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('entityType', $data ?? [], null);
@@ -390,7 +393,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets actions.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookAction[]
+     * @return WebhookAction[]
      */
     public function getActions()
     {
@@ -400,7 +403,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets actions.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\WebhookAction[] $actions actions
+     * @param WebhookAction[] $actions actions
      *
      * @return self
      */
@@ -417,7 +420,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -427,7 +430,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -444,7 +447,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -454,7 +457,7 @@ class CreateWebhookDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */

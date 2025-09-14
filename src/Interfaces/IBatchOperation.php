@@ -20,9 +20,9 @@ interface IBatchOperation
      * Serialize the operation to send to the Sync Core through the site
      * config REST interfact.
      *
-     * @throws SyncCoreException
-     *
      * @return mixed
+     *
+     * @throws SyncCoreException
      */
     public function getSerializedDto();
 }

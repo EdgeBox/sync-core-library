@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SyndicationOperation.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationOperation implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -85,7 +86,9 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -244,7 +247,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
@@ -581,7 +584,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets errors.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]
+     * @return null|SyndicationError[]
      */
     public function getErrors()
     {
@@ -591,7 +594,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets errors.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[] $errors errors
+     * @param null|SyndicationError[] $errors errors
      *
      * @return self
      */
@@ -683,7 +686,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets pools.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return null|DynamicReference[]
      */
     public function getPools()
     {
@@ -693,7 +696,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets pools.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     * @param null|DynamicReference[] $pools pools
      *
      * @return self
      */

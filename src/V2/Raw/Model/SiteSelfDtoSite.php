@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SiteSelfDtoSite.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteSelfDtoSite implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -96,7 +97,9 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -310,7 +313,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('deprecatedMachineName', $data ?? [], null);
@@ -808,7 +811,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets extensions.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]
+     * @return null|SiteExtension[]
      */
     public function getExtensions()
     {
@@ -818,7 +821,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets extensions.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[] $extensions extensions
+     * @param null|SiteExtension[] $extensions extensions
      *
      * @return self
      */
@@ -876,7 +879,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets languages.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     * @return null|LanguageDefinition[]
      */
     public function getLanguages()
     {
@@ -886,7 +889,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets languages.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     * @param null|LanguageDefinition[] $languages languages
      *
      * @return self
      */
@@ -998,7 +1001,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -1008,7 +1011,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -1025,7 +1028,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -1035,7 +1038,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */
@@ -1052,7 +1055,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -1062,7 +1065,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -1255,7 +1258,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
+     * @return RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -1265,7 +1268,7 @@ class SiteSelfDtoSite implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */

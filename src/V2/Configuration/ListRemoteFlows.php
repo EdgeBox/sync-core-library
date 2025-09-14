@@ -30,9 +30,6 @@ class ListRemoteFlows implements IListRemoteFlows
         $this->remoteModuleVersion = $remote_module_version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function thatUsePool(string $pool_id)
     {
         $this->pools[] = $pool_id;
@@ -40,9 +37,6 @@ class ListRemoteFlows implements IListRemoteFlows
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         $result = [];

@@ -198,6 +198,7 @@ abstract class MassUpdate
         if (MigrationType::PUSH_ALL === $type && $this->initial) {
             $migrationDto->setSkipSyndication(true);
         }
+
         /**
          * @var MigrationType $type
          */

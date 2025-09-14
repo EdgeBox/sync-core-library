@@ -2,7 +2,6 @@
 
 namespace EdgeBox\SyncCore\V2;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
@@ -10,27 +9,27 @@ use EdgeBox\SyncCore\Interfaces\IBatch;
 use EdgeBox\SyncCore\Interfaces\IBatchOperation;
 use EdgeBox\SyncCore\V2\Raw\Model\ModelInterface;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
-use JsonSerializable;
 
 class BatchOperation extends SerializableWithSyncCoreReference implements IBatchOperation
 {
     public const REQUEST_FLOW_CREATE = 'flowControllerCreateRequest';
     public const REQUEST_POOL_CREATE = 'poolControllerCreateRequest';
     public const REQUEST_ENTITY_TYPE_CREATE = 'remoteEntityTypeVersionControllerCreateRequest';
+
     /**
      * @var null|string
      */
     protected $requestMethod;
 
     /**
-     * @var null|ArrayAccess|JsonSerializable|ModelInterface
+     * @var null|\ArrayAccess|\JsonSerializable|ModelInterface
      */
     protected $dto;
 
     /**
      * Batchable constructor.
      *
-     * @param null|ArrayAccess|JsonSerializable|ModelInterface $dto
+     * @param null|\ArrayAccess|\JsonSerializable|ModelInterface $dto
      */
     public function __construct(SyncCore $core, ?string $requestMethod, $dto)
     {
@@ -40,9 +39,6 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         $this->dto = $dto;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addToBatch(IBatch $batch)
     {
         $batch->add($this);
@@ -110,9 +106,6 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSerializedDto()
     {
         $this->optimize();
@@ -125,7 +118,5 @@ class BatchOperation extends SerializableWithSyncCoreReference implements IBatch
     /**
      * Optimize the configuration prior to sending it to the Sync Core.
      */
-    protected function optimize()
-    {
-    }
+    protected function optimize() {}
 }

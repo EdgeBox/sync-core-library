@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ContractRevisionEntity.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class ContractRevisionEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -81,7 +82,9 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -220,7 +223,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('hostingType', $data ?? [], null);
         $this->setIfExists('product', $data ?? [], null);
@@ -623,7 +626,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -633,7 +636,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -650,7 +653,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -660,7 +663,7 @@ class ContractRevisionEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */

@@ -91,6 +91,7 @@ class Helper
 
         // Ensure the order of indices doesn't matter.
         array_multisort($data);
+
         // json_encode is a lot faster than PHPs native serialize.
         return md5(json_encode($data));
     }

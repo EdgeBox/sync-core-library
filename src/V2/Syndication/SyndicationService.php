@@ -26,49 +26,32 @@ class SyndicationService implements ISyndicationService
         $this->core = $core;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function massPull()
     {
         return new MassPull($this->core);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function massPush()
     {
         return new MassPush($this->core);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configurePullDashboard()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pullSingle(string $flow_id, string $type, string $bundle, string $entity_id)
     {
         return new TriggerPullSingle($this->core, $type, $bundle, $entity_id, $flow_id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pullAll(string $flow_id, string $type, string $bundle, string $version)
     {
         return new PullAll($this->core, $flow_id, $type, $bundle, $version);
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return PullOperation
      */
     public function handlePull(string $flow_id, ?string $type, ?string $bundle, array $data, bool $delete)
@@ -76,25 +59,16 @@ class SyndicationService implements ISyndicationService
         return new PullOperation($this->core, $data, $delete);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pushSingle(string $flow_id, string $type, string $bundle, string $version_id, string $root_language, string $entity_uuid, ?string $entity_id)
     {
         return new PushSingle($this->core, $flow_id, $type, $bundle, $version_id, $root_language, $entity_uuid, $entity_id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function pushMultiple(string $flow_id)
     {
         return new PushMultiple($this->core, $flow_id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function deletedLocally(string $flow_id, string $type, string $bundle, string $language, string $entity_uuid, ?string $entity_id)
     {
         $dto = new DeleteRemoteEntityRevisionDto();
@@ -114,9 +88,6 @@ class SyndicationService implements ISyndicationService
         $this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExternalUsages(string $pool_id, string $type, string $bundle, string $shared_entity_id)
     {
         $is_uuid = Helper::isUuid($shared_entity_id);
@@ -139,6 +110,7 @@ class SyndicationService implements ISyndicationService
                 page: $page,
                 itemsPerPage: 100
             );
+
             /**
              * @var PagedRemoteEntityUsageListResponse $response
              */
@@ -156,9 +128,6 @@ class SyndicationService implements ISyndicationService
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refreshAuthentication()
     {
         // With our decentralized worker architecture we can't re-login so easily, so this

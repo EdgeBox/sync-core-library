@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SyndicationEntityWithUsage.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -110,7 +111,9 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -394,7 +397,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('rootEntityReference', $data ?? [], null);
         $this->setIfExists('rootEntityDetails', $data ?? [], null);
@@ -839,7 +842,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets pools.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return null|DynamicReference[]
      */
     public function getPools()
     {
@@ -849,7 +852,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets pools.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     * @param null|DynamicReference[] $pools pools
      *
      * @return self
      */
@@ -907,7 +910,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -917,7 +920,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -934,7 +937,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -944,7 +947,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -961,7 +964,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets operations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]
+     * @return null|SyndicationOperation[]
      */
     public function getOperations()
     {
@@ -971,7 +974,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets operations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[] $operations operations
+     * @param null|SyndicationOperation[] $operations operations
      *
      * @return self
      */
@@ -1743,7 +1746,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets projectLinkTargets.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[]
+     * @return null|RuntimeSyndicationProjectLinkTarget[]
      */
     public function getProjectLinkTargets()
     {
@@ -1753,7 +1756,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets projectLinkTargets.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[] $projectLinkTargets projectLinkTargets
+     * @param null|RuntimeSyndicationProjectLinkTarget[] $projectLinkTargets projectLinkTargets
      *
      * @return self
      */

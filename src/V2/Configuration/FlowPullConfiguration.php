@@ -50,12 +50,10 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function ifTaggedWith(string $property, array $allowed_entity_ids)
     {
         $newCondition = new FlowSyndicationFilter();
+
         /**
          * @var FlowSyndicationFilterType $type
          */
@@ -89,9 +87,9 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
     }
 
     /**
-     * @throws InternalContentSyncError
-     *
      * @return IFlowPullConfiguration|void
+     *
+     * @throws InternalContentSyncError
      */
     public function configureOverride(string $flow_id)
     {

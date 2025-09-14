@@ -18,8 +18,6 @@ interface IReportingService
     public function getLog($level = null);
 
     /**
-     * @throws SyncCoreException
-     *
      * @return array
      *
      * Structure is:
@@ -27,6 +25,8 @@ interface IReportingService
      * ['usage']['site']['monthly'|'daily'|'hourly']['updateCount'] => int,
      * ['usage']['contract']['monthly']['updateCount'] => int,
      * All usage items are optional and may not be defined
+     *
+     * @throws SyncCoreException
      */
     public function getStatus();
 }

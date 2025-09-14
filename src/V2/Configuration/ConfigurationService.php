@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2\Configuration;
 
 use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+use EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\FlowEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -22,17 +23,11 @@ class ConfigurationService implements IConfigurationService
         $this->core = $core;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function listRemoteFlows(string $remote_module_version)
     {
         return new ListRemoteFlows($this->core, $remote_module_version);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRemoteFlow(string $id)
     {
         $request = $this
@@ -52,33 +47,21 @@ class ConfigurationService implements IConfigurationService
         return new RemoteFlowItem($this->core, $item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function defineFlow(string $machine_name, string $name, ?string $config)
     {
         return new DefineFlow($this->core, $machine_name, $name, $config);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function defineLanguage(string $code, string $name)
     {
         return new DefineLanguage($this->core, code: $code, name: $name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function defineEntityType(?string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, ?string $name = null)
     {
         return new DefineEntityType($this->core, $type_machine_name, $bundle_machine_name, $version_id, $name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function listRemotePools()
     {
         $request = $this
@@ -103,17 +86,11 @@ class ConfigurationService implements IConfigurationService
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function usePool(string $pool_id, string $pool_name)
     {
         return new RegisterPool($this->core, $pool_id, $pool_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function enableEntityPreviews($public_access_possible = false)
     {
         // Not configurable by sites in the new Sync Core.
@@ -125,7 +102,7 @@ class ConfigurationService implements IConfigurationService
      */
     public function deleteFlows(array $keep_machine_names)
     {
-        $dto = new \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest();
+        $dto = new FlowDeleteRequest();
         $dto->setKeepFlowMachineNames($keep_machine_names);
 
         $request = $this

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityEmbedDraft.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityEmbedDraft implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -81,7 +82,9 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -220,7 +223,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('remoteUuid', $data ?? [], null);
         $this->setIfExists('remoteUniqueId', $data ?? [], null);
@@ -751,7 +754,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     * @return RemoteEntityPropertyDraft[]
      */
     public function getProperties()
     {
@@ -761,7 +764,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $properties properties
+     * @param RemoteEntityPropertyDraft[] $properties properties
      *
      * @return self
      */
@@ -778,7 +781,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets directDependencies.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -788,7 +791,7 @@ class RemoteEntityEmbedDraft implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets directDependencies.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */

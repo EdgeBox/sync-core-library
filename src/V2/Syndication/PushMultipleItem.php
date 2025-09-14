@@ -46,9 +46,6 @@ class PushMultipleItem implements IPushMultipleItem
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addTranslation(string $language_id, string $view_url, bool $changed = true)
     {
         $translationDto = new RemoteEntityTranslationDetails();
@@ -72,9 +69,6 @@ class PushMultipleItem implements IPushMultipleItem
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function deleteTranslation(string $language_id)
     {
         $languages = $this->dto->getChangedLanguages();
@@ -91,9 +85,6 @@ class PushMultipleItem implements IPushMultipleItem
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function hasChanged(bool $changed)
     {
         $languages = $this->dto->getChangedLanguages();
@@ -150,9 +141,6 @@ class PushMultipleItem implements IPushMultipleItem
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData()
     {
         return $this->dto->jsonSerialize();

@@ -82,9 +82,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         self::$serializedEntities[$namespaceMachineName][$uuid] = &$this->dto;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEntityHash()
     {
         return self::getReferencedEntityHash(
@@ -105,9 +102,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return 'unknown';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toPool(string $pool_id)
     {
         $pools = $this->dto->getPoolMachineNames();
@@ -120,9 +114,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function asDependency(bool $set)
     {
         $this->is_dependency = $set;
@@ -130,9 +121,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete(bool $set)
     {
         $this->is_deletion = $set;
@@ -140,9 +128,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData()
     {
         return $this->dto->jsonSerialize();
@@ -291,9 +276,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param string     $id
      * @param PushSingle $embed_entity
      * @param null       $details
      *
@@ -411,9 +393,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addDependency(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null)
     {
         return $this->addDirectDependency(
@@ -430,9 +409,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addReference(string $type, string $bundle, ?string $uuid, ?string $id, string $version, array $pool_machine_names, string $language, ?string $name, $details = null, ?string $view_url = null)
     {
         return $this->getEntityReferenceDto(
@@ -449,9 +425,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProperty(string $name, $value, $language = null)
     {
         // Will lead to a validation error if sent to the backend.
@@ -478,9 +451,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
@@ -489,9 +459,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPublished(bool $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
@@ -500,9 +467,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPreviewHtml(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
@@ -513,9 +477,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSourceDeepLink(string $value, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
@@ -524,9 +485,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProperty(string $name, $language = null)
     {
         $dto = $language ? $this->getTranslation($language) : $this->dto;
@@ -541,9 +499,6 @@ class PushSingle extends SerializableWithSyncCoreReference implements IPushSingl
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         if ($this->is_deletion) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ObjectSerializer.
  *
@@ -30,7 +31,9 @@
 namespace EdgeBox\SyncCore\V2\Raw;
 
 use EdgeBox\SyncCore\V2\Raw\Model\ModelInterface;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * ObjectSerializer Class Doc Comment.
@@ -55,7 +58,7 @@ class ObjectSerializer
      */
     public static function guzzleJsonEncode($data)
     {
-        return class_exists('\\GuzzleHttp\\Utils') && method_exists('\\GuzzleHttp\\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
+        return class_exists('\GuzzleHttp\Utils') && method_exists('\GuzzleHttp\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
     }
 
     /**
@@ -140,7 +143,7 @@ class ObjectSerializer
      */
     public static function sanitizeFilename($filename)
     {
-        if (preg_match('/.*[\\/\\\\](.*)$/', $filename, $match)) {
+        if (preg_match('/.*[\/\\\](.*)$/', $filename, $match)) {
             return $match[1];
         }
 
@@ -208,7 +211,7 @@ class ObjectSerializer
         }
 
         // Handle DateTime objects in query
-        if ('\\DateTime' === $openApiType && $value instanceof \DateTime) {
+        if ('\DateTime' === $openApiType && $value instanceof \DateTime) {
             return ["{$paramName}" => $value->format(self::$dateTimeFormat)];
         }
 
@@ -374,7 +377,6 @@ class ObjectSerializer
      * @param mixed    $data          object or primitive to be deserialized
      * @param string   $class         class name is passed as a string
      * @param string[] $httpHeaders   HTTP headers
-     * @param string   $discriminator discriminator if polymorphism is used
      *
      * @return null|array|object a single or an array of $class instances
      */
@@ -451,7 +453,7 @@ class ObjectSerializer
         if ('\SplFileObject' === $class) {
             $data = Utils::streamFor($data);
 
-            /** @var \Psr\Http\Message\StreamInterface $data */
+            /** @var StreamInterface $data */
 
             // determine file name
             if (
@@ -497,7 +499,7 @@ class ObjectSerializer
 
         // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
         if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
-            $class = '\\EdgeBox\\SyncCore\\V2\\Raw\\Model\\'.$class;
+            $class = '\EdgeBox\SyncCore\V2\Raw\Model\\'.$class;
         }
 
         // If a discriminator is defined and points to a valid subclass, use it.
@@ -551,7 +553,7 @@ class ObjectSerializer
         ?string $arg_separator = null,
         int $encoding_type = \PHP_QUERY_RFC3986
     ): string {
-        return \GuzzleHttp\Psr7\Query::build($data, $encoding_type);
+        return Query::build($data, $encoding_type);
     }
 
     /**
@@ -584,11 +586,13 @@ class ObjectSerializer
             case 'number':
             case 'float':
                 return 0 !== $value && 0.0 !== $value;
-            // For boolean values, '' is considered empty
+
+                // For boolean values, '' is considered empty
             case 'bool':
             case 'boolean':
                 return !in_array($value, [false, 0], true);
-            // For all the other types, any value at this point can be considered empty.
+
+                // For all the other types, any value at this point can be considered empty.
             default:
                 return true;
         }

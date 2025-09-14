@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SyndicationUsageSummary.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyndicationUsageSummary implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -72,7 +73,9 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -166,7 +169,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('startedAt', $data ?? [], null);
         $this->setIfExists('finishedAt', $data ?? [], null);
@@ -361,7 +364,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets thisSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite
+     * @return SyndicationUsageSummaryThisSite
      */
     public function getThisSite()
     {
@@ -371,7 +374,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets thisSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryThisSite $thisSite thisSite
+     * @param SyndicationUsageSummaryThisSite $thisSite thisSite
      *
      * @return self
      */
@@ -456,7 +459,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSites.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[]
+     * @return null|SyndicationEntityWithUsage[]
      */
     public function getTargetSites()
     {
@@ -466,7 +469,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSites.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage[] $targetSites targetSites
+     * @param null|SyndicationEntityWithUsage[] $targetSites targetSites
      *
      * @return self
      */
@@ -490,7 +493,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets targetSummary.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[]
+     * @return null|SyndicationUsageSummaryStatusGroup[]
      */
     public function getTargetSummary()
     {
@@ -500,7 +503,7 @@ class SyndicationUsageSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets targetSummary.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryStatusGroup[] $targetSummary targetSummary
+     * @param null|SyndicationUsageSummaryStatusGroup[] $targetSummary targetSummary
      *
      * @return self
      */

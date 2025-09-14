@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SiteSelfDtoCustomer.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteSelfDtoCustomer implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteSelfDtoCustomer implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -73,7 +74,9 @@ class SiteSelfDtoCustomer implements ModelInterface, ArrayAccess, \JsonSerializa
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -172,7 +175,7 @@ class SiteSelfDtoCustomer implements ModelInterface, ArrayAccess, \JsonSerializa
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);

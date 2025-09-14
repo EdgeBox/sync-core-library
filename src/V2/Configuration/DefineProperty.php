@@ -57,66 +57,42 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this->dto;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addToBatch($batch)
     {
         // Nothing to do as we're part of the entity type definition.
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::INTEGER, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::FLOAT, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::STRING, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::OBJECT, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMainProperty(string $machine_name)
     {
         $this->dto->setMainProperty($machine_name);
@@ -124,9 +100,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription(string $description)
     {
         $this->dto->setDescription($description);
@@ -134,9 +107,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setNameProperty(string $machine_name)
     {
         $this->dto->setNameProperty($machine_name);
@@ -144,9 +114,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAllowedValue(string $name, mixed $value = null)
     {
         $allowed_values = $this->dto->getAllowedValues() ?? [];
@@ -159,9 +126,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFormat(string $format)
     {
         $this->dto->setFormat($format);
@@ -169,9 +133,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMinItems(int $min)
     {
         $this->dto->setMinItems($min);
@@ -179,9 +140,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMaxItems(int $min)
     {
         $this->dto->setMaxItems($min);
@@ -189,9 +147,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocalized(bool $set)
     {
         $this->dto->setLocalized($set);
@@ -199,9 +154,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setShared(bool $set)
     {
         $this->dto->setShared($set);
@@ -209,9 +161,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMinValue(mixed $minValue)
     {
         $this->dto->setMinValue($minValue);
@@ -219,9 +168,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMaxValue(mixed $maxValue)
     {
         $this->dto->setMaxValue($maxValue);
@@ -229,9 +175,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnit(string $unit)
     {
         $this->dto->setUnit($unit);
@@ -239,9 +182,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setByteSize(int $byteCount)
     {
         $this->dto->setByteSize($byteCount);
@@ -249,9 +189,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMinLength(int $minLength)
     {
         $this->dto->setMinLength($minLength);
@@ -259,9 +196,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMaxLength(int $maxLength)
     {
         $this->dto->setMaxLength($maxLength);
@@ -269,9 +203,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEncoding(string $encoding)
     {
         $this->dto->setEncoding($encoding);
@@ -279,9 +210,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setRegularExpressionFormat(string $php_pattern)
     {
         $delimiter = $php_pattern[0];
@@ -302,9 +230,6 @@ class DefineProperty extends BatchOperation implements IDefineObjectProperty, ID
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addAllowedType(string $namespaceMachineName, ?string $machineName = null)
     {
         $allowed = $this->dto->getAllowedEntityTypes() ?? [];

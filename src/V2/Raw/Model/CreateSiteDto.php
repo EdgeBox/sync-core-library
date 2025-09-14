@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CreateSiteDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -87,7 +88,9 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -724,7 +727,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets extensions.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]
+     * @return null|SiteExtension[]
      */
     public function getExtensions()
     {
@@ -734,7 +737,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets extensions.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[] $extensions extensions
+     * @param null|SiteExtension[] $extensions extensions
      *
      * @return self
      */
@@ -792,7 +795,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets languages.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     * @return null|LanguageDefinition[]
      */
     public function getLanguages()
     {
@@ -802,7 +805,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets languages.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     * @param null|LanguageDefinition[] $languages languages
      *
      * @return self
      */
@@ -1084,7 +1087,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
+     * @return RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -1094,7 +1097,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */

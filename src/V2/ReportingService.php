@@ -25,9 +25,6 @@ class ReportingService implements IReportingService
         $this->core = $core;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLog($level = null)
     {
         // We don't have any mechanism for warnings yet.
@@ -73,9 +70,6 @@ class ReportingService implements IReportingService
         return $messages;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStatus()
     {
         $request = $this->core->getClient()->usageStatsControllerSummaryRequest();
@@ -86,6 +80,7 @@ class ReportingService implements IReportingService
         $response = $this->core->sendToSyncCoreAndExpect($request, UsageSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::STATUS_GET_RETRY_COUNT);
 
         $version_request = $this->core->getClient()->configurationControllerInfoRequest();
+
         /**
          * @var SyncCoreInfo $version_response
          */

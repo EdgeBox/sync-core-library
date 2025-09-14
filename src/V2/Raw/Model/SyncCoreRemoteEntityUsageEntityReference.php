@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SyncCoreRemoteEntityUsageEntityReference.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayAccess, \JsonSerializable
+class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -78,7 +79,9 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -202,7 +205,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('entity', $data ?? [], null);
         $this->setIfExists('language', $data ?? [], null);
@@ -348,7 +351,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntity()
     {
@@ -358,7 +361,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entity entity
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entity entity
      *
      * @return self
      */

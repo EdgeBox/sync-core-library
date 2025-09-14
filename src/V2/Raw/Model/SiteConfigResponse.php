@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SiteConfigResponse.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -74,7 +75,9 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -178,7 +181,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('poolCount', $data ?? [], null);
         $this->setIfExists('pools', $data ?? [], null);
@@ -339,7 +342,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets pools.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[]
+     * @return null|CreatePoolDto[]
      */
     public function getPools()
     {
@@ -349,7 +352,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets pools.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto[] $pools pools
+     * @param null|CreatePoolDto[] $pools pools
      *
      * @return self
      */
@@ -407,7 +410,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets flows.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[]
+     * @return null|CreateFlowDto[]
      */
     public function getFlows()
     {
@@ -417,7 +420,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets flows.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto[] $flows flows
+     * @param null|CreateFlowDto[] $flows flows
      *
      * @return self
      */
@@ -475,7 +478,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets entityTypes.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]
+     * @return null|CreateRemoteEntityTypeVersionDto[]
      */
     public function getEntityTypes()
     {
@@ -485,7 +488,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets entityTypes.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[] $entityTypes entityTypes
+     * @param null|CreateRemoteEntityTypeVersionDto[] $entityTypes entityTypes
      *
      * @return self
      */
@@ -543,7 +546,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets languages.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     * @return null|LanguageDefinition[]
      */
     public function getLanguages()
     {
@@ -553,7 +556,7 @@ class SiteConfigResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets languages.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     * @param null|LanguageDefinition[] $languages languages
      *
      * @return self
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PullDashboardConfiguration.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSerializable
+class PullDashboardConfiguration implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -66,7 +67,9 @@ class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSe
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -130,7 +133,7 @@ class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSe
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('flows', $data ?? [], null);
     }
@@ -255,7 +258,7 @@ class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets flows.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionFlow[]
+     * @return PullDashboardPullOptionFlow[]
      */
     public function getFlows()
     {
@@ -265,7 +268,7 @@ class PullDashboardConfiguration implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets flows.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardPullOptionFlow[] $flows flows
+     * @param PullDashboardPullOptionFlow[] $flows flows
      *
      * @return self
      */

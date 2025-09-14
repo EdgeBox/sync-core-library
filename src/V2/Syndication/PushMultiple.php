@@ -34,9 +34,6 @@ class PushMultiple implements IPushMultiple
         $this->dto->setFlowMachineName($flowMachineName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addEntity(string $type, string $bundle, string $version_id, string $root_language, ?string $entity_uuid, ?string $entity_id)
     {
         $item = new PushMultipleItem($type, $bundle, $version_id, $root_language, $entity_uuid, $entity_id);
@@ -48,9 +45,6 @@ class PushMultiple implements IPushMultiple
         return $item;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData()
     {
         return $this->dto->jsonSerialize();
@@ -61,9 +55,6 @@ class PushMultiple implements IPushMultiple
         return $this->dto;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function runInOrder(bool $set)
     {
         $this->dto->setRunInOrder($set);
@@ -71,9 +62,6 @@ class PushMultiple implements IPushMultiple
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPriority(int $set)
     {
         $this->dto->setPriority($set);
@@ -81,9 +69,6 @@ class PushMultiple implements IPushMultiple
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute($in_order = false)
     {
         $request = $this

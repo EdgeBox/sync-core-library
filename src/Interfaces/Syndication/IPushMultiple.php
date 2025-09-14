@@ -34,9 +34,9 @@ interface IPushMultiple
     public function setPriority(int $priority);
 
     /**
-     * @throws SyncCoreException
-     *
      * @return $this
+     *
+     * @throws SyncCoreException
      */
     public function execute();
 

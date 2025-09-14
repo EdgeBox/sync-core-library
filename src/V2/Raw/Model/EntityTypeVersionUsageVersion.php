@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EntityTypeVersionUsageVersion.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \JsonSerializable
+class EntityTypeVersionUsageVersion implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -69,7 +70,9 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -148,7 +151,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('sites', $data ?? [], null);
@@ -312,7 +315,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets sites.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageSite[]
+     * @return EntityTypeVersionUsageSite[]
      */
     public function getSites()
     {
@@ -322,7 +325,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets sites.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageSite[] $sites sites
+     * @param EntityTypeVersionUsageSite[] $sites sites
      *
      * @return self
      */
@@ -339,7 +342,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets missingProperties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]
+     * @return RemoteEntityTypeProperty[]
      */
     public function getMissingProperties()
     {
@@ -349,7 +352,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets missingProperties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[] $missingProperties missingProperties
+     * @param RemoteEntityTypeProperty[] $missingProperties missingProperties
      *
      * @return self
      */
@@ -366,7 +369,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets additionalProperties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]
+     * @return RemoteEntityTypeProperty[]
      */
     public function getAdditionalProperties()
     {
@@ -376,7 +379,7 @@ class EntityTypeVersionUsageVersion implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets additionalProperties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[] $additionalProperties additionalProperties
+     * @param RemoteEntityTypeProperty[] $additionalProperties additionalProperties
      *
      * @return self
      */

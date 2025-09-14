@@ -11,6 +11,7 @@ abstract class Embed
 {
     public static $iframeResizerAdded = '';
     public static $embed_count = 0;
+
     /**
      * @var SyncCore
      */

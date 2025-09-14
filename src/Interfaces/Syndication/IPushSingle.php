@@ -108,9 +108,9 @@ interface IPushSingle
     public function getProperty(string $name, $language = null);
 
     /**
-     * @throws SyncCoreException
-     *
      * @return $this
+     *
+     * @throws SyncCoreException
      */
     public function execute();
 

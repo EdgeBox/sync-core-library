@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PagedTranslationDefinitionList.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PagedTranslationDefinitionList implements ModelInterface, ArrayAccess, \JsonSerializable
+class PagedTranslationDefinitionList implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -70,7 +71,9 @@ class PagedTranslationDefinitionList implements ModelInterface, ArrayAccess, \Js
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -154,7 +157,7 @@ class PagedTranslationDefinitionList implements ModelInterface, ArrayAccess, \Js
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('page', $data ?? [], null);
         $this->setIfExists('numberOfPages', $data ?? [], null);
@@ -403,7 +406,7 @@ class PagedTranslationDefinitionList implements ModelInterface, ArrayAccess, \Js
     /**
      * Gets items.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\TranslationDefinition[]
+     * @return TranslationDefinition[]
      */
     public function getItems()
     {
@@ -413,7 +416,7 @@ class PagedTranslationDefinitionList implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets items.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\TranslationDefinition[] $items items
+     * @param TranslationDefinition[] $items items
      *
      * @return self
      */

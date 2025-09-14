@@ -35,6 +35,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType;
@@ -46,7 +47,6 @@ use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
-use Exception;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -86,6 +86,7 @@ class SyncCore implements ISyncCore
         // Gateway Timeout
         504,
     ];
+
     /**
      * @var string
      *             The base URL of the remote Sync Core. See Pool::$backend_url
@@ -203,13 +204,13 @@ class SyncCore implements ISyncCore
      * @param bool   $is_configuration what permissions to set
      * @param string $mimetype the mimetype. will be guessed if not given.
      *
+     * @return FileEntity
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
-     *
-     * @return FileEntity
      */
     public function sendFile($type, $file_name, $content, $avoid_duplicates = true, $is_configuration = false, ?string $mimetype = null, int $retry_count = self::FILE_UPLOAD_RETRY_COUNT)
     {
@@ -240,12 +241,14 @@ class SyncCore implements ISyncCore
             : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
 
         $request = $this->getClient()->fileControllerCreateRequest(createFileDto: $fileDto);
+
         /**
          * @var FileEntity $file
          */
         $file = $this->sendToSyncCoreAndExpect($request, FileEntity::class, $permissions, false, $retry_count);
 
         $upload_url = $file->getUploadUrl();
+
         /**
          * @var string $status
          */
@@ -317,13 +320,13 @@ class SyncCore implements ISyncCore
      * @param array $options Optional request options to provide to Guzzle along with the request e.g. to set a timeout.
      * @param int $retry_count how often to retry the request if it fails
      *
+     * @return mixed
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
-     *
-     * @return mixed
      */
     public function sendRaw(Request $request, array $options, int $retry_count)
     {
@@ -336,7 +339,7 @@ class SyncCore implements ISyncCore
                 $options[RequestOptions::TIMEOUT] = $this->default_timeout;
             }
 
-            //\Drupal::messenger()->addMessage($request->getMethod().' '.print_r($request->getBody()->__toString(),1));
+            // \Drupal::messenger()->addMessage($request->getMethod().' '.print_r($request->getBody()->__toString(),1));
 
             $response = $this->application->getHttpClient()->send($request, $options);
         } catch (ConnectException $e) {
@@ -347,7 +350,7 @@ class SyncCore implements ISyncCore
             throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
         } catch (GuzzleException $e) {
             throw new SyncCoreException($e->getMessage());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new SyncCoreException($e->getMessage());
         }
 
@@ -361,7 +364,7 @@ class SyncCore implements ISyncCore
             }
 
             $data = json_decode($response_body, true);
-            $message = isset($data['message']) ? $data['message'] : $response_body.'';
+            $message = $data['message'] ?? $response_body.'';
             if (!is_string($message)) {
                 $message = json_encode($message);
             }
@@ -394,13 +397,13 @@ class SyncCore implements ISyncCore
      * @param bool $quick Whether to prefer failing if a response can't be gotten quickly. E.g. if you do something optional or have a fallback.
      * @param int $retry_count how often to retry the request if it fails
      *
+     * @return mixed
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
-     *
-     * @return mixed
      */
     public function sendToSyncCore(Request $request, string $permissions, bool $quick, int $retry_count)
     {
@@ -451,13 +454,13 @@ class SyncCore implements ISyncCore
      * @param bool $quick Whether to prefer failing if a response can't be gotten quickly. E.g. if you do something optional or have a fallback.
      * @param int $retry_count how often to retry the request if it fails
      *
+     * @return object|Raw\Model\ModelInterface
+     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
      * @throws TimeoutException
-     *
-     * @return object|Raw\Model\ModelInterface
      */
     public function sendToSyncCoreAndExpect(Request $request, string $class, string $permissions, bool $quick, int $retry_count)
     {
@@ -564,6 +567,7 @@ class SyncCore implements ISyncCore
         $dto->setRestUrls($this->getRestUrls());
 
         $auth = $this->application->getAuthentication();
+
         /**
          * @var AuthenticationType $type
          */
@@ -624,6 +628,7 @@ class SyncCore implements ISyncCore
         }
 
         $request = $this->client->featuresControllerSummaryRequest();
+
         /**
          * @var FeatureFlagSummary $response
          */
@@ -642,9 +647,6 @@ class SyncCore implements ISyncCore
         return $features;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function enableFeature(string $name, float $value = 1, $namespace = 'site')
     {
         if ('site' === $namespace) {
@@ -862,12 +864,10 @@ class SyncCore implements ISyncCore
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function countRequestsWaitingToBePolled()
     {
         $request = $this->client->siteControllerGetRequestsRequest(itemsPerPage: 0);
+
         /**
          * @var PagedRequestList $response
          */
@@ -876,12 +876,10 @@ class SyncCore implements ISyncCore
         return $response->getTotalNumberOfItems();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function pollRequests($limit = 1)
     {
         $request = $this->client->siteControllerGetRequestsRequest(itemsPerPage: $limit);
+
         /**
          * @var PagedRequestList $response
          */
@@ -890,9 +888,6 @@ class SyncCore implements ISyncCore
         return $response->getItems();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function respondToRequest(string $id, int $statusCode, string $statusText, array $headers, string $body)
     {
         $wrapper = new RequestResponseDto();
@@ -903,6 +898,7 @@ class SyncCore implements ISyncCore
         $dto->setResponseBody($body);
         $wrapper->setResponse($dto);
         $request = $this->client->siteControllerRespondToRequestRequest(id: $id, requestResponseDto: $wrapper);
+
         /**
          * @var SuccessResponse $response
          */
@@ -911,12 +907,10 @@ class SyncCore implements ISyncCore
         return $response->getSuccess();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function updateSiteConfig(string $mode, $wait = false)
     {
         $dto = new SiteConfigUpdateRequestDto();
+
         /**
          * @var RemoteSiteConfigRequestMode $mode
          */
@@ -944,9 +938,6 @@ class SyncCore implements ISyncCore
         return $response->getId();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isStagingSite($quick = true)
     {
         $site = $this->getThisSite($quick);
@@ -954,9 +945,6 @@ class SyncCore implements ISyncCore
         return $site ? SiteEnvironmentType::STAGING === $site->getEnvironmentType() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isProductionSite($quick = true)
     {
         $site = $this->getThisSite($quick);
@@ -964,9 +952,6 @@ class SyncCore implements ISyncCore
         return $site ? SiteEnvironmentType::PRODUCTION === $site->getEnvironmentType() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isLocalSite($quick = true)
     {
         $site = $this->getThisSite($quick);
@@ -974,9 +959,6 @@ class SyncCore implements ISyncCore
         return $site ? SiteEnvironmentType::LOCAL === $site->getEnvironmentType() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isTestingSite($quick = true)
     {
         $site = $this->getThisSite($quick);
@@ -984,9 +966,6 @@ class SyncCore implements ISyncCore
         return $site ? SiteEnvironmentType::TESTING === $site->getEnvironmentType() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isStagingContract($quick = true)
     {
         $current = $this->getCurrentContractRevision($quick);
@@ -994,9 +973,6 @@ class SyncCore implements ISyncCore
         return $current ? Product::STAGING === $current->getProduct() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isSyndicationContract($quick = true)
     {
         $current = $this->getCurrentContractRevision($quick);
@@ -1004,9 +980,6 @@ class SyncCore implements ISyncCore
         return $current ? Product::SYNDICATION === $current->getProduct() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUsedLanguages(string $namespace_machine_name, string $machine_name, string $shared_id, $quick = true)
     {
         static $cache = [];
@@ -1147,7 +1120,7 @@ class SyncCore implements ISyncCore
         $dto->setBaseUrl($this->application->getSiteBaseUrl());
 
         /**
-         * @var \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $app_type
+         * @var SiteApplicationType $app_type
          */
         $app_type = $this->application->getApplicationId();
         $dto->setAppType($app_type);

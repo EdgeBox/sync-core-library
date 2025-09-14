@@ -18,6 +18,7 @@ interface IApplicationInterface
      *             as Authentication header when making REST requests to this site
      */
     public const AUTHENTICATION_TYPE_BASIC_AUTH = 'basic_auth';
+
     /**
      * @var string AUTHENTICATION_TYPE_COOKIE Use Drupal default cookie
      *             authentication before making any REST requests to this site
@@ -30,16 +31,19 @@ interface IApplicationInterface
      * @var string REST_ACTION_CREATE_ENTITY Create OR Update an entity
      */
     public const REST_ACTION_CREATE_ENTITY = 'create';
+
     /**
      * @var string REST_ACTION_DELETE_ENTITY Delete the given entity
      */
     public const REST_ACTION_DELETE_ENTITY = 'delete';
+
     /**
      * @var string REST_ACTION_RETRIEVE_ENTITY
      *             Get details about the given entity.
      *             404 means it doesn't exist (any longer).
      */
     public const REST_ACTION_RETRIEVE_ENTITY = 'retrieve';
+
     /**
      * @var string REST_ACTION_LIST_ENTITIES
      *
@@ -47,6 +51,7 @@ interface IApplicationInterface
      * the lists defined below.
      */
     public const REST_ACTION_LIST_ENTITIES = 'list';
+
     /**
      * @var string REST_ACTION_SITE_STATUS
      *
@@ -54,6 +59,7 @@ interface IApplicationInterface
      * module/plugin version
      */
     public const REST_ACTION_SITE_STATUS = 'status';
+
     /**
      * @var string REST_ACTION_SITE_CONFIG
      *

@@ -45,6 +45,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $dto->setName($name);
         $dto->setSitePullsByMachineName([]);
         $dto->setSitePushesByMachineName([]);
+
         /**
          * @var FlowStatus $status
          */
@@ -71,9 +72,6 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isActive($set = null)
     {
         if (true === $set || false === $set) {
@@ -98,17 +96,11 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         return $this->machineName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function usePool(string $pool_id)
     {
         return new DefinePoolForFlow($this->core, $this, $pool_id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function allowedLanguages($set = null)
     {
         $this->dto->setAllowedLanguages($set);
@@ -129,6 +121,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $all = $this->dto->getSitePullsByMachineName();
 
         $config = new NewFlowSyndication();
+
         /**
          * @var FlowSyndicationMode $mode
          */
@@ -158,6 +151,7 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         $all = $this->dto->getSitePushesByMachineName();
 
         $config = new NewFlowSyndication();
+
         /**
          * @var FlowSyndicationMode $mode
          */
@@ -173,9 +167,6 @@ class DefineFlow extends BatchOperation implements IDefineFlow
         return $config;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function optimize()
     {
         /**

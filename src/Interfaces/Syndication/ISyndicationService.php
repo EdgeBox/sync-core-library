@@ -67,9 +67,9 @@ interface ISyndicationService
      * Trigger the login procedure from the Sync Core to the site. Only relevant
      * for cookie authentication e.g. when you cleared all sessions.
      *
-     * @throws SyncCoreException
-     *
      * @return bool
+     *
+     * @throws SyncCoreException
      */
     public function refreshAuthentication();
 }

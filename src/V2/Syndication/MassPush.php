@@ -16,9 +16,6 @@ class MassPush extends MassUpdate implements IMassPush
         parent::__construct($core);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         return $this->executeWithType(MigrationType::PUSH_ALL);

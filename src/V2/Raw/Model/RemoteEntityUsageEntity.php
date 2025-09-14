@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityUsageEntity.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityUsageEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -86,7 +87,9 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -250,7 +253,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('match', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
@@ -515,7 +518,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets site.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getSite()
     {
@@ -525,7 +528,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets site.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
      *
      * @return self
      */
@@ -542,7 +545,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets translations.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]
+     * @return SyncCoreRemoteEntityUsageEntityReference[]
      */
     public function getTranslations()
     {
@@ -552,7 +555,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets translations.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[] $translations translations
+     * @param SyncCoreRemoteEntityUsageEntityReference[] $translations translations
      *
      * @return self
      */
@@ -596,7 +599,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -606,7 +609,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -854,7 +857,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -864,7 +867,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -881,7 +884,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -891,7 +894,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -908,7 +911,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return DynamicReference[]
      */
     public function getPools()
     {
@@ -918,7 +921,7 @@ class RemoteEntityUsageEntity implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     * @param DynamicReference[] $pools pools
      *
      * @return self
      */

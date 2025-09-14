@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RegisterSiteDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -71,7 +72,9 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -160,7 +163,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('secret', $data ?? [], null);
@@ -350,7 +353,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls
+     * @return RegisterNewSiteDtoRestUrls
      */
     public function getRestUrls()
     {
@@ -360,7 +363,7 @@ class RegisterSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
      *
      * @return self
      */

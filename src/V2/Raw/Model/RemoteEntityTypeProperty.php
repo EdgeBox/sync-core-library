@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityTypeProperty.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -90,7 +91,9 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -274,7 +277,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
@@ -714,7 +717,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets properties.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]
+     * @return null|RemoteEntityTypeProperty[]
      */
     public function getProperties()
     {
@@ -724,7 +727,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets properties.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[] $properties properties
+     * @param null|RemoteEntityTypeProperty[] $properties properties
      *
      * @return self
      */
@@ -816,7 +819,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets allowedValues.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     * @return null|RemoteEntityPropertyDraft[]
      */
     public function getAllowedValues()
     {
@@ -826,7 +829,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets allowedValues.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $allowedValues allowedValues
+     * @param null|RemoteEntityPropertyDraft[] $allowedValues allowedValues
      *
      * @return self
      */
@@ -1190,7 +1193,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets allowedEntityTypes.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[]
+     * @return null|RemoteEntityTypeRestriction[]
      */
     public function getAllowedEntityTypes()
     {
@@ -1200,7 +1203,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets allowedEntityTypes.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeRestriction[] $allowedEntityTypes allowedEntityTypes
+     * @param null|RemoteEntityTypeRestriction[] $allowedEntityTypes allowedEntityTypes
      *
      * @return self
      */

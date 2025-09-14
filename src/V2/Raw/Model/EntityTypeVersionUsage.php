@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EntityTypeVersionUsage.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerializable
+class EntityTypeVersionUsage implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -68,7 +69,9 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -142,7 +145,7 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('versionId', $data ?? [], null);
         $this->setIfExists('sites', $data ?? [], null);
@@ -302,7 +305,7 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets sites.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageSite[]
+     * @return EntityTypeVersionUsageSite[]
      */
     public function getSites()
     {
@@ -312,7 +315,7 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets sites.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageSite[] $sites sites
+     * @param EntityTypeVersionUsageSite[] $sites sites
      *
      * @return self
      */
@@ -329,7 +332,7 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets different.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageVersion[]
+     * @return EntityTypeVersionUsageVersion[]
      */
     public function getDifferent()
     {
@@ -339,7 +342,7 @@ class EntityTypeVersionUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets different.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsageVersion[] $different different
+     * @param EntityTypeVersionUsageVersion[] $different different
      *
      * @return self
      */

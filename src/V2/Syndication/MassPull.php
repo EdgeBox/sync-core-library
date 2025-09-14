@@ -16,9 +16,6 @@ class MassPull extends MassUpdate implements IMassPull
         parent::__construct($core);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         return $this->executeWithType($this->initial ? MigrationType::MAP_EXISTING_BY_ID : MigrationType::PULL_ALL);

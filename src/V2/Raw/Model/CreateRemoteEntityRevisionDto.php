@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CreateRemoteEntityRevisionDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateRemoteEntityRevisionDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -93,7 +94,9 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -292,7 +295,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('published', $data ?? [], null);
@@ -625,7 +628,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets directDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return null|RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -635,7 +638,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets directDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param null|RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -842,7 +845,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets embed.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[]
+     * @return null|RemoteEntityEmbedRootDraft[]
      */
     public function getEmbed()
     {
@@ -852,7 +855,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets embed.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityEmbedRootDraft[] $embed embed
+     * @param null|RemoteEntityEmbedRootDraft[] $embed embed
      *
      * @return self
      */
@@ -876,7 +879,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]
+     * @return RemoteEntityPropertyDraft[]
      */
     public function getProperties()
     {
@@ -886,7 +889,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[] $properties properties
+     * @param RemoteEntityPropertyDraft[] $properties properties
      *
      * @return self
      */
@@ -903,7 +906,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets allDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
+     * @return null|RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -913,7 +916,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets allDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
+     * @param null|RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -937,7 +940,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets entityTypeByMachineName.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName
+     * @return CreateRemoteEntityRevisionDtoEntityTypeByMachineName
      */
     public function getEntityTypeByMachineName()
     {
@@ -947,7 +950,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets entityTypeByMachineName.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDtoEntityTypeByMachineName $entityTypeByMachineName entityTypeByMachineName
+     * @param CreateRemoteEntityRevisionDtoEntityTypeByMachineName $entityTypeByMachineName entityTypeByMachineName
      *
      * @return self
      */
@@ -1066,7 +1069,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets translations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[]
+     * @return null|CreateRemoteEntityRevisionDto[]
      */
     public function getTranslations()
     {
@@ -1076,7 +1079,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets translations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto[] $translations translations
+     * @param null|CreateRemoteEntityRevisionDto[] $translations translations
      *
      * @return self
      */
@@ -1331,7 +1334,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets files.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[]
+     * @return null|FileEntity[]
      */
     public function getFiles()
     {
@@ -1341,7 +1344,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets files.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FileEntity[] $files files
+     * @param null|FileEntity[] $files files
      *
      * @return self
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HealthControllerReady200Response.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class HealthControllerReady200Response implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -69,7 +70,9 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -148,7 +151,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('info', $data ?? [], null);
@@ -297,7 +300,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Gets info.
      *
-     * @return null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue>
+     * @return null|array<string,HealthControllerReady200ResponseInfoValue>
      */
     public function getInfo()
     {
@@ -307,7 +310,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Sets info.
      *
-     * @param null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue> $info info
+     * @param null|array<string,HealthControllerReady200ResponseInfoValue> $info info
      *
      * @return self
      */
@@ -331,7 +334,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Gets error.
      *
-     * @return null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue>
+     * @return null|array<string,HealthControllerReady200ResponseInfoValue>
      */
     public function getError()
     {
@@ -341,7 +344,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Sets error.
      *
-     * @param null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue> $error error
+     * @param null|array<string,HealthControllerReady200ResponseInfoValue> $error error
      *
      * @return self
      */
@@ -365,7 +368,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Gets details.
      *
-     * @return null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue>
+     * @return null|array<string,HealthControllerReady200ResponseInfoValue>
      */
     public function getDetails()
     {
@@ -375,7 +378,7 @@ class HealthControllerReady200Response implements ModelInterface, ArrayAccess, \
     /**
      * Sets details.
      *
-     * @param null|array<string,\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200ResponseInfoValue> $details details
+     * @param null|array<string,HealthControllerReady200ResponseInfoValue> $details details
      *
      * @return self
      */

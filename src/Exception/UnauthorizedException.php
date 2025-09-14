@@ -9,6 +9,4 @@ namespace EdgeBox\SyncCore\Exception;
  * - The JWT has a very short lifetime of only 5 minutes. Any request after that will result in an "unauthorized" exception
  *   and you have to restart the process.
  */
-class UnauthorizedException extends SyncCoreException
-{
-}
+class UnauthorizedException extends SyncCoreException {}

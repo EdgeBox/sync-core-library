@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SiteSelfDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class SiteSelfDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -72,7 +73,9 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -166,7 +169,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('site', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -306,7 +309,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets site.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoSite
+     * @return SiteSelfDtoSite
      */
     public function getSite()
     {
@@ -316,7 +319,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets site.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoSite $site site
+     * @param SiteSelfDtoSite $site site
      *
      * @return self
      */
@@ -333,7 +336,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoCustomer
+     * @return SiteSelfDtoCustomer
      */
     public function getCustomer()
     {
@@ -343,7 +346,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoCustomer $customer customer
+     * @param SiteSelfDtoCustomer $customer customer
      *
      * @return self
      */
@@ -360,7 +363,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoProject
+     * @return SiteSelfDtoProject
      */
     public function getProject()
     {
@@ -370,7 +373,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoProject $project project
+     * @param SiteSelfDtoProject $project project
      *
      * @return self
      */
@@ -387,7 +390,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets contract.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoContract
+     * @return SiteSelfDtoContract
      */
     public function getContract()
     {
@@ -397,7 +400,7 @@ class SiteSelfDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets contract.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDtoContract $contract contract
+     * @param SiteSelfDtoContract $contract contract
      *
      * @return self
      */

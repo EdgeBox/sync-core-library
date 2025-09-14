@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PagedRemoteEntityRevisionList.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \JsonSerializable
+class PagedRemoteEntityRevisionList implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -70,7 +71,9 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -154,7 +157,7 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('page', $data ?? [], null);
         $this->setIfExists('numberOfPages', $data ?? [], null);
@@ -403,7 +406,7 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets items.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity[]
+     * @return RemoteEntityRevisionEntity[]
      */
     public function getItems()
     {
@@ -413,7 +416,7 @@ class PagedRemoteEntityRevisionList implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets items.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity[] $items items
+     * @param RemoteEntityRevisionEntity[] $items items
      *
      * @return self
      */

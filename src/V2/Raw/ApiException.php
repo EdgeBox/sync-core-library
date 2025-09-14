@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ApiException
  * PHP version 7.4.
@@ -28,8 +29,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw;
 
-use Exception;
-
 /**
  * ApiException Class Doc Comment.
  *
@@ -39,7 +38,7 @@ use Exception;
  *
  * @see     https://openapi-generator.tech
  */
-class ApiException extends Exception
+class ApiException extends \Exception
 {
     /**
      * The HTTP body of the server response either as Json or string.

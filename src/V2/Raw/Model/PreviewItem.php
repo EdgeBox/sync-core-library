@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PreviewItem.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
+class PreviewItem implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -71,7 +72,9 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -160,7 +163,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('entity', $data ?? [], null);
         $this->setIfExists('entityTypeVersion', $data ?? [], null);
@@ -296,7 +299,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entity.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntity
+     * @return PreviewItemEntity
      */
     public function getEntity()
     {
@@ -306,7 +309,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entity.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntity $entity entity
+     * @param PreviewItemEntity $entity entity
      *
      * @return self
      */
@@ -323,7 +326,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntityTypeVersion
+     * @return PreviewItemEntityTypeVersion
      */
     public function getEntityTypeVersion()
     {
@@ -333,7 +336,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemEntityTypeVersion $entityTypeVersion entityTypeVersion
+     * @param PreviewItemEntityTypeVersion $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
@@ -418,7 +421,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets sourceUsage.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage
+     * @return PreviewItemSourceUsage
      */
     public function getSourceUsage()
     {
@@ -428,7 +431,7 @@ class PreviewItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sourceUsage.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage $sourceUsage sourceUsage
+     * @param PreviewItemSourceUsage $sourceUsage sourceUsage
      *
      * @return self
      */

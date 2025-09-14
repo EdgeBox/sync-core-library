@@ -1,4 +1,5 @@
 <?php
+
 /**
  * FlowSyndication.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
+class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -71,7 +72,9 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -160,7 +163,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('mode', $data ?? [], null);
         $this->setIfExists('filters', $data ?? [], null);
@@ -326,7 +329,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets filters.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]
+     * @return null|FlowSyndicationFilter[]
      */
     public function getFilters()
     {
@@ -336,7 +339,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets filters.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[] $filters filters
+     * @param null|FlowSyndicationFilter[] $filters filters
      *
      * @return self
      */
@@ -394,7 +397,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets pool.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getPool()
     {
@@ -404,7 +407,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets pool.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $pool pool
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $pool pool
      *
      * @return self
      */
@@ -421,7 +424,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entityTypes.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return DynamicReference[]
      */
     public function getEntityTypes()
     {
@@ -431,7 +434,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entityTypes.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $entityTypes entityTypes
+     * @param DynamicReference[] $entityTypes entityTypes
      *
      * @return self
      */
@@ -448,7 +451,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets entityTypeVersions.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return DynamicReference[]
      */
     public function getEntityTypeVersions()
     {
@@ -458,7 +461,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets entityTypeVersions.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $entityTypeVersions entityTypeVersions
+     * @param DynamicReference[] $entityTypeVersions entityTypeVersions
      *
      * @return self
      */

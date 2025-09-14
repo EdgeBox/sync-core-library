@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PreviewItemEntity.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class PreviewItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -95,7 +96,9 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -304,7 +307,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('published', $data ?? [], null);
@@ -660,7 +663,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets directDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return null|RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -670,7 +673,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets directDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param null|RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -877,7 +880,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets embed.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]
+     * @return null|RemoteEntityRootEmbed[]
      */
     public function getEmbed()
     {
@@ -887,7 +890,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets embed.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[] $embed embed
+     * @param null|RemoteEntityRootEmbed[] $embed embed
      *
      * @return self
      */
@@ -911,7 +914,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
+     * @return RemoteEntityProperty[]
      */
     public function getProperties()
     {
@@ -921,7 +924,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
+     * @param RemoteEntityProperty[] $properties properties
      *
      * @return self
      */
@@ -938,7 +941,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets allDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
+     * @return null|RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -948,7 +951,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets allDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
+     * @param null|RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -972,7 +975,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -982,7 +985,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -999,7 +1002,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets entityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityTypeVersion()
     {
@@ -1009,7 +1012,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets entityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
@@ -1026,7 +1029,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return DynamicReference[]
      */
     public function getPools()
     {
@@ -1036,7 +1039,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     * @param DynamicReference[] $pools pools
      *
      * @return self
      */
@@ -1053,7 +1056,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -1063,7 +1066,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -1080,7 +1083,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -1090,7 +1093,7 @@ class PreviewItemEntity implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityRevisionEntityPushResult.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityRevisionEntityPushResult implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -96,7 +97,9 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -310,7 +313,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('published', $data ?? [], null);
@@ -667,7 +670,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets directDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]
+     * @return null|RemoteEntityDependency[]
      */
     public function getDirectDependencies()
     {
@@ -677,7 +680,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets directDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[] $directDependencies directDependencies
+     * @param null|RemoteEntityDependency[] $directDependencies directDependencies
      *
      * @return self
      */
@@ -884,7 +887,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets embed.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[]
+     * @return null|RemoteEntityRootEmbed[]
      */
     public function getEmbed()
     {
@@ -894,7 +897,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets embed.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRootEmbed[] $embed embed
+     * @param null|RemoteEntityRootEmbed[] $embed embed
      *
      * @return self
      */
@@ -918,7 +921,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[]
+     * @return RemoteEntityProperty[]
      */
     public function getProperties()
     {
@@ -928,7 +931,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityProperty[] $properties properties
+     * @param RemoteEntityProperty[] $properties properties
      *
      * @return self
      */
@@ -945,7 +948,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets allDependencies.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[]
+     * @return null|RuntimeRemoteEntityDependencyWithDependencies[]
      */
     public function getAllDependencies()
     {
@@ -955,7 +958,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets allDependencies.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
+     * @param null|RuntimeRemoteEntityDependencyWithDependencies[] $allDependencies allDependencies
      *
      * @return self
      */
@@ -979,7 +982,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -989,7 +992,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -1006,7 +1009,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets entityTypeVersion.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityTypeVersion()
     {
@@ -1016,7 +1019,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets entityTypeVersion.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityTypeVersion entityTypeVersion
      *
      * @return self
      */
@@ -1033,7 +1036,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets pools.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]
+     * @return DynamicReference[]
      */
     public function getPools()
     {
@@ -1043,7 +1046,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets pools.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[] $pools pools
+     * @param DynamicReference[] $pools pools
      *
      * @return self
      */
@@ -1060,7 +1063,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -1070,7 +1073,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -1087,7 +1090,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -1097,7 +1100,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */

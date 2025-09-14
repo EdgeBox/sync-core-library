@@ -16,18 +16,22 @@ class PullOperationEmbed implements IEntityReference
      * @var SyncCore
      */
     protected $core;
+
     /**
      * @var RemoteEntityDependency
      */
     protected $dto;
+
     /**
      * @var PullOperation
      */
     protected $pullOperation;
+
     /**
      * @var null|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed
      */
     protected $embed;
+
     /**
      * @var null|int
      */
@@ -47,9 +51,6 @@ class PullOperationEmbed implements IEntityReference
         $this->embedIndex = $embedIndex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDetails()
     {
         /**
@@ -65,73 +66,46 @@ class PullOperationEmbed implements IEntityReference
         return json_decode(json_encode($details), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->dto->getRemoteUniqueId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUuid()
     {
         return $this->dto->getRemoteUuid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->dto->getEntityTypeNamespaceMachineName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBundle()
     {
         return $this->dto->getEntityTypeMachineName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersion()
     {
         return $this->dto->getEntityTypeVersion();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->dto->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPoolIds()
     {
         return $this->dto->getPoolMachineNames();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmbedded()
     {
         return (bool) $this->embed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEmbeddedEntity()
     {
         $this->pullOperation->embedProcessed($this->embedIndex);

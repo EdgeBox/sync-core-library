@@ -12,9 +12,6 @@ interface IMassPull extends IProgressWithStatus
      */
     public function withFlow(string $flow_id);
 
-    /**
-     * @return string
-     */
     public function getFlow(): ?string;
 
     /**
@@ -22,9 +19,6 @@ interface IMassPull extends IProgressWithStatus
      */
     public function withNamespaceMachineName(string $entity_type_name);
 
-    /**
-     * @return string
-     */
     public function getNamespaceMachineName(): ?string;
 
     /**
@@ -32,9 +26,6 @@ interface IMassPull extends IProgressWithStatus
      */
     public function withEntityTypeMachineName(string $bundle_name);
 
-    /**
-     * @return string
-     */
     public function getEntityTypeMachineName(): ?string;
 
     /**
@@ -42,9 +33,6 @@ interface IMassPull extends IProgressWithStatus
      */
     public function withEntityTypeVersion(string $version_id);
 
-    /**
-     * @return string
-     */
     public function getEntityTypeVersion(): ?string;
 
     /**
@@ -58,9 +46,9 @@ interface IMassPull extends IProgressWithStatus
     public function includeOtherSites(?bool $set);
 
     /**
-     * @throws SyncCoreException
-     *
      * @return $this
+     *
+     * @throws SyncCoreException
      */
     public function execute();
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntityTypeVersionEntity.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntityTypeVersionEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -80,7 +81,9 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -214,7 +217,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('appType', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
@@ -589,7 +592,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets properties.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]
+     * @return RemoteEntityTypeProperty[]
      */
     public function getProperties()
     {
@@ -599,7 +602,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets properties.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[] $properties properties
+     * @param RemoteEntityTypeProperty[] $properties properties
      *
      * @return self
      */
@@ -616,7 +619,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -626,7 +629,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -643,7 +646,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets entityType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getEntityType()
     {
@@ -653,7 +656,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets entityType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entityType entityType
      *
      * @return self
      */
@@ -670,7 +673,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -680,7 +683,7 @@ class RemoteEntityTypeVersionEntity implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */

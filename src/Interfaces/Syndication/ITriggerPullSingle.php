@@ -22,9 +22,9 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
-     * @throws SyncCoreException
-     *
      * @return $this
+     *
+     * @throws SyncCoreException
      */
     public function execute();
 

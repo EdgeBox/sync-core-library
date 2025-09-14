@@ -1,4 +1,5 @@
 <?php
+
 /**
  * FlowEntity.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
+class FlowEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -80,7 +81,9 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -214,7 +217,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
@@ -505,7 +508,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets customer.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getCustomer()
     {
@@ -515,7 +518,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets customer.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $customer customer
      *
      * @return self
      */
@@ -532,7 +535,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets site.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getSite()
     {
@@ -542,7 +545,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets site.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
      *
      * @return self
      */
@@ -559,7 +562,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets project.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getProject()
     {
@@ -569,7 +572,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets project.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $project project
      *
      * @return self
      */
@@ -613,7 +616,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets sitePushes.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]
+     * @return FlowSyndication[]
      */
     public function getSitePushes()
     {
@@ -623,7 +626,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sitePushes.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[] $sitePushes sitePushes
+     * @param FlowSyndication[] $sitePushes sitePushes
      *
      * @return self
      */
@@ -640,7 +643,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets sitePulls.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]
+     * @return FlowSyndication[]
      */
     public function getSitePulls()
     {
@@ -650,7 +653,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sitePulls.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[] $sitePulls sitePulls
+     * @param FlowSyndication[] $sitePulls sitePulls
      *
      * @return self
      */

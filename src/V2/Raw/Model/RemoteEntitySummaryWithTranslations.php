@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RemoteEntitySummaryWithTranslations.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteEntitySummaryWithTranslations implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -82,7 +83,9 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -226,7 +229,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('remoteUuid', $data ?? [], null);
         $this->setIfExists('remoteUniqueId', $data ?? [], null);
@@ -812,7 +815,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
     /**
      * Gets translations.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[]
+     * @return null|RemoteEntitySummaryWithTranslationsTranslation[]
      */
     public function getTranslations()
     {
@@ -822,7 +825,7 @@ class RemoteEntitySummaryWithTranslations implements ModelInterface, ArrayAccess
     /**
      * Sets translations.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummaryWithTranslationsTranslation[] $translations translations
+     * @param null|RemoteEntitySummaryWithTranslationsTranslation[] $translations translations
      *
      * @return self
      */

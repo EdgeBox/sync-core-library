@@ -29,9 +29,6 @@ class DefineLanguage extends BatchOperation implements IDefineLanguage
         $this->dto->setName($name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isRightToLeft($set = null)
     {
         if (is_bool($set)) {
@@ -41,9 +38,6 @@ class DefineLanguage extends BatchOperation implements IDefineLanguage
         return (bool) $this->dto->getIsRightToLeft();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setNativeName($set = null)
     {
         if (null !== $set) {

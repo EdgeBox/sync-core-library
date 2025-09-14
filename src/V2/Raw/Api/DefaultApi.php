@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DefaultApi
  * PHP version 7.4.
@@ -31,13 +32,91 @@ namespace EdgeBox\SyncCore\V2\Raw\Api;
 use EdgeBox\SyncCore\V2\Raw\ApiException;
 use EdgeBox\SyncCore\V2\Raw\Configuration;
 use EdgeBox\SyncCore\V2\Raw\HeaderSelector;
+use EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration;
+use EdgeBox\SyncCore\V2\Raw\Model\ContractEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll;
+use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\FlowEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto;
+use EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto;
+use EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response;
+use EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response;
+use EdgeBox\SyncCore\V2\Raw\Model\JwtResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList;
+use EdgeBox\SyncCore\V2\Raw\Model\PoolEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration;
+use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails;
+use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\UsageStats;
+use EdgeBox\SyncCore\V2\Raw\Model\UsageSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest;
+use EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -333,6 +412,7 @@ class DefaultApi
             'application/json',
         ],
     ];
+
     /**
      * @var ClientInterface
      */
@@ -354,13 +434,10 @@ class DefaultApi
     protected $hostIndex;
 
     /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        ClientInterface $client = null,
+        ?ClientInterface $client = null,
         ?Configuration $config = null,
         ?HeaderSelector $selector = null,
         $hostIndex = 0
@@ -402,17 +479,17 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto createAuthenticationDto (required)
+     * @param  CreateAuthenticationDto $createAuthenticationDto createAuthenticationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerCreate($createAuthenticationDto, string $contentType = self::contentTypes['authenticationControllerCreate'][0])
     {
-        list($response) = $this->authenticationControllerCreateWithHttpInfo($createAuthenticationDto, $contentType);
+        [$response] = $this->authenticationControllerCreateWithHttpInfo($createAuthenticationDto, $contentType);
 
         return $response;
     }
@@ -420,13 +497,13 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  CreateAuthenticationDto $createAuthenticationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerCreateWithHttpInfo($createAuthenticationDto, string $contentType = self::contentTypes['authenticationControllerCreate'][0])
     {
@@ -471,7 +548,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -488,7 +565,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -521,12 +598,12 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  CreateAuthenticationDto $createAuthenticationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerCreateAsync($createAuthenticationDto, string $contentType = self::contentTypes['authenticationControllerCreate'][0])
     {
@@ -542,12 +619,12 @@ class DefaultApi
     /**
      * Operation authenticationControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  CreateAuthenticationDto $createAuthenticationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerCreateAsyncWithHttpInfo($createAuthenticationDto, string $contentType = self::contentTypes['authenticationControllerCreate'][0])
     {
@@ -559,7 +636,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -595,12 +672,12 @@ class DefaultApi
     /**
      * Create request for operation 'authenticationControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto $createAuthenticationDto (required)
+     * @param  CreateAuthenticationDto $createAuthenticationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerCreateRequest($createAuthenticationDto, string $contentType = self::contentTypes['authenticationControllerCreate'][0])
     {
@@ -687,14 +764,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerGetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return GetBasicAuthDto
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerGetBasicAuth(string $contentType = self::contentTypes['authenticationControllerGetBasicAuth'][0])
     {
-        list($response) = $this->authenticationControllerGetBasicAuthWithHttpInfo($contentType);
+        [$response] = $this->authenticationControllerGetBasicAuthWithHttpInfo($contentType);
 
         return $response;
     }
@@ -704,10 +781,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerGetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerGetBasicAuthWithHttpInfo(string $contentType = self::contentTypes['authenticationControllerGetBasicAuth'][0])
     {
@@ -752,7 +829,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto' !== 'string') {
@@ -769,7 +846,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -804,9 +881,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerGetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerGetBasicAuthAsync(string $contentType = self::contentTypes['authenticationControllerGetBasicAuth'][0])
     {
@@ -824,9 +901,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerGetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerGetBasicAuthAsyncWithHttpInfo(string $contentType = self::contentTypes['authenticationControllerGetBasicAuth'][0])
     {
@@ -838,7 +915,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -876,9 +953,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerGetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerGetBasicAuthRequest(string $contentType = self::contentTypes['authenticationControllerGetBasicAuth'][0])
     {
@@ -949,17 +1026,17 @@ class DefaultApi
     /**
      * Operation authenticationControllerSetBasicAuth.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto $setBasicAuthDto setBasicAuthDto (required)
+     * @param  SetBasicAuthDto $setBasicAuthDto setBasicAuthDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerSetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerSetBasicAuth($setBasicAuthDto, string $contentType = self::contentTypes['authenticationControllerSetBasicAuth'][0])
     {
-        list($response) = $this->authenticationControllerSetBasicAuthWithHttpInfo($setBasicAuthDto, $contentType);
+        [$response] = $this->authenticationControllerSetBasicAuthWithHttpInfo($setBasicAuthDto, $contentType);
 
         return $response;
     }
@@ -967,13 +1044,13 @@ class DefaultApi
     /**
      * Operation authenticationControllerSetBasicAuthWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto $setBasicAuthDto (required)
+     * @param  SetBasicAuthDto $setBasicAuthDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerSetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerSetBasicAuthWithHttpInfo($setBasicAuthDto, string $contentType = self::contentTypes['authenticationControllerSetBasicAuth'][0])
     {
@@ -1018,7 +1095,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -1035,7 +1112,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -1068,12 +1145,12 @@ class DefaultApi
     /**
      * Operation authenticationControllerSetBasicAuthAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto $setBasicAuthDto (required)
+     * @param  SetBasicAuthDto $setBasicAuthDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerSetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerSetBasicAuthAsync($setBasicAuthDto, string $contentType = self::contentTypes['authenticationControllerSetBasicAuth'][0])
     {
@@ -1089,12 +1166,12 @@ class DefaultApi
     /**
      * Operation authenticationControllerSetBasicAuthAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto $setBasicAuthDto (required)
+     * @param  SetBasicAuthDto $setBasicAuthDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerSetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerSetBasicAuthAsyncWithHttpInfo($setBasicAuthDto, string $contentType = self::contentTypes['authenticationControllerSetBasicAuth'][0])
     {
@@ -1106,7 +1183,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -1142,12 +1219,12 @@ class DefaultApi
     /**
      * Create request for operation 'authenticationControllerSetBasicAuth'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto $setBasicAuthDto (required)
+     * @param  SetBasicAuthDto $setBasicAuthDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['authenticationControllerSetBasicAuth'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function authenticationControllerSetBasicAuthRequest($setBasicAuthDto, string $contentType = self::contentTypes['authenticationControllerSetBasicAuth'][0])
     {
@@ -1235,14 +1312,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerExchangeToken'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return JwtResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\JwtResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function backendControllerExchangeToken($uuid, string $contentType = self::contentTypes['backendControllerExchangeToken'][0])
     {
-        list($response) = $this->backendControllerExchangeTokenWithHttpInfo($uuid, $contentType);
+        [$response] = $this->backendControllerExchangeTokenWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -1253,10 +1330,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerExchangeToken'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\JwtResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function backendControllerExchangeTokenWithHttpInfo($uuid, string $contentType = self::contentTypes['backendControllerExchangeToken'][0])
     {
@@ -1301,7 +1378,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\JwtResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\JwtResponse' !== 'string') {
@@ -1318,7 +1395,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\JwtResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -1354,9 +1431,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerExchangeToken'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function backendControllerExchangeTokenAsync($uuid, string $contentType = self::contentTypes['backendControllerExchangeToken'][0])
     {
@@ -1375,9 +1452,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerExchangeToken'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function backendControllerExchangeTokenAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['backendControllerExchangeToken'][0])
     {
@@ -1389,7 +1466,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -1428,9 +1505,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerExchangeToken'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function backendControllerExchangeTokenRequest($uuid, string $contentType = self::contentTypes['backendControllerExchangeToken'][0])
     {
@@ -1451,7 +1528,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -1520,14 +1597,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerRefreshContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function backendControllerRefreshContract($id, string $contentType = self::contentTypes['backendControllerRefreshContract'][0])
     {
-        list($response) = $this->backendControllerRefreshContractWithHttpInfo($id, $contentType);
+        [$response] = $this->backendControllerRefreshContractWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -1538,10 +1615,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerRefreshContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function backendControllerRefreshContractWithHttpInfo($id, string $contentType = self::contentTypes['backendControllerRefreshContract'][0])
     {
@@ -1586,7 +1663,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -1603,7 +1680,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -1639,9 +1716,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerRefreshContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function backendControllerRefreshContractAsync($id, string $contentType = self::contentTypes['backendControllerRefreshContract'][0])
     {
@@ -1660,9 +1737,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerRefreshContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function backendControllerRefreshContractAsyncWithHttpInfo($id, string $contentType = self::contentTypes['backendControllerRefreshContract'][0])
     {
@@ -1674,7 +1751,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -1713,9 +1790,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['backendControllerRefreshContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function backendControllerRefreshContractRequest($id, string $contentType = self::contentTypes['backendControllerRefreshContract'][0])
     {
@@ -1736,7 +1813,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -1804,14 +1881,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ContractConfiguration
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerContract(string $contentType = self::contentTypes['configurationControllerContract'][0])
     {
-        list($response) = $this->configurationControllerContractWithHttpInfo($contentType);
+        [$response] = $this->configurationControllerContractWithHttpInfo($contentType);
 
         return $response;
     }
@@ -1821,10 +1898,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerContractWithHttpInfo(string $contentType = self::contentTypes['configurationControllerContract'][0])
     {
@@ -1869,7 +1946,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration' !== 'string') {
@@ -1886,7 +1963,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -1921,9 +1998,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerContractAsync(string $contentType = self::contentTypes['configurationControllerContract'][0])
     {
@@ -1941,9 +2018,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerContractAsyncWithHttpInfo(string $contentType = self::contentTypes['configurationControllerContract'][0])
     {
@@ -1955,7 +2032,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -1993,9 +2070,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerContractRequest(string $contentType = self::contentTypes['configurationControllerContract'][0])
     {
@@ -2068,14 +2145,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerInfo'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyncCoreInfo
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerInfo(string $contentType = self::contentTypes['configurationControllerInfo'][0])
     {
-        list($response) = $this->configurationControllerInfoWithHttpInfo($contentType);
+        [$response] = $this->configurationControllerInfoWithHttpInfo($contentType);
 
         return $response;
     }
@@ -2085,10 +2162,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerInfo'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerInfoWithHttpInfo(string $contentType = self::contentTypes['configurationControllerInfo'][0])
     {
@@ -2133,7 +2210,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo' !== 'string') {
@@ -2150,7 +2227,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -2185,9 +2262,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerInfo'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerInfoAsync(string $contentType = self::contentTypes['configurationControllerInfo'][0])
     {
@@ -2205,9 +2282,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerInfo'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerInfoAsyncWithHttpInfo(string $contentType = self::contentTypes['configurationControllerInfo'][0])
     {
@@ -2219,7 +2296,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -2257,9 +2334,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerInfo'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerInfoRequest(string $contentType = self::contentTypes['configurationControllerInfo'][0])
     {
@@ -2332,14 +2409,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerPullDashboard'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PullDashboardConfiguration
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerPullDashboard(string $contentType = self::contentTypes['configurationControllerPullDashboard'][0])
     {
-        list($response) = $this->configurationControllerPullDashboardWithHttpInfo($contentType);
+        [$response] = $this->configurationControllerPullDashboardWithHttpInfo($contentType);
 
         return $response;
     }
@@ -2349,10 +2426,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerPullDashboard'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerPullDashboardWithHttpInfo(string $contentType = self::contentTypes['configurationControllerPullDashboard'][0])
     {
@@ -2397,7 +2474,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration' !== 'string') {
@@ -2414,7 +2491,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -2449,9 +2526,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerPullDashboard'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerPullDashboardAsync(string $contentType = self::contentTypes['configurationControllerPullDashboard'][0])
     {
@@ -2469,9 +2546,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerPullDashboard'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerPullDashboardAsyncWithHttpInfo(string $contentType = self::contentTypes['configurationControllerPullDashboard'][0])
     {
@@ -2483,7 +2560,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -2521,9 +2598,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['configurationControllerPullDashboard'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function configurationControllerPullDashboardRequest(string $contentType = self::contentTypes['configurationControllerPullDashboard'][0])
     {
@@ -2597,14 +2674,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ContractEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItem($id, string $contentType = self::contentTypes['contractControllerItem'][0])
     {
-        list($response) = $this->contractControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->contractControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -2615,10 +2692,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContractEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['contractControllerItem'][0])
     {
@@ -2663,7 +2740,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity' !== 'string') {
@@ -2680,7 +2757,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -2716,9 +2793,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemAsync($id, string $contentType = self::contentTypes['contractControllerItem'][0])
     {
@@ -2737,9 +2814,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['contractControllerItem'][0])
     {
@@ -2751,7 +2828,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -2790,9 +2867,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemRequest($id, string $contentType = self::contentTypes['contractControllerItem'][0])
     {
@@ -2813,7 +2890,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -2882,14 +2959,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ContractEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemByUuid($uuid, string $contentType = self::contentTypes['contractControllerItemByUuid'][0])
     {
-        list($response) = $this->contractControllerItemByUuidWithHttpInfo($uuid, $contentType);
+        [$response] = $this->contractControllerItemByUuidWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -2900,10 +2977,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContractEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['contractControllerItemByUuid'][0])
     {
@@ -2948,7 +3025,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity' !== 'string') {
@@ -2965,7 +3042,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -3001,9 +3078,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['contractControllerItemByUuid'][0])
     {
@@ -3022,9 +3099,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['contractControllerItemByUuid'][0])
     {
@@ -3036,7 +3113,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -3075,9 +3152,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function contractControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['contractControllerItemByUuid'][0])
     {
@@ -3098,7 +3175,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -3167,14 +3244,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ContractRevisionEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerItem($id, string $contentType = self::contentTypes['contractRevisionControllerItem'][0])
     {
-        list($response) = $this->contractRevisionControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->contractRevisionControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -3185,10 +3262,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['contractRevisionControllerItem'][0])
     {
@@ -3233,7 +3310,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity' !== 'string') {
@@ -3250,7 +3327,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -3286,9 +3363,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerItemAsync($id, string $contentType = self::contentTypes['contractRevisionControllerItem'][0])
     {
@@ -3307,9 +3384,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['contractRevisionControllerItem'][0])
     {
@@ -3321,7 +3398,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -3360,9 +3437,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerItemRequest($id, string $contentType = self::contentTypes['contractRevisionControllerItem'][0])
     {
@@ -3383,7 +3460,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -3452,14 +3529,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerMostRecentForContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return MostRecentContractRevisions
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerMostRecentForContract($id, string $contentType = self::contentTypes['contractRevisionControllerMostRecentForContract'][0])
     {
-        list($response) = $this->contractRevisionControllerMostRecentForContractWithHttpInfo($id, $contentType);
+        [$response] = $this->contractRevisionControllerMostRecentForContractWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -3470,10 +3547,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerMostRecentForContract'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerMostRecentForContractWithHttpInfo($id, string $contentType = self::contentTypes['contractRevisionControllerMostRecentForContract'][0])
     {
@@ -3518,7 +3595,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions' !== 'string') {
@@ -3535,7 +3612,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -3571,9 +3648,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerMostRecentForContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerMostRecentForContractAsync($id, string $contentType = self::contentTypes['contractRevisionControllerMostRecentForContract'][0])
     {
@@ -3592,9 +3669,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerMostRecentForContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerMostRecentForContractAsyncWithHttpInfo($id, string $contentType = self::contentTypes['contractRevisionControllerMostRecentForContract'][0])
     {
@@ -3606,7 +3683,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -3645,9 +3722,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contractRevisionControllerMostRecentForContract'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function contractRevisionControllerMostRecentForContractRequest($id, string $contentType = self::contentTypes['contractRevisionControllerMostRecentForContract'][0])
     {
@@ -3668,7 +3745,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -3737,14 +3814,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return CustomerEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItem($id, string $contentType = self::contentTypes['customerControllerItem'][0])
     {
-        list($response) = $this->customerControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->customerControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -3755,10 +3832,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['customerControllerItem'][0])
     {
@@ -3803,7 +3880,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity' !== 'string') {
@@ -3820,7 +3897,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -3856,9 +3933,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemAsync($id, string $contentType = self::contentTypes['customerControllerItem'][0])
     {
@@ -3877,9 +3954,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['customerControllerItem'][0])
     {
@@ -3891,7 +3968,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -3930,9 +4007,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemRequest($id, string $contentType = self::contentTypes['customerControllerItem'][0])
     {
@@ -3953,7 +4030,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -4022,14 +4099,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return CustomerEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemByUuid($uuid, string $contentType = self::contentTypes['customerControllerItemByUuid'][0])
     {
-        list($response) = $this->customerControllerItemByUuidWithHttpInfo($uuid, $contentType);
+        [$response] = $this->customerControllerItemByUuidWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -4040,10 +4117,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['customerControllerItemByUuid'][0])
     {
@@ -4088,7 +4165,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity' !== 'string') {
@@ -4105,7 +4182,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -4141,9 +4218,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['customerControllerItemByUuid'][0])
     {
@@ -4162,9 +4239,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['customerControllerItemByUuid'][0])
     {
@@ -4176,7 +4253,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -4215,9 +4292,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['customerControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function customerControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['customerControllerItemByUuid'][0])
     {
@@ -4238,7 +4315,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -4306,14 +4383,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FeatureFlagSummary
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummary(string $contentType = self::contentTypes['featuresControllerSummary'][0])
     {
-        list($response) = $this->featuresControllerSummaryWithHttpInfo($contentType);
+        [$response] = $this->featuresControllerSummaryWithHttpInfo($contentType);
 
         return $response;
     }
@@ -4323,10 +4400,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryWithHttpInfo(string $contentType = self::contentTypes['featuresControllerSummary'][0])
     {
@@ -4371,7 +4448,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' !== 'string') {
@@ -4388,7 +4465,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -4423,9 +4500,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAsync(string $contentType = self::contentTypes['featuresControllerSummary'][0])
     {
@@ -4443,9 +4520,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAsyncWithHttpInfo(string $contentType = self::contentTypes['featuresControllerSummary'][0])
     {
@@ -4457,7 +4534,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -4495,9 +4572,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryRequest(string $contentType = self::contentTypes['featuresControllerSummary'][0])
     {
@@ -4570,14 +4647,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummaryAll'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FeatureFlagSummaryAll
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAll(string $contentType = self::contentTypes['featuresControllerSummaryAll'][0])
     {
-        list($response) = $this->featuresControllerSummaryAllWithHttpInfo($contentType);
+        [$response] = $this->featuresControllerSummaryAllWithHttpInfo($contentType);
 
         return $response;
     }
@@ -4587,10 +4664,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummaryAll'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAllWithHttpInfo(string $contentType = self::contentTypes['featuresControllerSummaryAll'][0])
     {
@@ -4635,7 +4712,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll' !== 'string') {
@@ -4652,7 +4729,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -4687,9 +4764,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummaryAll'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAllAsync(string $contentType = self::contentTypes['featuresControllerSummaryAll'][0])
     {
@@ -4707,9 +4784,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummaryAll'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAllAsyncWithHttpInfo(string $contentType = self::contentTypes['featuresControllerSummaryAll'][0])
     {
@@ -4721,7 +4798,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -4759,9 +4836,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerSummaryAll'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerSummaryAllRequest(string $contentType = self::contentTypes['featuresControllerSummaryAll'][0])
     {
@@ -4834,17 +4911,17 @@ class DefaultApi
      *
      * @param  FeatureFlagTargetType $targetType targetType (required)
      * @param  string $featureName featureName (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto setFeatureFlagDto (required)
+     * @param  SetFeatureFlagDto $setFeatureFlagDto setFeatureFlagDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FeatureFlagSummary
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerUpdate($targetType, $featureName, $setFeatureFlagDto, string $contentType = self::contentTypes['featuresControllerUpdate'][0])
     {
-        list($response) = $this->featuresControllerUpdateWithHttpInfo($targetType, $featureName, $setFeatureFlagDto, $contentType);
+        [$response] = $this->featuresControllerUpdateWithHttpInfo($targetType, $featureName, $setFeatureFlagDto, $contentType);
 
         return $response;
     }
@@ -4854,13 +4931,13 @@ class DefaultApi
      *
      * @param  FeatureFlagTargetType $targetType (required)
      * @param  string $featureName (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     * @param  SetFeatureFlagDto $setFeatureFlagDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerUpdateWithHttpInfo($targetType, $featureName, $setFeatureFlagDto, string $contentType = self::contentTypes['featuresControllerUpdate'][0])
     {
@@ -4905,7 +4982,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary' !== 'string') {
@@ -4922,7 +4999,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -4957,12 +5034,12 @@ class DefaultApi
      *
      * @param  FeatureFlagTargetType $targetType (required)
      * @param  string $featureName (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     * @param  SetFeatureFlagDto $setFeatureFlagDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerUpdateAsync($targetType, $featureName, $setFeatureFlagDto, string $contentType = self::contentTypes['featuresControllerUpdate'][0])
     {
@@ -4980,12 +5057,12 @@ class DefaultApi
      *
      * @param  FeatureFlagTargetType $targetType (required)
      * @param  string $featureName (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     * @param  SetFeatureFlagDto $setFeatureFlagDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerUpdateAsyncWithHttpInfo($targetType, $featureName, $setFeatureFlagDto, string $contentType = self::contentTypes['featuresControllerUpdate'][0])
     {
@@ -4997,7 +5074,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -5035,12 +5112,12 @@ class DefaultApi
      *
      * @param  FeatureFlagTargetType $targetType (required)
      * @param  string $featureName (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto $setFeatureFlagDto (required)
+     * @param  SetFeatureFlagDto $setFeatureFlagDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['featuresControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function featuresControllerUpdateRequest($targetType, $featureName, $setFeatureFlagDto, string $contentType = self::contentTypes['featuresControllerUpdate'][0])
     {
@@ -5075,7 +5152,7 @@ class DefaultApi
         // path params
         if (null !== $targetType) {
             $resourcePath = str_replace(
-                '{'.'targetType'.'}',
+                '{targetType}',
                 ObjectSerializer::toPathValue($targetType),
                 $resourcePath
             );
@@ -5083,7 +5160,7 @@ class DefaultApi
         // path params
         if (null !== $featureName) {
             $resourcePath = str_replace(
-                '{'.'featureName'.'}',
+                '{featureName}',
                 ObjectSerializer::toPathValue($featureName),
                 $resourcePath
             );
@@ -5156,17 +5233,17 @@ class DefaultApi
     /**
      * Operation fileControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto createFileDto (required)
+     * @param  CreateFileDto $createFileDto createFileDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FileEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerCreate($createFileDto, string $contentType = self::contentTypes['fileControllerCreate'][0])
     {
-        list($response) = $this->fileControllerCreateWithHttpInfo($createFileDto, $contentType);
+        [$response] = $this->fileControllerCreateWithHttpInfo($createFileDto, $contentType);
 
         return $response;
     }
@@ -5174,13 +5251,13 @@ class DefaultApi
     /**
      * Operation fileControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  CreateFileDto $createFileDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FileEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerCreateWithHttpInfo($createFileDto, string $contentType = self::contentTypes['fileControllerCreate'][0])
     {
@@ -5225,7 +5302,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' !== 'string') {
@@ -5242,7 +5319,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FileEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -5275,12 +5352,12 @@ class DefaultApi
     /**
      * Operation fileControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  CreateFileDto $createFileDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerCreateAsync($createFileDto, string $contentType = self::contentTypes['fileControllerCreate'][0])
     {
@@ -5296,12 +5373,12 @@ class DefaultApi
     /**
      * Operation fileControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  CreateFileDto $createFileDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerCreateAsyncWithHttpInfo($createFileDto, string $contentType = self::contentTypes['fileControllerCreate'][0])
     {
@@ -5313,7 +5390,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -5349,12 +5426,12 @@ class DefaultApi
     /**
      * Create request for operation 'fileControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto $createFileDto (required)
+     * @param  CreateFileDto $createFileDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function fileControllerCreateRequest($createFileDto, string $contentType = self::contentTypes['fileControllerCreate'][0])
     {
@@ -5442,14 +5519,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerDownload($id, string $contentType = self::contentTypes['fileControllerDownload'][0])
     {
-        list($response) = $this->fileControllerDownloadWithHttpInfo($id, $contentType);
+        [$response] = $this->fileControllerDownloadWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -5460,10 +5537,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerDownloadWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerDownload'][0])
     {
@@ -5508,7 +5585,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -5525,7 +5602,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -5561,9 +5638,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerDownloadAsync($id, string $contentType = self::contentTypes['fileControllerDownload'][0])
     {
@@ -5582,9 +5659,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerDownloadAsyncWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerDownload'][0])
     {
@@ -5596,7 +5673,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -5635,9 +5712,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function fileControllerDownloadRequest($id, string $contentType = self::contentTypes['fileControllerDownload'][0])
     {
@@ -5658,7 +5735,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -5727,14 +5804,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerFileUploaded'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FileEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerFileUploaded($id, string $contentType = self::contentTypes['fileControllerFileUploaded'][0])
     {
-        list($response) = $this->fileControllerFileUploadedWithHttpInfo($id, $contentType);
+        [$response] = $this->fileControllerFileUploadedWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -5745,10 +5822,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerFileUploaded'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FileEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerFileUploadedWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerFileUploaded'][0])
     {
@@ -5793,7 +5870,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' !== 'string') {
@@ -5810,7 +5887,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FileEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -5846,9 +5923,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerFileUploaded'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerFileUploadedAsync($id, string $contentType = self::contentTypes['fileControllerFileUploaded'][0])
     {
@@ -5867,9 +5944,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerFileUploaded'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerFileUploadedAsyncWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerFileUploaded'][0])
     {
@@ -5881,7 +5958,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -5920,9 +5997,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerFileUploaded'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function fileControllerFileUploadedRequest($id, string $contentType = self::contentTypes['fileControllerFileUploaded'][0])
     {
@@ -5943,7 +6020,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -6012,14 +6089,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FileEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerItem($id, string $contentType = self::contentTypes['fileControllerItem'][0])
     {
-        list($response) = $this->fileControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->fileControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -6030,10 +6107,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FileEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerItem'][0])
     {
@@ -6078,7 +6155,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FileEntity' !== 'string') {
@@ -6095,7 +6172,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FileEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -6131,9 +6208,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerItemAsync($id, string $contentType = self::contentTypes['fileControllerItem'][0])
     {
@@ -6152,9 +6229,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerItem'][0])
     {
@@ -6166,7 +6243,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -6205,9 +6282,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function fileControllerItemRequest($id, string $contentType = self::contentTypes['fileControllerItem'][0])
     {
@@ -6228,7 +6305,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -6297,14 +6374,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerPreview($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
     {
-        list($response) = $this->fileControllerPreviewWithHttpInfo($id, $contentType);
+        [$response] = $this->fileControllerPreviewWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -6315,10 +6392,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function fileControllerPreviewWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
     {
@@ -6363,7 +6440,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -6380,7 +6457,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -6416,9 +6493,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerPreviewAsync($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
     {
@@ -6437,9 +6514,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function fileControllerPreviewAsyncWithHttpInfo($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
     {
@@ -6451,7 +6528,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -6490,9 +6567,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['fileControllerPreview'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function fileControllerPreviewRequest($id, string $contentType = self::contentTypes['fileControllerPreview'][0])
     {
@@ -6513,7 +6590,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -6574,17 +6651,17 @@ class DefaultApi
     /**
      * Operation flowControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto createFlowDto (required)
+     * @param  CreateFlowDto $createFlowDto createFlowDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FlowEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerCreate($createFlowDto, string $contentType = self::contentTypes['flowControllerCreate'][0])
     {
-        list($response) = $this->flowControllerCreateWithHttpInfo($createFlowDto, $contentType);
+        [$response] = $this->flowControllerCreateWithHttpInfo($createFlowDto, $contentType);
 
         return $response;
     }
@@ -6592,13 +6669,13 @@ class DefaultApi
     /**
      * Operation flowControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  CreateFlowDto $createFlowDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FlowEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerCreateWithHttpInfo($createFlowDto, string $contentType = self::contentTypes['flowControllerCreate'][0])
     {
@@ -6643,7 +6720,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity' !== 'string') {
@@ -6660,7 +6737,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -6693,12 +6770,12 @@ class DefaultApi
     /**
      * Operation flowControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  CreateFlowDto $createFlowDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerCreateAsync($createFlowDto, string $contentType = self::contentTypes['flowControllerCreate'][0])
     {
@@ -6714,12 +6791,12 @@ class DefaultApi
     /**
      * Operation flowControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  CreateFlowDto $createFlowDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerCreateAsyncWithHttpInfo($createFlowDto, string $contentType = self::contentTypes['flowControllerCreate'][0])
     {
@@ -6731,7 +6808,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -6767,12 +6844,12 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto $createFlowDto (required)
+     * @param  CreateFlowDto $createFlowDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function flowControllerCreateRequest($createFlowDto, string $contentType = self::contentTypes['flowControllerCreate'][0])
     {
@@ -6857,17 +6934,17 @@ class DefaultApi
     /**
      * Operation flowControllerDelete.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest flowDeleteRequest (required)
+     * @param  FlowDeleteRequest $flowDeleteRequest flowDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerDelete($flowDeleteRequest, string $contentType = self::contentTypes['flowControllerDelete'][0])
     {
-        list($response) = $this->flowControllerDeleteWithHttpInfo($flowDeleteRequest, $contentType);
+        [$response] = $this->flowControllerDeleteWithHttpInfo($flowDeleteRequest, $contentType);
 
         return $response;
     }
@@ -6875,13 +6952,13 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  FlowDeleteRequest $flowDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerDeleteWithHttpInfo($flowDeleteRequest, string $contentType = self::contentTypes['flowControllerDelete'][0])
     {
@@ -6926,7 +7003,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -6943,7 +7020,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -6976,12 +7053,12 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  FlowDeleteRequest $flowDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerDeleteAsync($flowDeleteRequest, string $contentType = self::contentTypes['flowControllerDelete'][0])
     {
@@ -6997,12 +7074,12 @@ class DefaultApi
     /**
      * Operation flowControllerDeleteAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  FlowDeleteRequest $flowDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerDeleteAsyncWithHttpInfo($flowDeleteRequest, string $contentType = self::contentTypes['flowControllerDelete'][0])
     {
@@ -7014,7 +7091,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -7050,12 +7127,12 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerDelete'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\FlowDeleteRequest $flowDeleteRequest (required)
+     * @param  FlowDeleteRequest $flowDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function flowControllerDeleteRequest($flowDeleteRequest, string $contentType = self::contentTypes['flowControllerDelete'][0])
     {
@@ -7143,14 +7220,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return FlowEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerItem($id, string $contentType = self::contentTypes['flowControllerItem'][0])
     {
-        list($response) = $this->flowControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->flowControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -7161,10 +7238,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\FlowEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['flowControllerItem'][0])
     {
@@ -7209,7 +7286,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity' !== 'string') {
@@ -7226,7 +7303,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\FlowEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -7262,9 +7339,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerItemAsync($id, string $contentType = self::contentTypes['flowControllerItem'][0])
     {
@@ -7283,9 +7360,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['flowControllerItem'][0])
     {
@@ -7297,7 +7374,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -7336,9 +7413,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function flowControllerItemRequest($id, string $contentType = self::contentTypes['flowControllerItem'][0])
     {
@@ -7359,7 +7436,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -7432,14 +7509,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedFlowList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerList($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
-        list($response) = $this->flowControllerListWithHttpInfo($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
+        [$response] = $this->flowControllerListWithHttpInfo($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -7454,10 +7531,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function flowControllerListWithHttpInfo($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
@@ -7502,7 +7579,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList' !== 'string') {
@@ -7519,7 +7596,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -7559,9 +7636,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerListAsync($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
@@ -7584,9 +7661,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function flowControllerListAsyncWithHttpInfo($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
@@ -7598,7 +7675,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -7641,9 +7718,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['flowControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function flowControllerListRequest($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
@@ -7762,14 +7839,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerLive'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return HealthControllerReady200Response|HealthControllerReady503Response
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response|\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function healthControllerLive(string $contentType = self::contentTypes['healthControllerLive'][0])
     {
-        list($response) = $this->healthControllerLiveWithHttpInfo($contentType);
+        [$response] = $this->healthControllerLiveWithHttpInfo($contentType);
 
         return $response;
     }
@@ -7779,10 +7856,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerLive'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response|\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function healthControllerLiveWithHttpInfo(string $contentType = self::contentTypes['healthControllerLive'][0])
     {
@@ -7827,7 +7904,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response' !== 'string') {
@@ -7843,7 +7920,7 @@ class DefaultApi
 
                 case 503:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response' !== 'string') {
@@ -7860,7 +7937,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -7905,9 +7982,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerLive'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function healthControllerLiveAsync(string $contentType = self::contentTypes['healthControllerLive'][0])
     {
@@ -7925,9 +8002,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerLive'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function healthControllerLiveAsyncWithHttpInfo(string $contentType = self::contentTypes['healthControllerLive'][0])
     {
@@ -7939,7 +8016,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -7977,9 +8054,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerLive'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function healthControllerLiveRequest(string $contentType = self::contentTypes['healthControllerLive'][0])
     {
@@ -8047,14 +8124,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerReady'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return HealthControllerReady200Response|HealthControllerReady503Response
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response|\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function healthControllerReady(string $contentType = self::contentTypes['healthControllerReady'][0])
     {
-        list($response) = $this->healthControllerReadyWithHttpInfo($contentType);
+        [$response] = $this->healthControllerReadyWithHttpInfo($contentType);
 
         return $response;
     }
@@ -8064,10 +8141,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerReady'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response|\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function healthControllerReadyWithHttpInfo(string $contentType = self::contentTypes['healthControllerReady'][0])
     {
@@ -8112,7 +8189,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response' !== 'string') {
@@ -8128,7 +8205,7 @@ class DefaultApi
 
                 case 503:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response' !== 'string') {
@@ -8145,7 +8222,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -8190,9 +8267,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerReady'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function healthControllerReadyAsync(string $contentType = self::contentTypes['healthControllerReady'][0])
     {
@@ -8210,9 +8287,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerReady'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function healthControllerReadyAsyncWithHttpInfo(string $contentType = self::contentTypes['healthControllerReady'][0])
     {
@@ -8224,7 +8301,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -8262,9 +8339,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthControllerReady'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function healthControllerReadyRequest(string $contentType = self::contentTypes['healthControllerReady'][0])
     {
@@ -8333,14 +8410,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerDownload($id, string $contentType = self::contentTypes['localFileControllerDownload'][0])
     {
-        list($response) = $this->localFileControllerDownloadWithHttpInfo($id, $contentType);
+        [$response] = $this->localFileControllerDownloadWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -8351,10 +8428,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerDownloadWithHttpInfo($id, string $contentType = self::contentTypes['localFileControllerDownload'][0])
     {
@@ -8399,7 +8476,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -8416,7 +8493,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -8452,9 +8529,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerDownloadAsync($id, string $contentType = self::contentTypes['localFileControllerDownload'][0])
     {
@@ -8473,9 +8550,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerDownloadAsyncWithHttpInfo($id, string $contentType = self::contentTypes['localFileControllerDownload'][0])
     {
@@ -8487,7 +8564,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -8526,9 +8603,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerDownload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerDownloadRequest($id, string $contentType = self::contentTypes['localFileControllerDownload'][0])
     {
@@ -8549,7 +8626,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -8614,14 +8691,14 @@ class DefaultApi
      * @param  \SplFileObject $file file (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerUpload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerUpload($id, $file = null, string $contentType = self::contentTypes['localFileControllerUpload'][0])
     {
-        list($response) = $this->localFileControllerUploadWithHttpInfo($id, $file, $contentType);
+        [$response] = $this->localFileControllerUploadWithHttpInfo($id, $file, $contentType);
 
         return $response;
     }
@@ -8633,10 +8710,10 @@ class DefaultApi
      * @param  \SplFileObject $file (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerUpload'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerUploadWithHttpInfo($id, $file = null, string $contentType = self::contentTypes['localFileControllerUpload'][0])
     {
@@ -8681,7 +8758,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -8698,7 +8775,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -8735,9 +8812,9 @@ class DefaultApi
      * @param  \SplFileObject $file (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerUpload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerUploadAsync($id, $file = null, string $contentType = self::contentTypes['localFileControllerUpload'][0])
     {
@@ -8757,9 +8834,9 @@ class DefaultApi
      * @param  \SplFileObject $file (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerUpload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerUploadAsyncWithHttpInfo($id, $file = null, string $contentType = self::contentTypes['localFileControllerUpload'][0])
     {
@@ -8771,7 +8848,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -8811,9 +8888,9 @@ class DefaultApi
      * @param  \SplFileObject $file (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['localFileControllerUpload'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function localFileControllerUploadRequest($id, $file = null, string $contentType = self::contentTypes['localFileControllerUpload'][0])
     {
@@ -8834,7 +8911,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -8846,7 +8923,7 @@ class DefaultApi
             $formParams['file'] = [];
             $paramFiles = is_array($file) ? $file : [$file];
             foreach ($paramFiles as $paramFile) {
-                $formParams['file'][] = \GuzzleHttp\Psr7\Utils::tryFopen(
+                $formParams['file'][] = Utils::tryFopen(
                     ObjectSerializer::toFormValue($paramFile),
                     'rb'
                 );
@@ -8908,17 +8985,17 @@ class DefaultApi
     /**
      * Operation loggingControllerList.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest loggingIdsRequest (required)
+     * @param  LoggingIdsRequest $loggingIdsRequest loggingIdsRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['loggingControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return LoggingIdsResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function loggingControllerList($loggingIdsRequest, string $contentType = self::contentTypes['loggingControllerList'][0])
     {
-        list($response) = $this->loggingControllerListWithHttpInfo($loggingIdsRequest, $contentType);
+        [$response] = $this->loggingControllerListWithHttpInfo($loggingIdsRequest, $contentType);
 
         return $response;
     }
@@ -8926,13 +9003,13 @@ class DefaultApi
     /**
      * Operation loggingControllerListWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     * @param  LoggingIdsRequest $loggingIdsRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['loggingControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function loggingControllerListWithHttpInfo($loggingIdsRequest, string $contentType = self::contentTypes['loggingControllerList'][0])
     {
@@ -8977,7 +9054,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse' !== 'string') {
@@ -8994,7 +9071,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -9027,12 +9104,12 @@ class DefaultApi
     /**
      * Operation loggingControllerListAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     * @param  LoggingIdsRequest $loggingIdsRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['loggingControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function loggingControllerListAsync($loggingIdsRequest, string $contentType = self::contentTypes['loggingControllerList'][0])
     {
@@ -9048,12 +9125,12 @@ class DefaultApi
     /**
      * Operation loggingControllerListAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     * @param  LoggingIdsRequest $loggingIdsRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['loggingControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function loggingControllerListAsyncWithHttpInfo($loggingIdsRequest, string $contentType = self::contentTypes['loggingControllerList'][0])
     {
@@ -9065,7 +9142,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -9101,12 +9178,12 @@ class DefaultApi
     /**
      * Create request for operation 'loggingControllerList'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest $loggingIdsRequest (required)
+     * @param  LoggingIdsRequest $loggingIdsRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['loggingControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function loggingControllerListRequest($loggingIdsRequest, string $contentType = self::contentTypes['loggingControllerList'][0])
     {
@@ -9191,17 +9268,17 @@ class DefaultApi
     /**
      * Operation migrationControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto createMigrationDto (required)
+     * @param  CreateMigrationDto $createMigrationDto createMigrationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return MigrationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerCreate($createMigrationDto, string $contentType = self::contentTypes['migrationControllerCreate'][0])
     {
-        list($response) = $this->migrationControllerCreateWithHttpInfo($createMigrationDto, $contentType);
+        [$response] = $this->migrationControllerCreateWithHttpInfo($createMigrationDto, $contentType);
 
         return $response;
     }
@@ -9209,13 +9286,13 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  CreateMigrationDto $createMigrationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerCreateWithHttpInfo($createMigrationDto, string $contentType = self::contentTypes['migrationControllerCreate'][0])
     {
@@ -9260,7 +9337,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' !== 'string') {
@@ -9277,7 +9354,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -9310,12 +9387,12 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  CreateMigrationDto $createMigrationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerCreateAsync($createMigrationDto, string $contentType = self::contentTypes['migrationControllerCreate'][0])
     {
@@ -9331,12 +9408,12 @@ class DefaultApi
     /**
      * Operation migrationControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  CreateMigrationDto $createMigrationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerCreateAsyncWithHttpInfo($createMigrationDto, string $contentType = self::contentTypes['migrationControllerCreate'][0])
     {
@@ -9348,7 +9425,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -9384,12 +9461,12 @@ class DefaultApi
     /**
      * Create request for operation 'migrationControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto $createMigrationDto (required)
+     * @param  CreateMigrationDto $createMigrationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerCreateRequest($createMigrationDto, string $contentType = self::contentTypes['migrationControllerCreate'][0])
     {
@@ -9477,14 +9554,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return MigrationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerDelete($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
-        list($response) = $this->migrationControllerDeleteWithHttpInfo($id, $contentType);
+        [$response] = $this->migrationControllerDeleteWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -9495,10 +9572,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerDeleteWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
@@ -9543,7 +9620,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' !== 'string') {
@@ -9560,7 +9637,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -9596,9 +9673,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerDeleteAsync($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
@@ -9617,9 +9694,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerDeleteAsyncWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
@@ -9631,7 +9708,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -9670,9 +9747,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerDeleteRequest($id, string $contentType = self::contentTypes['migrationControllerDelete'][0])
     {
@@ -9693,7 +9770,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -9762,14 +9839,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return MigrationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerItem($id, string $contentType = self::contentTypes['migrationControllerItem'][0])
     {
-        list($response) = $this->migrationControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->migrationControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -9780,10 +9857,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerItem'][0])
     {
@@ -9828,7 +9905,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity' !== 'string') {
@@ -9845,7 +9922,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -9881,9 +9958,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerItemAsync($id, string $contentType = self::contentTypes['migrationControllerItem'][0])
     {
@@ -9902,9 +9979,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerItem'][0])
     {
@@ -9916,7 +9993,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -9955,9 +10032,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerItemRequest($id, string $contentType = self::contentTypes['migrationControllerItem'][0])
     {
@@ -9978,7 +10055,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -10057,14 +10134,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedMigrationList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerList($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['migrationControllerList'][0])
     {
-        list($response) = $this->migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage, $contentType);
+        [$response] = $this->migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite, $entityTypeMachineName, $entityTypeNamespaceMachineName, $flowMachineName, $statuses, $types, $siteUuid, $siteId, $initialSetup, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -10085,10 +10162,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerListWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['migrationControllerList'][0])
     {
@@ -10133,7 +10210,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList' !== 'string') {
@@ -10150,7 +10227,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -10196,9 +10273,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerListAsync($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['migrationControllerList'][0])
     {
@@ -10227,9 +10304,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerListAsyncWithHttpInfo($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['migrationControllerList'][0])
     {
@@ -10241,7 +10318,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -10290,9 +10367,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerListRequest($groupByEntityTypeAndFlowAndSite = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $flowMachineName = null, $statuses = null, $types = null, $siteUuid = null, $siteId = null, $initialSetup = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['migrationControllerList'][0])
     {
@@ -10466,14 +10543,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return MigrationSummary
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerSummary($id, string $contentType = self::contentTypes['migrationControllerSummary'][0])
     {
-        list($response) = $this->migrationControllerSummaryWithHttpInfo($id, $contentType);
+        [$response] = $this->migrationControllerSummaryWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -10484,10 +10561,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerSummaryWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerSummary'][0])
     {
@@ -10532,7 +10609,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary' !== 'string') {
@@ -10549,7 +10626,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -10585,9 +10662,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerSummaryAsync($id, string $contentType = self::contentTypes['migrationControllerSummary'][0])
     {
@@ -10606,9 +10683,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerSummaryAsyncWithHttpInfo($id, string $contentType = self::contentTypes['migrationControllerSummary'][0])
     {
@@ -10620,7 +10697,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -10659,9 +10736,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['migrationControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function migrationControllerSummaryRequest($id, string $contentType = self::contentTypes['migrationControllerSummary'][0])
     {
@@ -10682,7 +10759,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -10748,17 +10825,17 @@ class DefaultApi
     /**
      * Operation poolControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto createPoolDto (required)
+     * @param  CreatePoolDto $createPoolDto createPoolDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PoolEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerCreate($createPoolDto, string $contentType = self::contentTypes['poolControllerCreate'][0])
     {
-        list($response) = $this->poolControllerCreateWithHttpInfo($createPoolDto, $contentType);
+        [$response] = $this->poolControllerCreateWithHttpInfo($createPoolDto, $contentType);
 
         return $response;
     }
@@ -10766,13 +10843,13 @@ class DefaultApi
     /**
      * Operation poolControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  CreatePoolDto $createPoolDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerCreateWithHttpInfo($createPoolDto, string $contentType = self::contentTypes['poolControllerCreate'][0])
     {
@@ -10817,7 +10894,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity' !== 'string') {
@@ -10834,7 +10911,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -10867,12 +10944,12 @@ class DefaultApi
     /**
      * Operation poolControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  CreatePoolDto $createPoolDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerCreateAsync($createPoolDto, string $contentType = self::contentTypes['poolControllerCreate'][0])
     {
@@ -10888,12 +10965,12 @@ class DefaultApi
     /**
      * Operation poolControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  CreatePoolDto $createPoolDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerCreateAsyncWithHttpInfo($createPoolDto, string $contentType = self::contentTypes['poolControllerCreate'][0])
     {
@@ -10905,7 +10982,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -10941,12 +11018,12 @@ class DefaultApi
     /**
      * Create request for operation 'poolControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreatePoolDto $createPoolDto (required)
+     * @param  CreatePoolDto $createPoolDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function poolControllerCreateRequest($createPoolDto, string $contentType = self::contentTypes['poolControllerCreate'][0])
     {
@@ -11034,14 +11111,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PoolEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerItem($id, string $contentType = self::contentTypes['poolControllerItem'][0])
     {
-        list($response) = $this->poolControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->poolControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -11052,10 +11129,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['poolControllerItem'][0])
     {
@@ -11100,7 +11177,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity' !== 'string') {
@@ -11117,7 +11194,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -11153,9 +11230,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerItemAsync($id, string $contentType = self::contentTypes['poolControllerItem'][0])
     {
@@ -11174,9 +11251,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['poolControllerItem'][0])
     {
@@ -11188,7 +11265,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -11227,9 +11304,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function poolControllerItemRequest($id, string $contentType = self::contentTypes['poolControllerItem'][0])
     {
@@ -11250,7 +11327,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -11318,14 +11395,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PoolEntity[]
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity[]
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerList(string $contentType = self::contentTypes['poolControllerList'][0])
     {
-        list($response) = $this->poolControllerListWithHttpInfo($contentType);
+        [$response] = $this->poolControllerListWithHttpInfo($contentType);
 
         return $response;
     }
@@ -11335,10 +11412,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PoolEntity[], HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function poolControllerListWithHttpInfo(string $contentType = self::contentTypes['poolControllerList'][0])
     {
@@ -11383,7 +11460,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity[]' !== 'string') {
@@ -11400,7 +11477,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PoolEntity[]';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -11435,9 +11512,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerListAsync(string $contentType = self::contentTypes['poolControllerList'][0])
     {
@@ -11455,9 +11532,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function poolControllerListAsyncWithHttpInfo(string $contentType = self::contentTypes['poolControllerList'][0])
     {
@@ -11469,7 +11546,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -11507,9 +11584,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['poolControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function poolControllerListRequest(string $contentType = self::contentTypes['poolControllerList'][0])
     {
@@ -11594,14 +11671,14 @@ class DefaultApi
      * @param  string $search search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PreviewsListResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerList($existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerList'][0])
     {
-        list($response) = $this->previewsControllerListWithHttpInfo($existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search, $contentType);
+        [$response] = $this->previewsControllerListWithHttpInfo($existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search, $contentType);
 
         return $response;
     }
@@ -11623,10 +11700,10 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListWithHttpInfo($existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerList'][0])
     {
@@ -11671,7 +11748,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse' !== 'string') {
@@ -11688,7 +11765,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -11735,9 +11812,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListAsync($existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerList'][0])
     {
@@ -11767,9 +11844,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListAsyncWithHttpInfo($existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerList'][0])
     {
@@ -11781,7 +11858,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -11831,9 +11908,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListRequest($existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerList'][0])
     {
@@ -12028,14 +12105,14 @@ class DefaultApi
      * @param  string $search search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerListForFlow'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PreviewsListResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListForFlow($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerListForFlow'][0])
     {
-        list($response) = $this->previewsControllerListForFlowWithHttpInfo($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search, $contentType);
+        [$response] = $this->previewsControllerListForFlowWithHttpInfo($flowMachineName, $existsLocally, $deletedLocally, $deleted, $sourceSiteId, $entityTypeMachineNames, $entityTypeNamespaceMachineNames, $publishedLatest, $publishedEarliest, $poolMachineNames, $itemsPerPage, $page, $search, $contentType);
 
         return $response;
     }
@@ -12058,10 +12135,10 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerListForFlow'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListForFlowWithHttpInfo($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerListForFlow'][0])
     {
@@ -12106,7 +12183,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse' !== 'string') {
@@ -12123,7 +12200,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -12171,9 +12248,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerListForFlow'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListForFlowAsync($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerListForFlow'][0])
     {
@@ -12204,9 +12281,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerListForFlow'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListForFlowAsyncWithHttpInfo($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerListForFlow'][0])
     {
@@ -12218,7 +12295,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -12269,9 +12346,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['previewsControllerListForFlow'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function previewsControllerListForFlowRequest($flowMachineName, $existsLocally = null, $deletedLocally = null, $deleted = null, $sourceSiteId = null, $entityTypeMachineNames = null, $entityTypeNamespaceMachineNames = null, $publishedLatest = null, $publishedEarliest = null, $poolMachineNames = null, $itemsPerPage = null, $page = null, $search = null, string $contentType = self::contentTypes['previewsControllerListForFlow'][0])
     {
@@ -12401,7 +12478,7 @@ class DefaultApi
         // path params
         if (null !== $flowMachineName) {
             $resourcePath = str_replace(
-                '{'.'flowMachineName'.'}',
+                '{flowMachineName}',
                 ObjectSerializer::toPathValue($flowMachineName),
                 $resourcePath
             );
@@ -12470,14 +12547,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerGetLanguages'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedLanguageDefinitionList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerGetLanguages($id, string $contentType = self::contentTypes['projectControllerGetLanguages'][0])
     {
-        list($response) = $this->projectControllerGetLanguagesWithHttpInfo($id, $contentType);
+        [$response] = $this->projectControllerGetLanguagesWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -12488,10 +12565,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerGetLanguages'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerGetLanguagesWithHttpInfo($id, string $contentType = self::contentTypes['projectControllerGetLanguages'][0])
     {
@@ -12536,7 +12613,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList' !== 'string') {
@@ -12553,7 +12630,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -12589,9 +12666,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerGetLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerGetLanguagesAsync($id, string $contentType = self::contentTypes['projectControllerGetLanguages'][0])
     {
@@ -12610,9 +12687,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerGetLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerGetLanguagesAsyncWithHttpInfo($id, string $contentType = self::contentTypes['projectControllerGetLanguages'][0])
     {
@@ -12624,7 +12701,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -12663,9 +12740,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerGetLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectControllerGetLanguagesRequest($id, string $contentType = self::contentTypes['projectControllerGetLanguages'][0])
     {
@@ -12686,7 +12763,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -12755,14 +12832,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ProjectEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItem($id, string $contentType = self::contentTypes['projectControllerItem'][0])
     {
-        list($response) = $this->projectControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->projectControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -12773,10 +12850,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['projectControllerItem'][0])
     {
@@ -12821,7 +12898,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' !== 'string') {
@@ -12838,7 +12915,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -12874,9 +12951,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemAsync($id, string $contentType = self::contentTypes['projectControllerItem'][0])
     {
@@ -12895,9 +12972,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['projectControllerItem'][0])
     {
@@ -12909,7 +12986,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -12948,9 +13025,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemRequest($id, string $contentType = self::contentTypes['projectControllerItem'][0])
     {
@@ -12971,7 +13048,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -13040,14 +13117,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ProjectEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemByUuid($uuid, string $contentType = self::contentTypes['projectControllerItemByUuid'][0])
     {
-        list($response) = $this->projectControllerItemByUuidWithHttpInfo($uuid, $contentType);
+        [$response] = $this->projectControllerItemByUuidWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -13058,10 +13135,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['projectControllerItemByUuid'][0])
     {
@@ -13106,7 +13183,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' !== 'string') {
@@ -13123,7 +13200,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -13159,9 +13236,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['projectControllerItemByUuid'][0])
     {
@@ -13180,9 +13257,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['projectControllerItemByUuid'][0])
     {
@@ -13194,7 +13271,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -13233,9 +13310,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['projectControllerItemByUuid'][0])
     {
@@ -13256,7 +13333,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -13325,14 +13402,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ProjectLinkEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerImport($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
     {
-        list($response) = $this->projectLinkControllerImportWithHttpInfo($uuid, $contentType);
+        [$response] = $this->projectLinkControllerImportWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -13343,10 +13420,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerImportWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
     {
@@ -13391,7 +13468,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
@@ -13408,7 +13485,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -13444,9 +13521,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerImportAsync($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
     {
@@ -13465,9 +13542,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerImportAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
     {
@@ -13479,7 +13556,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -13518,9 +13595,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerImportRequest($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
     {
@@ -13541,7 +13618,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -13610,14 +13687,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ProjectLinkEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItem($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
     {
-        list($response) = $this->projectLinkControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->projectLinkControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -13628,10 +13705,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
     {
@@ -13676,7 +13753,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
@@ -13693,7 +13770,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -13729,9 +13806,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemAsync($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
     {
@@ -13750,9 +13827,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
     {
@@ -13764,7 +13841,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -13803,9 +13880,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemRequest($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
     {
@@ -13826,7 +13903,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -13895,14 +13972,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return ProjectLinkEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemByUuid($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
     {
-        list($response) = $this->projectLinkControllerItemByUuidWithHttpInfo($uuid, $contentType);
+        [$response] = $this->projectLinkControllerItemByUuidWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -13913,10 +13990,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
     {
@@ -13961,7 +14038,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
@@ -13978,7 +14055,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -14014,9 +14091,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
     {
@@ -14035,9 +14112,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
     {
@@ -14049,7 +14126,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -14088,9 +14165,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function projectLinkControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
     {
@@ -14111,7 +14188,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -14177,17 +14254,17 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto createRemoteEntityRevisionDto (required)
+     * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto createRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityRevisionEntityPushResult
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerCreate($createRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerCreate'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerCreateWithHttpInfo($createRemoteEntityRevisionDto, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerCreateWithHttpInfo($createRemoteEntityRevisionDto, $contentType);
 
         return $response;
     }
@@ -14195,13 +14272,13 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerCreateWithHttpInfo($createRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerCreate'][0])
     {
@@ -14246,7 +14323,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult' !== 'string') {
@@ -14263,7 +14340,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -14296,12 +14373,12 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerCreateAsync($createRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerCreate'][0])
     {
@@ -14317,12 +14394,12 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerCreateAsyncWithHttpInfo($createRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerCreate'][0])
     {
@@ -14334,7 +14411,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -14370,12 +14447,12 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
+     * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerCreateRequest($createRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerCreate'][0])
     {
@@ -14460,17 +14537,17 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDelete.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto deleteRemoteEntityRevisionDto (required)
+     * @param  DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto deleteRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerDelete($deleteRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerDelete'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerDeleteWithHttpInfo($deleteRemoteEntityRevisionDto, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerDeleteWithHttpInfo($deleteRemoteEntityRevisionDto, $contentType);
 
         return $response;
     }
@@ -14478,13 +14555,13 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerDeleteWithHttpInfo($deleteRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerDelete'][0])
     {
@@ -14529,7 +14606,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -14546,7 +14623,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -14579,12 +14656,12 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerDeleteAsync($deleteRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerDelete'][0])
     {
@@ -14600,12 +14677,12 @@ class DefaultApi
     /**
      * Operation remoteEntityRevisionControllerDeleteAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerDeleteAsyncWithHttpInfo($deleteRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerDelete'][0])
     {
@@ -14617,7 +14694,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -14653,12 +14730,12 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityRevisionControllerDelete'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
+     * @param  DeleteRemoteEntityRevisionDto $deleteRemoteEntityRevisionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerDeleteRequest($deleteRemoteEntityRevisionDto, string $contentType = self::contentTypes['remoteEntityRevisionControllerDelete'][0])
     {
@@ -14746,14 +14823,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedTranslationDefinitionList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerGetTranslationLanguages($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerGetTranslationLanguagesWithHttpInfo($id, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerGetTranslationLanguagesWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -14764,10 +14841,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerGetTranslationLanguagesWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'][0])
     {
@@ -14812,7 +14889,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList' !== 'string') {
@@ -14829,7 +14906,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedTranslationDefinitionList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -14865,9 +14942,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerGetTranslationLanguagesAsync($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'][0])
     {
@@ -14886,9 +14963,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerGetTranslationLanguagesAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'][0])
     {
@@ -14900,7 +14977,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -14939,9 +15016,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerGetTranslationLanguagesRequest($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerGetTranslationLanguages'][0])
     {
@@ -14962,7 +15039,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -15031,14 +15108,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityRevisionEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerItem($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerItem'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -15049,10 +15126,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerItem'][0])
     {
@@ -15097,7 +15174,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity' !== 'string') {
@@ -15114,7 +15191,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -15150,9 +15227,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerItemAsync($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerItem'][0])
     {
@@ -15171,9 +15248,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerItem'][0])
     {
@@ -15185,7 +15262,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -15224,9 +15301,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerItemRequest($id, string $contentType = self::contentTypes['remoteEntityRevisionControllerItem'][0])
     {
@@ -15247,7 +15324,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -15322,14 +15399,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedRemoteEntityRevisionList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerList($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerList'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerListWithHttpInfo($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerListWithHttpInfo($latest, $forCustomer, $poolMachineName, $entityTypeMachineName, $entityTypeNamespaceMachineName, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -15346,10 +15423,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerListWithHttpInfo($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerList'][0])
     {
@@ -15394,7 +15471,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList' !== 'string') {
@@ -15411,7 +15488,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -15453,9 +15530,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerListAsync($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerList'][0])
     {
@@ -15480,9 +15557,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerListAsyncWithHttpInfo($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerList'][0])
     {
@@ -15494,7 +15571,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -15539,9 +15616,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerListRequest($latest = null, $forCustomer = null, $poolMachineName = null, $entityTypeMachineName = null, $entityTypeNamespaceMachineName = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerList'][0])
     {
@@ -15681,14 +15758,14 @@ class DefaultApi
      * @param  string $structure structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return string
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerSerialize($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
-        list($response) = $this->remoteEntityRevisionControllerSerializeWithHttpInfo($id, $values, $structure, $contentType);
+        [$response] = $this->remoteEntityRevisionControllerSerializeWithHttpInfo($id, $values, $structure, $contentType);
 
         return $response;
     }
@@ -15701,10 +15778,10 @@ class DefaultApi
      * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of string, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerSerializeWithHttpInfo($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
@@ -15749,7 +15826,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('string' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== 'string') {
@@ -15766,7 +15843,7 @@ class DefaultApi
 
             $returnType = 'string';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -15804,9 +15881,9 @@ class DefaultApi
      * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerSerializeAsync($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
@@ -15827,9 +15904,9 @@ class DefaultApi
      * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerSerializeAsyncWithHttpInfo($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
@@ -15841,7 +15918,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -15882,9 +15959,9 @@ class DefaultApi
      * @param  string $structure (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityRevisionControllerSerialize'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityRevisionControllerSerializeRequest($id, $values = null, $structure = null, string $contentType = self::contentTypes['remoteEntityRevisionControllerSerialize'][0])
     {
@@ -15924,7 +16001,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -15994,14 +16071,14 @@ class DefaultApi
      * @param  string $namespaceMachineName namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerByMachineName'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerByMachineName($machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeControllerByMachineName'][0])
     {
-        list($response) = $this->remoteEntityTypeControllerByMachineNameWithHttpInfo($machineName, $namespaceMachineName, $contentType);
+        [$response] = $this->remoteEntityTypeControllerByMachineNameWithHttpInfo($machineName, $namespaceMachineName, $contentType);
 
         return $response;
     }
@@ -16013,10 +16090,10 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerByMachineName'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerByMachineNameWithHttpInfo($machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeControllerByMachineName'][0])
     {
@@ -16061,7 +16138,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity' !== 'string') {
@@ -16078,7 +16155,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -16115,9 +16192,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerByMachineNameAsync($machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeControllerByMachineName'][0])
     {
@@ -16137,9 +16214,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerByMachineNameAsyncWithHttpInfo($machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeControllerByMachineName'][0])
     {
@@ -16151,7 +16228,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -16191,9 +16268,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerByMachineNameRequest($machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeControllerByMachineName'][0])
     {
@@ -16221,7 +16298,7 @@ class DefaultApi
         // path params
         if (null !== $machineName) {
             $resourcePath = str_replace(
-                '{'.'machineName'.'}',
+                '{machineName}',
                 ObjectSerializer::toPathValue($machineName),
                 $resourcePath
             );
@@ -16229,7 +16306,7 @@ class DefaultApi
         // path params
         if (null !== $namespaceMachineName) {
             $resourcePath = str_replace(
-                '{'.'namespaceMachineName'.'}',
+                '{namespaceMachineName}',
                 ObjectSerializer::toPathValue($namespaceMachineName),
                 $resourcePath
             );
@@ -16298,14 +16375,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerItem($id, string $contentType = self::contentTypes['remoteEntityTypeControllerItem'][0])
     {
-        list($response) = $this->remoteEntityTypeControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->remoteEntityTypeControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -16316,10 +16393,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityTypeControllerItem'][0])
     {
@@ -16364,7 +16441,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity' !== 'string') {
@@ -16381,7 +16458,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -16417,9 +16494,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerItemAsync($id, string $contentType = self::contentTypes['remoteEntityTypeControllerItem'][0])
     {
@@ -16438,9 +16515,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityTypeControllerItem'][0])
     {
@@ -16452,7 +16529,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -16491,9 +16568,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerItemRequest($id, string $contentType = self::contentTypes['remoteEntityTypeControllerItem'][0])
     {
@@ -16514,7 +16591,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -16582,14 +16659,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeEntity[]
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity[]
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerList(string $contentType = self::contentTypes['remoteEntityTypeControllerList'][0])
     {
-        list($response) = $this->remoteEntityTypeControllerListWithHttpInfo($contentType);
+        [$response] = $this->remoteEntityTypeControllerListWithHttpInfo($contentType);
 
         return $response;
     }
@@ -16599,10 +16676,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity[], HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerListWithHttpInfo(string $contentType = self::contentTypes['remoteEntityTypeControllerList'][0])
     {
@@ -16647,7 +16724,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity[]' !== 'string') {
@@ -16664,7 +16741,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity[]';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -16699,9 +16776,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerListAsync(string $contentType = self::contentTypes['remoteEntityTypeControllerList'][0])
     {
@@ -16719,9 +16796,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerListAsyncWithHttpInfo(string $contentType = self::contentTypes['remoteEntityTypeControllerList'][0])
     {
@@ -16733,7 +16810,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -16771,9 +16848,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeControllerListRequest(string $contentType = self::contentTypes['remoteEntityTypeControllerList'][0])
     {
@@ -16844,17 +16921,17 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto createRemoteEntityTypeVersionDto (required)
+     * @param  CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto createRemoteEntityTypeVersionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeVersionEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerCreate($createRemoteEntityTypeVersionDto, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerCreate'][0])
     {
-        list($response) = $this->remoteEntityTypeVersionControllerCreateWithHttpInfo($createRemoteEntityTypeVersionDto, $contentType);
+        [$response] = $this->remoteEntityTypeVersionControllerCreateWithHttpInfo($createRemoteEntityTypeVersionDto, $contentType);
 
         return $response;
     }
@@ -16862,13 +16939,13 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerCreateWithHttpInfo($createRemoteEntityTypeVersionDto, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerCreate'][0])
     {
@@ -16913,7 +16990,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' !== 'string') {
@@ -16930,7 +17007,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -16963,12 +17040,12 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerCreateAsync($createRemoteEntityTypeVersionDto, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerCreate'][0])
     {
@@ -16984,12 +17061,12 @@ class DefaultApi
     /**
      * Operation remoteEntityTypeVersionControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerCreateAsyncWithHttpInfo($createRemoteEntityTypeVersionDto, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerCreate'][0])
     {
@@ -17001,7 +17078,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -17037,12 +17114,12 @@ class DefaultApi
     /**
      * Create request for operation 'remoteEntityTypeVersionControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
+     * @param  CreateRemoteEntityTypeVersionDto $createRemoteEntityTypeVersionDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerCreateRequest($createRemoteEntityTypeVersionDto, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerCreate'][0])
     {
@@ -17132,14 +17209,14 @@ class DefaultApi
      * @param  string $namespaceMachineName namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return EntityTypeVersionUsage
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerGetVersionUsage($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'][0])
     {
-        list($response) = $this->remoteEntityTypeVersionControllerGetVersionUsageWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType);
+        [$response] = $this->remoteEntityTypeVersionControllerGetVersionUsageWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType);
 
         return $response;
     }
@@ -17152,10 +17229,10 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerGetVersionUsageWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'][0])
     {
@@ -17200,7 +17277,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage' !== 'string') {
@@ -17217,7 +17294,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -17255,9 +17332,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerGetVersionUsageAsync($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'][0])
     {
@@ -17278,9 +17355,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerGetVersionUsageAsyncWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'][0])
     {
@@ -17292,7 +17369,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -17333,9 +17410,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerGetVersionUsageRequest($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerGetVersionUsage'][0])
     {
@@ -17370,7 +17447,7 @@ class DefaultApi
         // path params
         if (null !== $versionId) {
             $resourcePath = str_replace(
-                '{'.'versionId'.'}',
+                '{versionId}',
                 ObjectSerializer::toPathValue($versionId),
                 $resourcePath
             );
@@ -17378,7 +17455,7 @@ class DefaultApi
         // path params
         if (null !== $machineName) {
             $resourcePath = str_replace(
-                '{'.'machineName'.'}',
+                '{machineName}',
                 ObjectSerializer::toPathValue($machineName),
                 $resourcePath
             );
@@ -17386,7 +17463,7 @@ class DefaultApi
         // path params
         if (null !== $namespaceMachineName) {
             $resourcePath = str_replace(
-                '{'.'namespaceMachineName'.'}',
+                '{namespaceMachineName}',
                 ObjectSerializer::toPathValue($namespaceMachineName),
                 $resourcePath
             );
@@ -17455,14 +17532,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeVersionEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItem($id, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItem'][0])
     {
-        list($response) = $this->remoteEntityTypeVersionControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->remoteEntityTypeVersionControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -17473,10 +17550,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItem'][0])
     {
@@ -17521,7 +17598,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' !== 'string') {
@@ -17538,7 +17615,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -17574,9 +17651,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemAsync($id, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItem'][0])
     {
@@ -17595,9 +17672,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItem'][0])
     {
@@ -17609,7 +17686,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -17648,9 +17725,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemRequest($id, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItem'][0])
     {
@@ -17671,7 +17748,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -17742,14 +17819,14 @@ class DefaultApi
      * @param  string $namespaceMachineName namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityTypeVersionEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemByMachineName($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
     {
-        list($response) = $this->remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType);
+        [$response] = $this->remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo($versionId, $machineName, $namespaceMachineName, $contentType);
 
         return $response;
     }
@@ -17762,10 +17839,10 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemByMachineNameWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
     {
@@ -17810,7 +17887,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity' !== 'string') {
@@ -17827,7 +17904,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeVersionEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -17865,9 +17942,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemByMachineNameAsync($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
     {
@@ -17888,9 +17965,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemByMachineNameAsyncWithHttpInfo($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
     {
@@ -17902,7 +17979,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -17943,9 +18020,9 @@ class DefaultApi
      * @param  string $namespaceMachineName (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityTypeVersionControllerItemByMachineNameRequest($versionId, $machineName, $namespaceMachineName, string $contentType = self::contentTypes['remoteEntityTypeVersionControllerItemByMachineName'][0])
     {
@@ -17980,7 +18057,7 @@ class DefaultApi
         // path params
         if (null !== $versionId) {
             $resourcePath = str_replace(
-                '{'.'versionId'.'}',
+                '{versionId}',
                 ObjectSerializer::toPathValue($versionId),
                 $resourcePath
             );
@@ -17988,7 +18065,7 @@ class DefaultApi
         // path params
         if (null !== $machineName) {
             $resourcePath = str_replace(
-                '{'.'machineName'.'}',
+                '{machineName}',
                 ObjectSerializer::toPathValue($machineName),
                 $resourcePath
             );
@@ -17996,7 +18073,7 @@ class DefaultApi
         // path params
         if (null !== $namespaceMachineName) {
             $resourcePath = str_replace(
-                '{'.'namespaceMachineName'.'}',
+                '{namespaceMachineName}',
                 ObjectSerializer::toPathValue($namespaceMachineName),
                 $resourcePath
             );
@@ -18065,14 +18142,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return RemoteEntityUsageEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerItem($id, string $contentType = self::contentTypes['remoteEntityUsageControllerItem'][0])
     {
-        list($response) = $this->remoteEntityUsageControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->remoteEntityUsageControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -18083,10 +18160,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityUsageControllerItem'][0])
     {
@@ -18131,7 +18208,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity' !== 'string') {
@@ -18148,7 +18225,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -18184,9 +18261,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerItemAsync($id, string $contentType = self::contentTypes['remoteEntityUsageControllerItem'][0])
     {
@@ -18205,9 +18282,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityUsageControllerItem'][0])
     {
@@ -18219,7 +18296,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -18258,9 +18335,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerItemRequest($id, string $contentType = self::contentTypes['remoteEntityUsageControllerItem'][0])
     {
@@ -18281,7 +18358,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -18356,14 +18433,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedRemoteEntityUsageListResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerList($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityUsageControllerList'][0])
     {
-        list($response) = $this->remoteEntityUsageControllerListWithHttpInfo($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage, $contentType);
+        [$response] = $this->remoteEntityUsageControllerListWithHttpInfo($entityTypeId, $siteId, $entityId, $remoteUniqueId, $remoteUuid, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -18380,10 +18457,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerListWithHttpInfo($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityUsageControllerList'][0])
     {
@@ -18428,7 +18505,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse' !== 'string') {
@@ -18445,7 +18522,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -18487,9 +18564,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerListAsync($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityUsageControllerList'][0])
     {
@@ -18514,9 +18591,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerListAsyncWithHttpInfo($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityUsageControllerList'][0])
     {
@@ -18528,7 +18605,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -18573,9 +18650,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityUsageControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function remoteEntityUsageControllerListRequest($entityTypeId = null, $siteId = null, $entityId = null, $remoteUniqueId = null, $remoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityUsageControllerList'][0])
     {
@@ -18714,14 +18791,14 @@ class DefaultApi
      * @param  string $page page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedRequestList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetRequests($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
     {
-        list($response) = $this->siteControllerGetRequestsWithHttpInfo($itemsPerPage, $page, $contentType);
+        [$response] = $this->siteControllerGetRequestsWithHttpInfo($itemsPerPage, $page, $contentType);
 
         return $response;
     }
@@ -18733,10 +18810,10 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetRequestsWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
     {
@@ -18781,7 +18858,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList' !== 'string') {
@@ -18798,7 +18875,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -18835,9 +18912,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetRequestsAsync($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
     {
@@ -18857,9 +18934,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetRequestsAsyncWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
     {
@@ -18871,7 +18948,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -18911,9 +18988,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetRequests'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetRequestsRequest($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['siteControllerGetRequests'][0])
     {
@@ -19005,14 +19082,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return GetThrottlingDto
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetThrottling(string $contentType = self::contentTypes['siteControllerGetThrottling'][0])
     {
-        list($response) = $this->siteControllerGetThrottlingWithHttpInfo($contentType);
+        [$response] = $this->siteControllerGetThrottlingWithHttpInfo($contentType);
 
         return $response;
     }
@@ -19022,10 +19099,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetThrottlingWithHttpInfo(string $contentType = self::contentTypes['siteControllerGetThrottling'][0])
     {
@@ -19070,7 +19147,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto' !== 'string') {
@@ -19087,7 +19164,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -19122,9 +19199,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetThrottlingAsync(string $contentType = self::contentTypes['siteControllerGetThrottling'][0])
     {
@@ -19142,9 +19219,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetThrottlingAsyncWithHttpInfo(string $contentType = self::contentTypes['siteControllerGetThrottling'][0])
     {
@@ -19156,7 +19233,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -19194,9 +19271,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerGetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerGetThrottlingRequest(string $contentType = self::contentTypes['siteControllerGetThrottling'][0])
     {
@@ -19270,14 +19347,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SmallSiteEntityWithDetails
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItem($id, string $contentType = self::contentTypes['siteControllerItem'][0])
     {
-        list($response) = $this->siteControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->siteControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -19288,10 +19365,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['siteControllerItem'][0])
     {
@@ -19336,7 +19413,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails' !== 'string') {
@@ -19353,7 +19430,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -19389,9 +19466,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemAsync($id, string $contentType = self::contentTypes['siteControllerItem'][0])
     {
@@ -19410,9 +19487,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['siteControllerItem'][0])
     {
@@ -19424,7 +19501,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -19463,9 +19540,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemRequest($id, string $contentType = self::contentTypes['siteControllerItem'][0])
     {
@@ -19486,7 +19563,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -19555,14 +19632,14 @@ class DefaultApi
      * @param  string $uuid uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SmallSiteEntityWithDetails
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemByUuid($uuid, string $contentType = self::contentTypes['siteControllerItemByUuid'][0])
     {
-        list($response) = $this->siteControllerItemByUuidWithHttpInfo($uuid, $contentType);
+        [$response] = $this->siteControllerItemByUuidWithHttpInfo($uuid, $contentType);
 
         return $response;
     }
@@ -19573,10 +19650,10 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['siteControllerItemByUuid'][0])
     {
@@ -19621,7 +19698,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails' !== 'string') {
@@ -19638,7 +19715,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -19674,9 +19751,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['siteControllerItemByUuid'][0])
     {
@@ -19695,9 +19772,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['siteControllerItemByUuid'][0])
     {
@@ -19709,7 +19786,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -19748,9 +19825,9 @@ class DefaultApi
      * @param  string $uuid (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerItemByUuid'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['siteControllerItemByUuid'][0])
     {
@@ -19771,7 +19848,7 @@ class DefaultApi
         // path params
         if (null !== $uuid) {
             $resourcePath = str_replace(
-                '{'.'uuid'.'}',
+                '{uuid}',
                 ObjectSerializer::toPathValue($uuid),
                 $resourcePath
             );
@@ -19837,17 +19914,17 @@ class DefaultApi
     /**
      * Operation siteControllerRegister.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto registerSiteDto (required)
+     * @param  RegisterSiteDto $registerSiteDto registerSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegister'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SiteEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegister($registerSiteDto, string $contentType = self::contentTypes['siteControllerRegister'][0])
     {
-        list($response) = $this->siteControllerRegisterWithHttpInfo($registerSiteDto, $contentType);
+        [$response] = $this->siteControllerRegisterWithHttpInfo($registerSiteDto, $contentType);
 
         return $response;
     }
@@ -19855,13 +19932,13 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  RegisterSiteDto $registerSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegister'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterWithHttpInfo($registerSiteDto, string $contentType = self::contentTypes['siteControllerRegister'][0])
     {
@@ -19906,7 +19983,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' !== 'string') {
@@ -19923,7 +20000,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -19956,12 +20033,12 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  RegisterSiteDto $registerSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegister'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterAsync($registerSiteDto, string $contentType = self::contentTypes['siteControllerRegister'][0])
     {
@@ -19977,12 +20054,12 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  RegisterSiteDto $registerSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegister'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterAsyncWithHttpInfo($registerSiteDto, string $contentType = self::contentTypes['siteControllerRegister'][0])
     {
@@ -19994,7 +20071,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -20030,12 +20107,12 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerRegister'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto $registerSiteDto (required)
+     * @param  RegisterSiteDto $registerSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegister'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterRequest($registerSiteDto, string $contentType = self::contentTypes['siteControllerRegister'][0])
     {
@@ -20120,17 +20197,17 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterNew.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto registerNewSiteDto (required)
+     * @param  RegisterNewSiteDto $registerNewSiteDto registerNewSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegisterNew'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SiteEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterNew($registerNewSiteDto, string $contentType = self::contentTypes['siteControllerRegisterNew'][0])
     {
-        list($response) = $this->siteControllerRegisterNewWithHttpInfo($registerNewSiteDto, $contentType);
+        [$response] = $this->siteControllerRegisterNewWithHttpInfo($registerNewSiteDto, $contentType);
 
         return $response;
     }
@@ -20138,13 +20215,13 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterNewWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     * @param  RegisterNewSiteDto $registerNewSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegisterNew'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterNewWithHttpInfo($registerNewSiteDto, string $contentType = self::contentTypes['siteControllerRegisterNew'][0])
     {
@@ -20189,7 +20266,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' !== 'string') {
@@ -20206,7 +20283,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -20239,12 +20316,12 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterNewAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     * @param  RegisterNewSiteDto $registerNewSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegisterNew'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterNewAsync($registerNewSiteDto, string $contentType = self::contentTypes['siteControllerRegisterNew'][0])
     {
@@ -20260,12 +20337,12 @@ class DefaultApi
     /**
      * Operation siteControllerRegisterNewAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     * @param  RegisterNewSiteDto $registerNewSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegisterNew'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterNewAsyncWithHttpInfo($registerNewSiteDto, string $contentType = self::contentTypes['siteControllerRegisterNew'][0])
     {
@@ -20277,7 +20354,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -20313,12 +20390,12 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerRegisterNew'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto $registerNewSiteDto (required)
+     * @param  RegisterNewSiteDto $registerNewSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRegisterNew'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRegisterNewRequest($registerNewSiteDto, string $contentType = self::contentTypes['siteControllerRegisterNew'][0])
     {
@@ -20404,17 +20481,17 @@ class DefaultApi
      * Operation siteControllerRespondToRequest.
      *
      * @param  string $id id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto requestResponseDto (required)
+     * @param  RequestResponseDto $requestResponseDto requestResponseDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRespondToRequest($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
     {
-        list($response) = $this->siteControllerRespondToRequestWithHttpInfo($id, $requestResponseDto, $contentType);
+        [$response] = $this->siteControllerRespondToRequestWithHttpInfo($id, $requestResponseDto, $contentType);
 
         return $response;
     }
@@ -20423,13 +20500,13 @@ class DefaultApi
      * Operation siteControllerRespondToRequestWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  RequestResponseDto $requestResponseDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRespondToRequestWithHttpInfo($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
     {
@@ -20474,7 +20551,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -20491,7 +20568,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -20525,12 +20602,12 @@ class DefaultApi
      * Operation siteControllerRespondToRequestAsync.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  RequestResponseDto $requestResponseDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRespondToRequestAsync($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
     {
@@ -20547,12 +20624,12 @@ class DefaultApi
      * Operation siteControllerRespondToRequestAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  RequestResponseDto $requestResponseDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRespondToRequestAsyncWithHttpInfo($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
     {
@@ -20564,7 +20641,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -20601,12 +20678,12 @@ class DefaultApi
      * Create request for operation 'siteControllerRespondToRequest'.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto $requestResponseDto (required)
+     * @param  RequestResponseDto $requestResponseDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerRespondToRequest'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerRespondToRequestRequest($id, $requestResponseDto, string $contentType = self::contentTypes['siteControllerRespondToRequest'][0])
     {
@@ -20634,7 +20711,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -20713,14 +20790,14 @@ class DefaultApi
      * @param  string $search search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSearch'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedSiteList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSearch($baseUrl = null, $page = null, $itemsPerPage = null, $search = null, string $contentType = self::contentTypes['siteControllerSearch'][0])
     {
-        list($response) = $this->siteControllerSearchWithHttpInfo($baseUrl, $page, $itemsPerPage, $search, $contentType);
+        [$response] = $this->siteControllerSearchWithHttpInfo($baseUrl, $page, $itemsPerPage, $search, $contentType);
 
         return $response;
     }
@@ -20734,10 +20811,10 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSearch'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSearchWithHttpInfo($baseUrl = null, $page = null, $itemsPerPage = null, $search = null, string $contentType = self::contentTypes['siteControllerSearch'][0])
     {
@@ -20782,7 +20859,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList' !== 'string') {
@@ -20799,7 +20876,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSiteList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -20838,9 +20915,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSearch'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSearchAsync($baseUrl = null, $page = null, $itemsPerPage = null, $search = null, string $contentType = self::contentTypes['siteControllerSearch'][0])
     {
@@ -20862,9 +20939,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSearch'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSearchAsyncWithHttpInfo($baseUrl = null, $page = null, $itemsPerPage = null, $search = null, string $contentType = self::contentTypes['siteControllerSearch'][0])
     {
@@ -20876,7 +20953,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -20918,9 +20995,9 @@ class DefaultApi
      * @param  string $search (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSearch'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSearchRequest($baseUrl = null, $page = null, $itemsPerPage = null, $search = null, string $contentType = self::contentTypes['siteControllerSearch'][0])
     {
@@ -21030,14 +21107,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSelf'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SiteSelfDto
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSelf(string $contentType = self::contentTypes['siteControllerSelf'][0])
     {
-        list($response) = $this->siteControllerSelfWithHttpInfo($contentType);
+        [$response] = $this->siteControllerSelfWithHttpInfo($contentType);
 
         return $response;
     }
@@ -21047,10 +21124,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSelf'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSelfWithHttpInfo(string $contentType = self::contentTypes['siteControllerSelf'][0])
     {
@@ -21095,7 +21172,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto' !== 'string') {
@@ -21112,7 +21189,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -21147,9 +21224,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSelf'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSelfAsync(string $contentType = self::contentTypes['siteControllerSelf'][0])
     {
@@ -21167,9 +21244,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSelf'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSelfAsyncWithHttpInfo(string $contentType = self::contentTypes['siteControllerSelf'][0])
     {
@@ -21181,7 +21258,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -21219,9 +21296,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSelf'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSelfRequest(string $contentType = self::contentTypes['siteControllerSelf'][0])
     {
@@ -21292,17 +21369,17 @@ class DefaultApi
     /**
      * Operation siteControllerSetThrottling.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto $setThrottlingDto setThrottlingDto (required)
+     * @param  SetThrottlingDto $setThrottlingDto setThrottlingDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSetThrottling'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return GetThrottlingDto
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSetThrottling($setThrottlingDto, string $contentType = self::contentTypes['siteControllerSetThrottling'][0])
     {
-        list($response) = $this->siteControllerSetThrottlingWithHttpInfo($setThrottlingDto, $contentType);
+        [$response] = $this->siteControllerSetThrottlingWithHttpInfo($setThrottlingDto, $contentType);
 
         return $response;
     }
@@ -21310,13 +21387,13 @@ class DefaultApi
     /**
      * Operation siteControllerSetThrottlingWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto $setThrottlingDto (required)
+     * @param  SetThrottlingDto $setThrottlingDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSetThrottling'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSetThrottlingWithHttpInfo($setThrottlingDto, string $contentType = self::contentTypes['siteControllerSetThrottling'][0])
     {
@@ -21361,7 +21438,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto' !== 'string') {
@@ -21378,7 +21455,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -21411,12 +21488,12 @@ class DefaultApi
     /**
      * Operation siteControllerSetThrottlingAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto $setThrottlingDto (required)
+     * @param  SetThrottlingDto $setThrottlingDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSetThrottlingAsync($setThrottlingDto, string $contentType = self::contentTypes['siteControllerSetThrottling'][0])
     {
@@ -21432,12 +21509,12 @@ class DefaultApi
     /**
      * Operation siteControllerSetThrottlingAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto $setThrottlingDto (required)
+     * @param  SetThrottlingDto $setThrottlingDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSetThrottlingAsyncWithHttpInfo($setThrottlingDto, string $contentType = self::contentTypes['siteControllerSetThrottling'][0])
     {
@@ -21449,7 +21526,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -21485,12 +21562,12 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerSetThrottling'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto $setThrottlingDto (required)
+     * @param  SetThrottlingDto $setThrottlingDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerSetThrottling'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerSetThrottlingRequest($setThrottlingDto, string $contentType = self::contentTypes['siteControllerSetThrottling'][0])
     {
@@ -21575,17 +21652,17 @@ class DefaultApi
     /**
      * Operation siteControllerUpdate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto createSiteDto (required)
+     * @param  CreateSiteDto $createSiteDto createSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SiteEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdate($createSiteDto, string $contentType = self::contentTypes['siteControllerUpdate'][0])
     {
-        list($response) = $this->siteControllerUpdateWithHttpInfo($createSiteDto, $contentType);
+        [$response] = $this->siteControllerUpdateWithHttpInfo($createSiteDto, $contentType);
 
         return $response;
     }
@@ -21593,13 +21670,13 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  CreateSiteDto $createSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SiteEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateWithHttpInfo($createSiteDto, string $contentType = self::contentTypes['siteControllerUpdate'][0])
     {
@@ -21644,7 +21721,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity' !== 'string') {
@@ -21661,7 +21738,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SiteEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -21694,12 +21771,12 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  CreateSiteDto $createSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateAsync($createSiteDto, string $contentType = self::contentTypes['siteControllerUpdate'][0])
     {
@@ -21715,12 +21792,12 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  CreateSiteDto $createSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateAsyncWithHttpInfo($createSiteDto, string $contentType = self::contentTypes['siteControllerUpdate'][0])
     {
@@ -21732,7 +21809,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -21768,12 +21845,12 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerUpdate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSiteDto $createSiteDto (required)
+     * @param  CreateSiteDto $createSiteDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateRequest($createSiteDto, string $contentType = self::contentTypes['siteControllerUpdate'][0])
     {
@@ -21858,17 +21935,17 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateConfig.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto siteConfigUpdateRequestDto (required)
+     * @param  SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto siteConfigUpdateRequestDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateConfig($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
     {
-        list($response) = $this->siteControllerUpdateConfigWithHttpInfo($siteConfigUpdateRequestDto, $contentType);
+        [$response] = $this->siteControllerUpdateConfigWithHttpInfo($siteConfigUpdateRequestDto, $contentType);
 
         return $response;
     }
@@ -21876,13 +21953,13 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateConfigWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateConfigWithHttpInfo($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
     {
@@ -21927,7 +22004,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' !== 'string') {
@@ -21944,7 +22021,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -21977,12 +22054,12 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateConfigAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateConfigAsync($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
     {
@@ -21998,12 +22075,12 @@ class DefaultApi
     /**
      * Operation siteControllerUpdateConfigAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateConfigAsyncWithHttpInfo($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
     {
@@ -22015,7 +22092,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -22051,12 +22128,12 @@ class DefaultApi
     /**
      * Create request for operation 'siteControllerUpdateConfig'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
+     * @param  SiteConfigUpdateRequestDto $siteConfigUpdateRequestDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['siteControllerUpdateConfig'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function siteControllerUpdateConfigRequest($siteConfigUpdateRequestDto, string $contentType = self::contentTypes['siteControllerUpdateConfig'][0])
     {
@@ -22141,17 +22218,17 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto createSyndicationDto (required)
+     * @param  CreateSyndicationDto $createSyndicationDto createSyndicationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerCreate($createSyndicationDto, string $contentType = self::contentTypes['syndicationControllerCreate'][0])
     {
-        list($response) = $this->syndicationControllerCreateWithHttpInfo($createSyndicationDto, $contentType);
+        [$response] = $this->syndicationControllerCreateWithHttpInfo($createSyndicationDto, $contentType);
 
         return $response;
     }
@@ -22159,13 +22236,13 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  CreateSyndicationDto $createSyndicationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerCreateWithHttpInfo($createSyndicationDto, string $contentType = self::contentTypes['syndicationControllerCreate'][0])
     {
@@ -22210,7 +22287,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' !== 'string') {
@@ -22227,7 +22304,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -22260,12 +22337,12 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  CreateSyndicationDto $createSyndicationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerCreateAsync($createSyndicationDto, string $contentType = self::contentTypes['syndicationControllerCreate'][0])
     {
@@ -22281,12 +22358,12 @@ class DefaultApi
     /**
      * Operation syndicationControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  CreateSyndicationDto $createSyndicationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerCreateAsyncWithHttpInfo($createSyndicationDto, string $contentType = self::contentTypes['syndicationControllerCreate'][0])
     {
@@ -22298,7 +22375,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -22334,12 +22411,12 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto $createSyndicationDto (required)
+     * @param  CreateSyndicationDto $createSyndicationDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerCreateRequest($createSyndicationDto, string $contentType = self::contentTypes['syndicationControllerCreate'][0])
     {
@@ -22424,17 +22501,17 @@ class DefaultApi
     /**
      * Operation syndicationControllerDelete.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest syndicationDeleteRequest (required)
+     * @param  SyndicationDeleteRequest $syndicationDeleteRequest syndicationDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationEntity[]
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerDelete($syndicationDeleteRequest, string $contentType = self::contentTypes['syndicationControllerDelete'][0])
     {
-        list($response) = $this->syndicationControllerDeleteWithHttpInfo($syndicationDeleteRequest, $contentType);
+        [$response] = $this->syndicationControllerDeleteWithHttpInfo($syndicationDeleteRequest, $contentType);
 
         return $response;
     }
@@ -22442,13 +22519,13 @@ class DefaultApi
     /**
      * Operation syndicationControllerDeleteWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     * @param  SyndicationDeleteRequest $syndicationDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[], HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerDeleteWithHttpInfo($syndicationDeleteRequest, string $contentType = self::contentTypes['syndicationControllerDelete'][0])
     {
@@ -22493,7 +22570,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]' !== 'string') {
@@ -22510,7 +22587,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity[]';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -22543,12 +22620,12 @@ class DefaultApi
     /**
      * Operation syndicationControllerDeleteAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     * @param  SyndicationDeleteRequest $syndicationDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerDeleteAsync($syndicationDeleteRequest, string $contentType = self::contentTypes['syndicationControllerDelete'][0])
     {
@@ -22564,12 +22641,12 @@ class DefaultApi
     /**
      * Operation syndicationControllerDeleteAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     * @param  SyndicationDeleteRequest $syndicationDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerDeleteAsyncWithHttpInfo($syndicationDeleteRequest, string $contentType = self::contentTypes['syndicationControllerDelete'][0])
     {
@@ -22581,7 +22658,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -22617,12 +22694,12 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerDelete'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest $syndicationDeleteRequest (required)
+     * @param  SyndicationDeleteRequest $syndicationDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerDeleteRequest($syndicationDeleteRequest, string $contentType = self::contentTypes['syndicationControllerDelete'][0])
     {
@@ -22711,14 +22788,14 @@ class DefaultApi
      * @param  string $page page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerGetErrors'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationErrorList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerGetErrors($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['syndicationControllerGetErrors'][0])
     {
-        list($response) = $this->syndicationControllerGetErrorsWithHttpInfo($itemsPerPage, $page, $contentType);
+        [$response] = $this->syndicationControllerGetErrorsWithHttpInfo($itemsPerPage, $page, $contentType);
 
         return $response;
     }
@@ -22730,10 +22807,10 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerGetErrors'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerGetErrorsWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['syndicationControllerGetErrors'][0])
     {
@@ -22778,7 +22855,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList' !== 'string') {
@@ -22795,7 +22872,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -22832,9 +22909,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerGetErrors'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerGetErrorsAsync($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['syndicationControllerGetErrors'][0])
     {
@@ -22854,9 +22931,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerGetErrors'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerGetErrorsAsyncWithHttpInfo($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['syndicationControllerGetErrors'][0])
     {
@@ -22868,7 +22945,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -22908,9 +22985,9 @@ class DefaultApi
      * @param  string $page (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerGetErrors'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerGetErrorsRequest($itemsPerPage = null, $page = null, string $contentType = self::contentTypes['syndicationControllerGetErrors'][0])
     {
@@ -23004,14 +23081,14 @@ class DefaultApi
      * @param  string $includeUsage includeUsage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationEntityWithUsage
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerItem($id, $includeUsage = null, string $contentType = self::contentTypes['syndicationControllerItem'][0])
     {
-        list($response) = $this->syndicationControllerItemWithHttpInfo($id, $includeUsage, $contentType);
+        [$response] = $this->syndicationControllerItemWithHttpInfo($id, $includeUsage, $contentType);
 
         return $response;
     }
@@ -23023,10 +23100,10 @@ class DefaultApi
      * @param  string $includeUsage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerItemWithHttpInfo($id, $includeUsage = null, string $contentType = self::contentTypes['syndicationControllerItem'][0])
     {
@@ -23071,7 +23148,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage' !== 'string') {
@@ -23088,7 +23165,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -23125,9 +23202,9 @@ class DefaultApi
      * @param  string $includeUsage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerItemAsync($id, $includeUsage = null, string $contentType = self::contentTypes['syndicationControllerItem'][0])
     {
@@ -23147,9 +23224,9 @@ class DefaultApi
      * @param  string $includeUsage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerItemAsyncWithHttpInfo($id, $includeUsage = null, string $contentType = self::contentTypes['syndicationControllerItem'][0])
     {
@@ -23161,7 +23238,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -23201,9 +23278,9 @@ class DefaultApi
      * @param  string $includeUsage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerItemRequest($id, $includeUsage = null, string $contentType = self::contentTypes['syndicationControllerItem'][0])
     {
@@ -23234,7 +23311,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -23321,14 +23398,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedSyndicationList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerList($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        list($response) = $this->syndicationControllerListWithHttpInfo($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        [$response] = $this->syndicationControllerListWithHttpInfo($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -23357,10 +23434,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerListWithHttpInfo($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
@@ -23405,7 +23482,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList' !== 'string') {
@@ -23422,7 +23499,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -23476,9 +23553,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerListAsync($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
@@ -23515,9 +23592,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerListAsyncWithHttpInfo($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
@@ -23529,7 +23606,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -23586,9 +23663,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerListRequest($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
@@ -23832,17 +23909,17 @@ class DefaultApi
      * Operation syndicationControllerRestart.
      *
      * @param  string $id id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest syndicationRetryRequest (required)
+     * @param  SyndicationRetryRequest $syndicationRetryRequest syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerRestart($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
-        list($response) = $this->syndicationControllerRestartWithHttpInfo($id, $syndicationRetryRequest, $contentType);
+        [$response] = $this->syndicationControllerRestartWithHttpInfo($id, $syndicationRetryRequest, $contentType);
 
         return $response;
     }
@@ -23851,13 +23928,13 @@ class DefaultApi
      * Operation syndicationControllerRestartWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
+     * @param  SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerRestartWithHttpInfo($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
@@ -23902,7 +23979,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity' !== 'string') {
@@ -23919,7 +23996,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -23953,12 +24030,12 @@ class DefaultApi
      * Operation syndicationControllerRestartAsync.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
+     * @param  SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerRestartAsync($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
@@ -23975,12 +24052,12 @@ class DefaultApi
      * Operation syndicationControllerRestartAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
+     * @param  SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerRestartAsyncWithHttpInfo($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
@@ -23992,7 +24069,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -24029,12 +24106,12 @@ class DefaultApi
      * Create request for operation 'syndicationControllerRestart'.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationRetryRequest $syndicationRetryRequest (required)
+     * @param  SyndicationRetryRequest $syndicationRetryRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerRestart'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerRestartRequest($id, $syndicationRetryRequest, string $contentType = self::contentTypes['syndicationControllerRestart'][0])
     {
@@ -24062,7 +24139,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -24136,17 +24213,17 @@ class DefaultApi
      * Operation syndicationControllerTrace.
      *
      * @param  string $id id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest $syndicationTraceRequest syndicationTraceRequest (required)
+     * @param  SyndicationTraceRequest $syndicationTraceRequest syndicationTraceRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerTrace'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerTrace($id, $syndicationTraceRequest, string $contentType = self::contentTypes['syndicationControllerTrace'][0])
     {
-        list($response) = $this->syndicationControllerTraceWithHttpInfo($id, $syndicationTraceRequest, $contentType);
+        [$response] = $this->syndicationControllerTraceWithHttpInfo($id, $syndicationTraceRequest, $contentType);
 
         return $response;
     }
@@ -24155,13 +24232,13 @@ class DefaultApi
      * Operation syndicationControllerTraceWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest $syndicationTraceRequest (required)
+     * @param  SyndicationTraceRequest $syndicationTraceRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerTrace'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerTraceWithHttpInfo($id, $syndicationTraceRequest, string $contentType = self::contentTypes['syndicationControllerTrace'][0])
     {
@@ -24206,7 +24283,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -24223,7 +24300,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -24257,12 +24334,12 @@ class DefaultApi
      * Operation syndicationControllerTraceAsync.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest $syndicationTraceRequest (required)
+     * @param  SyndicationTraceRequest $syndicationTraceRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerTrace'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerTraceAsync($id, $syndicationTraceRequest, string $contentType = self::contentTypes['syndicationControllerTrace'][0])
     {
@@ -24279,12 +24356,12 @@ class DefaultApi
      * Operation syndicationControllerTraceAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest $syndicationTraceRequest (required)
+     * @param  SyndicationTraceRequest $syndicationTraceRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerTrace'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerTraceAsyncWithHttpInfo($id, $syndicationTraceRequest, string $contentType = self::contentTypes['syndicationControllerTrace'][0])
     {
@@ -24296,7 +24373,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -24333,12 +24410,12 @@ class DefaultApi
      * Create request for operation 'syndicationControllerTrace'.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\SyndicationTraceRequest $syndicationTraceRequest (required)
+     * @param  SyndicationTraceRequest $syndicationTraceRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerTrace'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerTraceRequest($id, $syndicationTraceRequest, string $contentType = self::contentTypes['syndicationControllerTrace'][0])
     {
@@ -24366,7 +24443,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -24442,14 +24519,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationUsageSummary
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummary($id, string $contentType = self::contentTypes['syndicationControllerUsageSummary'][0])
     {
-        list($response) = $this->syndicationControllerUsageSummaryWithHttpInfo($id, $contentType);
+        [$response] = $this->syndicationControllerUsageSummaryWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -24460,10 +24537,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryWithHttpInfo($id, string $contentType = self::contentTypes['syndicationControllerUsageSummary'][0])
     {
@@ -24508,7 +24585,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary' !== 'string') {
@@ -24525,7 +24602,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummary';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -24561,9 +24638,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryAsync($id, string $contentType = self::contentTypes['syndicationControllerUsageSummary'][0])
     {
@@ -24582,9 +24659,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryAsyncWithHttpInfo($id, string $contentType = self::contentTypes['syndicationControllerUsageSummary'][0])
     {
@@ -24596,7 +24673,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -24635,9 +24712,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryRequest($id, string $contentType = self::contentTypes['syndicationControllerUsageSummary'][0])
     {
@@ -24658,7 +24735,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -24734,14 +24811,14 @@ class DefaultApi
      * @param  string $separateUntil separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SyndicationUsageSummaryListResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryForSite($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
-        list($response) = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType);
+        [$response] = $this->syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid, $remoteUniqueId, $namespaceMachineName, $machineName, $isRegularSyndication, $includingMigrations, $separateUntil, $contentType);
 
         return $response;
     }
@@ -24759,10 +24836,10 @@ class DefaultApi
      * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryForSiteWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
@@ -24807,7 +24884,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse' !== 'string') {
@@ -24824,7 +24901,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationUsageSummaryListResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -24867,9 +24944,9 @@ class DefaultApi
      * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryForSiteAsync($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
@@ -24895,9 +24972,9 @@ class DefaultApi
      * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryForSiteAsyncWithHttpInfo($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
@@ -24909,7 +24986,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -24955,9 +25032,9 @@ class DefaultApi
      * @param  string $separateUntil (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['syndicationControllerUsageSummaryForSite'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function syndicationControllerUsageSummaryForSiteRequest($siteUuid, $remoteUuid = null, $remoteUniqueId = null, $namespaceMachineName = null, $machineName = null, $isRegularSyndication = null, $includingMigrations = null, $separateUntil = null, string $contentType = self::contentTypes['syndicationControllerUsageSummaryForSite'][0])
     {
@@ -25042,7 +25119,7 @@ class DefaultApi
         // path params
         if (null !== $siteUuid) {
             $resourcePath = str_replace(
-                '{'.'siteUuid'.'}',
+                '{siteUuid}',
                 ObjectSerializer::toPathValue($siteUuid),
                 $resourcePath
             );
@@ -25112,14 +25189,14 @@ class DefaultApi
      * @param  UsageStatsType $type type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForPeriod'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return UsageStats
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\UsageStats
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForPeriod($period, $type, string $contentType = self::contentTypes['usageStatsControllerGetForPeriod'][0])
     {
-        list($response) = $this->usageStatsControllerGetForPeriodWithHttpInfo($period, $type, $contentType);
+        [$response] = $this->usageStatsControllerGetForPeriodWithHttpInfo($period, $type, $contentType);
 
         return $response;
     }
@@ -25131,10 +25208,10 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForPeriod'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\UsageStats, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForPeriodWithHttpInfo($period, $type, string $contentType = self::contentTypes['usageStatsControllerGetForPeriod'][0])
     {
@@ -25179,7 +25256,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageStats' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageStats' !== 'string') {
@@ -25196,7 +25273,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\UsageStats';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -25233,9 +25310,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForPeriod'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForPeriodAsync($period, $type, string $contentType = self::contentTypes['usageStatsControllerGetForPeriod'][0])
     {
@@ -25255,9 +25332,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForPeriod'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForPeriodAsyncWithHttpInfo($period, $type, string $contentType = self::contentTypes['usageStatsControllerGetForPeriod'][0])
     {
@@ -25269,7 +25346,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -25309,9 +25386,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForPeriod'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForPeriodRequest($period, $type, string $contentType = self::contentTypes['usageStatsControllerGetForPeriod'][0])
     {
@@ -25339,7 +25416,7 @@ class DefaultApi
         // path params
         if (null !== $period) {
             $resourcePath = str_replace(
-                '{'.'period'.'}',
+                '{period}',
                 ObjectSerializer::toPathValue($period),
                 $resourcePath
             );
@@ -25347,7 +25424,7 @@ class DefaultApi
         // path params
         if (null !== $type) {
             $resourcePath = str_replace(
-                '{'.'type'.'}',
+                '{type}',
                 ObjectSerializer::toPathValue($type),
                 $resourcePath
             );
@@ -25416,14 +25493,14 @@ class DefaultApi
      * @param  UsageStatsType $type type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForType'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return UsageStats
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\UsageStats
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForType($type, string $contentType = self::contentTypes['usageStatsControllerGetForType'][0])
     {
-        list($response) = $this->usageStatsControllerGetForTypeWithHttpInfo($type, $contentType);
+        [$response] = $this->usageStatsControllerGetForTypeWithHttpInfo($type, $contentType);
 
         return $response;
     }
@@ -25434,10 +25511,10 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForType'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\UsageStats, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForTypeWithHttpInfo($type, string $contentType = self::contentTypes['usageStatsControllerGetForType'][0])
     {
@@ -25482,7 +25559,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageStats' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageStats' !== 'string') {
@@ -25499,7 +25576,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\UsageStats';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -25535,9 +25612,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForType'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForTypeAsync($type, string $contentType = self::contentTypes['usageStatsControllerGetForType'][0])
     {
@@ -25556,9 +25633,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForType'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForTypeAsyncWithHttpInfo($type, string $contentType = self::contentTypes['usageStatsControllerGetForType'][0])
     {
@@ -25570,7 +25647,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -25609,9 +25686,9 @@ class DefaultApi
      * @param  UsageStatsType $type (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerGetForType'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerGetForTypeRequest($type, string $contentType = self::contentTypes['usageStatsControllerGetForType'][0])
     {
@@ -25632,7 +25709,7 @@ class DefaultApi
         // path params
         if (null !== $type) {
             $resourcePath = str_replace(
-                '{'.'type'.'}',
+                '{type}',
                 ObjectSerializer::toPathValue($type),
                 $resourcePath
             );
@@ -25700,14 +25777,14 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return UsageSummary
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\UsageSummary
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerSummary(string $contentType = self::contentTypes['usageStatsControllerSummary'][0])
     {
-        list($response) = $this->usageStatsControllerSummaryWithHttpInfo($contentType);
+        [$response] = $this->usageStatsControllerSummaryWithHttpInfo($contentType);
 
         return $response;
     }
@@ -25717,10 +25794,10 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerSummary'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\UsageSummary, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerSummaryWithHttpInfo(string $contentType = self::contentTypes['usageStatsControllerSummary'][0])
     {
@@ -25765,7 +25842,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageSummary' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\UsageSummary' !== 'string') {
@@ -25782,7 +25859,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\UsageSummary';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -25817,9 +25894,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerSummaryAsync(string $contentType = self::contentTypes['usageStatsControllerSummary'][0])
     {
@@ -25837,9 +25914,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerSummaryAsyncWithHttpInfo(string $contentType = self::contentTypes['usageStatsControllerSummary'][0])
     {
@@ -25851,7 +25928,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -25889,9 +25966,9 @@ class DefaultApi
      *
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['usageStatsControllerSummary'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function usageStatsControllerSummaryRequest(string $contentType = self::contentTypes['usageStatsControllerSummary'][0])
     {
@@ -25962,17 +26039,17 @@ class DefaultApi
     /**
      * Operation webhookControllerCreate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto createWebhookDto (required)
+     * @param  CreateWebhookDto $createWebhookDto createWebhookDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return WebhookEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerCreate($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
     {
-        list($response) = $this->webhookControllerCreateWithHttpInfo($createWebhookDto, $contentType);
+        [$response] = $this->webhookControllerCreateWithHttpInfo($createWebhookDto, $contentType);
 
         return $response;
     }
@@ -25980,13 +26057,13 @@ class DefaultApi
     /**
      * Operation webhookControllerCreateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  CreateWebhookDto $createWebhookDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerCreateWithHttpInfo($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
     {
@@ -26031,7 +26108,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
@@ -26048,7 +26125,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -26081,12 +26158,12 @@ class DefaultApi
     /**
      * Operation webhookControllerCreateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  CreateWebhookDto $createWebhookDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerCreateAsync($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
     {
@@ -26102,12 +26179,12 @@ class DefaultApi
     /**
      * Operation webhookControllerCreateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  CreateWebhookDto $createWebhookDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerCreateAsyncWithHttpInfo($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
     {
@@ -26119,7 +26196,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -26155,12 +26232,12 @@ class DefaultApi
     /**
      * Create request for operation 'webhookControllerCreate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  CreateWebhookDto $createWebhookDto (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerCreateRequest($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
     {
@@ -26245,17 +26322,17 @@ class DefaultApi
     /**
      * Operation webhookControllerDelete.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest webhookDeleteRequest (required)
+     * @param  WebhookDeleteRequest $webhookDeleteRequest webhookDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerDelete($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
     {
-        list($response) = $this->webhookControllerDeleteWithHttpInfo($webhookDeleteRequest, $contentType);
+        [$response] = $this->webhookControllerDeleteWithHttpInfo($webhookDeleteRequest, $contentType);
 
         return $response;
     }
@@ -26263,13 +26340,13 @@ class DefaultApi
     /**
      * Operation webhookControllerDeleteWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  WebhookDeleteRequest $webhookDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerDeleteWithHttpInfo($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
     {
@@ -26314,7 +26391,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -26331,7 +26408,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -26364,12 +26441,12 @@ class DefaultApi
     /**
      * Operation webhookControllerDeleteAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  WebhookDeleteRequest $webhookDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerDeleteAsync($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
     {
@@ -26385,12 +26462,12 @@ class DefaultApi
     /**
      * Operation webhookControllerDeleteAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  WebhookDeleteRequest $webhookDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerDeleteAsyncWithHttpInfo($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
     {
@@ -26402,7 +26479,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -26438,12 +26515,12 @@ class DefaultApi
     /**
      * Create request for operation 'webhookControllerDelete'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  WebhookDeleteRequest $webhookDeleteRequest (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerDeleteRequest($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
     {
@@ -26531,14 +26608,14 @@ class DefaultApi
      * @param  string $id id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return WebhookEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerItem($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
     {
-        list($response) = $this->webhookControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->webhookControllerItemWithHttpInfo($id, $contentType);
 
         return $response;
     }
@@ -26549,10 +26626,10 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
     {
@@ -26597,7 +26674,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
@@ -26614,7 +26691,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -26650,9 +26727,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerItemAsync($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
     {
@@ -26671,9 +26748,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
     {
@@ -26685,7 +26762,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -26724,9 +26801,9 @@ class DefaultApi
      * @param  string $id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerItemRequest($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
     {
@@ -26747,7 +26824,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -26818,14 +26895,14 @@ class DefaultApi
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return PagedWebhookList
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerList($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
     {
-        list($response) = $this->webhookControllerListWithHttpInfo($entityType, $page, $itemsPerPage, $contentType);
+        [$response] = $this->webhookControllerListWithHttpInfo($entityType, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -26838,10 +26915,10 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerListWithHttpInfo($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
     {
@@ -26886,7 +26963,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList' !== 'string') {
@@ -26903,7 +26980,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -26941,9 +27018,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerListAsync($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
     {
@@ -26964,9 +27041,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerListAsyncWithHttpInfo($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
     {
@@ -26978,7 +27055,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -27019,9 +27096,9 @@ class DefaultApi
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerListRequest($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
     {
@@ -27054,7 +27131,7 @@ class DefaultApi
         // path params
         if (null !== $entityType) {
             $resourcePath = str_replace(
-                '{'.'entityType'.'}',
+                '{entityType}',
                 ObjectSerializer::toPathValue($entityType),
                 $resourcePath
             );
@@ -27121,17 +27198,17 @@ class DefaultApi
      * Operation webhookControllerSendVerificationEmail.
      *
      * @param  string $id id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail webhookResendVerificationEmail (required)
+     * @param  WebhookResendVerificationEmail $webhookResendVerificationEmail webhookResendVerificationEmail (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return SuccessResponse
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerSendVerificationEmail($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
     {
-        list($response) = $this->webhookControllerSendVerificationEmailWithHttpInfo($id, $webhookResendVerificationEmail, $contentType);
+        [$response] = $this->webhookControllerSendVerificationEmailWithHttpInfo($id, $webhookResendVerificationEmail, $contentType);
 
         return $response;
     }
@@ -27140,13 +27217,13 @@ class DefaultApi
      * Operation webhookControllerSendVerificationEmailWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerSendVerificationEmailWithHttpInfo($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
     {
@@ -27191,7 +27268,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
@@ -27208,7 +27285,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -27242,12 +27319,12 @@ class DefaultApi
      * Operation webhookControllerSendVerificationEmailAsync.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerSendVerificationEmailAsync($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
     {
@@ -27264,12 +27341,12 @@ class DefaultApi
      * Operation webhookControllerSendVerificationEmailAsyncWithHttpInfo.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerSendVerificationEmailAsyncWithHttpInfo($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
     {
@@ -27281,7 +27358,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -27318,12 +27395,12 @@ class DefaultApi
      * Create request for operation 'webhookControllerSendVerificationEmail'.
      *
      * @param  string $id (required)
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerSendVerificationEmailRequest($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
     {
@@ -27351,7 +27428,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -27424,17 +27501,17 @@ class DefaultApi
     /**
      * Operation webhookControllerUpdate.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity webhookEntity (required)
+     * @param  WebhookEntity $webhookEntity webhookEntity (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @return WebhookEntity
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerUpdate($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
     {
-        list($response) = $this->webhookControllerUpdateWithHttpInfo($webhookEntity, $contentType);
+        [$response] = $this->webhookControllerUpdateWithHttpInfo($webhookEntity, $contentType);
 
         return $response;
     }
@@ -27442,13 +27519,13 @@ class DefaultApi
     /**
      * Operation webhookControllerUpdateWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  WebhookEntity $webhookEntity (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerUpdateWithHttpInfo($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
     {
@@ -27493,7 +27570,7 @@ class DefaultApi
             switch ($statusCode) {
                 case 200:
                     if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
@@ -27510,7 +27587,7 @@ class DefaultApi
 
             $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
             if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ('string' !== $returnType) {
@@ -27543,12 +27620,12 @@ class DefaultApi
     /**
      * Operation webhookControllerUpdateAsync.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  WebhookEntity $webhookEntity (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerUpdateAsync($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
     {
@@ -27564,12 +27641,12 @@ class DefaultApi
     /**
      * Operation webhookControllerUpdateAsyncWithHttpInfo.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  WebhookEntity $webhookEntity (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerUpdateAsyncWithHttpInfo($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
     {
@@ -27581,7 +27658,7 @@ class DefaultApi
             ->then(
                 function ($response) use ($returnType) {
                     if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                         if ('string' !== $returnType) {
@@ -27617,12 +27694,12 @@ class DefaultApi
     /**
      * Create request for operation 'webhookControllerUpdate'.
      *
-     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  WebhookEntity $webhookEntity (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerUpdateRequest($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
     {
@@ -27711,7 +27788,7 @@ class DefaultApi
      * @param  string $token token (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function webhookControllerVerifyEmail($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
@@ -27726,10 +27803,10 @@ class DefaultApi
      * @param  string $token (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
      *
-     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     *
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerVerifyEmailWithHttpInfo($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
     {
@@ -27787,9 +27864,9 @@ class DefaultApi
      * @param  string $token (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerVerifyEmailAsync($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
     {
@@ -27809,9 +27886,9 @@ class DefaultApi
      * @param  string $token (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return PromiseInterface
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerVerifyEmailAsyncWithHttpInfo($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
     {
@@ -27850,9 +27927,9 @@ class DefaultApi
      * @param  string $token (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
      *
-     * @throws \InvalidArgumentException
+     * @return Request
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function webhookControllerVerifyEmailRequest($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
     {
@@ -27880,7 +27957,7 @@ class DefaultApi
         // path params
         if (null !== $id) {
             $resourcePath = str_replace(
-                '{'.'id'.'}',
+                '{id}',
                 ObjectSerializer::toPathValue($id),
                 $resourcePath
             );
@@ -27888,7 +27965,7 @@ class DefaultApi
         // path params
         if (null !== $token) {
             $resourcePath = str_replace(
-                '{'.'token'.'}',
+                '{token}',
                 ObjectSerializer::toPathValue($token),
                 $resourcePath
             );
@@ -27949,9 +28026,9 @@ class DefaultApi
     /**
      * Create http client option.
      *
-     * @throws \RuntimeException on file opening failure
-     *
      * @return array of http client options
+     *
+     * @throws \RuntimeException on file opening failure
      */
     protected function createHttpClientOption()
     {

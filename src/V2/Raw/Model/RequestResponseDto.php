@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RequestResponseDto.
  *
@@ -29,7 +30,6 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use ArrayAccess;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
@@ -40,9 +40,10 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RequestResponseDto implements ModelInterface, ArrayAccess, \JsonSerializable
+class RequestResponseDto implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -66,7 +67,9 @@ class RequestResponseDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * Array of property to format mappings. Used for (de)serialization.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, string|null>
+     *
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
@@ -130,7 +133,7 @@ class RequestResponseDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('response', $data ?? [], null);
     }
@@ -255,7 +258,7 @@ class RequestResponseDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets response.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse
+     * @return RequestResponseDtoResponse
      */
     public function getResponse()
     {
@@ -265,7 +268,7 @@ class RequestResponseDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets response.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDtoResponse $response response
+     * @param RequestResponseDtoResponse $response response
      *
      * @return self
      */

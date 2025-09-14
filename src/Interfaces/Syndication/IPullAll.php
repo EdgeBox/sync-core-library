@@ -48,9 +48,9 @@ interface IPullAll extends IProgress
     public function getSourceName();
 
     /**
-     * @throws SyncCoreException
-     *
      * @return $this
+     *
+     * @throws SyncCoreException
      */
     public function execute();
 

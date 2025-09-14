@@ -9,6 +9,8 @@ return $config->setRules([
   '@PSR2' => true,
   '@PhpCsFixer' => true,
   'phpdoc_to_comment' => false,
-  'phpdoc_align' => false
+  'phpdoc_align' => false,
+  '@PHP84Migration' => true,
 ])
-  ->setFinder($finder);
+  ->setFinder($finder)
+  ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect());

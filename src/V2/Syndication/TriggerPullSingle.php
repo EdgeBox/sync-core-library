@@ -48,9 +48,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     // TODO: Drupal: Support multiple pools.
     public function fromPool(string $pool_id)
     {
@@ -61,9 +58,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function manually(bool $set)
     {
         $this->dto->setManually($set);
@@ -71,9 +65,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function asDependency(bool $set)
     {
         $this->dto->setAsDependency($set);
@@ -81,9 +72,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createSyndicationDto: $this->dto);
@@ -92,9 +80,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPullDashboardSearchResultItem()
     {
         return null;

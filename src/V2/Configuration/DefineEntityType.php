@@ -48,9 +48,6 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addToBatch($batch)
     {
         /**
@@ -85,9 +82,6 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         return $this->dto->getVersionId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isTranslatable(bool $set)
     {
         if ($set) {
@@ -97,9 +91,6 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isFile(bool $set)
     {
         if ($set) {
@@ -116,9 +107,6 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription(string $description)
     {
         $this->dto->setDescription($description);
@@ -126,49 +114,31 @@ class DefineEntityType extends BatchOperation implements IDefineEntityType
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addBooleanProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::BOOLEAN, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addIntegerProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::INTEGER, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addFloatProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::FLOAT, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addStringProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::STRING, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addObjectProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::OBJECT, $multiple, $required, $type_name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addReferenceProperty(string $machine_name, ?string $name, $multiple = false, $required = false, ?string $type_name = null)
     {
         return $this->addProperty($machine_name, $name, RemoteEntityTypePropertyType::REFERENCE, $multiple, $required, $type_name);

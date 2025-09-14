@@ -37,19 +37,23 @@ interface ISyncCore
      * Default for dev environments.
      */
     public const PRIORITY_LOW = 0;
+
     /**
      * Default for staging+production environments.
      */
     public const PRIORITY_NORMAL = 1;
+
     /**
      * A regular environment publishing an important update or an important
      * environment publishing a regular update.
      */
     public const PRIORITY_HIGH = 2;
+
     /**
      * An important environment publishing an important update.
      */
     public const PRIORITY_CRITICAL = 3;
+
     /**
      * An important update during a critical publishing event. This will even
      * ignore e.g. throttling limits and retry faster and more often.
@@ -139,9 +143,9 @@ interface ISyncCore
     public function updateSiteAtSyncCore();
 
     /**
-     * @throws NotFoundException
-     *
      * @return null|array
+     *
+     * @throws NotFoundException
      */
     public function verifySiteId();
 
@@ -155,9 +159,9 @@ interface ISyncCore
      *                    Force updating any existing configuration (skip
      *                    verification from above)
      *
-     * @throws SiteVerificationFailedException
-     *
      * @return string
+     *
+     * @throws SiteVerificationFailedException
      */
     public function registerSite($force = false);
 

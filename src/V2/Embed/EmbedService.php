@@ -20,73 +20,46 @@ class EmbedService implements IEmbedService
         $this->core = $core;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function registerSite(?array $params)
     {
         return new RegisterSiteEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function siteRegistered(?array $params)
     {
         return new SiteRegisteredEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function siteSettings(?array $params)
     {
         return new SiteSettingsEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function pullDashboard(?array $params)
     {
         return new PullDashboardEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function entityStatus(array $params)
     {
         return new EntityStatusEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function updateStatusBox(array $params)
     {
         return new UpdateStatusBoxEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function migrate(array $params)
     {
         return new MigrateEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function flowForm(array $params)
     {
         return new FlowFormEmbed($this->core, $params);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function syndicationDashboard(array $params)
     {
         return new SyndicationDashboardEmbed($this->core, $params);

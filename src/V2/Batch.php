@@ -35,9 +35,6 @@ class Batch implements IBatch
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(IBatchOperation $operation)
     {
         /**
@@ -48,25 +45,16 @@ class Batch implements IBatch
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->operations);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(int $index)
     {
         return $this->operations[$index];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function executeAll()
     {
         foreach ($this->operations as $operation) {
