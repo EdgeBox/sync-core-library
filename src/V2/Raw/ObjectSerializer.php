@@ -482,6 +482,11 @@ class ObjectSerializer
             return $data;
         }
 
+        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
+        if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
+            $class = '\EdgeBox\SyncCore\V2\Raw\Model\\'.$class;
+        }
+
         if (method_exists($class, 'getAllowableEnumValues')) {
             if (!in_array($data, $class::getAllowableEnumValues(), true)) {
                 $imploded = implode("', '", $class::getAllowableEnumValues());
@@ -491,15 +496,11 @@ class ObjectSerializer
 
             return $data;
         }
+
         $data = is_string($data) ? json_decode($data) : $data;
 
         if (is_array($data)) {
             $data = (object) $data;
-        }
-
-        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
-        if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
-            $class = '\EdgeBox\SyncCore\V2\Raw\Model\\'.$class;
         }
 
         // If a discriminator is defined and points to a valid subclass, use it.
