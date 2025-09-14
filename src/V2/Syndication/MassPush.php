@@ -16,15 +16,27 @@ class MassPush extends MassUpdate implements IMassPush
         parent::__construct($core);
     }
 
-    public function execute()
+    public function usingMigrationType(string $type)
     {
-        return $this->executeWithType(MigrationType::PUSH_ALL);
+        if (!in_array($type, [
+            MigrationType::PUSH_ALL,
+            MigrationType::PUSH_ALL_LATEST,
+            MigrationType::PUSH_FAILED,
+        ])) {
+            throw new \InvalidArgumentException('Migration type '.$type.' is not allowed.');
+        }
+
+        $this->migrationType = $type;
+
+        return $this;
     }
 
-    protected function getDtos()
+    public function getMigrationType(): string
     {
-        $this->getDtosWithTypes([
-            MigrationType::PUSH_ALL,
-        ]);
+        if ($this->migrationType) {
+            return $this->migrationType;
+        }
+
+        return MigrationType::PUSH_ALL;
     }
 }

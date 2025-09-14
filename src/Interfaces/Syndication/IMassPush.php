@@ -38,6 +38,13 @@ interface IMassPush extends IProgressWithStatus
     /**
      * @return $this
      */
+    public function usingMigrationType(string $type);
+
+    public function getMigrationType(): string;
+
+    /**
+     * @return $this
+     */
     public function isInitialMigration(bool $is_initial);
 
     /**

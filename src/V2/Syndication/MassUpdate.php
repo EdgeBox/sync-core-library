@@ -45,6 +45,11 @@ abstract class MassUpdate
     protected $initial;
 
     /**
+     * @var null|string
+     */
+    protected $migrationType;
+
+    /**
      * @var bool
      */
     protected $includeOtherSites;
@@ -75,7 +80,15 @@ abstract class MassUpdate
     public function __construct(SyncCore $core)
     {
         $this->core = $core;
+        $this->migrationType = null;
     }
+
+    /**
+     * @return $this
+     */
+    abstract public function usingMigrationType(string $type);
+
+    abstract public function getMigrationType(): string;
 
     public function withFlow(string $flow_id)
     {
@@ -219,6 +232,11 @@ abstract class MassUpdate
         return $this;
     }
 
+    public function execute()
+    {
+        return $this->executeWithType($this->getMigrationType());
+    }
+
     protected function updateSummary()
     {
         $this->summary = [];
@@ -239,12 +257,6 @@ abstract class MassUpdate
             }
         }
     }
-
-    /**
-     * Request all DTOs to get the summary from. Result can be based on one or
-     * multiple migrations, based on the filters that were provided.
-     */
-    abstract protected function getDtos();
 
     protected function getDtosWithTypes(array $types)
     {
@@ -281,5 +293,16 @@ abstract class MassUpdate
             $response = $this->core->sendToSyncCoreAndExpect($request, MigrationSummary::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
             $this->summaryDtos[] = $response;
         }
+    }
+
+    /**
+     * Request all DTOs to get the summary from. Result can be based on one or
+     * multiple migrations, based on the filters that were provided.
+     */
+    protected function getDtos()
+    {
+        $this->getDtosWithTypes([
+            $this->getMigrationType(),
+        ]);
     }
 }
