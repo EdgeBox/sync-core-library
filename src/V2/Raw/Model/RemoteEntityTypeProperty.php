@@ -61,7 +61,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     protected static $openAPITypes = [
         'machineName' => 'string',
         'name' => 'string',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType',
+        'type' => 'RemoteEntityTypePropertyType',
         'description' => 'string',
         'required' => 'bool',
         'multiple' => 'bool',
@@ -69,8 +69,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'shared' => 'bool',
         'remoteTypeName' => 'string',
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
-        'format' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat',
-        'encoding' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding',
+        'format' => 'RemoteEntityTypePropertyFormat',
+        'encoding' => 'RemoteEntityTypePropertyEncoding',
         'allowedValues' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'minValue' => 'float',
         'maxValue' => 'float',
@@ -137,8 +137,8 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
         'shared' => true,
         'remoteTypeName' => true,
         'properties' => true,
-        'format' => false,
-        'encoding' => false,
+        'format' => true,
+        'encoding' => true,
         'allowedValues' => true,
         'minValue' => true,
         'maxValue' => true,
@@ -483,7 +483,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType
+     * @return RemoteEntityTypePropertyType
      */
     public function getType()
     {
@@ -493,7 +493,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType $type type
+     * @param RemoteEntityTypePropertyType $type type
      *
      * @return self
      */
@@ -748,7 +748,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets format.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat
+     * @return null|RemoteEntityTypePropertyFormat
      */
     public function getFormat()
     {
@@ -758,14 +758,21 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets format.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyFormat $format format
+     * @param null|RemoteEntityTypePropertyFormat $format format
      *
      * @return self
      */
     public function setFormat($format)
     {
         if (is_null($format)) {
-            throw new \InvalidArgumentException('non-nullable format cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'format');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('format', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['format'] = $format;
 
@@ -775,7 +782,7 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets encoding.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding
+     * @return null|RemoteEntityTypePropertyEncoding
      */
     public function getEncoding()
     {
@@ -785,14 +792,21 @@ class RemoteEntityTypeProperty implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets encoding.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyEncoding $encoding encoding
+     * @param null|RemoteEntityTypePropertyEncoding $encoding encoding
      *
      * @return self
      */
     public function setEncoding($encoding)
     {
         if (is_null($encoding)) {
-            throw new \InvalidArgumentException('non-nullable encoding cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'encoding');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('encoding', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['encoding'] = $encoding;
 

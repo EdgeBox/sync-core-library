@@ -65,6 +65,8 @@ class SyndicationOperationType
 
     public const RETRIEVE_CONFIG = 'retrieve-config';
 
+    public const TRIGGER_WEBHOOK = 'trigger-webhook';
+
     public const RECOVER = 'recover';
 
     public const VERIFY = 'verify';
@@ -88,6 +90,7 @@ class SyndicationOperationType
             self::PUSH_ENTITY_TRANSLATION,
             self::DELETE_ENTITY,
             self::RETRIEVE_CONFIG,
+            self::TRIGGER_WEBHOOK,
             self::RECOVER,
             self::VERIFY,
         ];

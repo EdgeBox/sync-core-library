@@ -60,7 +60,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $openAPITypes = [
         'syndication' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'status' => 'SyndicationStatus',
         'operationErrors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorOperation[]',
     ];
 
@@ -302,7 +302,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -312,7 +312,7 @@ class SyndicationErrorSummary implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */

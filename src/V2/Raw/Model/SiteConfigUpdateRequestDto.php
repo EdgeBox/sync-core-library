@@ -59,7 +59,7 @@ class SiteConfigUpdateRequestDto implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode',
+        'mode' => 'RemoteSiteConfigRequestMode',
     ];
 
     /**
@@ -79,7 +79,7 @@ class SiteConfigUpdateRequestDto implements ModelInterface, ArrayAccess, \JsonSe
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'mode' => false,
+        'mode' => true,
     ];
 
     /**
@@ -249,7 +249,7 @@ class SiteConfigUpdateRequestDto implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets mode.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode
+     * @return null|RemoteSiteConfigRequestMode
      */
     public function getMode()
     {
@@ -259,14 +259,21 @@ class SiteConfigUpdateRequestDto implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets mode.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode $mode mode
+     * @param null|RemoteSiteConfigRequestMode $mode mode
      *
      * @return self
      */
     public function setMode($mode)
     {
         if (is_null($mode)) {
-            throw new \InvalidArgumentException('non-nullable mode cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'mode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('mode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['mode'] = $mode;
 

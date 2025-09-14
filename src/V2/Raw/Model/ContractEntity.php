@@ -66,11 +66,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => 'float',
         'currentTestingSites' => 'float',
         'autoScaleLicenses' => 'bool',
-        'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
+        'appType' => 'SiteApplicationType',
+        'region' => 'SalesRegion',
         'currentProductionSiteDomains' => 'string[]',
         'licensedProductionSiteDomains' => 'string[]',
         'startDate' => 'float',
         'endDate' => 'float',
+        'archived' => 'bool',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'uuid' => 'string',
         'id' => 'string',
@@ -94,11 +96,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => null,
         'currentTestingSites' => null,
         'autoScaleLicenses' => null,
+        'appType' => null,
         'region' => null,
         'currentProductionSiteDomains' => null,
         'licensedProductionSiteDomains' => null,
         'startDate' => null,
         'endDate' => null,
+        'archived' => null,
         'customer' => null,
         'uuid' => null,
         'id' => null,
@@ -120,11 +124,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => false,
         'currentTestingSites' => false,
         'autoScaleLicenses' => false,
+        'appType' => true,
         'region' => false,
         'currentProductionSiteDomains' => true,
         'licensedProductionSiteDomains' => true,
         'startDate' => false,
         'endDate' => true,
+        'archived' => true,
         'customer' => false,
         'uuid' => false,
         'id' => false,
@@ -154,11 +160,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => 'currentStagingSites',
         'currentTestingSites' => 'currentTestingSites',
         'autoScaleLicenses' => 'autoScaleLicenses',
+        'appType' => 'appType',
         'region' => 'region',
         'currentProductionSiteDomains' => 'currentProductionSiteDomains',
         'licensedProductionSiteDomains' => 'licensedProductionSiteDomains',
         'startDate' => 'startDate',
         'endDate' => 'endDate',
+        'archived' => 'archived',
         'customer' => 'customer',
         'uuid' => 'uuid',
         'id' => 'id',
@@ -180,11 +188,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => 'setCurrentStagingSites',
         'currentTestingSites' => 'setCurrentTestingSites',
         'autoScaleLicenses' => 'setAutoScaleLicenses',
+        'appType' => 'setAppType',
         'region' => 'setRegion',
         'currentProductionSiteDomains' => 'setCurrentProductionSiteDomains',
         'licensedProductionSiteDomains' => 'setLicensedProductionSiteDomains',
         'startDate' => 'setStartDate',
         'endDate' => 'setEndDate',
+        'archived' => 'setArchived',
         'customer' => 'setCustomer',
         'uuid' => 'setUuid',
         'id' => 'setId',
@@ -206,11 +216,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'currentStagingSites' => 'getCurrentStagingSites',
         'currentTestingSites' => 'getCurrentTestingSites',
         'autoScaleLicenses' => 'getAutoScaleLicenses',
+        'appType' => 'getAppType',
         'region' => 'getRegion',
         'currentProductionSiteDomains' => 'getCurrentProductionSiteDomains',
         'licensedProductionSiteDomains' => 'getLicensedProductionSiteDomains',
         'startDate' => 'getStartDate',
         'endDate' => 'getEndDate',
+        'archived' => 'getArchived',
         'customer' => 'getCustomer',
         'uuid' => 'getUuid',
         'id' => 'getId',
@@ -241,11 +253,13 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('currentStagingSites', $data ?? [], null);
         $this->setIfExists('currentTestingSites', $data ?? [], null);
         $this->setIfExists('autoScaleLicenses', $data ?? [], null);
+        $this->setIfExists('appType', $data ?? [], null);
         $this->setIfExists('region', $data ?? [], null);
         $this->setIfExists('currentProductionSiteDomains', $data ?? [], null);
         $this->setIfExists('licensedProductionSiteDomains', $data ?? [], null);
         $this->setIfExists('startDate', $data ?? [], null);
         $this->setIfExists('endDate', $data ?? [], null);
+        $this->setIfExists('archived', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -608,9 +622,43 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets appType.
+     *
+     * @return null|SiteApplicationType
+     */
+    public function getAppType()
+    {
+        return $this->container['appType'];
+    }
+
+    /**
+     * Sets appType.
+     *
+     * @param null|SiteApplicationType $appType appType
+     *
+     * @return self
+     */
+    public function setAppType($appType)
+    {
+        if (is_null($appType)) {
+            array_push($this->openAPINullablesSetToNull, 'appType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('appType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['appType'] = $appType;
+
+        return $this;
+    }
+
+    /**
      * Gets region.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion
+     * @return SalesRegion
      */
     public function getRegion()
     {
@@ -620,7 +668,7 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets region.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion $region region
+     * @param SalesRegion $region region
      *
      * @return self
      */
@@ -759,6 +807,40 @@ class ContractEntity implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['endDate'] = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Gets archived.
+     *
+     * @return null|bool
+     */
+    public function getArchived()
+    {
+        return $this->container['archived'];
+    }
+
+    /**
+     * Sets archived.
+     *
+     * @param null|bool $archived archived
+     *
+     * @return self
+     */
+    public function setArchived($archived)
+    {
+        if (is_null($archived)) {
+            array_push($this->openAPINullablesSetToNull, 'archived');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('archived', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['archived'] = $archived;
 
         return $this;
     }

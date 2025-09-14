@@ -65,7 +65,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
         'remoteUniqueId' => 'string',
         'language' => 'string',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
@@ -694,7 +694,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -704,7 +704,7 @@ class RemoteEntityRevisionEntity implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */

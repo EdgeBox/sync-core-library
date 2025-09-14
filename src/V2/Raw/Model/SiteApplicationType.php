@@ -47,6 +47,12 @@ class SiteApplicationType
 
     public const WORDPRESS = 'wordpress';
 
+    public const SYNC_CORE = 'sync-core';
+
+    public const CONTENT_CLOUD = 'content-cloud';
+
+    public const PANTHEON_PUBLISHER = 'pantheon-publisher';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -57,6 +63,9 @@ class SiteApplicationType
         return [
             self::DRUPAL,
             self::WORDPRESS,
+            self::SYNC_CORE,
+            self::CONTENT_CLOUD,
+            self::PANTHEON_PUBLISHER,
         ];
     }
 }

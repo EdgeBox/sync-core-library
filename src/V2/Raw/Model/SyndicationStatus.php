@@ -51,6 +51,8 @@ class SyndicationStatus
 
     public const _400_FINISHED = '400-finished';
 
+    public const _450_SKIPPED = '450-skipped';
+
     public const _500_FAILED = '500-failed';
 
     public const _600_ABORTED = '600-aborted';
@@ -69,6 +71,7 @@ class SyndicationStatus
             self::_200_RUNNING,
             self::_300_RETRYING,
             self::_400_FINISHED,
+            self::_450_SKIPPED,
             self::_500_FAILED,
             self::_600_ABORTED,
             self::_700_LIMIT_EXCEEDED,

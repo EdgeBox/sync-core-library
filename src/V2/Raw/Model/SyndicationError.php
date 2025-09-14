@@ -59,7 +59,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType',
+        'type' => 'SyndicationErrorType',
         'timestamp' => 'float',
         'errorMessage' => 'string',
         'callStack' => 'string',
@@ -293,7 +293,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType
+     * @return SyndicationErrorType
      */
     public function getType()
     {
@@ -303,7 +303,7 @@ class SyndicationError implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType $type type
+     * @param SyndicationErrorType $type type
      *
      * @return self
      */

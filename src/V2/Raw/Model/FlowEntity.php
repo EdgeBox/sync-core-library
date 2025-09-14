@@ -66,7 +66,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus',
+        'status' => 'FlowStatus',
         'sitePushes' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]',
         'sitePulls' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndication[]',
         'remoteConfigAsFile' => 'DynamicReference',
@@ -586,7 +586,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowStatus
+     * @return FlowStatus
      */
     public function getStatus()
     {
@@ -596,7 +596,7 @@ class FlowEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowStatus $status status
+     * @param FlowStatus $status status
      *
      * @return self
      */

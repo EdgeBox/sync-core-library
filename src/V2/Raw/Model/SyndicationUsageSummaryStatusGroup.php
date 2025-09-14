@@ -59,7 +59,7 @@ class SyndicationUsageSummaryStatusGroup implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $openAPITypes = [
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'status' => 'SyndicationStatus',
         'count' => 'float',
         'progress' => 'float',
     ];
@@ -275,7 +275,7 @@ class SyndicationUsageSummaryStatusGroup implements ModelInterface, ArrayAccess,
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -285,7 +285,7 @@ class SyndicationUsageSummaryStatusGroup implements ModelInterface, ArrayAccess,
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */

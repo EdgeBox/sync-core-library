@@ -61,7 +61,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     protected static $openAPITypes = [
         'page' => 'float',
         'itemsPerPage' => 'float',
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityListRequestMode',
+        'mode' => 'RemoteEntityListRequestMode',
         'changedAfter' => 'float',
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
@@ -379,7 +379,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Gets mode.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityListRequestMode
+     * @return RemoteEntityListRequestMode
      */
     public function getMode()
     {
@@ -389,7 +389,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, ArrayAccess,
     /**
      * Sets mode.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityListRequestMode $mode mode
+     * @param RemoteEntityListRequestMode $mode mode
      *
      * @return self
      */

@@ -62,6 +62,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
         'name' => 'string',
+        'mode' => 'FlowSyndicationMode',
+        'id' => 'string',
     ];
 
     /**
@@ -75,6 +77,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => null,
         'machineName' => null,
         'name' => null,
+        'mode' => null,
+        'id' => null,
     ];
 
     /**
@@ -86,6 +90,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => false,
         'machineName' => false,
         'name' => false,
+        'mode' => true,
+        'id' => true,
     ];
 
     /**
@@ -105,6 +111,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => 'namespaceMachineName',
         'machineName' => 'machineName',
         'name' => 'name',
+        'mode' => 'mode',
+        'id' => 'id',
     ];
 
     /**
@@ -116,6 +124,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => 'setNamespaceMachineName',
         'machineName' => 'setMachineName',
         'name' => 'setName',
+        'mode' => 'setMode',
+        'id' => 'setId',
     ];
 
     /**
@@ -127,6 +137,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         'namespaceMachineName' => 'getNamespaceMachineName',
         'machineName' => 'getMachineName',
         'name' => 'getName',
+        'mode' => 'getMode',
+        'id' => 'getId',
     ];
 
     /**
@@ -147,6 +159,8 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
         $this->setIfExists('namespaceMachineName', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('mode', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
     }
 
     /**
@@ -349,6 +363,74 @@ class PullDashboardPullEntityType implements ModelInterface, ArrayAccess, \JsonS
             throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
         $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets mode.
+     *
+     * @return null|FlowSyndicationMode
+     */
+    public function getMode()
+    {
+        return $this->container['mode'];
+    }
+
+    /**
+     * Sets mode.
+     *
+     * @param null|FlowSyndicationMode $mode mode
+     *
+     * @return self
+     */
+    public function setMode($mode)
+    {
+        if (is_null($mode)) {
+            array_push($this->openAPINullablesSetToNull, 'mode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('mode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['mode'] = $mode;
+
+        return $this;
+    }
+
+    /**
+     * Gets id.
+     *
+     * @return null|string
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param null|string $id id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        if (is_null($id)) {
+            array_push($this->openAPINullablesSetToNull, 'id');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('id', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['id'] = $id;
 
         return $this;
     }

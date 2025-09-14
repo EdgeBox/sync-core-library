@@ -59,7 +59,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
+        'type' => 'MigrationType',
         'entityTypeReference' => 'EntityTypeVersionReference',
         'entityReferences' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
         'previousMigration' => 'DynamicReference',
@@ -325,7 +325,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationType
+     * @return MigrationType
      */
     public function getType()
     {
@@ -335,7 +335,7 @@ class CreateMigrationDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\MigrationType $type type
+     * @param MigrationType $type type
      *
      * @return self
      */

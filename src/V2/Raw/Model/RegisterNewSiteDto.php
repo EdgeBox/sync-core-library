@@ -59,19 +59,19 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
+        'environmentType' => 'SiteEnvironmentType',
         'contractUuid' => 'string',
         'projectUuid' => 'string',
         'uuid' => 'string',
         'useProxy' => 'bool',
         'secret' => 'string',
-        'authenticationType' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
+        'authenticationType' => 'AuthenticationType',
         'authenticationUsername' => 'string',
         'token' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
         'name' => 'string',
         'baseUrl' => 'string',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
     ];
@@ -113,7 +113,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
         'uuid' => true,
         'useProxy' => true,
         'secret' => false,
-        'authenticationType' => false,
+        'authenticationType' => true,
         'authenticationUsername' => true,
         'token' => false,
         'restUrls' => false,
@@ -383,7 +383,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets environmentType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType
+     * @return SiteEnvironmentType
      */
     public function getEnvironmentType()
     {
@@ -393,7 +393,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets environmentType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType $environmentType environmentType
+     * @param SiteEnvironmentType $environmentType environmentType
      *
      * @return self
      */
@@ -559,7 +559,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets authenticationType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType
+     * @return null|AuthenticationType
      */
     public function getAuthenticationType()
     {
@@ -569,14 +569,21 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets authenticationType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType $authenticationType authenticationType
+     * @param null|AuthenticationType $authenticationType authenticationType
      *
      * @return self
      */
     public function setAuthenticationType($authenticationType)
     {
         if (is_null($authenticationType)) {
-            throw new \InvalidArgumentException('non-nullable authenticationType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'authenticationType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('authenticationType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['authenticationType'] = $authenticationType;
 
@@ -728,7 +735,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -738,7 +745,7 @@ class RegisterNewSiteDto implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */

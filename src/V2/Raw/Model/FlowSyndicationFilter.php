@@ -59,7 +59,7 @@ class FlowSyndicationFilter implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilterType',
+        'type' => 'FlowSyndicationFilterType',
         'property' => 'string',
         'includes' => 'string[]',
     ];
@@ -275,7 +275,7 @@ class FlowSyndicationFilter implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilterType
+     * @return FlowSyndicationFilterType
      */
     public function getType()
     {
@@ -285,7 +285,7 @@ class FlowSyndicationFilter implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilterType $type type
+     * @param FlowSyndicationFilterType $type type
      *
      * @return self
      */

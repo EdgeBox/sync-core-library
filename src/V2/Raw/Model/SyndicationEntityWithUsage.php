@@ -61,19 +61,21 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     protected static $openAPITypes = [
         'rootEntityReference' => 'RemoteEntityReference',
         'rootEntityDetails' => 'RemoteEntityDetails',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType',
+        'status' => 'SyndicationStatus',
+        'type' => 'SyndicationType',
         'rootEntity' => 'DynamicReference',
         'rootEntityType' => 'DynamicReference',
         'rootEntityTypeVersion' => 'DynamicReference',
-        'targetSite' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'targetSite' => 'DynamicReference',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'flow' => 'DynamicReference',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]',
         'migration' => 'DynamicReference',
-        'migrationType' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
+        'migrationType' => 'MigrationType',
+        'webhook' => 'DynamicReference',
+        'webhookEntityType' => 'WebhookEntityType',
         'finishedAt' => 'float',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
@@ -92,13 +94,14 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => 'bool',
         'trace' => 'bool',
         'priority' => 'float',
+        'projectLinkTargets' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[]',
         'dependsOnSyndication' => 'DynamicReference',
         'runAfterSyndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
-        'originalType' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType',
+        'originalType' => 'SyndicationType',
         'skipOptimization' => 'bool',
         'usage' => 'RemoteEntityUsageEntity',
     ];
@@ -126,6 +129,8 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'operations' => null,
         'migration' => null,
         'migrationType' => null,
+        'webhook' => null,
+        'webhookEntityType' => null,
         'finishedAt' => null,
         'dryRun' => null,
         'skipSyndication' => null,
@@ -144,6 +149,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => null,
         'trace' => null,
         'priority' => null,
+        'projectLinkTargets' => null,
         'dependsOnSyndication' => null,
         'runAfterSyndication' => null,
         'id' => null,
@@ -168,14 +174,16 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'rootEntity' => true,
         'rootEntityType' => true,
         'rootEntityTypeVersion' => true,
-        'targetSite' => false,
+        'targetSite' => true,
         'pools' => true,
         'flow' => true,
         'customer' => false,
         'project' => false,
         'operations' => true,
         'migration' => true,
-        'migrationType' => false,
+        'migrationType' => true,
+        'webhook' => true,
+        'webhookEntityType' => true,
         'finishedAt' => true,
         'dryRun' => true,
         'skipSyndication' => true,
@@ -194,13 +202,14 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => true,
         'trace' => true,
         'priority' => true,
+        'projectLinkTargets' => true,
         'dependsOnSyndication' => true,
         'runAfterSyndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
-        'originalType' => false,
+        'originalType' => true,
         'skipOptimization' => true,
         'usage' => true,
     ];
@@ -234,6 +243,8 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'operations' => 'operations',
         'migration' => 'migration',
         'migrationType' => 'migrationType',
+        'webhook' => 'webhook',
+        'webhookEntityType' => 'webhookEntityType',
         'finishedAt' => 'finishedAt',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
@@ -252,6 +263,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => 'skipUnchanged',
         'trace' => 'trace',
         'priority' => 'priority',
+        'projectLinkTargets' => 'projectLinkTargets',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'runAfterSyndication' => 'runAfterSyndication',
         'id' => 'id',
@@ -284,6 +296,8 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'operations' => 'setOperations',
         'migration' => 'setMigration',
         'migrationType' => 'setMigrationType',
+        'webhook' => 'setWebhook',
+        'webhookEntityType' => 'setWebhookEntityType',
         'finishedAt' => 'setFinishedAt',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
@@ -302,6 +316,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => 'setSkipUnchanged',
         'trace' => 'setTrace',
         'priority' => 'setPriority',
+        'projectLinkTargets' => 'setProjectLinkTargets',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'runAfterSyndication' => 'setRunAfterSyndication',
         'id' => 'setId',
@@ -334,6 +349,8 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'operations' => 'getOperations',
         'migration' => 'getMigration',
         'migrationType' => 'getMigrationType',
+        'webhook' => 'getWebhook',
+        'webhookEntityType' => 'getWebhookEntityType',
         'finishedAt' => 'getFinishedAt',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
@@ -352,6 +369,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         'skipUnchanged' => 'getSkipUnchanged',
         'trace' => 'getTrace',
         'priority' => 'getPriority',
+        'projectLinkTargets' => 'getProjectLinkTargets',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'runAfterSyndication' => 'getRunAfterSyndication',
         'id' => 'getId',
@@ -393,6 +411,8 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         $this->setIfExists('operations', $data ?? [], null);
         $this->setIfExists('migration', $data ?? [], null);
         $this->setIfExists('migrationType', $data ?? [], null);
+        $this->setIfExists('webhook', $data ?? [], null);
+        $this->setIfExists('webhookEntityType', $data ?? [], null);
         $this->setIfExists('finishedAt', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
@@ -411,6 +431,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         $this->setIfExists('skipUnchanged', $data ?? [], null);
         $this->setIfExists('trace', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
+        $this->setIfExists('projectLinkTargets', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('runAfterSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -527,9 +548,6 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
         if (null === $this->container['type']) {
             $invalidProperties[] = "'type' can't be null";
         }
-        if (null === $this->container['targetSite']) {
-            $invalidProperties[] = "'targetSite' can't be null";
-        }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
         }
@@ -631,7 +649,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -641,7 +659,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */
@@ -658,7 +676,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationType
+     * @return SyndicationType
      */
     public function getType()
     {
@@ -668,7 +686,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationType $type type
+     * @param SyndicationType $type type
      *
      * @return self
      */
@@ -787,7 +805,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets targetSite.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return null|DynamicReference
      */
     public function getTargetSite()
     {
@@ -797,14 +815,21 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets targetSite.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity $targetSite targetSite
+     * @param null|DynamicReference $targetSite targetSite
      *
      * @return self
      */
     public function setTargetSite($targetSite)
     {
         if (is_null($targetSite)) {
-            throw new \InvalidArgumentException('non-nullable targetSite cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'targetSite');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('targetSite', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['targetSite'] = $targetSite;
 
@@ -1004,7 +1029,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets migrationType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\MigrationType
+     * @return null|MigrationType
      */
     public function getMigrationType()
     {
@@ -1014,16 +1039,91 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets migrationType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\MigrationType $migrationType migrationType
+     * @param null|MigrationType $migrationType migrationType
      *
      * @return self
      */
     public function setMigrationType($migrationType)
     {
         if (is_null($migrationType)) {
-            throw new \InvalidArgumentException('non-nullable migrationType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'migrationType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('migrationType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['migrationType'] = $migrationType;
+
+        return $this;
+    }
+
+    /**
+     * Gets webhook.
+     *
+     * @return null|DynamicReference
+     */
+    public function getWebhook()
+    {
+        return $this->container['webhook'];
+    }
+
+    /**
+     * Sets webhook.
+     *
+     * @param null|DynamicReference $webhook webhook
+     *
+     * @return self
+     */
+    public function setWebhook($webhook)
+    {
+        if (is_null($webhook)) {
+            array_push($this->openAPINullablesSetToNull, 'webhook');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('webhook', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['webhook'] = $webhook;
+
+        return $this;
+    }
+
+    /**
+     * Gets webhookEntityType.
+     *
+     * @return null|WebhookEntityType
+     */
+    public function getWebhookEntityType()
+    {
+        return $this->container['webhookEntityType'];
+    }
+
+    /**
+     * Sets webhookEntityType.
+     *
+     * @param null|WebhookEntityType $webhookEntityType webhookEntityType
+     *
+     * @return self
+     */
+    public function setWebhookEntityType($webhookEntityType)
+    {
+        if (is_null($webhookEntityType)) {
+            array_push($this->openAPINullablesSetToNull, 'webhookEntityType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('webhookEntityType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['webhookEntityType'] = $webhookEntityType;
 
         return $this;
     }
@@ -1641,6 +1741,40 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     }
 
     /**
+     * Gets projectLinkTargets.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[]
+     */
+    public function getProjectLinkTargets()
+    {
+        return $this->container['projectLinkTargets'];
+    }
+
+    /**
+     * Sets projectLinkTargets.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[] $projectLinkTargets projectLinkTargets
+     *
+     * @return self
+     */
+    public function setProjectLinkTargets($projectLinkTargets)
+    {
+        if (is_null($projectLinkTargets)) {
+            array_push($this->openAPINullablesSetToNull, 'projectLinkTargets');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('projectLinkTargets', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['projectLinkTargets'] = $projectLinkTargets;
+
+        return $this;
+    }
+
+    /**
      * Gets dependsOnSyndication.
      *
      * @return null|DynamicReference
@@ -1826,7 +1960,7 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets originalType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType
+     * @return null|SyndicationType
      */
     public function getOriginalType()
     {
@@ -1836,14 +1970,21 @@ class SyndicationEntityWithUsage implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets originalType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationType $originalType originalType
+     * @param null|SyndicationType $originalType originalType
      *
      * @return self
      */
     public function setOriginalType($originalType)
     {
         if (is_null($originalType)) {
-            throw new \InvalidArgumentException('non-nullable originalType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'originalType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('originalType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['originalType'] = $originalType;
 

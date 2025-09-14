@@ -62,9 +62,9 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'deprecatedMachineName' => 'string',
         'baseUrl' => 'string',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteStatus',
+        'status' => 'SiteStatus',
         'inactiveSince' => 'float',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
@@ -78,7 +78,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'project' => 'DynamicReference',
         'lastActivity' => 'float',
         'uuid' => 'string',
-        'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
+        'environmentType' => 'SiteEnvironmentType',
         'secret' => 'string',
         'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
     ];
@@ -256,7 +256,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('deprecatedMachineName', $data ?? [], null);
@@ -514,7 +514,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteStatus
+     * @return SiteStatus
      */
     public function getStatus()
     {
@@ -524,7 +524,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteStatus $status status
+     * @param SiteStatus $status status
      *
      * @return self
      */
@@ -575,7 +575,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -585,7 +585,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */
@@ -1023,7 +1023,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets environmentType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType
+     * @return SiteEnvironmentType
      */
     public function getEnvironmentType()
     {
@@ -1033,7 +1033,7 @@ class CreateSiteDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets environmentType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType $environmentType environmentType
+     * @param SiteEnvironmentType $environmentType environmentType
      *
      * @return self
      */

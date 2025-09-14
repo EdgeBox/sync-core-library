@@ -59,7 +59,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode',
+        'mode' => 'FlowSyndicationMode',
         'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
         'syndicateDeletions' => 'bool',
         'poolMachineName' => 'string',
@@ -289,7 +289,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets mode.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode
+     * @return FlowSyndicationMode
      */
     public function getMode()
     {
@@ -299,7 +299,7 @@ class NewFlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets mode.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode $mode mode
+     * @param FlowSyndicationMode $mode mode
      *
      * @return self
      */

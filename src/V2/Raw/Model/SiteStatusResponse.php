@@ -97,7 +97,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static array $openAPINullables = [
         'name' => false,
         'baseUrl' => false,
-        'uuid' => false,
+        'uuid' => true,
         'appVersion' => false,
         'appModuleVersion' => false,
         'featureFlags' => true,
@@ -296,9 +296,6 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         if (null === $this->container['baseUrl']) {
             $invalidProperties[] = "'baseUrl' can't be null";
         }
-        if (null === $this->container['uuid']) {
-            $invalidProperties[] = "'uuid' can't be null";
-        }
         if (null === $this->container['appVersion']) {
             $invalidProperties[] = "'appVersion' can't be null";
         }
@@ -380,7 +377,7 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets uuid.
      *
-     * @return string
+     * @return null|string
      */
     public function getUuid()
     {
@@ -390,14 +387,21 @@ class SiteStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets uuid.
      *
-     * @param string $uuid uuid
+     * @param null|string $uuid uuid
      *
      * @return self
      */
     public function setUuid($uuid)
     {
         if (is_null($uuid)) {
-            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'uuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('uuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['uuid'] = $uuid;
 

@@ -59,7 +59,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
      * @var string[]
      */
     protected static $openAPITypes = [
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'name' => 'string',
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
@@ -342,7 +342,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -352,7 +352,7 @@ class RemoteEntityTypeEntity implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */

@@ -59,7 +59,7 @@ class RemoteRequestQueryParamsSiteConfig implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode',
+        'mode' => 'RemoteSiteConfigRequestMode',
         'page' => 'float',
         'itemsPerPage' => 'float',
         'namespaceMachineName' => 'string',
@@ -304,7 +304,7 @@ class RemoteRequestQueryParamsSiteConfig implements ModelInterface, ArrayAccess,
     /**
      * Gets mode.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode
+     * @return RemoteSiteConfigRequestMode
      */
     public function getMode()
     {
@@ -314,7 +314,7 @@ class RemoteRequestQueryParamsSiteConfig implements ModelInterface, ArrayAccess,
     /**
      * Sets mode.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteConfigRequestMode $mode mode
+     * @param RemoteSiteConfigRequestMode $mode mode
      *
      * @return self
      */

@@ -59,7 +59,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteStatusRequestMode',
+        'mode' => 'RemoteSiteStatusRequestMode',
         'force2xx' => 'string',
         'trace' => 'string',
     ];
@@ -269,7 +269,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     /**
      * Gets mode.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteStatusRequestMode
+     * @return RemoteSiteStatusRequestMode
      */
     public function getMode()
     {
@@ -279,7 +279,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     /**
      * Sets mode.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteSiteStatusRequestMode $mode mode
+     * @param RemoteSiteStatusRequestMode $mode mode
      *
      * @return self
      */

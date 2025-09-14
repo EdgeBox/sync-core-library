@@ -61,6 +61,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static $openAPITypes = [
         'code' => 'string',
         'name' => 'string',
+        'fallbackLanguageCode' => 'string',
         'nativeName' => 'string',
         'isRightToLeft' => 'bool',
     ];
@@ -75,6 +76,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static $openAPIFormats = [
         'code' => null,
         'name' => null,
+        'fallbackLanguageCode' => null,
         'nativeName' => null,
         'isRightToLeft' => null,
     ];
@@ -87,6 +89,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static array $openAPINullables = [
         'code' => false,
         'name' => false,
+        'fallbackLanguageCode' => true,
         'nativeName' => true,
         'isRightToLeft' => true,
     ];
@@ -107,6 +110,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static $attributeMap = [
         'code' => 'code',
         'name' => 'name',
+        'fallbackLanguageCode' => 'fallbackLanguageCode',
         'nativeName' => 'nativeName',
         'isRightToLeft' => 'isRightToLeft',
     ];
@@ -119,6 +123,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static $setters = [
         'code' => 'setCode',
         'name' => 'setName',
+        'fallbackLanguageCode' => 'setFallbackLanguageCode',
         'nativeName' => 'setNativeName',
         'isRightToLeft' => 'setIsRightToLeft',
     ];
@@ -131,6 +136,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     protected static $getters = [
         'code' => 'getCode',
         'name' => 'getName',
+        'fallbackLanguageCode' => 'getFallbackLanguageCode',
         'nativeName' => 'getNativeName',
         'isRightToLeft' => 'getIsRightToLeft',
     ];
@@ -152,6 +158,7 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
     {
         $this->setIfExists('code', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('fallbackLanguageCode', $data ?? [], null);
         $this->setIfExists('nativeName', $data ?? [], null);
         $this->setIfExists('isRightToLeft', $data ?? [], null);
     }
@@ -326,6 +333,40 @@ class LanguageDefinition implements ModelInterface, ArrayAccess, \JsonSerializab
             throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
         $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets fallbackLanguageCode.
+     *
+     * @return null|string
+     */
+    public function getFallbackLanguageCode()
+    {
+        return $this->container['fallbackLanguageCode'];
+    }
+
+    /**
+     * Sets fallbackLanguageCode.
+     *
+     * @param null|string $fallbackLanguageCode fallbackLanguageCode
+     *
+     * @return self
+     */
+    public function setFallbackLanguageCode($fallbackLanguageCode)
+    {
+        if (is_null($fallbackLanguageCode)) {
+            array_push($this->openAPINullablesSetToNull, 'fallbackLanguageCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fallbackLanguageCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fallbackLanguageCode'] = $fallbackLanguageCode;
 
         return $this;
     }

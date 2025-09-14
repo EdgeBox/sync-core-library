@@ -61,7 +61,7 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPITypes = [
         'name' => 'string',
         'value' => 'mixed',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType',
+        'type' => 'RemoteEntityTypePropertyType',
     ];
 
     /**
@@ -336,7 +336,7 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType
+     * @return RemoteEntityTypePropertyType
      */
     public function getType()
     {
@@ -346,7 +346,7 @@ class RemoteEntityProperty implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypePropertyType $type type
+     * @param RemoteEntityTypePropertyType $type type
      *
      * @return self
      */

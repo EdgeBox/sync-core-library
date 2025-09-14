@@ -60,8 +60,8 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
      */
     protected static $openAPITypes = [
         'operationIndex' => 'float',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType',
+        'status' => 'SyndicationStatus',
+        'type' => 'SyndicationOperationType',
         'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]',
         'entityTypeNamespaceMachineName' => 'string',
         'entityTypeMachineName' => 'string',
@@ -354,7 +354,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -364,7 +364,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */
@@ -381,7 +381,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType
+     * @return SyndicationOperationType
      */
     public function getType()
     {
@@ -391,7 +391,7 @@ class SyndicationErrorOperation implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType $type type
+     * @param SyndicationOperationType $type type
      *
      * @return self
      */

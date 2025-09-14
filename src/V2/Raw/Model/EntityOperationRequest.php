@@ -71,7 +71,7 @@ class EntityOperationRequest implements ModelInterface, ArrayAccess, \JsonSerial
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
         'viewUrl' => 'string',
-        'operation' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityOperation',
+        'operation' => 'EntityOperation',
     ];
 
     /**
@@ -727,7 +727,7 @@ class EntityOperationRequest implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets operation.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityOperation
+     * @return EntityOperation
      */
     public function getOperation()
     {
@@ -737,7 +737,7 @@ class EntityOperationRequest implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets operation.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityOperation $operation operation
+     * @param EntityOperation $operation operation
      *
      * @return self
      */

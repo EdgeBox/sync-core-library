@@ -63,6 +63,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'name' => 'string',
         'machineName' => 'string',
+        'type' => 'string',
     ];
 
     /**
@@ -77,6 +78,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => null,
         'name' => null,
         'machineName' => null,
+        'type' => null,
     ];
 
     /**
@@ -89,6 +91,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => false,
         'name' => false,
         'machineName' => false,
+        'type' => true,
     ];
 
     /**
@@ -109,6 +112,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => 'site',
         'name' => 'name',
         'machineName' => 'machineName',
+        'type' => 'type',
     ];
 
     /**
@@ -121,6 +125,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => 'setSite',
         'name' => 'setName',
         'machineName' => 'setMachineName',
+        'type' => 'setType',
     ];
 
     /**
@@ -133,6 +138,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'site' => 'getSite',
         'name' => 'getName',
         'machineName' => 'getMachineName',
+        'type' => 'getType',
     ];
 
     /**
@@ -154,6 +160,7 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('site', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
     }
 
     /**
@@ -386,6 +393,40 @@ class FlowSummary implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable machineName cannot be null');
         }
         $this->container['machineName'] = $machineName;
+
+        return $this;
+    }
+
+    /**
+     * Gets type.
+     *
+     * @return null|string
+     */
+    public function getType()
+    {
+        return $this->container['type'];
+    }
+
+    /**
+     * Sets type.
+     *
+     * @param null|string $type type
+     *
+     * @return self
+     */
+    public function setType($type)
+    {
+        if (is_null($type)) {
+            array_push($this->openAPINullablesSetToNull, 'type');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('type', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['type'] = $type;
 
         return $this;
     }

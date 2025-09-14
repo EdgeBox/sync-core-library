@@ -59,7 +59,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\FileType',
+        'type' => 'FileType',
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
@@ -300,7 +300,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileType
+     * @return FileType
      */
     public function getType()
     {
@@ -310,7 +310,7 @@ class CreateFileDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FileType $type type
+     * @param FileType $type type
      *
      * @return self
      */

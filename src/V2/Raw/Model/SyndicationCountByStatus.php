@@ -59,7 +59,7 @@ class SyndicationCountByStatus implements ModelInterface, ArrayAccess, \JsonSeri
      * @var string[]
      */
     protected static $openAPITypes = [
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'status' => 'SyndicationStatus',
         'count' => 'float',
     ];
 
@@ -265,7 +265,7 @@ class SyndicationCountByStatus implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -275,7 +275,7 @@ class SyndicationCountByStatus implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */

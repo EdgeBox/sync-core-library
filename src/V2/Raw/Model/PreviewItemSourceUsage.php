@@ -59,8 +59,8 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
      * @var string[]
      */
     protected static $openAPITypes = [
-        'match' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
+        'match' => 'EntityMatchType',
+        'status' => 'EntityRemoteStatus',
         'viewUrl' => 'string',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreRemoteEntityUsageEntityReference[]',
@@ -434,7 +434,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets match.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType
+     * @return EntityMatchType
      */
     public function getMatch()
     {
@@ -444,7 +444,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets match.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType $match match
+     * @param EntityMatchType $match match
      *
      * @return self
      */
@@ -461,7 +461,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
+     * @return EntityRemoteStatus
      */
     public function getStatus()
     {
@@ -471,7 +471,7 @@ class PreviewItemSourceUsage implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
+     * @param EntityRemoteStatus $status status
      *
      * @return self
      */

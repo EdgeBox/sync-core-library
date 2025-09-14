@@ -59,9 +59,11 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $openAPITypes = [
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType',
-        'subType' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType',
+        'status' => 'SyndicationStatus',
+        'type' => 'SyndicationOperationType',
+        'subType' => 'SyndicationOperationSubType',
+        'syndicationIds' => 'string',
+        'actionId' => 'string',
         'page' => 'float',
         'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]',
         'entity' => 'DynamicReference',
@@ -90,6 +92,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'status' => null,
         'type' => null,
         'subType' => null,
+        'syndicationIds' => null,
+        'actionId' => null,
         'page' => null,
         'errors' => null,
         'entity' => null,
@@ -115,7 +119,9 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static array $openAPINullables = [
         'status' => false,
         'type' => false,
-        'subType' => false,
+        'subType' => true,
+        'syndicationIds' => true,
+        'actionId' => true,
         'page' => true,
         'errors' => true,
         'entity' => true,
@@ -150,6 +156,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'status' => 'status',
         'type' => 'type',
         'subType' => 'subType',
+        'syndicationIds' => 'syndicationIds',
+        'actionId' => 'actionId',
         'page' => 'page',
         'errors' => 'errors',
         'entity' => 'entity',
@@ -176,6 +184,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'status' => 'setStatus',
         'type' => 'setType',
         'subType' => 'setSubType',
+        'syndicationIds' => 'setSyndicationIds',
+        'actionId' => 'setActionId',
         'page' => 'setPage',
         'errors' => 'setErrors',
         'entity' => 'setEntity',
@@ -202,6 +212,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         'status' => 'getStatus',
         'type' => 'getType',
         'subType' => 'getSubType',
+        'syndicationIds' => 'getSyndicationIds',
+        'actionId' => 'getActionId',
         'page' => 'getPage',
         'errors' => 'getErrors',
         'entity' => 'getEntity',
@@ -237,6 +249,8 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
         $this->setIfExists('subType', $data ?? [], null);
+        $this->setIfExists('syndicationIds', $data ?? [], null);
+        $this->setIfExists('actionId', $data ?? [], null);
         $this->setIfExists('page', $data ?? [], null);
         $this->setIfExists('errors', $data ?? [], null);
         $this->setIfExists('entity', $data ?? [], null);
@@ -377,7 +391,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -387,7 +401,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */
@@ -404,7 +418,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType
+     * @return SyndicationOperationType
      */
     public function getType()
     {
@@ -414,7 +428,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationType $type type
+     * @param SyndicationOperationType $type type
      *
      * @return self
      */
@@ -431,7 +445,7 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets subType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType
+     * @return null|SyndicationOperationSubType
      */
     public function getSubType()
     {
@@ -441,16 +455,91 @@ class SyndicationOperation implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets subType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperationSubType $subType subType
+     * @param null|SyndicationOperationSubType $subType subType
      *
      * @return self
      */
     public function setSubType($subType)
     {
         if (is_null($subType)) {
-            throw new \InvalidArgumentException('non-nullable subType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'subType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('subType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['subType'] = $subType;
+
+        return $this;
+    }
+
+    /**
+     * Gets syndicationIds.
+     *
+     * @return null|string
+     */
+    public function getSyndicationIds()
+    {
+        return $this->container['syndicationIds'];
+    }
+
+    /**
+     * Sets syndicationIds.
+     *
+     * @param null|string $syndicationIds syndicationIds
+     *
+     * @return self
+     */
+    public function setSyndicationIds($syndicationIds)
+    {
+        if (is_null($syndicationIds)) {
+            array_push($this->openAPINullablesSetToNull, 'syndicationIds');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syndicationIds', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['syndicationIds'] = $syndicationIds;
+
+        return $this;
+    }
+
+    /**
+     * Gets actionId.
+     *
+     * @return null|string
+     */
+    public function getActionId()
+    {
+        return $this->container['actionId'];
+    }
+
+    /**
+     * Sets actionId.
+     *
+     * @param null|string $actionId actionId
+     *
+     * @return self
+     */
+    public function setActionId($actionId)
+    {
+        if (is_null($actionId)) {
+            array_push($this->openAPINullablesSetToNull, 'actionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('actionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['actionId'] = $actionId;
 
         return $this;
     }

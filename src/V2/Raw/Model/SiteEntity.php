@@ -62,9 +62,9 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'deprecatedMachineName' => 'string',
         'baseUrl' => 'string',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteStatus',
+        'status' => 'SiteStatus',
         'inactiveSince' => 'float',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
         'useProxy' => 'bool',
@@ -74,7 +74,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
         'defaultLanguageCode' => 'string',
         'uuid' => 'string',
-        'environmentType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
+        'environmentType' => 'SiteEnvironmentType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -598,7 +598,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteStatus
+     * @return SiteStatus
      */
     public function getStatus()
     {
@@ -608,7 +608,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteStatus $status status
+     * @param SiteStatus $status status
      *
      * @return self
      */
@@ -659,7 +659,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -669,7 +669,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */
@@ -971,7 +971,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets environmentType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType
+     * @return SiteEnvironmentType
      */
     public function getEnvironmentType()
     {
@@ -981,7 +981,7 @@ class SiteEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets environmentType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType $environmentType environmentType
+     * @param SiteEnvironmentType $environmentType environmentType
      *
      * @return self
      */

@@ -65,7 +65,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
         'remoteUniqueId' => 'string',
         'language' => 'string',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
@@ -659,7 +659,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -669,7 +669,7 @@ class CreateRemoteEntityRevisionDto implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */

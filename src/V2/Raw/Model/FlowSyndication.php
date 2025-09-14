@@ -59,7 +59,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode',
+        'mode' => 'FlowSyndicationMode',
         'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
         'syndicateDeletions' => 'bool',
         'pool' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -299,7 +299,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets mode.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode
+     * @return FlowSyndicationMode
      */
     public function getMode()
     {
@@ -309,7 +309,7 @@ class FlowSyndication implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets mode.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode $mode mode
+     * @param FlowSyndicationMode $mode mode
      *
      * @return self
      */

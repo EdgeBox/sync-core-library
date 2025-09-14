@@ -65,7 +65,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
         'remoteUniqueId' => 'string',
         'language' => 'string',
         'directDependencies' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityDependency[]',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'appType' => 'SiteApplicationType',
         'poolMachineNames' => 'string[]',
         'isTranslationRoot' => 'bool',
         'viewUrl' => 'string',
@@ -701,7 +701,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Gets appType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return SiteApplicationType
      */
     public function getAppType()
     {
@@ -711,7 +711,7 @@ class RemoteEntityRevisionEntityPushResult implements ModelInterface, ArrayAcces
     /**
      * Sets appType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param SiteApplicationType $appType appType
      *
      * @return self
      */

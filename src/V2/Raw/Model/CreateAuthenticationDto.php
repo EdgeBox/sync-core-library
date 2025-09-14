@@ -59,7 +59,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType',
+        'type' => 'AuthenticationType',
         'username' => 'string',
         'password' => 'mixed',
         'sessionLifespanInSeconds' => 'float',
@@ -296,7 +296,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType
+     * @return AuthenticationType
      */
     public function getType()
     {
@@ -306,7 +306,7 @@ class CreateAuthenticationDto implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType $type type
+     * @param AuthenticationType $type type
      *
      * @return self
      */

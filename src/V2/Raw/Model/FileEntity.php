@@ -59,7 +59,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\FileType',
+        'type' => 'FileType',
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
@@ -69,7 +69,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'mimeType' => 'string',
         'fileSize' => 'float',
         'maxFileSize' => 'float',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FileStatus',
+        'status' => 'FileStatus',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -432,7 +432,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileType
+     * @return FileType
      */
     public function getType()
     {
@@ -442,7 +442,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FileType $type type
+     * @param FileType $type type
      *
      * @return self
      */
@@ -744,7 +744,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FileStatus
+     * @return FileStatus
      */
     public function getStatus()
     {
@@ -754,7 +754,7 @@ class FileEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FileStatus $status status
+     * @param FileStatus $status status
      *
      * @return self
      */

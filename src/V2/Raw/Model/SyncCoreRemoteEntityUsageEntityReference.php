@@ -62,8 +62,8 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'language' => 'string',
         'isTranslationRoot' => 'bool',
-        'match' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus',
+        'match' => 'EntityMatchType',
+        'status' => 'EntityRemoteStatus',
         'versionId' => 'string',
         'versionIdWithTranslations' => 'string',
         'viewUrl' => 'string',
@@ -71,7 +71,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'lastPull' => 'float',
         'revisionId' => 'float',
         'isLatest' => 'bool',
-        'updateStatus' => '\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus',
+        'updateStatus' => 'EntityRemoteUpdateStatus',
     ];
 
     /**
@@ -106,7 +106,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'entity' => false,
         'language' => false,
         'isTranslationRoot' => false,
-        'match' => false,
+        'match' => true,
         'status' => false,
         'versionId' => true,
         'versionIdWithTranslations' => true,
@@ -115,7 +115,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
         'lastPull' => true,
         'revisionId' => true,
         'isLatest' => true,
-        'updateStatus' => false,
+        'updateStatus' => true,
     ];
 
     /**
@@ -429,7 +429,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Gets match.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType
+     * @return null|EntityMatchType
      */
     public function getMatch()
     {
@@ -439,14 +439,21 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets match.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityMatchType $match match
+     * @param null|EntityMatchType $match match
      *
      * @return self
      */
     public function setMatch($match)
     {
         if (is_null($match)) {
-            throw new \InvalidArgumentException('non-nullable match cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'match');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('match', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['match'] = $match;
 
@@ -456,7 +463,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus
+     * @return EntityRemoteStatus
      */
     public function getStatus()
     {
@@ -466,7 +473,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus $status status
+     * @param EntityRemoteStatus $status status
      *
      * @return self
      */
@@ -721,7 +728,7 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Gets updateStatus.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus
+     * @return null|EntityRemoteUpdateStatus
      */
     public function getUpdateStatus()
     {
@@ -731,14 +738,21 @@ class SyncCoreRemoteEntityUsageEntityReference implements ModelInterface, ArrayA
     /**
      * Sets updateStatus.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteUpdateStatus $updateStatus updateStatus
+     * @param null|EntityRemoteUpdateStatus $updateStatus updateStatus
      *
      * @return self
      */
     public function setUpdateStatus($updateStatus)
     {
         if (is_null($updateStatus)) {
-            throw new \InvalidArgumentException('non-nullable updateStatus cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'updateStatus');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('updateStatus', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['updateStatus'] = $updateStatus;
 

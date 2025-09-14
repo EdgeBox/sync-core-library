@@ -59,9 +59,9 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\CustomerStatus',
+        'status' => 'CustomerStatus',
         'name' => 'string',
-        'region' => '\EdgeBox\SyncCore\V2\Raw\Model\SalesRegion',
+        'region' => 'SalesRegion',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -322,7 +322,7 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\CustomerStatus
+     * @return CustomerStatus
      */
     public function getStatus()
     {
@@ -332,7 +332,7 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\CustomerStatus $status status
+     * @param CustomerStatus $status status
      *
      * @return self
      */
@@ -376,7 +376,7 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets region.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion
+     * @return SalesRegion
      */
     public function getRegion()
     {
@@ -386,7 +386,7 @@ class CustomerEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets region.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SalesRegion $region region
+     * @param SalesRegion $region region
      *
      * @return self
      */

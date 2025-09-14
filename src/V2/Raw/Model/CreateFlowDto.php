@@ -66,7 +66,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'sitePushesByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\NewFlowSyndication[]',
         'sitePullsByMachineName' => '\EdgeBox\SyncCore\V2\Raw\Model\NewFlowSyndication[]',
         'remoteConfigFileId' => 'string',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus',
+        'status' => 'FlowStatus',
     ];
 
     /**
@@ -100,7 +100,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
         'sitePushesByMachineName' => false,
         'sitePullsByMachineName' => false,
         'remoteConfigFileId' => true,
-        'status' => false,
+        'status' => true,
     ];
 
     /**
@@ -523,7 +523,7 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus
+     * @return null|FlowStatus
      */
     public function getStatus()
     {
@@ -533,14 +533,21 @@ class CreateFlowDto implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\FlowStatus $status status
+     * @param null|FlowStatus $status status
      *
      * @return self
      */
     public function setStatus($status)
     {
         if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'status');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('status', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['status'] = $status;
 

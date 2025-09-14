@@ -185,6 +185,15 @@ class DefaultApi
         'projectControllerItemByUuid' => [
             'application/json',
         ],
+        'projectLinkControllerImport' => [
+            'application/json',
+        ],
+        'projectLinkControllerItem' => [
+            'application/json',
+        ],
+        'projectLinkControllerItemByUuid' => [
+            'application/json',
+        ],
         'remoteEntityRevisionControllerCreate' => [
             'application/json',
         ],
@@ -302,6 +311,27 @@ class DefaultApi
         'usageStatsControllerSummary' => [
             'application/json',
         ],
+        'webhookControllerCreate' => [
+            'application/json',
+        ],
+        'webhookControllerDelete' => [
+            'application/json',
+        ],
+        'webhookControllerItem' => [
+            'application/json',
+        ],
+        'webhookControllerList' => [
+            'application/json',
+        ],
+        'webhookControllerSendVerificationEmail' => [
+            'application/json',
+        ],
+        'webhookControllerUpdate' => [
+            'application/json',
+        ],
+        'webhookControllerVerifyEmail' => [
+            'application/json',
+        ],
     ];
     /**
      * @var ClientInterface
@@ -330,7 +360,7 @@ class DefaultApi
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        ?ClientInterface $client = null,
+        ClientInterface $client = null,
         ?Configuration $config = null,
         ?HeaderSelector $selector = null,
         $hostIndex = 0
@@ -7395,6 +7425,7 @@ class DefaultApi
     /**
      * Operation flowControllerList.
      *
+     * @param  string $type type (optional)
      * @param  string $poolMachineNames poolMachineNames (optional)
      * @param  string $siteId siteId (optional)
      * @param  string $page page (optional)
@@ -7406,9 +7437,9 @@ class DefaultApi
      *
      * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList
      */
-    public function flowControllerList($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
+    public function flowControllerList($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
-        list($response) = $this->flowControllerListWithHttpInfo($poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
+        list($response) = $this->flowControllerListWithHttpInfo($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -7416,6 +7447,7 @@ class DefaultApi
     /**
      * Operation flowControllerListWithHttpInfo.
      *
+     * @param  string $type (optional)
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
      * @param  string $page (optional)
@@ -7427,9 +7459,9 @@ class DefaultApi
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList, HTTP status code, HTTP response headers (array of strings)
      */
-    public function flowControllerListWithHttpInfo($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
+    public function flowControllerListWithHttpInfo($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
-        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
+        $request = $this->flowControllerListRequest($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -7520,6 +7552,7 @@ class DefaultApi
     /**
      * Operation flowControllerListAsync.
      *
+     * @param  string $type (optional)
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
      * @param  string $page (optional)
@@ -7530,9 +7563,9 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsync($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
+    public function flowControllerListAsync($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
-        return $this->flowControllerListAsyncWithHttpInfo($poolMachineNames, $siteId, $page, $itemsPerPage, $contentType)
+        return $this->flowControllerListAsyncWithHttpInfo($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -7544,6 +7577,7 @@ class DefaultApi
     /**
      * Operation flowControllerListAsyncWithHttpInfo.
      *
+     * @param  string $type (optional)
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
      * @param  string $page (optional)
@@ -7554,10 +7588,10 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function flowControllerListAsyncWithHttpInfo($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
+    public function flowControllerListAsyncWithHttpInfo($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList';
-        $request = $this->flowControllerListRequest($poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
+        $request = $this->flowControllerListRequest($type, $poolMachineNames, $siteId, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -7600,6 +7634,7 @@ class DefaultApi
     /**
      * Create request for operation 'flowControllerList'.
      *
+     * @param  string $type (optional)
      * @param  string $poolMachineNames (optional)
      * @param  string $siteId (optional)
      * @param  string $page (optional)
@@ -7610,7 +7645,7 @@ class DefaultApi
      *
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function flowControllerListRequest($poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
+    public function flowControllerListRequest($type = null, $poolMachineNames = null, $siteId = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['flowControllerList'][0])
     {
         $resourcePath = '/sync-core/flow';
         $formParams = [];
@@ -7619,6 +7654,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $type,
+            'type', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $poolMachineNames,
@@ -13203,6 +13247,861 @@ class DefaultApi
         }
 
         $resourcePath = '/sync-core/project/by-uuid/{uuid}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $uuid) {
+            $resourcePath = str_replace(
+                '{'.'uuid'.'}',
+                ObjectSerializer::toPathValue($uuid),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation projectLinkControllerImport.
+     *
+     * @param  string $uuid uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     */
+    public function projectLinkControllerImport($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
+    {
+        list($response) = $this->projectLinkControllerImportWithHttpInfo($uuid, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation projectLinkControllerImportWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function projectLinkControllerImportWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
+    {
+        $request = $this->projectLinkControllerImportRequest($uuid, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation projectLinkControllerImportAsync.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerImportAsync($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
+    {
+        return $this->projectLinkControllerImportAsyncWithHttpInfo($uuid, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation projectLinkControllerImportAsyncWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerImportAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+        $request = $this->projectLinkControllerImportRequest($uuid, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'projectLinkControllerImport'.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerImport'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function projectLinkControllerImportRequest($uuid, string $contentType = self::contentTypes['projectLinkControllerImport'][0])
+    {
+        // verify the required parameter 'uuid' is set
+        if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling projectLinkControllerImport'
+            );
+        }
+
+        $resourcePath = '/sync-core/project-link/import/{uuid}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $uuid) {
+            $resourcePath = str_replace(
+                '{'.'uuid'.'}',
+                ObjectSerializer::toPathValue($uuid),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation projectLinkControllerItem.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     */
+    public function projectLinkControllerItem($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
+    {
+        list($response) = $this->projectLinkControllerItemWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation projectLinkControllerItemWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function projectLinkControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
+    {
+        $request = $this->projectLinkControllerItemRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation projectLinkControllerItemAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerItemAsync($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
+    {
+        return $this->projectLinkControllerItemAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation projectLinkControllerItemAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+        $request = $this->projectLinkControllerItemRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'projectLinkControllerItem'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function projectLinkControllerItemRequest($id, string $contentType = self::contentTypes['projectLinkControllerItem'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling projectLinkControllerItem'
+            );
+        }
+
+        $resourcePath = '/sync-core/project-link/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation projectLinkControllerItemByUuid.
+     *
+     * @param  string $uuid uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity
+     */
+    public function projectLinkControllerItemByUuid($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
+    {
+        list($response) = $this->projectLinkControllerItemByUuidWithHttpInfo($uuid, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation projectLinkControllerItemByUuidWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function projectLinkControllerItemByUuidWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
+    {
+        $request = $this->projectLinkControllerItemByUuidRequest($uuid, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation projectLinkControllerItemByUuidAsync.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerItemByUuidAsync($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
+    {
+        return $this->projectLinkControllerItemByUuidAsyncWithHttpInfo($uuid, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation projectLinkControllerItemByUuidAsyncWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function projectLinkControllerItemByUuidAsyncWithHttpInfo($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity';
+        $request = $this->projectLinkControllerItemByUuidRequest($uuid, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'projectLinkControllerItemByUuid'.
+     *
+     * @param  string $uuid (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['projectLinkControllerItemByUuid'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function projectLinkControllerItemByUuidRequest($uuid, string $contentType = self::contentTypes['projectLinkControllerItemByUuid'][0])
+    {
+        // verify the required parameter 'uuid' is set
+        if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling projectLinkControllerItemByUuid'
+            );
+        }
+
+        $resourcePath = '/sync-core/project-link/by-uuid/{uuid}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -25036,6 +25935,1993 @@ class DefaultApi
         // this endpoint requires Bearer (JWT) authentication (access token)
         if (!empty($this->config->getAccessToken())) {
             $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerCreate.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto createWebhookDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     */
+    public function webhookControllerCreate($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
+    {
+        list($response) = $this->webhookControllerCreateWithHttpInfo($createWebhookDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerCreateWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerCreateWithHttpInfo($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
+    {
+        $request = $this->webhookControllerCreateRequest($createWebhookDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerCreateAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerCreateAsync($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
+    {
+        return $this->webhookControllerCreateAsyncWithHttpInfo($createWebhookDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerCreateAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerCreateAsyncWithHttpInfo($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+        $request = $this->webhookControllerCreateRequest($createWebhookDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerCreate'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto $createWebhookDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerCreate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerCreateRequest($createWebhookDto, string $contentType = self::contentTypes['webhookControllerCreate'][0])
+    {
+        // verify the required parameter 'createWebhookDto' is set
+        if (null === $createWebhookDto || (is_array($createWebhookDto) && 0 === count($createWebhookDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createWebhookDto when calling webhookControllerCreate'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($createWebhookDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createWebhookDto));
+            } else {
+                $httpBody = $createWebhookDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerDelete.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest webhookDeleteRequest (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     */
+    public function webhookControllerDelete($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
+    {
+        list($response) = $this->webhookControllerDeleteWithHttpInfo($webhookDeleteRequest, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerDeleteWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerDeleteWithHttpInfo($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
+    {
+        $request = $this->webhookControllerDeleteRequest($webhookDeleteRequest, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerDeleteAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerDeleteAsync($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
+    {
+        return $this->webhookControllerDeleteAsyncWithHttpInfo($webhookDeleteRequest, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerDeleteAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerDeleteAsyncWithHttpInfo($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+        $request = $this->webhookControllerDeleteRequest($webhookDeleteRequest, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerDelete'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookDeleteRequest $webhookDeleteRequest (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerDelete'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerDeleteRequest($webhookDeleteRequest, string $contentType = self::contentTypes['webhookControllerDelete'][0])
+    {
+        // verify the required parameter 'webhookDeleteRequest' is set
+        if (null === $webhookDeleteRequest || (is_array($webhookDeleteRequest) && 0 === count($webhookDeleteRequest))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $webhookDeleteRequest when calling webhookControllerDelete'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($webhookDeleteRequest)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookDeleteRequest));
+            } else {
+                $httpBody = $webhookDeleteRequest;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'DELETE',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerItem.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     */
+    public function webhookControllerItem($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
+    {
+        list($response) = $this->webhookControllerItemWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerItemWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
+    {
+        $request = $this->webhookControllerItemRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerItemAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerItemAsync($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
+    {
+        return $this->webhookControllerItemAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerItemAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+        $request = $this->webhookControllerItemRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerItem'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerItem'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerItemRequest($id, string $contentType = self::contentTypes['webhookControllerItem'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling webhookControllerItem'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerList.
+     *
+     * @param  WebhookEntityType $entityType entityType (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList
+     */
+    public function webhookControllerList($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
+    {
+        list($response) = $this->webhookControllerListWithHttpInfo($entityType, $page, $itemsPerPage, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerListWithHttpInfo.
+     *
+     * @param  WebhookEntityType $entityType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerListWithHttpInfo($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
+    {
+        $request = $this->webhookControllerListRequest($entityType, $page, $itemsPerPage, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerListAsync.
+     *
+     * @param  WebhookEntityType $entityType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerListAsync($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
+    {
+        return $this->webhookControllerListAsyncWithHttpInfo($entityType, $page, $itemsPerPage, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerListAsyncWithHttpInfo.
+     *
+     * @param  WebhookEntityType $entityType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerListAsyncWithHttpInfo($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedWebhookList';
+        $request = $this->webhookControllerListRequest($entityType, $page, $itemsPerPage, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerList'.
+     *
+     * @param  WebhookEntityType $entityType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerList'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerListRequest($entityType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['webhookControllerList'][0])
+    {
+        $resourcePath = '/sync-core/webhook';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // path params
+        if (null !== $entityType) {
+            $resourcePath = str_replace(
+                '{'.'entityType'.'}',
+                ObjectSerializer::toPathValue($entityType),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerSendVerificationEmail.
+     *
+     * @param  string $id id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail webhookResendVerificationEmail (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse
+     */
+    public function webhookControllerSendVerificationEmail($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
+    {
+        list($response) = $this->webhookControllerSendVerificationEmailWithHttpInfo($id, $webhookResendVerificationEmail, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerSendVerificationEmailWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerSendVerificationEmailWithHttpInfo($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
+    {
+        $request = $this->webhookControllerSendVerificationEmailRequest($id, $webhookResendVerificationEmail, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerSendVerificationEmailAsync.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerSendVerificationEmailAsync($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
+    {
+        return $this->webhookControllerSendVerificationEmailAsyncWithHttpInfo($id, $webhookResendVerificationEmail, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerSendVerificationEmailAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerSendVerificationEmailAsyncWithHttpInfo($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse';
+        $request = $this->webhookControllerSendVerificationEmailRequest($id, $webhookResendVerificationEmail, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerSendVerificationEmail'.
+     *
+     * @param  string $id (required)
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookResendVerificationEmail $webhookResendVerificationEmail (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerSendVerificationEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerSendVerificationEmailRequest($id, $webhookResendVerificationEmail, string $contentType = self::contentTypes['webhookControllerSendVerificationEmail'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling webhookControllerSendVerificationEmail'
+            );
+        }
+
+        // verify the required parameter 'webhookResendVerificationEmail' is set
+        if (null === $webhookResendVerificationEmail || (is_array($webhookResendVerificationEmail) && 0 === count($webhookResendVerificationEmail))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $webhookResendVerificationEmail when calling webhookControllerSendVerificationEmail'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook/{id}/verify';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($webhookResendVerificationEmail)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookResendVerificationEmail));
+            } else {
+                $httpBody = $webhookResendVerificationEmail;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerUpdate.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity webhookEntity (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity
+     */
+    public function webhookControllerUpdate($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
+    {
+        list($response) = $this->webhookControllerUpdateWithHttpInfo($webhookEntity, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation webhookControllerUpdateWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerUpdateWithHttpInfo($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
+    {
+        $request = $this->webhookControllerUpdateRequest($webhookEntity, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); //stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerUpdateAsync.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerUpdateAsync($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
+    {
+        return $this->webhookControllerUpdateAsyncWithHttpInfo($webhookEntity, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerUpdateAsyncWithHttpInfo.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerUpdateAsyncWithHttpInfo($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity';
+        $request = $this->webhookControllerUpdateRequest($webhookEntity, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerUpdate'.
+     *
+     * @param  \EdgeBox\SyncCore\V2\Raw\Model\WebhookEntity $webhookEntity (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerUpdate'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerUpdateRequest($webhookEntity, string $contentType = self::contentTypes['webhookControllerUpdate'][0])
+    {
+        // verify the required parameter 'webhookEntity' is set
+        if (null === $webhookEntity || (is_array($webhookEntity) && 0 === count($webhookEntity))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $webhookEntity when calling webhookControllerUpdate'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($webhookEntity)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookEntity));
+            } else {
+                $httpBody = $webhookEntity;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'PATCH',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation webhookControllerVerifyEmail.
+     *
+     * @param  string $id id (required)
+     * @param  string $token token (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function webhookControllerVerifyEmail($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
+    {
+        $this->webhookControllerVerifyEmailWithHttpInfo($id, $token, $contentType);
+    }
+
+    /**
+     * Operation webhookControllerVerifyEmailWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $token (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
+     *
+     * @throws \EdgeBox\SyncCore\V2\Raw\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     *
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function webhookControllerVerifyEmailWithHttpInfo($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
+    {
+        $request = $this->webhookControllerVerifyEmailRequest($id, $token, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation webhookControllerVerifyEmailAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $token (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerVerifyEmailAsync($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
+    {
+        return $this->webhookControllerVerifyEmailAsyncWithHttpInfo($id, $token, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation webhookControllerVerifyEmailAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $token (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function webhookControllerVerifyEmailAsyncWithHttpInfo($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
+    {
+        $returnType = '';
+        $request = $this->webhookControllerVerifyEmailRequest($id, $token, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'webhookControllerVerifyEmail'.
+     *
+     * @param  string $id (required)
+     * @param  string $token (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['webhookControllerVerifyEmail'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function webhookControllerVerifyEmailRequest($id, $token, string $contentType = self::contentTypes['webhookControllerVerifyEmail'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling webhookControllerVerifyEmail'
+            );
+        }
+
+        // verify the required parameter 'token' is set
+        if (null === $token || (is_array($token) && 0 === count($token))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $token when calling webhookControllerVerifyEmail'
+            );
+        }
+
+        $resourcePath = '/sync-core/webhook/{id}/verify/{token}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{'.'id'.'}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $token) {
+            $resourcePath = str_replace(
+                '{'.'token'.'}',
+                ObjectSerializer::toPathValue($token),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            [],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
         }
 
         $defaultHeaders = [];

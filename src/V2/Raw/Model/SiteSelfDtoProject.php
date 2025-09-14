@@ -59,12 +59,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus',
-        'appType' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType',
+        'syncCore' => 'DynamicReference',
+        'type' => 'SiteEnvironmentType',
+        'status' => 'ProjectStatus',
+        'appType' => 'SiteApplicationType',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'name' => 'string',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'defaultLanguageCode' => 'string',
+        'contentCloudSettings' => 'ProjectContentCloudSettings',
+        'transientEntities' => 'bool',
+        'transientEntityTypes' => 'bool',
         'uuid' => 'string',
         'id' => 'string',
         'createdAt' => 'float',
@@ -74,6 +80,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => 'float',
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
+        'backendRemoteServiceId' => 'string',
     ];
 
     /**
@@ -84,12 +91,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
+        'syncCore' => null,
         'type' => null,
         'status' => null,
         'appType' => null,
         'customer' => null,
         'contract' => null,
         'name' => null,
+        'languages' => null,
+        'defaultLanguageCode' => null,
+        'contentCloudSettings' => null,
+        'transientEntities' => null,
+        'transientEntityTypes' => null,
         'uuid' => null,
         'id' => null,
         'createdAt' => null,
@@ -99,6 +112,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => null,
         'maxRequestsPerMinute' => null,
         'maxParallelRequests' => null,
+        'backendRemoteServiceId' => null,
     ];
 
     /**
@@ -107,12 +121,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var bool[]
      */
     protected static array $openAPINullables = [
+        'syncCore' => true,
         'type' => false,
-        'status' => false,
-        'appType' => false,
+        'status' => true,
+        'appType' => true,
         'customer' => false,
         'contract' => false,
         'name' => false,
+        'languages' => true,
+        'defaultLanguageCode' => true,
+        'contentCloudSettings' => true,
+        'transientEntities' => true,
+        'transientEntityTypes' => true,
         'uuid' => false,
         'id' => false,
         'createdAt' => false,
@@ -122,6 +142,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => true,
         'maxRequestsPerMinute' => true,
         'maxParallelRequests' => true,
+        'backendRemoteServiceId' => true,
     ];
 
     /**
@@ -138,12 +159,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
+        'syncCore' => 'syncCore',
         'type' => 'type',
         'status' => 'status',
         'appType' => 'appType',
         'customer' => 'customer',
         'contract' => 'contract',
         'name' => 'name',
+        'languages' => 'languages',
+        'defaultLanguageCode' => 'defaultLanguageCode',
+        'contentCloudSettings' => 'contentCloudSettings',
+        'transientEntities' => 'transientEntities',
+        'transientEntityTypes' => 'transientEntityTypes',
         'uuid' => 'uuid',
         'id' => 'id',
         'createdAt' => 'createdAt',
@@ -153,6 +180,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => 'defaultMaxParallelRequests',
         'maxRequestsPerMinute' => 'maxRequestsPerMinute',
         'maxParallelRequests' => 'maxParallelRequests',
+        'backendRemoteServiceId' => 'backendRemoteServiceId',
     ];
 
     /**
@@ -161,12 +189,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
+        'syncCore' => 'setSyncCore',
         'type' => 'setType',
         'status' => 'setStatus',
         'appType' => 'setAppType',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'name' => 'setName',
+        'languages' => 'setLanguages',
+        'defaultLanguageCode' => 'setDefaultLanguageCode',
+        'contentCloudSettings' => 'setContentCloudSettings',
+        'transientEntities' => 'setTransientEntities',
+        'transientEntityTypes' => 'setTransientEntityTypes',
         'uuid' => 'setUuid',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
@@ -176,6 +210,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => 'setDefaultMaxParallelRequests',
         'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
         'maxParallelRequests' => 'setMaxParallelRequests',
+        'backendRemoteServiceId' => 'setBackendRemoteServiceId',
     ];
 
     /**
@@ -184,12 +219,18 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
+        'syncCore' => 'getSyncCore',
         'type' => 'getType',
         'status' => 'getStatus',
         'appType' => 'getAppType',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'name' => 'getName',
+        'languages' => 'getLanguages',
+        'defaultLanguageCode' => 'getDefaultLanguageCode',
+        'contentCloudSettings' => 'getContentCloudSettings',
+        'transientEntities' => 'getTransientEntities',
+        'transientEntityTypes' => 'getTransientEntityTypes',
         'uuid' => 'getUuid',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
@@ -199,6 +240,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         'defaultMaxParallelRequests' => 'getDefaultMaxParallelRequests',
         'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
         'maxParallelRequests' => 'getMaxParallelRequests',
+        'backendRemoteServiceId' => 'getBackendRemoteServiceId',
     ];
 
     /**
@@ -214,14 +256,20 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
      * @param mixed[] $data Associated array of property values
      *                      initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
+        $this->setIfExists('syncCore', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('appType', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('languages', $data ?? [], null);
+        $this->setIfExists('defaultLanguageCode', $data ?? [], null);
+        $this->setIfExists('contentCloudSettings', $data ?? [], null);
+        $this->setIfExists('transientEntities', $data ?? [], null);
+        $this->setIfExists('transientEntityTypes', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
@@ -231,6 +279,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
         $this->setIfExists('defaultMaxParallelRequests', $data ?? [], null);
         $this->setIfExists('maxRequestsPerMinute', $data ?? [], null);
         $this->setIfExists('maxParallelRequests', $data ?? [], null);
+        $this->setIfExists('backendRemoteServiceId', $data ?? [], null);
     }
 
     /**
@@ -372,9 +421,43 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     }
 
     /**
+     * Gets syncCore.
+     *
+     * @return null|DynamicReference
+     */
+    public function getSyncCore()
+    {
+        return $this->container['syncCore'];
+    }
+
+    /**
+     * Sets syncCore.
+     *
+     * @param null|DynamicReference $syncCore syncCore
+     *
+     * @return self
+     */
+    public function setSyncCore($syncCore)
+    {
+        if (is_null($syncCore)) {
+            array_push($this->openAPINullablesSetToNull, 'syncCore');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('syncCore', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['syncCore'] = $syncCore;
+
+        return $this;
+    }
+
+    /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType
+     * @return SiteEnvironmentType
      */
     public function getType()
     {
@@ -384,7 +467,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SiteEnvironmentType $type type
+     * @param SiteEnvironmentType $type type
      *
      * @return self
      */
@@ -401,7 +484,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets status.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus
+     * @return null|ProjectStatus
      */
     public function getStatus()
     {
@@ -411,14 +494,21 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets status.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\ProjectStatus $status status
+     * @param null|ProjectStatus $status status
      *
      * @return self
      */
     public function setStatus($status)
     {
         if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'status');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('status', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['status'] = $status;
 
@@ -428,7 +518,7 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets appType.
      *
-     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType
+     * @return null|SiteApplicationType
      */
     public function getAppType()
     {
@@ -438,14 +528,21 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets appType.
      *
-     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\SiteApplicationType $appType appType
+     * @param null|SiteApplicationType $appType appType
      *
      * @return self
      */
     public function setAppType($appType)
     {
         if (is_null($appType)) {
-            throw new \InvalidArgumentException('non-nullable appType cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'appType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('appType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['appType'] = $appType;
 
@@ -529,6 +626,176 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
             throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
         $this->container['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets languages.
+     *
+     * @return null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]
+     */
+    public function getLanguages()
+    {
+        return $this->container['languages'];
+    }
+
+    /**
+     * Sets languages.
+     *
+     * @param null|\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[] $languages languages
+     *
+     * @return self
+     */
+    public function setLanguages($languages)
+    {
+        if (is_null($languages)) {
+            array_push($this->openAPINullablesSetToNull, 'languages');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('languages', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['languages'] = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultLanguageCode.
+     *
+     * @return null|string
+     */
+    public function getDefaultLanguageCode()
+    {
+        return $this->container['defaultLanguageCode'];
+    }
+
+    /**
+     * Sets defaultLanguageCode.
+     *
+     * @param null|string $defaultLanguageCode defaultLanguageCode
+     *
+     * @return self
+     */
+    public function setDefaultLanguageCode($defaultLanguageCode)
+    {
+        if (is_null($defaultLanguageCode)) {
+            array_push($this->openAPINullablesSetToNull, 'defaultLanguageCode');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('defaultLanguageCode', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['defaultLanguageCode'] = $defaultLanguageCode;
+
+        return $this;
+    }
+
+    /**
+     * Gets contentCloudSettings.
+     *
+     * @return null|ProjectContentCloudSettings
+     */
+    public function getContentCloudSettings()
+    {
+        return $this->container['contentCloudSettings'];
+    }
+
+    /**
+     * Sets contentCloudSettings.
+     *
+     * @param null|ProjectContentCloudSettings $contentCloudSettings contentCloudSettings
+     *
+     * @return self
+     */
+    public function setContentCloudSettings($contentCloudSettings)
+    {
+        if (is_null($contentCloudSettings)) {
+            array_push($this->openAPINullablesSetToNull, 'contentCloudSettings');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contentCloudSettings', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['contentCloudSettings'] = $contentCloudSettings;
+
+        return $this;
+    }
+
+    /**
+     * Gets transientEntities.
+     *
+     * @return null|bool
+     */
+    public function getTransientEntities()
+    {
+        return $this->container['transientEntities'];
+    }
+
+    /**
+     * Sets transientEntities.
+     *
+     * @param null|bool $transientEntities transientEntities
+     *
+     * @return self
+     */
+    public function setTransientEntities($transientEntities)
+    {
+        if (is_null($transientEntities)) {
+            array_push($this->openAPINullablesSetToNull, 'transientEntities');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('transientEntities', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['transientEntities'] = $transientEntities;
+
+        return $this;
+    }
+
+    /**
+     * Gets transientEntityTypes.
+     *
+     * @return null|bool
+     */
+    public function getTransientEntityTypes()
+    {
+        return $this->container['transientEntityTypes'];
+    }
+
+    /**
+     * Sets transientEntityTypes.
+     *
+     * @param null|bool $transientEntityTypes transientEntityTypes
+     *
+     * @return self
+     */
+    public function setTransientEntityTypes($transientEntityTypes)
+    {
+        if (is_null($transientEntityTypes)) {
+            array_push($this->openAPINullablesSetToNull, 'transientEntityTypes');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('transientEntityTypes', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['transientEntityTypes'] = $transientEntityTypes;
 
         return $this;
     }
@@ -807,6 +1074,40 @@ class SiteSelfDtoProject implements ModelInterface, ArrayAccess, \JsonSerializab
             }
         }
         $this->container['maxParallelRequests'] = $maxParallelRequests;
+
+        return $this;
+    }
+
+    /**
+     * Gets backendRemoteServiceId.
+     *
+     * @return null|string
+     */
+    public function getBackendRemoteServiceId()
+    {
+        return $this->container['backendRemoteServiceId'];
+    }
+
+    /**
+     * Sets backendRemoteServiceId.
+     *
+     * @param null|string $backendRemoteServiceId backendRemoteServiceId
+     *
+     * @return self
+     */
+    public function setBackendRemoteServiceId($backendRemoteServiceId)
+    {
+        if (is_null($backendRemoteServiceId)) {
+            array_push($this->openAPINullablesSetToNull, 'backendRemoteServiceId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('backendRemoteServiceId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['backendRemoteServiceId'] = $backendRemoteServiceId;
 
         return $this;
     }

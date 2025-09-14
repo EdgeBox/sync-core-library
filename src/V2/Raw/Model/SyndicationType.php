@@ -47,6 +47,8 @@ class SyndicationType
 
     public const SYNDICATE_DELETE_ENTITY = 'syndicate-delete-entity';
 
+    public const SYNDICATE_UNPUBLISH_ENTITY = 'syndicate-unpublish-entity';
+
     public const SYNDICATE_DELETE_EMBEDDED_ENTITY = 'syndicate-delete-embedded-entity';
 
     public const RETRIEVE_ENTITY = 'retrieve-entity';
@@ -61,6 +63,8 @@ class SyndicationType
 
     public const RETRIEVE_CONFIG = 'retrieve-config';
 
+    public const TRIGGER_WEBHOOK = 'trigger-webhook';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -71,6 +75,7 @@ class SyndicationType
         return [
             self::SYNDICATE_CREATE_ENTITY,
             self::SYNDICATE_DELETE_ENTITY,
+            self::SYNDICATE_UNPUBLISH_ENTITY,
             self::SYNDICATE_DELETE_EMBEDDED_ENTITY,
             self::RETRIEVE_ENTITY,
             self::RETRIEVE_ENTITY_LIST,
@@ -78,6 +83,7 @@ class SyndicationType
             self::DELETE_ENTITY,
             self::DELETE_EMBEDDED_ENTITY,
             self::RETRIEVE_CONFIG,
+            self::TRIGGER_WEBHOOK,
         ];
     }
 }

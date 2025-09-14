@@ -59,10 +59,10 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $openAPITypes = [
-        'hostingType' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractType',
-        'product' => '\EdgeBox\SyncCore\V2\Raw\Model\Product',
-        'packageType' => '\EdgeBox\SyncCore\V2\Raw\Model\Package',
-        'revisionTransition' => '\EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition',
+        'hostingType' => 'ContractType',
+        'product' => 'Product',
+        'packageType' => 'Package',
+        'revisionTransition' => 'ContractRevisionTransition',
         'maxUpdatesPerMonth' => 'float',
         'maxUpdatesDuringThisRevision' => 'float',
         'startDate' => 'float',
@@ -393,7 +393,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Gets hostingType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractType
+     * @return ContractType
      */
     public function getHostingType()
     {
@@ -403,7 +403,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Sets hostingType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\ContractType $hostingType hostingType
+     * @param ContractType $hostingType hostingType
      *
      * @return self
      */
@@ -420,7 +420,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Gets product.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -430,7 +430,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Sets product.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\Product $product product
+     * @param Product $product product
      *
      * @return self
      */
@@ -447,7 +447,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Gets packageType.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\Package
+     * @return Package
      */
     public function getPackageType()
     {
@@ -457,7 +457,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Sets packageType.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\Package $packageType packageType
+     * @param Package $packageType packageType
      *
      * @return self
      */
@@ -474,7 +474,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Gets revisionTransition.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition
+     * @return ContractRevisionTransition
      */
     public function getRevisionTransition()
     {
@@ -484,7 +484,7 @@ class MostRecentContractRevisionsCurrent implements ModelInterface, ArrayAccess,
     /**
      * Sets revisionTransition.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionTransition $revisionTransition revisionTransition
+     * @param ContractRevisionTransition $revisionTransition revisionTransition
      *
      * @return self
      */

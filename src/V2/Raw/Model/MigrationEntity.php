@@ -59,7 +59,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'type' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationType',
+        'type' => 'MigrationType',
         'entityTypeReference' => 'EntityTypeVersionReference',
         'entityReferences' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
         'previousMigration' => 'DynamicReference',
@@ -73,7 +73,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
         'entityTypeVersion' => 'DynamicReference',
         'entityType' => 'DynamicReference',
         'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'status' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus',
+        'status' => 'SyndicationStatus',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -430,7 +430,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets type.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\MigrationType
+     * @return MigrationType
      */
     public function getType()
     {
@@ -440,7 +440,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\MigrationType $type type
+     * @param MigrationType $type type
      *
      * @return self
      */
@@ -899,7 +899,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus
+     * @return SyndicationStatus
      */
     public function getStatus()
     {
@@ -909,7 +909,7 @@ class MigrationEntity implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus $status status
+     * @param SyndicationStatus $status status
      *
      * @return self
      */
