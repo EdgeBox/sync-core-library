@@ -154,9 +154,9 @@ abstract class MassUpdate
         return (bool) $this->includeOtherSites;
     }
 
-    public function getByStatus()
+    public function getByStatus($force_udate = false)
     {
-        if (!$this->summary) {
+        if (!$this->summary || $force_udate) {
             $this->getDtos();
             $this->updateSummary();
         }
@@ -174,11 +174,11 @@ abstract class MassUpdate
         return $total;
     }
 
-    public function progress()
+    public function progress($force_udate = false)
     {
         $done = ['finished', 'failed', 'aborted', 'limit-exceeded'];
         $total = 0;
-        foreach ($this->getByStatus() as $status => $count) {
+        foreach ($this->getByStatus($force_udate) as $status => $count) {
             if (!in_array($status, $done)) {
                 continue;
             }
