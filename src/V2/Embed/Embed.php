@@ -107,7 +107,7 @@ abstract class Embed
   var listEntitiesUrl = getHttpsUrl("'.$list_entities_url.(false !== strpos($list_entities_url, '?') ? '&' : '?').'");
   var retrieveEntityUrl = getHttpsUrl("'.$retrieve_entity_url.(false !== strpos($retrieve_entity_url, '?') ? '&' : '?').'");
 
-  var iframe = undefined;
+  var iframe = undefined, iframeParent = undefined;
   function initIframe() {
     if(typeof iFrameResize==="undefined") {
       setTimeout(initIframe,200);
@@ -119,6 +119,7 @@ abstract class Embed
       autoResize: '.($is_page ? 'true' : 'false').',
       onInit: function(newIframe) {
         iframe = newIframe;
+        iframeParent = iframe.parentNode;
         iframe.iFrameResizer.sendMessage({
           type: "config",
           config: '.json_encode($this->config).',
@@ -238,9 +239,11 @@ abstract class Embed
         }
         else if (message.type === "modal-open") {
           iframe.className = iframe.className + " iframe-modal";
+          document.body.moveBefore && document.body.moveBefore(iframe, null);
         }
         else if (message.type === "modal-close") {
           iframe.className = iframe.className.replace(/iframe-modal/g, "");
+          iframeParent.moveBefore && iframeParent.moveBefore(iframe, null);
         }
         else {
           throw new Error("Unknown message "+JSON.stringify(message));
