@@ -81,6 +81,7 @@ abstract class Embed
 
         $html = '<style>
   #'.$id.' {
+    min-height: 32px;
     '.($is_page ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
     '.($is_page ? 'min-height: 200px;' : 'height: 32px; max-height: 40px;').'
     '.($is_line ? 'border-radius: 5px;' : '').'
