@@ -68,6 +68,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => 'float',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
+        'skipOptimization' => 'bool',
         'flowMachineName' => 'string',
         'runInOrder' => 'bool',
         'priority' => 'float',
@@ -103,6 +104,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => null,
         'dryRun' => null,
         'skipSyndication' => null,
+        'skipOptimization' => null,
         'flowMachineName' => null,
         'runInOrder' => null,
         'priority' => null,
@@ -134,6 +136,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => true,
         'dryRun' => true,
         'skipSyndication' => true,
+        'skipOptimization' => true,
         'flowMachineName' => true,
         'runInOrder' => true,
         'priority' => true,
@@ -173,6 +176,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => 'changedAfter',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
+        'skipOptimization' => 'skipOptimization',
         'flowMachineName' => 'flowMachineName',
         'runInOrder' => 'runInOrder',
         'priority' => 'priority',
@@ -204,6 +208,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => 'setChangedAfter',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
+        'skipOptimization' => 'setSkipOptimization',
         'flowMachineName' => 'setFlowMachineName',
         'runInOrder' => 'setRunInOrder',
         'priority' => 'setPriority',
@@ -235,6 +240,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'changedAfter' => 'getChangedAfter',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
+        'skipOptimization' => 'getSkipOptimization',
         'flowMachineName' => 'getFlowMachineName',
         'runInOrder' => 'getRunInOrder',
         'priority' => 'getPriority',
@@ -275,6 +281,7 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('changedAfter', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
+        $this->setIfExists('skipOptimization', $data ?? [], null);
         $this->setIfExists('flowMachineName', $data ?? [], null);
         $this->setIfExists('runInOrder', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
@@ -691,6 +698,40 @@ class MigrationEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['skipSyndication'] = $skipSyndication;
+
+        return $this;
+    }
+
+    /**
+     * Gets skipOptimization.
+     *
+     * @return null|bool
+     */
+    public function getSkipOptimization()
+    {
+        return $this->container['skipOptimization'];
+    }
+
+    /**
+     * Sets skipOptimization.
+     *
+     * @param null|bool $skipOptimization skipOptimization
+     *
+     * @return self
+     */
+    public function setSkipOptimization($skipOptimization)
+    {
+        if (is_null($skipOptimization)) {
+            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipOptimization', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['skipOptimization'] = $skipOptimization;
 
         return $this;
     }

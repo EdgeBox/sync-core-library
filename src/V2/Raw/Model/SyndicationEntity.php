@@ -80,6 +80,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => 'float',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
+        'skipOptimization' => 'bool',
         'isUpdate' => 'bool',
         'isAutoUpdate' => 'bool',
         'isRegularSyndication' => 'bool',
@@ -103,7 +104,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'originalType' => 'SyndicationType',
-        'skipOptimization' => 'bool',
     ];
 
     /**
@@ -136,6 +136,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => null,
         'dryRun' => null,
         'skipSyndication' => null,
+        'skipOptimization' => null,
         'isUpdate' => null,
         'isAutoUpdate' => null,
         'isRegularSyndication' => null,
@@ -159,7 +160,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => null,
         'deletedAt' => null,
         'originalType' => null,
-        'skipOptimization' => null,
     ];
 
     /**
@@ -188,6 +188,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => true,
         'dryRun' => true,
         'skipSyndication' => true,
+        'skipOptimization' => true,
         'isUpdate' => true,
         'isAutoUpdate' => true,
         'isRegularSyndication' => true,
@@ -211,7 +212,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => false,
         'deletedAt' => true,
         'originalType' => true,
-        'skipOptimization' => true,
     ];
 
     /**
@@ -248,6 +248,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => 'finishedAt',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
+        'skipOptimization' => 'skipOptimization',
         'isUpdate' => 'isUpdate',
         'isAutoUpdate' => 'isAutoUpdate',
         'isRegularSyndication' => 'isRegularSyndication',
@@ -271,7 +272,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
         'originalType' => 'originalType',
-        'skipOptimization' => 'skipOptimization',
     ];
 
     /**
@@ -300,6 +300,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => 'setFinishedAt',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
+        'skipOptimization' => 'setSkipOptimization',
         'isUpdate' => 'setIsUpdate',
         'isAutoUpdate' => 'setIsAutoUpdate',
         'isRegularSyndication' => 'setIsRegularSyndication',
@@ -323,7 +324,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
         'originalType' => 'setOriginalType',
-        'skipOptimization' => 'setSkipOptimization',
     ];
 
     /**
@@ -352,6 +352,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'finishedAt' => 'getFinishedAt',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
+        'skipOptimization' => 'getSkipOptimization',
         'isUpdate' => 'getIsUpdate',
         'isAutoUpdate' => 'getIsAutoUpdate',
         'isRegularSyndication' => 'getIsRegularSyndication',
@@ -375,7 +376,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
         'originalType' => 'getOriginalType',
-        'skipOptimization' => 'getSkipOptimization',
     ];
 
     /**
@@ -413,6 +413,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('finishedAt', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
+        $this->setIfExists('skipOptimization', $data ?? [], null);
         $this->setIfExists('isUpdate', $data ?? [], null);
         $this->setIfExists('isAutoUpdate', $data ?? [], null);
         $this->setIfExists('isRegularSyndication', $data ?? [], null);
@@ -436,7 +437,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('originalType', $data ?? [], null);
-        $this->setIfExists('skipOptimization', $data ?? [], null);
     }
 
     /**
@@ -1227,6 +1227,40 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
     }
 
     /**
+     * Gets skipOptimization.
+     *
+     * @return null|bool
+     */
+    public function getSkipOptimization()
+    {
+        return $this->container['skipOptimization'];
+    }
+
+    /**
+     * Sets skipOptimization.
+     *
+     * @param null|bool $skipOptimization skipOptimization
+     *
+     * @return self
+     */
+    public function setSkipOptimization($skipOptimization)
+    {
+        if (is_null($skipOptimization)) {
+            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipOptimization', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['skipOptimization'] = $skipOptimization;
+
+        return $this;
+    }
+
+    /**
      * Gets isUpdate.
      *
      * @return null|bool
@@ -1983,40 +2017,6 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['originalType'] = $originalType;
-
-        return $this;
-    }
-
-    /**
-     * Gets skipOptimization.
-     *
-     * @return null|bool
-     */
-    public function getSkipOptimization()
-    {
-        return $this->container['skipOptimization'];
-    }
-
-    /**
-     * Sets skipOptimization.
-     *
-     * @param null|bool $skipOptimization skipOptimization
-     *
-     * @return self
-     */
-    public function setSkipOptimization($skipOptimization)
-    {
-        if (is_null($skipOptimization)) {
-            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('skipOptimization', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['skipOptimization'] = $skipOptimization;
 
         return $this;
     }

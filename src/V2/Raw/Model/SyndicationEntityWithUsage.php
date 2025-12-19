@@ -80,6 +80,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => 'float',
         'dryRun' => 'bool',
         'skipSyndication' => 'bool',
+        'skipOptimization' => 'bool',
         'isUpdate' => 'bool',
         'isAutoUpdate' => 'bool',
         'isRegularSyndication' => 'bool',
@@ -103,7 +104,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'originalType' => 'SyndicationType',
-        'skipOptimization' => 'bool',
         'usage' => 'RemoteEntityUsageEntity',
     ];
 
@@ -137,6 +137,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => null,
         'dryRun' => null,
         'skipSyndication' => null,
+        'skipOptimization' => null,
         'isUpdate' => null,
         'isAutoUpdate' => null,
         'isRegularSyndication' => null,
@@ -160,7 +161,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => null,
         'deletedAt' => null,
         'originalType' => null,
-        'skipOptimization' => null,
         'usage' => null,
     ];
 
@@ -190,6 +190,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => true,
         'dryRun' => true,
         'skipSyndication' => true,
+        'skipOptimization' => true,
         'isUpdate' => true,
         'isAutoUpdate' => true,
         'isRegularSyndication' => true,
@@ -213,7 +214,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => false,
         'deletedAt' => true,
         'originalType' => true,
-        'skipOptimization' => true,
         'usage' => true,
     ];
 
@@ -251,6 +251,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => 'finishedAt',
         'dryRun' => 'dryRun',
         'skipSyndication' => 'skipSyndication',
+        'skipOptimization' => 'skipOptimization',
         'isUpdate' => 'isUpdate',
         'isAutoUpdate' => 'isAutoUpdate',
         'isRegularSyndication' => 'isRegularSyndication',
@@ -274,7 +275,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
         'originalType' => 'originalType',
-        'skipOptimization' => 'skipOptimization',
         'usage' => 'usage',
     ];
 
@@ -304,6 +304,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => 'setFinishedAt',
         'dryRun' => 'setDryRun',
         'skipSyndication' => 'setSkipSyndication',
+        'skipOptimization' => 'setSkipOptimization',
         'isUpdate' => 'setIsUpdate',
         'isAutoUpdate' => 'setIsAutoUpdate',
         'isRegularSyndication' => 'setIsRegularSyndication',
@@ -327,7 +328,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
         'originalType' => 'setOriginalType',
-        'skipOptimization' => 'setSkipOptimization',
         'usage' => 'setUsage',
     ];
 
@@ -357,6 +357,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'finishedAt' => 'getFinishedAt',
         'dryRun' => 'getDryRun',
         'skipSyndication' => 'getSkipSyndication',
+        'skipOptimization' => 'getSkipOptimization',
         'isUpdate' => 'getIsUpdate',
         'isAutoUpdate' => 'getIsAutoUpdate',
         'isRegularSyndication' => 'getIsRegularSyndication',
@@ -380,7 +381,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
         'originalType' => 'getOriginalType',
-        'skipOptimization' => 'getSkipOptimization',
         'usage' => 'getUsage',
     ];
 
@@ -419,6 +419,7 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         $this->setIfExists('finishedAt', $data ?? [], null);
         $this->setIfExists('dryRun', $data ?? [], null);
         $this->setIfExists('skipSyndication', $data ?? [], null);
+        $this->setIfExists('skipOptimization', $data ?? [], null);
         $this->setIfExists('isUpdate', $data ?? [], null);
         $this->setIfExists('isAutoUpdate', $data ?? [], null);
         $this->setIfExists('isRegularSyndication', $data ?? [], null);
@@ -442,7 +443,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('originalType', $data ?? [], null);
-        $this->setIfExists('skipOptimization', $data ?? [], null);
         $this->setIfExists('usage', $data ?? [], null);
     }
 
@@ -1234,6 +1234,40 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
     }
 
     /**
+     * Gets skipOptimization.
+     *
+     * @return null|bool
+     */
+    public function getSkipOptimization()
+    {
+        return $this->container['skipOptimization'];
+    }
+
+    /**
+     * Sets skipOptimization.
+     *
+     * @param null|bool $skipOptimization skipOptimization
+     *
+     * @return self
+     */
+    public function setSkipOptimization($skipOptimization)
+    {
+        if (is_null($skipOptimization)) {
+            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('skipOptimization', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['skipOptimization'] = $skipOptimization;
+
+        return $this;
+    }
+
+    /**
      * Gets isUpdate.
      *
      * @return null|bool
@@ -1990,40 +2024,6 @@ class SyndicationEntityWithUsage implements ModelInterface, \ArrayAccess, \JsonS
             }
         }
         $this->container['originalType'] = $originalType;
-
-        return $this;
-    }
-
-    /**
-     * Gets skipOptimization.
-     *
-     * @return null|bool
-     */
-    public function getSkipOptimization()
-    {
-        return $this->container['skipOptimization'];
-    }
-
-    /**
-     * Sets skipOptimization.
-     *
-     * @param null|bool $skipOptimization skipOptimization
-     *
-     * @return self
-     */
-    public function setSkipOptimization($skipOptimization)
-    {
-        if (is_null($skipOptimization)) {
-            array_push($this->openAPINullablesSetToNull, 'skipOptimization');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('skipOptimization', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['skipOptimization'] = $skipOptimization;
 
         return $this;
     }

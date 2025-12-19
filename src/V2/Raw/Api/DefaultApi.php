@@ -116,7 +116,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -8923,7 +8922,7 @@ class DefaultApi
             $formParams['file'] = [];
             $paramFiles = is_array($file) ? $file : [$file];
             foreach ($paramFiles as $paramFile) {
-                $formParams['file'][] = Utils::tryFopen(
+                $formParams['file'][] = \GuzzleHttp\Psr7\Utils::tryFopen(
                     ObjectSerializer::toFormValue($paramFile),
                     'rb'
                 );
