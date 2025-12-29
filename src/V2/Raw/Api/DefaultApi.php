@@ -66,6 +66,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\MostRecentContractRevisions;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRequestList;
@@ -80,6 +81,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\ProjectLinkEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDto;
 use EdgeBox\SyncCore\V2\Raw\Model\RegisterSiteDto;
+use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityRevisionEntityPushResult;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
@@ -270,6 +272,18 @@ class DefaultApi
             'application/json',
         ],
         'projectLinkControllerItemByUuid' => [
+            'application/json',
+        ],
+        'remoteEntityCloneControllerItem' => [
+            'application/json',
+        ],
+        'remoteEntityCloneControllerItemByTargetUuid' => [
+            'application/json',
+        ],
+        'remoteEntityCloneControllerList' => [
+            'application/json',
+        ],
+        'remoteEntityCloneControllerListBySourceUuid' => [
             'application/json',
         ],
         'remoteEntityRevisionControllerCreate' => [
@@ -14251,6 +14265,1378 @@ class DefaultApi
     }
 
     /**
+     * Operation remoteEntityCloneControllerItem.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItem'] to see the possible values for this operation
+     *
+     * @return RemoteEntityCloneEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItem($id, string $contentType = self::contentTypes['remoteEntityCloneControllerItem'][0])
+    {
+        [$response] = $this->remoteEntityCloneControllerItemWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItem'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityCloneControllerItem'][0])
+    {
+        $request = $this->remoteEntityCloneControllerItemRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemAsync($id, string $contentType = self::contentTypes['remoteEntityCloneControllerItem'][0])
+    {
+        return $this->remoteEntityCloneControllerItemAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['remoteEntityCloneControllerItem'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity';
+        $request = $this->remoteEntityCloneControllerItemRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'remoteEntityCloneControllerItem'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItem'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemRequest($id, string $contentType = self::contentTypes['remoteEntityCloneControllerItem'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling remoteEntityCloneControllerItem'
+            );
+        }
+
+        $resourcePath = '/sync-core/remote-entity-clone/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemByTargetUuid.
+     *
+     * @param  string $uuid uuid (required)
+     * @param  string $siteId siteId (required)
+     * @param  string $entityTypeId entityTypeId (optional)
+     * @param  string $flowId flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'] to see the possible values for this operation
+     *
+     * @return RemoteEntityCloneEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemByTargetUuid($uuid, $siteId, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'][0])
+    {
+        [$response] = $this->remoteEntityCloneControllerItemByTargetUuidWithHttpInfo($uuid, $siteId, $entityTypeId, $flowId, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemByTargetUuidWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemByTargetUuidWithHttpInfo($uuid, $siteId, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'][0])
+    {
+        $request = $this->remoteEntityCloneControllerItemByTargetUuidRequest($uuid, $siteId, $entityTypeId, $flowId, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemByTargetUuidAsync.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemByTargetUuidAsync($uuid, $siteId, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'][0])
+    {
+        return $this->remoteEntityCloneControllerItemByTargetUuidAsyncWithHttpInfo($uuid, $siteId, $entityTypeId, $flowId, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerItemByTargetUuidAsyncWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemByTargetUuidAsyncWithHttpInfo($uuid, $siteId, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity';
+        $request = $this->remoteEntityCloneControllerItemByTargetUuidRequest($uuid, $siteId, $entityTypeId, $flowId, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'remoteEntityCloneControllerItemByTargetUuid'.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerItemByTargetUuidRequest($uuid, $siteId, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerItemByTargetUuid'][0])
+    {
+        // verify the required parameter 'uuid' is set
+        if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling remoteEntityCloneControllerItemByTargetUuid'
+            );
+        }
+
+        // verify the required parameter 'siteId' is set
+        if (null === $siteId || (is_array($siteId) && 0 === count($siteId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $siteId when calling remoteEntityCloneControllerItemByTargetUuid'
+            );
+        }
+
+        $resourcePath = '/sync-core/remote-entity-clone/site/{siteId}/by-target-uuid/{uuid}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTypeId,
+            'entityTypeId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $flowId,
+            'flowId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // path params
+        if (null !== $uuid) {
+            $resourcePath = str_replace(
+                '{uuid}',
+                ObjectSerializer::toPathValue($uuid),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $siteId) {
+            $resourcePath = str_replace(
+                '{siteId}',
+                ObjectSerializer::toPathValue($siteId),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerList.
+     *
+     * @param  string $entityTypeId entityTypeId (optional)
+     * @param  string $flowId flowId (optional)
+     * @param  string $siteId siteId (optional)
+     * @param  string $targetRemoteUniqueId targetRemoteUniqueId (optional)
+     * @param  string $sourceRemoteUniqueId sourceRemoteUniqueId (optional)
+     * @param  string $targetRemoteUuid targetRemoteUuid (optional)
+     * @param  string $sourceRemoteUuid sourceRemoteUuid (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerList'] to see the possible values for this operation
+     *
+     * @return PagedRemoteEntityCloneListResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerList($entityTypeId = null, $flowId = null, $siteId = null, $targetRemoteUniqueId = null, $sourceRemoteUniqueId = null, $targetRemoteUuid = null, $sourceRemoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityCloneControllerList'][0])
+    {
+        [$response] = $this->remoteEntityCloneControllerListWithHttpInfo($entityTypeId, $flowId, $siteId, $targetRemoteUniqueId, $sourceRemoteUniqueId, $targetRemoteUuid, $sourceRemoteUuid, $page, $itemsPerPage, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListWithHttpInfo.
+     *
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $targetRemoteUniqueId (optional)
+     * @param  string $sourceRemoteUniqueId (optional)
+     * @param  string $targetRemoteUuid (optional)
+     * @param  string $sourceRemoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerList'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListWithHttpInfo($entityTypeId = null, $flowId = null, $siteId = null, $targetRemoteUniqueId = null, $sourceRemoteUniqueId = null, $targetRemoteUuid = null, $sourceRemoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityCloneControllerList'][0])
+    {
+        $request = $this->remoteEntityCloneControllerListRequest($entityTypeId, $flowId, $siteId, $targetRemoteUniqueId, $sourceRemoteUniqueId, $targetRemoteUuid, $sourceRemoteUuid, $page, $itemsPerPage, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListAsync.
+     *
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $targetRemoteUniqueId (optional)
+     * @param  string $sourceRemoteUniqueId (optional)
+     * @param  string $targetRemoteUuid (optional)
+     * @param  string $sourceRemoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListAsync($entityTypeId = null, $flowId = null, $siteId = null, $targetRemoteUniqueId = null, $sourceRemoteUniqueId = null, $targetRemoteUuid = null, $sourceRemoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityCloneControllerList'][0])
+    {
+        return $this->remoteEntityCloneControllerListAsyncWithHttpInfo($entityTypeId, $flowId, $siteId, $targetRemoteUniqueId, $sourceRemoteUniqueId, $targetRemoteUuid, $sourceRemoteUuid, $page, $itemsPerPage, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListAsyncWithHttpInfo.
+     *
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $targetRemoteUniqueId (optional)
+     * @param  string $sourceRemoteUniqueId (optional)
+     * @param  string $targetRemoteUuid (optional)
+     * @param  string $sourceRemoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListAsyncWithHttpInfo($entityTypeId = null, $flowId = null, $siteId = null, $targetRemoteUniqueId = null, $sourceRemoteUniqueId = null, $targetRemoteUuid = null, $sourceRemoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityCloneControllerList'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse';
+        $request = $this->remoteEntityCloneControllerListRequest($entityTypeId, $flowId, $siteId, $targetRemoteUniqueId, $sourceRemoteUniqueId, $targetRemoteUuid, $sourceRemoteUuid, $page, $itemsPerPage, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'remoteEntityCloneControllerList'.
+     *
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $siteId (optional)
+     * @param  string $targetRemoteUniqueId (optional)
+     * @param  string $sourceRemoteUniqueId (optional)
+     * @param  string $targetRemoteUuid (optional)
+     * @param  string $sourceRemoteUuid (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerList'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListRequest($entityTypeId = null, $flowId = null, $siteId = null, $targetRemoteUniqueId = null, $sourceRemoteUniqueId = null, $targetRemoteUuid = null, $sourceRemoteUuid = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['remoteEntityCloneControllerList'][0])
+    {
+        $resourcePath = '/sync-core/remote-entity-clone';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTypeId,
+            'entityTypeId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $flowId,
+            'flowId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $siteId,
+            'siteId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetRemoteUniqueId,
+            'targetRemoteUniqueId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceRemoteUniqueId,
+            'sourceRemoteUniqueId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetRemoteUuid,
+            'targetRemoteUuid', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceRemoteUuid,
+            'sourceRemoteUuid', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListBySourceUuid.
+     *
+     * @param  string $uuid uuid (required)
+     * @param  string $siteId siteId (required)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $page page (optional)
+     * @param  string $entityTypeId entityTypeId (optional)
+     * @param  string $flowId flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerListBySourceUuid'] to see the possible values for this operation
+     *
+     * @return PagedRemoteEntityCloneListResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListBySourceUuid($uuid, $siteId, $itemsPerPage = null, $page = null, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerListBySourceUuid'][0])
+    {
+        [$response] = $this->remoteEntityCloneControllerListBySourceUuidWithHttpInfo($uuid, $siteId, $itemsPerPage, $page, $entityTypeId, $flowId, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListBySourceUuidWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerListBySourceUuid'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListBySourceUuidWithHttpInfo($uuid, $siteId, $itemsPerPage = null, $page = null, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerListBySourceUuid'][0])
+    {
+        $request = $this->remoteEntityCloneControllerListBySourceUuidRequest($uuid, $siteId, $itemsPerPage, $page, $entityTypeId, $flowId, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListBySourceUuidAsync.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerListBySourceUuid'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListBySourceUuidAsync($uuid, $siteId, $itemsPerPage = null, $page = null, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerListBySourceUuid'][0])
+    {
+        return $this->remoteEntityCloneControllerListBySourceUuidAsyncWithHttpInfo($uuid, $siteId, $itemsPerPage, $page, $entityTypeId, $flowId, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation remoteEntityCloneControllerListBySourceUuidAsyncWithHttpInfo.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerListBySourceUuid'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListBySourceUuidAsyncWithHttpInfo($uuid, $siteId, $itemsPerPage = null, $page = null, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerListBySourceUuid'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse';
+        $request = $this->remoteEntityCloneControllerListBySourceUuidRequest($uuid, $siteId, $itemsPerPage, $page, $entityTypeId, $flowId, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'remoteEntityCloneControllerListBySourceUuid'.
+     *
+     * @param  string $uuid (required)
+     * @param  string $siteId (required)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $page (optional)
+     * @param  string $entityTypeId (optional)
+     * @param  string $flowId (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['remoteEntityCloneControllerListBySourceUuid'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remoteEntityCloneControllerListBySourceUuidRequest($uuid, $siteId, $itemsPerPage = null, $page = null, $entityTypeId = null, $flowId = null, string $contentType = self::contentTypes['remoteEntityCloneControllerListBySourceUuid'][0])
+    {
+        // verify the required parameter 'uuid' is set
+        if (null === $uuid || (is_array($uuid) && 0 === count($uuid))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $uuid when calling remoteEntityCloneControllerListBySourceUuid'
+            );
+        }
+
+        // verify the required parameter 'siteId' is set
+        if (null === $siteId || (is_array($siteId) && 0 === count($siteId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $siteId when calling remoteEntityCloneControllerListBySourceUuid'
+            );
+        }
+
+        $resourcePath = '/sync-core/remote-entity-clone/site/{siteId}/by-source-uuid/{uuid}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTypeId,
+            'entityTypeId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $flowId,
+            'flowId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // path params
+        if (null !== $uuid) {
+            $resourcePath = str_replace(
+                '{uuid}',
+                ObjectSerializer::toPathValue($uuid),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $siteId) {
+            $resourcePath = str_replace(
+                '{siteId}',
+                ObjectSerializer::toPathValue($siteId),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation remoteEntityRevisionControllerCreate.
      *
      * @param  CreateRemoteEntityRevisionDto $createRemoteEntityRevisionDto createRemoteEntityRevisionDto (required)
@@ -23376,6 +24762,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerList.
      *
+     * @param  string $isCloning isCloning (optional)
      * @param  string $types types (optional)
      * @param  string $isRegularSyndication isRegularSyndication (optional)
      * @param  string $isUpdate isUpdate (optional)
@@ -23402,9 +24789,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function syndicationControllerList($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerList($isCloning = null, $types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        [$response] = $this->syndicationControllerListWithHttpInfo($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        [$response] = $this->syndicationControllerListWithHttpInfo($isCloning, $types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -23412,6 +24799,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListWithHttpInfo.
      *
+     * @param  string $isCloning (optional)
      * @param  string $types (optional)
      * @param  string $isRegularSyndication (optional)
      * @param  string $isUpdate (optional)
@@ -23438,9 +24826,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function syndicationControllerListWithHttpInfo($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListWithHttpInfo($isCloning = null, $types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        $request = $this->syndicationControllerListRequest($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        $request = $this->syndicationControllerListRequest($isCloning, $types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -23531,6 +24919,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsync.
      *
+     * @param  string $isCloning (optional)
      * @param  string $types (optional)
      * @param  string $isRegularSyndication (optional)
      * @param  string $isUpdate (optional)
@@ -23556,9 +24945,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function syndicationControllerListAsync($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListAsync($isCloning = null, $types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
-        return $this->syndicationControllerListAsyncWithHttpInfo($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType)
+        return $this->syndicationControllerListAsyncWithHttpInfo($isCloning, $types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -23570,6 +24959,7 @@ class DefaultApi
     /**
      * Operation syndicationControllerListAsyncWithHttpInfo.
      *
+     * @param  string $isCloning (optional)
      * @param  string $types (optional)
      * @param  string $isRegularSyndication (optional)
      * @param  string $isUpdate (optional)
@@ -23595,10 +24985,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function syndicationControllerListAsyncWithHttpInfo($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListAsyncWithHttpInfo($isCloning = null, $types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedSyndicationList';
-        $request = $this->syndicationControllerListRequest($types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
+        $request = $this->syndicationControllerListRequest($isCloning, $types, $isRegularSyndication, $isUpdate, $statuses, $migrationId, $includeUsage, $sourceSyndicationId, $flowMachineNames, $flowIds, $poolMachineNames, $poolIds, $siteUuids, $siteIds, $entityRemoteUniqueIds, $entityRemoteUuids, $entityIds, $groupBy, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -23641,6 +25031,7 @@ class DefaultApi
     /**
      * Create request for operation 'syndicationControllerList'.
      *
+     * @param  string $isCloning (optional)
      * @param  string $types (optional)
      * @param  string $isRegularSyndication (optional)
      * @param  string $isUpdate (optional)
@@ -23666,7 +25057,7 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function syndicationControllerListRequest($types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
+    public function syndicationControllerListRequest($isCloning = null, $types = null, $isRegularSyndication = null, $isUpdate = null, $statuses = null, $migrationId = null, $includeUsage = null, $sourceSyndicationId = null, $flowMachineNames = null, $flowIds = null, $poolMachineNames = null, $poolIds = null, $siteUuids = null, $siteIds = null, $entityRemoteUniqueIds = null, $entityRemoteUuids = null, $entityIds = null, $groupBy = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['syndicationControllerList'][0])
     {
         $resourcePath = '/sync-core/syndication';
         $formParams = [];
@@ -23675,6 +25066,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $isCloning,
+            'isCloning', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $types,

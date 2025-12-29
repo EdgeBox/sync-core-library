@@ -35,4 +35,13 @@ interface IFlowPullConfiguration extends IBatchOperation
      * @return $this
      */
     public function asDependency(bool $set);
+
+    /**
+     * Enable clone behavior for this pull syndication.
+     *
+     * When enabled, pulls create disconnected local copies (new UUID).
+     *
+     * @return $this
+     */
+    public function asClone(bool $set);
 }

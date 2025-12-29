@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FlowSyndication.
+ * PagedRemoteEntityCloneListResponse.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * FlowSyndication Class Doc Comment.
+ * PagedRemoteEntityCloneListResponse Class Doc Comment.
  *
  * @category Class
  *
@@ -43,7 +43,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
+class PagedRemoteEntityCloneListResponse implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -52,7 +52,7 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'FlowSyndication';
+    protected static $openAPIModelName = 'PagedRemoteEntityCloneListResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -60,13 +60,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => 'FlowSyndicationMode',
-        'clone' => 'bool',
-        'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
-        'syndicateDeletions' => 'bool',
-        'pool' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'entityTypeVersions' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'page' => 'float',
+        'numberOfPages' => 'float',
+        'itemsPerPage' => 'float',
+        'totalNumberOfItems' => 'float',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityCloneEntity[]',
     ];
 
     /**
@@ -79,13 +77,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'mode' => null,
-        'clone' => null,
-        'filters' => null,
-        'syndicateDeletions' => null,
-        'pool' => null,
-        'entityTypes' => null,
-        'entityTypeVersions' => null,
+        'page' => null,
+        'numberOfPages' => null,
+        'itemsPerPage' => null,
+        'totalNumberOfItems' => null,
+        'items' => null,
     ];
 
     /**
@@ -94,13 +90,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'mode' => false,
-        'clone' => true,
-        'filters' => true,
-        'syndicateDeletions' => true,
-        'pool' => false,
-        'entityTypes' => false,
-        'entityTypeVersions' => false,
+        'page' => false,
+        'numberOfPages' => false,
+        'itemsPerPage' => false,
+        'totalNumberOfItems' => false,
+        'items' => false,
     ];
 
     /**
@@ -117,13 +111,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'mode' => 'mode',
-        'clone' => 'clone',
-        'filters' => 'filters',
-        'syndicateDeletions' => 'syndicateDeletions',
-        'pool' => 'pool',
-        'entityTypes' => 'entityTypes',
-        'entityTypeVersions' => 'entityTypeVersions',
+        'page' => 'page',
+        'numberOfPages' => 'numberOfPages',
+        'itemsPerPage' => 'itemsPerPage',
+        'totalNumberOfItems' => 'totalNumberOfItems',
+        'items' => 'items',
     ];
 
     /**
@@ -132,13 +124,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'mode' => 'setMode',
-        'clone' => 'setClone',
-        'filters' => 'setFilters',
-        'syndicateDeletions' => 'setSyndicateDeletions',
-        'pool' => 'setPool',
-        'entityTypes' => 'setEntityTypes',
-        'entityTypeVersions' => 'setEntityTypeVersions',
+        'page' => 'setPage',
+        'numberOfPages' => 'setNumberOfPages',
+        'itemsPerPage' => 'setItemsPerPage',
+        'totalNumberOfItems' => 'setTotalNumberOfItems',
+        'items' => 'setItems',
     ];
 
     /**
@@ -147,13 +137,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'mode' => 'getMode',
-        'clone' => 'getClone',
-        'filters' => 'getFilters',
-        'syndicateDeletions' => 'getSyndicateDeletions',
-        'pool' => 'getPool',
-        'entityTypes' => 'getEntityTypes',
-        'entityTypeVersions' => 'getEntityTypeVersions',
+        'page' => 'getPage',
+        'numberOfPages' => 'getNumberOfPages',
+        'itemsPerPage' => 'getItemsPerPage',
+        'totalNumberOfItems' => 'getTotalNumberOfItems',
+        'items' => 'getItems',
     ];
 
     /**
@@ -171,13 +159,11 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('mode', $data ?? [], null);
-        $this->setIfExists('clone', $data ?? [], null);
-        $this->setIfExists('filters', $data ?? [], null);
-        $this->setIfExists('syndicateDeletions', $data ?? [], null);
-        $this->setIfExists('pool', $data ?? [], null);
-        $this->setIfExists('entityTypes', $data ?? [], null);
-        $this->setIfExists('entityTypeVersions', $data ?? [], null);
+        $this->setIfExists('page', $data ?? [], null);
+        $this->setIfExists('numberOfPages', $data ?? [], null);
+        $this->setIfExists('itemsPerPage', $data ?? [], null);
+        $this->setIfExists('totalNumberOfItems', $data ?? [], null);
+        $this->setIfExists('items', $data ?? [], null);
     }
 
     /**
@@ -279,17 +265,20 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['mode']) {
-            $invalidProperties[] = "'mode' can't be null";
+        if (null === $this->container['page']) {
+            $invalidProperties[] = "'page' can't be null";
         }
-        if (null === $this->container['pool']) {
-            $invalidProperties[] = "'pool' can't be null";
+        if (null === $this->container['numberOfPages']) {
+            $invalidProperties[] = "'numberOfPages' can't be null";
         }
-        if (null === $this->container['entityTypes']) {
-            $invalidProperties[] = "'entityTypes' can't be null";
+        if (null === $this->container['itemsPerPage']) {
+            $invalidProperties[] = "'itemsPerPage' can't be null";
         }
-        if (null === $this->container['entityTypeVersions']) {
-            $invalidProperties[] = "'entityTypeVersions' can't be null";
+        if (null === $this->container['totalNumberOfItems']) {
+            $invalidProperties[] = "'totalNumberOfItems' can't be null";
+        }
+        if (null === $this->container['items']) {
+            $invalidProperties[] = "'items' can't be null";
         }
 
         return $invalidProperties;
@@ -307,211 +296,136 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets mode.
+     * Gets page.
      *
-     * @return FlowSyndicationMode
+     * @return float
      */
-    public function getMode()
+    public function getPage()
     {
-        return $this->container['mode'];
+        return $this->container['page'];
     }
 
     /**
-     * Sets mode.
+     * Sets page.
      *
-     * @param FlowSyndicationMode $mode mode
+     * @param float $page page
      *
      * @return self
      */
-    public function setMode($mode)
+    public function setPage($page)
     {
-        if (is_null($mode)) {
-            throw new \InvalidArgumentException('non-nullable mode cannot be null');
+        if (is_null($page)) {
+            throw new \InvalidArgumentException('non-nullable page cannot be null');
         }
-        $this->container['mode'] = $mode;
+        $this->container['page'] = $page;
 
         return $this;
     }
 
     /**
-     * Gets clone.
+     * Gets numberOfPages.
      *
-     * @return null|bool
+     * @return float
      */
-    public function getClone()
+    public function getNumberOfPages()
     {
-        return $this->container['clone'];
+        return $this->container['numberOfPages'];
     }
 
     /**
-     * Sets clone.
+     * Sets numberOfPages.
      *
-     * @param null|bool $clone clone
+     * @param float $numberOfPages numberOfPages
      *
      * @return self
      */
-    public function setClone($clone)
+    public function setNumberOfPages($numberOfPages)
     {
-        if (is_null($clone)) {
-            array_push($this->openAPINullablesSetToNull, 'clone');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('clone', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($numberOfPages)) {
+            throw new \InvalidArgumentException('non-nullable numberOfPages cannot be null');
         }
-        $this->container['clone'] = $clone;
+        $this->container['numberOfPages'] = $numberOfPages;
 
         return $this;
     }
 
     /**
-     * Gets filters.
+     * Gets itemsPerPage.
      *
-     * @return null|FlowSyndicationFilter[]
+     * @return float
      */
-    public function getFilters()
+    public function getItemsPerPage()
     {
-        return $this->container['filters'];
+        return $this->container['itemsPerPage'];
     }
 
     /**
-     * Sets filters.
+     * Sets itemsPerPage.
      *
-     * @param null|FlowSyndicationFilter[] $filters filters
+     * @param float $itemsPerPage itemsPerPage
      *
      * @return self
      */
-    public function setFilters($filters)
+    public function setItemsPerPage($itemsPerPage)
     {
-        if (is_null($filters)) {
-            array_push($this->openAPINullablesSetToNull, 'filters');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('filters', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($itemsPerPage)) {
+            throw new \InvalidArgumentException('non-nullable itemsPerPage cannot be null');
         }
-        $this->container['filters'] = $filters;
+        $this->container['itemsPerPage'] = $itemsPerPage;
 
         return $this;
     }
 
     /**
-     * Gets syndicateDeletions.
+     * Gets totalNumberOfItems.
      *
-     * @return null|bool
+     * @return float
      */
-    public function getSyndicateDeletions()
+    public function getTotalNumberOfItems()
     {
-        return $this->container['syndicateDeletions'];
+        return $this->container['totalNumberOfItems'];
     }
 
     /**
-     * Sets syndicateDeletions.
+     * Sets totalNumberOfItems.
      *
-     * @param null|bool $syndicateDeletions syndicateDeletions
+     * @param float $totalNumberOfItems totalNumberOfItems
      *
      * @return self
      */
-    public function setSyndicateDeletions($syndicateDeletions)
+    public function setTotalNumberOfItems($totalNumberOfItems)
     {
-        if (is_null($syndicateDeletions)) {
-            array_push($this->openAPINullablesSetToNull, 'syndicateDeletions');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('syndicateDeletions', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($totalNumberOfItems)) {
+            throw new \InvalidArgumentException('non-nullable totalNumberOfItems cannot be null');
         }
-        $this->container['syndicateDeletions'] = $syndicateDeletions;
+        $this->container['totalNumberOfItems'] = $totalNumberOfItems;
 
         return $this;
     }
 
     /**
-     * Gets pool.
+     * Gets items.
      *
-     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RemoteEntityCloneEntity[]
      */
-    public function getPool()
+    public function getItems()
     {
-        return $this->container['pool'];
+        return $this->container['items'];
     }
 
     /**
-     * Sets pool.
+     * Sets items.
      *
-     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $pool pool
+     * @param RemoteEntityCloneEntity[] $items items
      *
      * @return self
      */
-    public function setPool($pool)
+    public function setItems($items)
     {
-        if (is_null($pool)) {
-            throw new \InvalidArgumentException('non-nullable pool cannot be null');
+        if (is_null($items)) {
+            throw new \InvalidArgumentException('non-nullable items cannot be null');
         }
-        $this->container['pool'] = $pool;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypes.
-     *
-     * @return DynamicReference[]
-     */
-    public function getEntityTypes()
-    {
-        return $this->container['entityTypes'];
-    }
-
-    /**
-     * Sets entityTypes.
-     *
-     * @param DynamicReference[] $entityTypes entityTypes
-     *
-     * @return self
-     */
-    public function setEntityTypes($entityTypes)
-    {
-        if (is_null($entityTypes)) {
-            throw new \InvalidArgumentException('non-nullable entityTypes cannot be null');
-        }
-        $this->container['entityTypes'] = $entityTypes;
-
-        return $this;
-    }
-
-    /**
-     * Gets entityTypeVersions.
-     *
-     * @return DynamicReference[]
-     */
-    public function getEntityTypeVersions()
-    {
-        return $this->container['entityTypeVersions'];
-    }
-
-    /**
-     * Sets entityTypeVersions.
-     *
-     * @param DynamicReference[] $entityTypeVersions entityTypeVersions
-     *
-     * @return self
-     */
-    public function setEntityTypeVersions($entityTypeVersions)
-    {
-        if (is_null($entityTypeVersions)) {
-            throw new \InvalidArgumentException('non-nullable entityTypeVersions cannot be null');
-        }
-        $this->container['entityTypeVersions'] = $entityTypeVersions;
+        $this->container['items'] = $items;
 
         return $this;
     }

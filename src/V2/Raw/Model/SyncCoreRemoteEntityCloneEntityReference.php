@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FlowSyndication.
+ * SyncCoreRemoteEntityCloneEntityReference.
  *
  * PHP version 7.4
  *
@@ -33,7 +33,7 @@ namespace EdgeBox\SyncCore\V2\Raw\Model;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * FlowSyndication Class Doc Comment.
+ * SyncCoreRemoteEntityCloneEntityReference Class Doc Comment.
  *
  * @category Class
  *
@@ -43,7 +43,7 @@ use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
+class SyncCoreRemoteEntityCloneEntityReference implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -52,7 +52,7 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'FlowSyndication';
+    protected static $openAPIModelName = 'SyncCoreRemoteEntityCloneEntityReference';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -60,13 +60,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'mode' => 'FlowSyndicationMode',
-        'clone' => 'bool',
-        'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
-        'syndicateDeletions' => 'bool',
-        'pool' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
-        'entityTypeVersions' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'entity' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'language' => 'string',
+        'isTranslationRoot' => 'bool',
+        'status' => 'EntityRemoteStatus',
+        'versionId' => 'string',
+        'versionIdWithTranslations' => 'string',
+        'viewUrl' => 'string',
+        'pulledAt' => 'float',
     ];
 
     /**
@@ -79,13 +80,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'mode' => null,
-        'clone' => null,
-        'filters' => null,
-        'syndicateDeletions' => null,
-        'pool' => null,
-        'entityTypes' => null,
-        'entityTypeVersions' => null,
+        'entity' => null,
+        'language' => null,
+        'isTranslationRoot' => null,
+        'status' => null,
+        'versionId' => null,
+        'versionIdWithTranslations' => null,
+        'viewUrl' => null,
+        'pulledAt' => null,
     ];
 
     /**
@@ -94,13 +96,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'mode' => false,
-        'clone' => true,
-        'filters' => true,
-        'syndicateDeletions' => true,
-        'pool' => false,
-        'entityTypes' => false,
-        'entityTypeVersions' => false,
+        'entity' => false,
+        'language' => false,
+        'isTranslationRoot' => false,
+        'status' => false,
+        'versionId' => true,
+        'versionIdWithTranslations' => true,
+        'viewUrl' => true,
+        'pulledAt' => true,
     ];
 
     /**
@@ -117,13 +120,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'mode' => 'mode',
-        'clone' => 'clone',
-        'filters' => 'filters',
-        'syndicateDeletions' => 'syndicateDeletions',
-        'pool' => 'pool',
-        'entityTypes' => 'entityTypes',
-        'entityTypeVersions' => 'entityTypeVersions',
+        'entity' => 'entity',
+        'language' => 'language',
+        'isTranslationRoot' => 'isTranslationRoot',
+        'status' => 'status',
+        'versionId' => 'versionId',
+        'versionIdWithTranslations' => 'versionIdWithTranslations',
+        'viewUrl' => 'viewUrl',
+        'pulledAt' => 'pulledAt',
     ];
 
     /**
@@ -132,13 +136,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'mode' => 'setMode',
-        'clone' => 'setClone',
-        'filters' => 'setFilters',
-        'syndicateDeletions' => 'setSyndicateDeletions',
-        'pool' => 'setPool',
-        'entityTypes' => 'setEntityTypes',
-        'entityTypeVersions' => 'setEntityTypeVersions',
+        'entity' => 'setEntity',
+        'language' => 'setLanguage',
+        'isTranslationRoot' => 'setIsTranslationRoot',
+        'status' => 'setStatus',
+        'versionId' => 'setVersionId',
+        'versionIdWithTranslations' => 'setVersionIdWithTranslations',
+        'viewUrl' => 'setViewUrl',
+        'pulledAt' => 'setPulledAt',
     ];
 
     /**
@@ -147,13 +152,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'mode' => 'getMode',
-        'clone' => 'getClone',
-        'filters' => 'getFilters',
-        'syndicateDeletions' => 'getSyndicateDeletions',
-        'pool' => 'getPool',
-        'entityTypes' => 'getEntityTypes',
-        'entityTypeVersions' => 'getEntityTypeVersions',
+        'entity' => 'getEntity',
+        'language' => 'getLanguage',
+        'isTranslationRoot' => 'getIsTranslationRoot',
+        'status' => 'getStatus',
+        'versionId' => 'getVersionId',
+        'versionIdWithTranslations' => 'getVersionIdWithTranslations',
+        'viewUrl' => 'getViewUrl',
+        'pulledAt' => 'getPulledAt',
     ];
 
     /**
@@ -171,13 +177,14 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('mode', $data ?? [], null);
-        $this->setIfExists('clone', $data ?? [], null);
-        $this->setIfExists('filters', $data ?? [], null);
-        $this->setIfExists('syndicateDeletions', $data ?? [], null);
-        $this->setIfExists('pool', $data ?? [], null);
-        $this->setIfExists('entityTypes', $data ?? [], null);
-        $this->setIfExists('entityTypeVersions', $data ?? [], null);
+        $this->setIfExists('entity', $data ?? [], null);
+        $this->setIfExists('language', $data ?? [], null);
+        $this->setIfExists('isTranslationRoot', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('versionId', $data ?? [], null);
+        $this->setIfExists('versionIdWithTranslations', $data ?? [], null);
+        $this->setIfExists('viewUrl', $data ?? [], null);
+        $this->setIfExists('pulledAt', $data ?? [], null);
     }
 
     /**
@@ -279,17 +286,17 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['mode']) {
-            $invalidProperties[] = "'mode' can't be null";
+        if (null === $this->container['entity']) {
+            $invalidProperties[] = "'entity' can't be null";
         }
-        if (null === $this->container['pool']) {
-            $invalidProperties[] = "'pool' can't be null";
+        if (null === $this->container['language']) {
+            $invalidProperties[] = "'language' can't be null";
         }
-        if (null === $this->container['entityTypes']) {
-            $invalidProperties[] = "'entityTypes' can't be null";
+        if (null === $this->container['isTranslationRoot']) {
+            $invalidProperties[] = "'isTranslationRoot' can't be null";
         }
-        if (null === $this->container['entityTypeVersions']) {
-            $invalidProperties[] = "'entityTypeVersions' can't be null";
+        if (null === $this->container['status']) {
+            $invalidProperties[] = "'status' can't be null";
         }
 
         return $invalidProperties;
@@ -307,211 +314,245 @@ class FlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets mode.
-     *
-     * @return FlowSyndicationMode
-     */
-    public function getMode()
-    {
-        return $this->container['mode'];
-    }
-
-    /**
-     * Sets mode.
-     *
-     * @param FlowSyndicationMode $mode mode
-     *
-     * @return self
-     */
-    public function setMode($mode)
-    {
-        if (is_null($mode)) {
-            throw new \InvalidArgumentException('non-nullable mode cannot be null');
-        }
-        $this->container['mode'] = $mode;
-
-        return $this;
-    }
-
-    /**
-     * Gets clone.
-     *
-     * @return null|bool
-     */
-    public function getClone()
-    {
-        return $this->container['clone'];
-    }
-
-    /**
-     * Sets clone.
-     *
-     * @param null|bool $clone clone
-     *
-     * @return self
-     */
-    public function setClone($clone)
-    {
-        if (is_null($clone)) {
-            array_push($this->openAPINullablesSetToNull, 'clone');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('clone', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['clone'] = $clone;
-
-        return $this;
-    }
-
-    /**
-     * Gets filters.
-     *
-     * @return null|FlowSyndicationFilter[]
-     */
-    public function getFilters()
-    {
-        return $this->container['filters'];
-    }
-
-    /**
-     * Sets filters.
-     *
-     * @param null|FlowSyndicationFilter[] $filters filters
-     *
-     * @return self
-     */
-    public function setFilters($filters)
-    {
-        if (is_null($filters)) {
-            array_push($this->openAPINullablesSetToNull, 'filters');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('filters', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['filters'] = $filters;
-
-        return $this;
-    }
-
-    /**
-     * Gets syndicateDeletions.
-     *
-     * @return null|bool
-     */
-    public function getSyndicateDeletions()
-    {
-        return $this->container['syndicateDeletions'];
-    }
-
-    /**
-     * Sets syndicateDeletions.
-     *
-     * @param null|bool $syndicateDeletions syndicateDeletions
-     *
-     * @return self
-     */
-    public function setSyndicateDeletions($syndicateDeletions)
-    {
-        if (is_null($syndicateDeletions)) {
-            array_push($this->openAPINullablesSetToNull, 'syndicateDeletions');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('syndicateDeletions', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['syndicateDeletions'] = $syndicateDeletions;
-
-        return $this;
-    }
-
-    /**
-     * Gets pool.
+     * Gets entity.
      *
      * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
-    public function getPool()
+    public function getEntity()
     {
-        return $this->container['pool'];
+        return $this->container['entity'];
     }
 
     /**
-     * Sets pool.
+     * Sets entity.
      *
-     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $pool pool
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $entity entity
      *
      * @return self
      */
-    public function setPool($pool)
+    public function setEntity($entity)
     {
-        if (is_null($pool)) {
-            throw new \InvalidArgumentException('non-nullable pool cannot be null');
+        if (is_null($entity)) {
+            throw new \InvalidArgumentException('non-nullable entity cannot be null');
         }
-        $this->container['pool'] = $pool;
+        $this->container['entity'] = $entity;
 
         return $this;
     }
 
     /**
-     * Gets entityTypes.
+     * Gets language.
      *
-     * @return DynamicReference[]
+     * @return string
      */
-    public function getEntityTypes()
+    public function getLanguage()
     {
-        return $this->container['entityTypes'];
+        return $this->container['language'];
     }
 
     /**
-     * Sets entityTypes.
+     * Sets language.
      *
-     * @param DynamicReference[] $entityTypes entityTypes
+     * @param string $language language
      *
      * @return self
      */
-    public function setEntityTypes($entityTypes)
+    public function setLanguage($language)
     {
-        if (is_null($entityTypes)) {
-            throw new \InvalidArgumentException('non-nullable entityTypes cannot be null');
+        if (is_null($language)) {
+            throw new \InvalidArgumentException('non-nullable language cannot be null');
         }
-        $this->container['entityTypes'] = $entityTypes;
+        $this->container['language'] = $language;
 
         return $this;
     }
 
     /**
-     * Gets entityTypeVersions.
+     * Gets isTranslationRoot.
      *
-     * @return DynamicReference[]
+     * @return bool
      */
-    public function getEntityTypeVersions()
+    public function getIsTranslationRoot()
     {
-        return $this->container['entityTypeVersions'];
+        return $this->container['isTranslationRoot'];
     }
 
     /**
-     * Sets entityTypeVersions.
+     * Sets isTranslationRoot.
      *
-     * @param DynamicReference[] $entityTypeVersions entityTypeVersions
+     * @param bool $isTranslationRoot isTranslationRoot
      *
      * @return self
      */
-    public function setEntityTypeVersions($entityTypeVersions)
+    public function setIsTranslationRoot($isTranslationRoot)
     {
-        if (is_null($entityTypeVersions)) {
-            throw new \InvalidArgumentException('non-nullable entityTypeVersions cannot be null');
+        if (is_null($isTranslationRoot)) {
+            throw new \InvalidArgumentException('non-nullable isTranslationRoot cannot be null');
         }
-        $this->container['entityTypeVersions'] = $entityTypeVersions;
+        $this->container['isTranslationRoot'] = $isTranslationRoot;
+
+        return $this;
+    }
+
+    /**
+     * Gets status.
+     *
+     * @return EntityRemoteStatus
+     */
+    public function getStatus()
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status.
+     *
+     * @param EntityRemoteStatus $status status
+     *
+     * @return self
+     */
+    public function setStatus($status)
+    {
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionId.
+     *
+     * @return null|string
+     */
+    public function getVersionId()
+    {
+        return $this->container['versionId'];
+    }
+
+    /**
+     * Sets versionId.
+     *
+     * @param null|string $versionId versionId
+     *
+     * @return self
+     */
+    public function setVersionId($versionId)
+    {
+        if (is_null($versionId)) {
+            array_push($this->openAPINullablesSetToNull, 'versionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionId'] = $versionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets versionIdWithTranslations.
+     *
+     * @return null|string
+     */
+    public function getVersionIdWithTranslations()
+    {
+        return $this->container['versionIdWithTranslations'];
+    }
+
+    /**
+     * Sets versionIdWithTranslations.
+     *
+     * @param null|string $versionIdWithTranslations versionIdWithTranslations
+     *
+     * @return self
+     */
+    public function setVersionIdWithTranslations($versionIdWithTranslations)
+    {
+        if (is_null($versionIdWithTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'versionIdWithTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('versionIdWithTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['versionIdWithTranslations'] = $versionIdWithTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets viewUrl.
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        return $this->container['viewUrl'];
+    }
+
+    /**
+     * Sets viewUrl.
+     *
+     * @param null|string $viewUrl viewUrl
+     *
+     * @return self
+     */
+    public function setViewUrl($viewUrl)
+    {
+        if (is_null($viewUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'viewUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('viewUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets pulledAt.
+     *
+     * @return null|float
+     */
+    public function getPulledAt()
+    {
+        return $this->container['pulledAt'];
+    }
+
+    /**
+     * Sets pulledAt.
+     *
+     * @param null|float $pulledAt pulledAt
+     *
+     * @return self
+     */
+    public function setPulledAt($pulledAt)
+    {
+        if (is_null($pulledAt)) {
+            array_push($this->openAPINullablesSetToNull, 'pulledAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pulledAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['pulledAt'] = $pulledAt;
 
         return $this;
     }

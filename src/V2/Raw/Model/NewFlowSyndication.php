@@ -61,6 +61,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static $openAPITypes = [
         'mode' => 'FlowSyndicationMode',
+        'clone' => 'bool',
         'filters' => '\EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationFilter[]',
         'syndicateDeletions' => 'bool',
         'poolMachineName' => 'string',
@@ -78,6 +79,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static $openAPIFormats = [
         'mode' => null,
+        'clone' => null,
         'filters' => null,
         'syndicateDeletions' => null,
         'poolMachineName' => null,
@@ -91,6 +93,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static array $openAPINullables = [
         'mode' => false,
+        'clone' => true,
         'filters' => true,
         'syndicateDeletions' => true,
         'poolMachineName' => false,
@@ -112,6 +115,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static $attributeMap = [
         'mode' => 'mode',
+        'clone' => 'clone',
         'filters' => 'filters',
         'syndicateDeletions' => 'syndicateDeletions',
         'poolMachineName' => 'poolMachineName',
@@ -125,6 +129,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static $setters = [
         'mode' => 'setMode',
+        'clone' => 'setClone',
         'filters' => 'setFilters',
         'syndicateDeletions' => 'setSyndicateDeletions',
         'poolMachineName' => 'setPoolMachineName',
@@ -138,6 +143,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
      */
     protected static $getters = [
         'mode' => 'getMode',
+        'clone' => 'getClone',
         'filters' => 'getFilters',
         'syndicateDeletions' => 'getSyndicateDeletions',
         'poolMachineName' => 'getPoolMachineName',
@@ -160,6 +166,7 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
     public function __construct(?array $data = null)
     {
         $this->setIfExists('mode', $data ?? [], null);
+        $this->setIfExists('clone', $data ?? [], null);
         $this->setIfExists('filters', $data ?? [], null);
         $this->setIfExists('syndicateDeletions', $data ?? [], null);
         $this->setIfExists('poolMachineName', $data ?? [], null);
@@ -312,6 +319,40 @@ class NewFlowSyndication implements ModelInterface, \ArrayAccess, \JsonSerializa
             throw new \InvalidArgumentException('non-nullable mode cannot be null');
         }
         $this->container['mode'] = $mode;
+
+        return $this;
+    }
+
+    /**
+     * Gets clone.
+     *
+     * @return null|bool
+     */
+    public function getClone()
+    {
+        return $this->container['clone'];
+    }
+
+    /**
+     * Sets clone.
+     *
+     * @param null|bool $clone clone
+     *
+     * @return self
+     */
+    public function setClone($clone)
+    {
+        if (is_null($clone)) {
+            array_push($this->openAPINullablesSetToNull, 'clone');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('clone', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['clone'] = $clone;
 
         return $this;
     }

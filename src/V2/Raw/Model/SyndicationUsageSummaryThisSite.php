@@ -104,6 +104,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'originalType' => 'SyndicationType',
+        'isClone' => 'bool',
         'usage' => 'RemoteEntityUsageEntity',
     ];
 
@@ -161,6 +162,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => null,
         'deletedAt' => null,
         'originalType' => null,
+        'isClone' => null,
         'usage' => null,
     ];
 
@@ -214,6 +216,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => false,
         'deletedAt' => true,
         'originalType' => true,
+        'isClone' => true,
         'usage' => true,
     ];
 
@@ -275,6 +278,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
         'originalType' => 'originalType',
+        'isClone' => 'isClone',
         'usage' => 'usage',
     ];
 
@@ -328,6 +332,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
         'originalType' => 'setOriginalType',
+        'isClone' => 'setIsClone',
         'usage' => 'setUsage',
     ];
 
@@ -381,6 +386,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
         'originalType' => 'getOriginalType',
+        'isClone' => 'getIsClone',
         'usage' => 'getUsage',
     ];
 
@@ -443,6 +449,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('originalType', $data ?? [], null);
+        $this->setIfExists('isClone', $data ?? [], null);
         $this->setIfExists('usage', $data ?? [], null);
     }
 
@@ -2024,6 +2031,40 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
             }
         }
         $this->container['originalType'] = $originalType;
+
+        return $this;
+    }
+
+    /**
+     * Gets isClone.
+     *
+     * @return null|bool
+     */
+    public function getIsClone()
+    {
+        return $this->container['isClone'];
+    }
+
+    /**
+     * Sets isClone.
+     *
+     * @param null|bool $isClone isClone
+     *
+     * @return self
+     */
+    public function setIsClone($isClone)
+    {
+        if (is_null($isClone)) {
+            array_push($this->openAPINullablesSetToNull, 'isClone');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isClone', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isClone'] = $isClone;
 
         return $this;
     }

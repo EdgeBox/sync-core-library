@@ -104,6 +104,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'originalType' => 'SyndicationType',
+        'isClone' => 'bool',
     ];
 
     /**
@@ -160,6 +161,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => null,
         'deletedAt' => null,
         'originalType' => null,
+        'isClone' => null,
     ];
 
     /**
@@ -212,6 +214,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => false,
         'deletedAt' => true,
         'originalType' => true,
+        'isClone' => true,
     ];
 
     /**
@@ -272,6 +275,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
         'originalType' => 'originalType',
+        'isClone' => 'isClone',
     ];
 
     /**
@@ -324,6 +328,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
         'originalType' => 'setOriginalType',
+        'isClone' => 'setIsClone',
     ];
 
     /**
@@ -376,6 +381,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
         'originalType' => 'getOriginalType',
+        'isClone' => 'getIsClone',
     ];
 
     /**
@@ -437,6 +443,7 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
         $this->setIfExists('originalType', $data ?? [], null);
+        $this->setIfExists('isClone', $data ?? [], null);
     }
 
     /**
@@ -2017,6 +2024,40 @@ class SyndicationEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['originalType'] = $originalType;
+
+        return $this;
+    }
+
+    /**
+     * Gets isClone.
+     *
+     * @return null|bool
+     */
+    public function getIsClone()
+    {
+        return $this->container['isClone'];
+    }
+
+    /**
+     * Sets isClone.
+     *
+     * @param null|bool $isClone isClone
+     *
+     * @return self
+     */
+    public function setIsClone($isClone)
+    {
+        if (is_null($isClone)) {
+            array_push($this->openAPINullablesSetToNull, 'isClone');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('isClone', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['isClone'] = $isClone;
 
         return $this;
     }

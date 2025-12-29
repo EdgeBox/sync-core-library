@@ -61,6 +61,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $openAPITypes = [
         'viewUrl' => 'string',
+        'remoteUuid' => 'string',
         'updateCount' => 'float',
         'ignoreCount' => 'float',
         'translations' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteCreateEntityResponseTranslation[]',
@@ -77,6 +78,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $openAPIFormats = [
         'viewUrl' => null,
+        'remoteUuid' => null,
         'updateCount' => null,
         'ignoreCount' => null,
         'translations' => null,
@@ -89,6 +91,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static array $openAPINullables = [
         'viewUrl' => false,
+        'remoteUuid' => true,
         'updateCount' => true,
         'ignoreCount' => true,
         'translations' => true,
@@ -109,6 +112,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $attributeMap = [
         'viewUrl' => 'viewUrl',
+        'remoteUuid' => 'remoteUuid',
         'updateCount' => 'updateCount',
         'ignoreCount' => 'ignoreCount',
         'translations' => 'translations',
@@ -121,6 +125,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $setters = [
         'viewUrl' => 'setViewUrl',
+        'remoteUuid' => 'setRemoteUuid',
         'updateCount' => 'setUpdateCount',
         'ignoreCount' => 'setIgnoreCount',
         'translations' => 'setTranslations',
@@ -133,6 +138,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $getters = [
         'viewUrl' => 'getViewUrl',
+        'remoteUuid' => 'getRemoteUuid',
         'updateCount' => 'getUpdateCount',
         'ignoreCount' => 'getIgnoreCount',
         'translations' => 'getTranslations',
@@ -154,6 +160,7 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
     public function __construct(?array $data = null)
     {
         $this->setIfExists('viewUrl', $data ?? [], null);
+        $this->setIfExists('remoteUuid', $data ?? [], null);
         $this->setIfExists('updateCount', $data ?? [], null);
         $this->setIfExists('ignoreCount', $data ?? [], null);
         $this->setIfExists('translations', $data ?? [], null);
@@ -299,6 +306,40 @@ class RemoteCreateEntityResponse implements ModelInterface, \ArrayAccess, \JsonS
             throw new \InvalidArgumentException('non-nullable viewUrl cannot be null');
         }
         $this->container['viewUrl'] = $viewUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets remoteUuid.
+     *
+     * @return null|string
+     */
+    public function getRemoteUuid()
+    {
+        return $this->container['remoteUuid'];
+    }
+
+    /**
+     * Sets remoteUuid.
+     *
+     * @param null|string $remoteUuid remoteUuid
+     *
+     * @return self
+     */
+    public function setRemoteUuid($remoteUuid)
+    {
+        if (is_null($remoteUuid)) {
+            array_push($this->openAPINullablesSetToNull, 'remoteUuid');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('remoteUuid', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['remoteUuid'] = $remoteUuid;
 
         return $this;
     }

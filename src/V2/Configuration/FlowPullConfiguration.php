@@ -50,6 +50,16 @@ class FlowPullConfiguration extends BatchOperation implements IFlowPullConfigura
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function asClone(bool $set)
+    {
+        $this->dto->setClone($set);
+
+        return $this;
+    }
+
     public function ifTaggedWith(string $property, array $allowed_entity_ids)
     {
         $newCondition = new FlowSyndicationFilter();
