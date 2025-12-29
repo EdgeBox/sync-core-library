@@ -92,5 +92,5 @@ interface IPullOperation
      *
      * @return array
      */
-    public function getResponseBody(?string $entity_deep_link);
+    public function getResponseBody(?string $entity_deep_link, ?string $target_remote_uuid = null);
 }

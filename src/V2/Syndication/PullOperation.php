@@ -391,13 +391,45 @@ class PullOperation implements IPullOperation
         return $dto->getName();
     }
 
-    public function getResponseBody(?string $entity_deep_link)
+    public function getResponseBody(?string $entity_deep_link, ?string $target_remote_uuid = null)
     {
         if ($this->dto instanceof DeleteRemoteEntityRevisionDto) {
             return [];
         }
 
-        $data = $this->dto->jsonSerialize();
+        $dto = $this->dto;
+
+        if (!empty($target_remote_uuid)) {
+            $dto->setRemoteUuid($target_remote_uuid);
+
+            if ($dto instanceof CreateRemoteEntityRevisionDto) {
+                $translations = $dto->getTranslations();
+                if (!empty($translations) && is_array($translations)) {
+                    foreach ($translations as $translation_dto) {
+                        $translation_dto->setRemoteUuid($target_remote_uuid);
+                    }
+                }
+                $dto->setTranslations($translations);
+            } elseif ($dto instanceof RemoteEntityRootEmbed) {
+                $translations = $dto->getTranslations();
+                if (!empty($translations) && is_array($translations)) {
+                    foreach ($translations as $translation_dto) {
+                        $translation_dto->setRemoteUuid($target_remote_uuid);
+                    }
+                }
+                $dto->setTranslations($translations);
+            } elseif ($dto instanceof RemoteEntityEmbedRootDraft) {
+                $translations = $dto->getTranslations();
+                if (!empty($translations) && is_array($translations)) {
+                    foreach ($translations as $translation_dto) {
+                        $translation_dto->setRemoteUuid($target_remote_uuid);
+                    }
+                }
+                $dto->setTranslations($translations);
+            }
+        }
+
+        $data = $dto->jsonSerialize();
 
         // Turn objects into arrays
         $data = json_decode(json_encode($data), true);
