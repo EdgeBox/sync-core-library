@@ -64,6 +64,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
+        'retentionUntil' => 'float',
+        'eTag' => 'string',
         'hash' => 'string',
         'uploadUrl' => 'string',
         'downloadUrl' => 'string',
@@ -72,11 +74,14 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxFileSize' => 'float',
         'status' => 'FileStatus',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'site' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
+        'site' => 'DynamicReference',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'entity' => 'DynamicReference',
         'flow' => 'DynamicReference',
         'syndication' => 'DynamicReference',
+        'aiPromptExecution' => 'DynamicReference',
+        'monitoringPrompt' => 'DynamicRevisionReference',
+        'monitoringPromptRun' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -98,6 +103,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => null,
         'remoteFilePath' => null,
         'remoteDownloadUrl' => null,
+        'retentionUntil' => null,
+        'eTag' => null,
         'hash' => null,
         'uploadUrl' => null,
         'downloadUrl' => null,
@@ -111,6 +118,9 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'entity' => null,
         'flow' => null,
         'syndication' => null,
+        'aiPromptExecution' => null,
+        'monitoringPrompt' => null,
+        'monitoringPromptRun' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -128,6 +138,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => false,
         'remoteFilePath' => true,
         'remoteDownloadUrl' => true,
+        'retentionUntil' => true,
+        'eTag' => true,
         'hash' => true,
         'uploadUrl' => true,
         'downloadUrl' => true,
@@ -136,11 +148,14 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxFileSize' => true,
         'status' => false,
         'customer' => false,
-        'site' => false,
+        'site' => true,
         'project' => false,
         'entity' => true,
         'flow' => true,
         'syndication' => true,
+        'aiPromptExecution' => true,
+        'monitoringPrompt' => true,
+        'monitoringPromptRun' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -166,6 +181,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'fileName',
         'remoteFilePath' => 'remoteFilePath',
         'remoteDownloadUrl' => 'remoteDownloadUrl',
+        'retentionUntil' => 'retentionUntil',
+        'eTag' => 'eTag',
         'hash' => 'hash',
         'uploadUrl' => 'uploadUrl',
         'downloadUrl' => 'downloadUrl',
@@ -179,6 +196,9 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'entity' => 'entity',
         'flow' => 'flow',
         'syndication' => 'syndication',
+        'aiPromptExecution' => 'aiPromptExecution',
+        'monitoringPrompt' => 'monitoringPrompt',
+        'monitoringPromptRun' => 'monitoringPromptRun',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -196,6 +216,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'setFileName',
         'remoteFilePath' => 'setRemoteFilePath',
         'remoteDownloadUrl' => 'setRemoteDownloadUrl',
+        'retentionUntil' => 'setRetentionUntil',
+        'eTag' => 'setETag',
         'hash' => 'setHash',
         'uploadUrl' => 'setUploadUrl',
         'downloadUrl' => 'setDownloadUrl',
@@ -209,6 +231,9 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'entity' => 'setEntity',
         'flow' => 'setFlow',
         'syndication' => 'setSyndication',
+        'aiPromptExecution' => 'setAiPromptExecution',
+        'monitoringPrompt' => 'setMonitoringPrompt',
+        'monitoringPromptRun' => 'setMonitoringPromptRun',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -226,6 +251,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'getFileName',
         'remoteFilePath' => 'getRemoteFilePath',
         'remoteDownloadUrl' => 'getRemoteDownloadUrl',
+        'retentionUntil' => 'getRetentionUntil',
+        'eTag' => 'getETag',
         'hash' => 'getHash',
         'uploadUrl' => 'getUploadUrl',
         'downloadUrl' => 'getDownloadUrl',
@@ -239,6 +266,9 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'entity' => 'getEntity',
         'flow' => 'getFlow',
         'syndication' => 'getSyndication',
+        'aiPromptExecution' => 'getAiPromptExecution',
+        'monitoringPrompt' => 'getMonitoringPrompt',
+        'monitoringPromptRun' => 'getMonitoringPromptRun',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -265,6 +295,8 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('fileName', $data ?? [], null);
         $this->setIfExists('remoteFilePath', $data ?? [], null);
         $this->setIfExists('remoteDownloadUrl', $data ?? [], null);
+        $this->setIfExists('retentionUntil', $data ?? [], null);
+        $this->setIfExists('eTag', $data ?? [], null);
         $this->setIfExists('hash', $data ?? [], null);
         $this->setIfExists('uploadUrl', $data ?? [], null);
         $this->setIfExists('downloadUrl', $data ?? [], null);
@@ -278,6 +310,9 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('entity', $data ?? [], null);
         $this->setIfExists('flow', $data ?? [], null);
         $this->setIfExists('syndication', $data ?? [], null);
+        $this->setIfExists('aiPromptExecution', $data ?? [], null);
+        $this->setIfExists('monitoringPrompt', $data ?? [], null);
+        $this->setIfExists('monitoringPromptRun', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -401,9 +436,6 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
-        }
-        if (null === $this->container['site']) {
-            $invalidProperties[] = "'site' can't be null";
         }
         if (null === $this->container['project']) {
             $invalidProperties[] = "'project' can't be null";
@@ -550,6 +582,74 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets retentionUntil.
+     *
+     * @return null|float
+     */
+    public function getRetentionUntil()
+    {
+        return $this->container['retentionUntil'];
+    }
+
+    /**
+     * Sets retentionUntil.
+     *
+     * @param null|float $retentionUntil retentionUntil
+     *
+     * @return self
+     */
+    public function setRetentionUntil($retentionUntil)
+    {
+        if (is_null($retentionUntil)) {
+            array_push($this->openAPINullablesSetToNull, 'retentionUntil');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('retentionUntil', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['retentionUntil'] = $retentionUntil;
+
+        return $this;
+    }
+
+    /**
+     * Gets eTag.
+     *
+     * @return null|string
+     */
+    public function getETag()
+    {
+        return $this->container['eTag'];
+    }
+
+    /**
+     * Sets eTag.
+     *
+     * @param null|string $eTag eTag
+     *
+     * @return self
+     */
+    public function setETag($eTag)
+    {
+        if (is_null($eTag)) {
+            array_push($this->openAPINullablesSetToNull, 'eTag');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('eTag', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['eTag'] = $eTag;
 
         return $this;
     }
@@ -801,7 +901,7 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets site.
      *
-     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return null|DynamicReference
      */
     public function getSite()
     {
@@ -811,14 +911,21 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets site.
      *
-     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $site site
+     * @param null|DynamicReference $site site
      *
      * @return self
      */
     public function setSite($site)
     {
         if (is_null($site)) {
-            throw new \InvalidArgumentException('non-nullable site cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'site');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('site', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['site'] = $site;
 
@@ -950,6 +1057,108 @@ class FileEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['syndication'] = $syndication;
+
+        return $this;
+    }
+
+    /**
+     * Gets aiPromptExecution.
+     *
+     * @return null|DynamicReference
+     */
+    public function getAiPromptExecution()
+    {
+        return $this->container['aiPromptExecution'];
+    }
+
+    /**
+     * Sets aiPromptExecution.
+     *
+     * @param null|DynamicReference $aiPromptExecution aiPromptExecution
+     *
+     * @return self
+     */
+    public function setAiPromptExecution($aiPromptExecution)
+    {
+        if (is_null($aiPromptExecution)) {
+            array_push($this->openAPINullablesSetToNull, 'aiPromptExecution');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aiPromptExecution', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aiPromptExecution'] = $aiPromptExecution;
+
+        return $this;
+    }
+
+    /**
+     * Gets monitoringPrompt.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getMonitoringPrompt()
+    {
+        return $this->container['monitoringPrompt'];
+    }
+
+    /**
+     * Sets monitoringPrompt.
+     *
+     * @param null|DynamicRevisionReference $monitoringPrompt monitoringPrompt
+     *
+     * @return self
+     */
+    public function setMonitoringPrompt($monitoringPrompt)
+    {
+        if (is_null($monitoringPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'monitoringPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('monitoringPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['monitoringPrompt'] = $monitoringPrompt;
+
+        return $this;
+    }
+
+    /**
+     * Gets monitoringPromptRun.
+     *
+     * @return null|DynamicReference
+     */
+    public function getMonitoringPromptRun()
+    {
+        return $this->container['monitoringPromptRun'];
+    }
+
+    /**
+     * Sets monitoringPromptRun.
+     *
+     * @param null|DynamicReference $monitoringPromptRun monitoringPromptRun
+     *
+     * @return self
+     */
+    public function setMonitoringPromptRun($monitoringPromptRun)
+    {
+        if (is_null($monitoringPromptRun)) {
+            array_push($this->openAPINullablesSetToNull, 'monitoringPromptRun');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('monitoringPromptRun', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['monitoringPromptRun'] = $monitoringPromptRun;
 
         return $this;
     }

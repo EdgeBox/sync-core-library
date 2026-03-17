@@ -61,6 +61,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'retrieveEntity' => 'string',
+        'renderEntity' => 'string',
         'listEntities' => 'string',
         'createEntity' => 'string',
         'deleteEntity' => 'string',
@@ -79,6 +80,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'retrieveEntity' => null,
+        'renderEntity' => null,
         'listEntities' => null,
         'createEntity' => null,
         'deleteEntity' => null,
@@ -93,6 +95,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'retrieveEntity' => false,
+        'renderEntity' => true,
         'listEntities' => false,
         'createEntity' => false,
         'deleteEntity' => false,
@@ -115,6 +118,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'retrieveEntity' => 'retrieveEntity',
+        'renderEntity' => 'renderEntity',
         'listEntities' => 'listEntities',
         'createEntity' => 'createEntity',
         'deleteEntity' => 'deleteEntity',
@@ -129,6 +133,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'retrieveEntity' => 'setRetrieveEntity',
+        'renderEntity' => 'setRenderEntity',
         'listEntities' => 'setListEntities',
         'createEntity' => 'setCreateEntity',
         'deleteEntity' => 'setDeleteEntity',
@@ -143,6 +148,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'retrieveEntity' => 'getRetrieveEntity',
+        'renderEntity' => 'getRenderEntity',
         'listEntities' => 'getListEntities',
         'createEntity' => 'getCreateEntity',
         'deleteEntity' => 'getDeleteEntity',
@@ -166,6 +172,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
     public function __construct(?array $data = null)
     {
         $this->setIfExists('retrieveEntity', $data ?? [], null);
+        $this->setIfExists('renderEntity', $data ?? [], null);
         $this->setIfExists('listEntities', $data ?? [], null);
         $this->setIfExists('createEntity', $data ?? [], null);
         $this->setIfExists('deleteEntity', $data ?? [], null);
@@ -322,6 +329,40 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable retrieveEntity cannot be null');
         }
         $this->container['retrieveEntity'] = $retrieveEntity;
+
+        return $this;
+    }
+
+    /**
+     * Gets renderEntity.
+     *
+     * @return null|string
+     */
+    public function getRenderEntity()
+    {
+        return $this->container['renderEntity'];
+    }
+
+    /**
+     * Sets renderEntity.
+     *
+     * @param null|string $renderEntity renderEntity
+     *
+     * @return self
+     */
+    public function setRenderEntity($renderEntity)
+    {
+        if (is_null($renderEntity)) {
+            array_push($this->openAPINullablesSetToNull, 'renderEntity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('renderEntity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['renderEntity'] = $renderEntity;
 
         return $this;
     }

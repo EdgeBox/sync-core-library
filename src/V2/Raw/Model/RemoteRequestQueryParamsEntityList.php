@@ -64,6 +64,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => 'float',
         'mode' => 'RemoteEntityListRequestMode',
         'changedAfter' => 'float',
+        'pageUrl' => 'string',
         'namespaceMachineName' => 'string',
         'machineName' => 'string',
         'versionId' => 'string',
@@ -85,6 +86,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => null,
         'mode' => null,
         'changedAfter' => null,
+        'pageUrl' => null,
         'namespaceMachineName' => null,
         'machineName' => null,
         'versionId' => null,
@@ -102,6 +104,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => true,
         'mode' => false,
         'changedAfter' => true,
+        'pageUrl' => true,
         'namespaceMachineName' => true,
         'machineName' => true,
         'versionId' => true,
@@ -127,6 +130,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => 'itemsPerPage',
         'mode' => 'mode',
         'changedAfter' => 'changedAfter',
+        'pageUrl' => 'pageUrl',
         'namespaceMachineName' => 'namespaceMachineName',
         'machineName' => 'machineName',
         'versionId' => 'versionId',
@@ -144,6 +148,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => 'setItemsPerPage',
         'mode' => 'setMode',
         'changedAfter' => 'setChangedAfter',
+        'pageUrl' => 'setPageUrl',
         'namespaceMachineName' => 'setNamespaceMachineName',
         'machineName' => 'setMachineName',
         'versionId' => 'setVersionId',
@@ -161,6 +166,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         'itemsPerPage' => 'getItemsPerPage',
         'mode' => 'getMode',
         'changedAfter' => 'getChangedAfter',
+        'pageUrl' => 'getPageUrl',
         'namespaceMachineName' => 'getNamespaceMachineName',
         'machineName' => 'getMachineName',
         'versionId' => 'getVersionId',
@@ -187,6 +193,7 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
         $this->setIfExists('itemsPerPage', $data ?? [], null);
         $this->setIfExists('mode', $data ?? [], null);
         $this->setIfExists('changedAfter', $data ?? [], null);
+        $this->setIfExists('pageUrl', $data ?? [], null);
         $this->setIfExists('namespaceMachineName', $data ?? [], null);
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('versionId', $data ?? [], null);
@@ -436,6 +443,40 @@ class RemoteRequestQueryParamsEntityList implements ModelInterface, \ArrayAccess
             }
         }
         $this->container['changedAfter'] = $changedAfter;
+
+        return $this;
+    }
+
+    /**
+     * Gets pageUrl.
+     *
+     * @return null|string
+     */
+    public function getPageUrl()
+    {
+        return $this->container['pageUrl'];
+    }
+
+    /**
+     * Sets pageUrl.
+     *
+     * @param null|string $pageUrl pageUrl
+     *
+     * @return self
+     */
+    public function setPageUrl($pageUrl)
+    {
+        if (is_null($pageUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'pageUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pageUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['pageUrl'] = $pageUrl;
 
         return $this;
     }

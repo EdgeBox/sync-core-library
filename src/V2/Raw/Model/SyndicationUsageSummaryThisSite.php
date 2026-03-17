@@ -60,21 +60,27 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @var string[]
      */
     protected static $openAPITypes = [
+        'scope' => 'TaskScope',
+        'domain' => 'TaskDomain',
         'rootEntityReference' => 'RemoteEntityReference',
         'rootEntityDetails' => 'RemoteEntityDetails',
-        'status' => 'SyndicationStatus',
-        'type' => 'SyndicationType',
+        'status' => 'TaskStatus',
+        'type' => 'TaskType',
         'rootEntity' => 'DynamicReference',
         'rootEntityType' => 'DynamicReference',
         'rootEntityTypeVersion' => 'DynamicReference',
+        'discoveryDocument' => 'DynamicReference',
+        'monitoringPrompt' => 'DynamicRevisionReference',
+        'contentOptimization' => 'DynamicReference',
+        'contentOptimizationType' => 'DynamicRevisionReference',
         'targetSite' => 'DynamicReference',
         'pools' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'flow' => 'DynamicReference',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
-        'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationOperation[]',
+        'operations' => '\EdgeBox\SyncCore\V2\Raw\Model\TaskOperation[]',
         'migration' => 'DynamicReference',
-        'migrationType' => 'MigrationType',
+        'migrationType' => 'TaskGroupType',
         'webhook' => 'DynamicReference',
         'webhookEntityType' => 'WebhookEntityType',
         'finishedAt' => 'float',
@@ -96,14 +102,19 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'skipUnchanged' => 'bool',
         'trace' => 'bool',
         'priority' => 'float',
-        'projectLinkTargets' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeSyndicationProjectLinkTarget[]',
+        'projectLinkTargets' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeTaskProjectLinkTarget[]',
+        'contentItem' => 'DynamicRevisionReference',
+        'terms' => 'RuntimeTaskTerms',
+        'url' => 'string',
+        'urlAliases' => 'string[]',
         'dependsOnSyndication' => 'DynamicReference',
         'runAfterSyndication' => 'DynamicReference',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
-        'originalType' => 'SyndicationType',
+        'cloneEntity' => 'DynamicReference',
+        'originalType' => 'TaskType',
         'isClone' => 'bool',
         'usage' => 'RemoteEntityUsageEntity',
     ];
@@ -118,6 +129,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
+        'scope' => null,
+        'domain' => null,
         'rootEntityReference' => null,
         'rootEntityDetails' => null,
         'status' => null,
@@ -125,6 +138,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'rootEntity' => null,
         'rootEntityType' => null,
         'rootEntityTypeVersion' => null,
+        'discoveryDocument' => null,
+        'monitoringPrompt' => null,
+        'contentOptimization' => null,
+        'contentOptimizationType' => null,
         'targetSite' => null,
         'pools' => null,
         'flow' => null,
@@ -155,12 +172,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'trace' => null,
         'priority' => null,
         'projectLinkTargets' => null,
+        'contentItem' => null,
+        'terms' => null,
+        'url' => null,
+        'urlAliases' => null,
         'dependsOnSyndication' => null,
         'runAfterSyndication' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'cloneEntity' => null,
         'originalType' => null,
         'isClone' => null,
         'usage' => null,
@@ -172,6 +194,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @var bool[]
      */
     protected static array $openAPINullables = [
+        'scope' => true,
+        'domain' => true,
         'rootEntityReference' => true,
         'rootEntityDetails' => true,
         'status' => false,
@@ -179,6 +203,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'rootEntity' => true,
         'rootEntityType' => true,
         'rootEntityTypeVersion' => true,
+        'discoveryDocument' => true,
+        'monitoringPrompt' => true,
+        'contentOptimization' => true,
+        'contentOptimizationType' => true,
         'targetSite' => true,
         'pools' => true,
         'flow' => true,
@@ -209,12 +237,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'trace' => true,
         'priority' => true,
         'projectLinkTargets' => true,
+        'contentItem' => true,
+        'terms' => true,
+        'url' => true,
+        'urlAliases' => true,
         'dependsOnSyndication' => true,
         'runAfterSyndication' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'cloneEntity' => true,
         'originalType' => true,
         'isClone' => true,
         'usage' => true,
@@ -234,6 +267,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
+        'scope' => 'scope',
+        'domain' => 'domain',
         'rootEntityReference' => 'rootEntityReference',
         'rootEntityDetails' => 'rootEntityDetails',
         'status' => 'status',
@@ -241,6 +276,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'rootEntity' => 'rootEntity',
         'rootEntityType' => 'rootEntityType',
         'rootEntityTypeVersion' => 'rootEntityTypeVersion',
+        'discoveryDocument' => 'discoveryDocument',
+        'monitoringPrompt' => 'monitoringPrompt',
+        'contentOptimization' => 'contentOptimization',
+        'contentOptimizationType' => 'contentOptimizationType',
         'targetSite' => 'targetSite',
         'pools' => 'pools',
         'flow' => 'flow',
@@ -271,12 +310,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'trace' => 'trace',
         'priority' => 'priority',
         'projectLinkTargets' => 'projectLinkTargets',
+        'contentItem' => 'contentItem',
+        'terms' => 'terms',
+        'url' => 'url',
+        'urlAliases' => 'urlAliases',
         'dependsOnSyndication' => 'dependsOnSyndication',
         'runAfterSyndication' => 'runAfterSyndication',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'cloneEntity' => 'cloneEntity',
         'originalType' => 'originalType',
         'isClone' => 'isClone',
         'usage' => 'usage',
@@ -288,6 +332,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
+        'scope' => 'setScope',
+        'domain' => 'setDomain',
         'rootEntityReference' => 'setRootEntityReference',
         'rootEntityDetails' => 'setRootEntityDetails',
         'status' => 'setStatus',
@@ -295,6 +341,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'rootEntity' => 'setRootEntity',
         'rootEntityType' => 'setRootEntityType',
         'rootEntityTypeVersion' => 'setRootEntityTypeVersion',
+        'discoveryDocument' => 'setDiscoveryDocument',
+        'monitoringPrompt' => 'setMonitoringPrompt',
+        'contentOptimization' => 'setContentOptimization',
+        'contentOptimizationType' => 'setContentOptimizationType',
         'targetSite' => 'setTargetSite',
         'pools' => 'setPools',
         'flow' => 'setFlow',
@@ -325,12 +375,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'trace' => 'setTrace',
         'priority' => 'setPriority',
         'projectLinkTargets' => 'setProjectLinkTargets',
+        'contentItem' => 'setContentItem',
+        'terms' => 'setTerms',
+        'url' => 'setUrl',
+        'urlAliases' => 'setUrlAliases',
         'dependsOnSyndication' => 'setDependsOnSyndication',
         'runAfterSyndication' => 'setRunAfterSyndication',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'cloneEntity' => 'setCloneEntity',
         'originalType' => 'setOriginalType',
         'isClone' => 'setIsClone',
         'usage' => 'setUsage',
@@ -342,6 +397,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
+        'scope' => 'getScope',
+        'domain' => 'getDomain',
         'rootEntityReference' => 'getRootEntityReference',
         'rootEntityDetails' => 'getRootEntityDetails',
         'status' => 'getStatus',
@@ -349,6 +406,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'rootEntity' => 'getRootEntity',
         'rootEntityType' => 'getRootEntityType',
         'rootEntityTypeVersion' => 'getRootEntityTypeVersion',
+        'discoveryDocument' => 'getDiscoveryDocument',
+        'monitoringPrompt' => 'getMonitoringPrompt',
+        'contentOptimization' => 'getContentOptimization',
+        'contentOptimizationType' => 'getContentOptimizationType',
         'targetSite' => 'getTargetSite',
         'pools' => 'getPools',
         'flow' => 'getFlow',
@@ -379,12 +440,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         'trace' => 'getTrace',
         'priority' => 'getPriority',
         'projectLinkTargets' => 'getProjectLinkTargets',
+        'contentItem' => 'getContentItem',
+        'terms' => 'getTerms',
+        'url' => 'getUrl',
+        'urlAliases' => 'getUrlAliases',
         'dependsOnSyndication' => 'getDependsOnSyndication',
         'runAfterSyndication' => 'getRunAfterSyndication',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'cloneEntity' => 'getCloneEntity',
         'originalType' => 'getOriginalType',
         'isClone' => 'getIsClone',
         'usage' => 'getUsage',
@@ -405,6 +471,8 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
+        $this->setIfExists('scope', $data ?? [], null);
+        $this->setIfExists('domain', $data ?? [], null);
         $this->setIfExists('rootEntityReference', $data ?? [], null);
         $this->setIfExists('rootEntityDetails', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
@@ -412,6 +480,10 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         $this->setIfExists('rootEntity', $data ?? [], null);
         $this->setIfExists('rootEntityType', $data ?? [], null);
         $this->setIfExists('rootEntityTypeVersion', $data ?? [], null);
+        $this->setIfExists('discoveryDocument', $data ?? [], null);
+        $this->setIfExists('monitoringPrompt', $data ?? [], null);
+        $this->setIfExists('contentOptimization', $data ?? [], null);
+        $this->setIfExists('contentOptimizationType', $data ?? [], null);
         $this->setIfExists('targetSite', $data ?? [], null);
         $this->setIfExists('pools', $data ?? [], null);
         $this->setIfExists('flow', $data ?? [], null);
@@ -442,12 +514,17 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
         $this->setIfExists('trace', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
         $this->setIfExists('projectLinkTargets', $data ?? [], null);
+        $this->setIfExists('contentItem', $data ?? [], null);
+        $this->setIfExists('terms', $data ?? [], null);
+        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('urlAliases', $data ?? [], null);
         $this->setIfExists('dependsOnSyndication', $data ?? [], null);
         $this->setIfExists('runAfterSyndication', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('cloneEntity', $data ?? [], null);
         $this->setIfExists('originalType', $data ?? [], null);
         $this->setIfExists('isClone', $data ?? [], null);
         $this->setIfExists('usage', $data ?? [], null);
@@ -589,6 +666,74 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     }
 
     /**
+     * Gets scope.
+     *
+     * @return null|TaskScope
+     */
+    public function getScope()
+    {
+        return $this->container['scope'];
+    }
+
+    /**
+     * Sets scope.
+     *
+     * @param null|TaskScope $scope scope
+     *
+     * @return self
+     */
+    public function setScope($scope)
+    {
+        if (is_null($scope)) {
+            array_push($this->openAPINullablesSetToNull, 'scope');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('scope', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['scope'] = $scope;
+
+        return $this;
+    }
+
+    /**
+     * Gets domain.
+     *
+     * @return null|TaskDomain
+     */
+    public function getDomain()
+    {
+        return $this->container['domain'];
+    }
+
+    /**
+     * Sets domain.
+     *
+     * @param null|TaskDomain $domain domain
+     *
+     * @return self
+     */
+    public function setDomain($domain)
+    {
+        if (is_null($domain)) {
+            array_push($this->openAPINullablesSetToNull, 'domain');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('domain', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['domain'] = $domain;
+
+        return $this;
+    }
+
+    /**
      * Gets rootEntityReference.
      *
      * @return null|RemoteEntityReference
@@ -659,7 +804,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Gets status.
      *
-     * @return SyndicationStatus
+     * @return TaskStatus
      */
     public function getStatus()
     {
@@ -669,7 +814,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets status.
      *
-     * @param SyndicationStatus $status status
+     * @param TaskStatus $status status
      *
      * @return self
      */
@@ -686,7 +831,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Gets type.
      *
-     * @return SyndicationType
+     * @return TaskType
      */
     public function getType()
     {
@@ -696,7 +841,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets type.
      *
-     * @param SyndicationType $type type
+     * @param TaskType $type type
      *
      * @return self
      */
@@ -808,6 +953,142 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
             }
         }
         $this->container['rootEntityTypeVersion'] = $rootEntityTypeVersion;
+
+        return $this;
+    }
+
+    /**
+     * Gets discoveryDocument.
+     *
+     * @return null|DynamicReference
+     */
+    public function getDiscoveryDocument()
+    {
+        return $this->container['discoveryDocument'];
+    }
+
+    /**
+     * Sets discoveryDocument.
+     *
+     * @param null|DynamicReference $discoveryDocument discoveryDocument
+     *
+     * @return self
+     */
+    public function setDiscoveryDocument($discoveryDocument)
+    {
+        if (is_null($discoveryDocument)) {
+            array_push($this->openAPINullablesSetToNull, 'discoveryDocument');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('discoveryDocument', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['discoveryDocument'] = $discoveryDocument;
+
+        return $this;
+    }
+
+    /**
+     * Gets monitoringPrompt.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getMonitoringPrompt()
+    {
+        return $this->container['monitoringPrompt'];
+    }
+
+    /**
+     * Sets monitoringPrompt.
+     *
+     * @param null|DynamicRevisionReference $monitoringPrompt monitoringPrompt
+     *
+     * @return self
+     */
+    public function setMonitoringPrompt($monitoringPrompt)
+    {
+        if (is_null($monitoringPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'monitoringPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('monitoringPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['monitoringPrompt'] = $monitoringPrompt;
+
+        return $this;
+    }
+
+    /**
+     * Gets contentOptimization.
+     *
+     * @return null|DynamicReference
+     */
+    public function getContentOptimization()
+    {
+        return $this->container['contentOptimization'];
+    }
+
+    /**
+     * Sets contentOptimization.
+     *
+     * @param null|DynamicReference $contentOptimization contentOptimization
+     *
+     * @return self
+     */
+    public function setContentOptimization($contentOptimization)
+    {
+        if (is_null($contentOptimization)) {
+            array_push($this->openAPINullablesSetToNull, 'contentOptimization');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contentOptimization', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['contentOptimization'] = $contentOptimization;
+
+        return $this;
+    }
+
+    /**
+     * Gets contentOptimizationType.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getContentOptimizationType()
+    {
+        return $this->container['contentOptimizationType'];
+    }
+
+    /**
+     * Sets contentOptimizationType.
+     *
+     * @param null|DynamicRevisionReference $contentOptimizationType contentOptimizationType
+     *
+     * @return self
+     */
+    public function setContentOptimizationType($contentOptimizationType)
+    {
+        if (is_null($contentOptimizationType)) {
+            array_push($this->openAPINullablesSetToNull, 'contentOptimizationType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contentOptimizationType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['contentOptimizationType'] = $contentOptimizationType;
 
         return $this;
     }
@@ -971,7 +1252,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Gets operations.
      *
-     * @return null|SyndicationOperation[]
+     * @return null|TaskOperation[]
      */
     public function getOperations()
     {
@@ -981,7 +1262,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets operations.
      *
-     * @param null|SyndicationOperation[] $operations operations
+     * @param null|TaskOperation[] $operations operations
      *
      * @return self
      */
@@ -1039,7 +1320,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Gets migrationType.
      *
-     * @return null|MigrationType
+     * @return null|TaskGroupType
      */
     public function getMigrationType()
     {
@@ -1049,7 +1330,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets migrationType.
      *
-     * @param null|MigrationType $migrationType migrationType
+     * @param null|TaskGroupType $migrationType migrationType
      *
      * @return self
      */
@@ -1787,7 +2068,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Gets projectLinkTargets.
      *
-     * @return null|RuntimeSyndicationProjectLinkTarget[]
+     * @return null|RuntimeTaskProjectLinkTarget[]
      */
     public function getProjectLinkTargets()
     {
@@ -1797,7 +2078,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets projectLinkTargets.
      *
-     * @param null|RuntimeSyndicationProjectLinkTarget[] $projectLinkTargets projectLinkTargets
+     * @param null|RuntimeTaskProjectLinkTarget[] $projectLinkTargets projectLinkTargets
      *
      * @return self
      */
@@ -1814,6 +2095,142 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
             }
         }
         $this->container['projectLinkTargets'] = $projectLinkTargets;
+
+        return $this;
+    }
+
+    /**
+     * Gets contentItem.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getContentItem()
+    {
+        return $this->container['contentItem'];
+    }
+
+    /**
+     * Sets contentItem.
+     *
+     * @param null|DynamicRevisionReference $contentItem contentItem
+     *
+     * @return self
+     */
+    public function setContentItem($contentItem)
+    {
+        if (is_null($contentItem)) {
+            array_push($this->openAPINullablesSetToNull, 'contentItem');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contentItem', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['contentItem'] = $contentItem;
+
+        return $this;
+    }
+
+    /**
+     * Gets terms.
+     *
+     * @return null|RuntimeTaskTerms
+     */
+    public function getTerms()
+    {
+        return $this->container['terms'];
+    }
+
+    /**
+     * Sets terms.
+     *
+     * @param null|RuntimeTaskTerms $terms terms
+     *
+     * @return self
+     */
+    public function setTerms($terms)
+    {
+        if (is_null($terms)) {
+            array_push($this->openAPINullablesSetToNull, 'terms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('terms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['terms'] = $terms;
+
+        return $this;
+    }
+
+    /**
+     * Gets url.
+     *
+     * @return null|string
+     */
+    public function getUrl()
+    {
+        return $this->container['url'];
+    }
+
+    /**
+     * Sets url.
+     *
+     * @param null|string $url url
+     *
+     * @return self
+     */
+    public function setUrl($url)
+    {
+        if (is_null($url)) {
+            array_push($this->openAPINullablesSetToNull, 'url');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('url', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['url'] = $url;
+
+        return $this;
+    }
+
+    /**
+     * Gets urlAliases.
+     *
+     * @return null|string[]
+     */
+    public function getUrlAliases()
+    {
+        return $this->container['urlAliases'];
+    }
+
+    /**
+     * Sets urlAliases.
+     *
+     * @param null|string[] $urlAliases urlAliases
+     *
+     * @return self
+     */
+    public function setUrlAliases($urlAliases)
+    {
+        if (is_null($urlAliases)) {
+            array_push($this->openAPINullablesSetToNull, 'urlAliases');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('urlAliases', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['urlAliases'] = $urlAliases;
 
         return $this;
     }
@@ -2002,9 +2419,43 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     }
 
     /**
+     * Gets cloneEntity.
+     *
+     * @return null|DynamicReference
+     */
+    public function getCloneEntity()
+    {
+        return $this->container['cloneEntity'];
+    }
+
+    /**
+     * Sets cloneEntity.
+     *
+     * @param null|DynamicReference $cloneEntity cloneEntity
+     *
+     * @return self
+     */
+    public function setCloneEntity($cloneEntity)
+    {
+        if (is_null($cloneEntity)) {
+            array_push($this->openAPINullablesSetToNull, 'cloneEntity');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('cloneEntity', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['cloneEntity'] = $cloneEntity;
+
+        return $this;
+    }
+
+    /**
      * Gets originalType.
      *
-     * @return null|SyndicationType
+     * @return null|TaskType
      */
     public function getOriginalType()
     {
@@ -2014,7 +2465,7 @@ class SyndicationUsageSummaryThisSite implements ModelInterface, \ArrayAccess, \
     /**
      * Sets originalType.
      *
-     * @param null|SyndicationType $originalType originalType
+     * @param null|TaskType $originalType originalType
      *
      * @return self
      */

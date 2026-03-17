@@ -66,10 +66,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'float',
         'sitePerMinute' => 'float',
         'siteParallel' => 'float',
+        'governanceCrawlingProjectPerMinute' => 'float',
+        'governanceCrawlingProjectParallel' => 'float',
         'defaultPerSitePerMinute' => 'float',
         'defaultPerSiteParallel' => 'float',
         'appliedSitePerMinute' => 'float',
         'appliedSiteParallel' => 'float',
+        'defaultGovernanceCrawlingProjectPerMinute' => 'float',
+        'defaultGovernanceCrawlingProjectParallel' => 'float',
+        'appliedGovernanceCrawlingProjectPerMinute' => 'float',
+        'appliedGovernanceCrawlingProjectParallel' => 'float',
     ];
 
     /**
@@ -88,10 +94,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => null,
         'sitePerMinute' => null,
         'siteParallel' => null,
+        'governanceCrawlingProjectPerMinute' => null,
+        'governanceCrawlingProjectParallel' => null,
         'defaultPerSitePerMinute' => null,
         'defaultPerSiteParallel' => null,
         'appliedSitePerMinute' => null,
         'appliedSiteParallel' => null,
+        'defaultGovernanceCrawlingProjectPerMinute' => null,
+        'defaultGovernanceCrawlingProjectParallel' => null,
+        'appliedGovernanceCrawlingProjectPerMinute' => null,
+        'appliedGovernanceCrawlingProjectParallel' => null,
     ];
 
     /**
@@ -106,10 +118,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => true,
         'sitePerMinute' => true,
         'siteParallel' => true,
+        'governanceCrawlingProjectPerMinute' => true,
+        'governanceCrawlingProjectParallel' => true,
         'defaultPerSitePerMinute' => false,
         'defaultPerSiteParallel' => false,
         'appliedSitePerMinute' => false,
         'appliedSiteParallel' => false,
+        'defaultGovernanceCrawlingProjectPerMinute' => false,
+        'defaultGovernanceCrawlingProjectParallel' => false,
+        'appliedGovernanceCrawlingProjectPerMinute' => false,
+        'appliedGovernanceCrawlingProjectParallel' => false,
     ];
 
     /**
@@ -132,10 +150,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'projectParallel',
         'sitePerMinute' => 'sitePerMinute',
         'siteParallel' => 'siteParallel',
+        'governanceCrawlingProjectPerMinute' => 'governanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'governanceCrawlingProjectParallel',
         'defaultPerSitePerMinute' => 'defaultPerSitePerMinute',
         'defaultPerSiteParallel' => 'defaultPerSiteParallel',
         'appliedSitePerMinute' => 'appliedSitePerMinute',
         'appliedSiteParallel' => 'appliedSiteParallel',
+        'defaultGovernanceCrawlingProjectPerMinute' => 'defaultGovernanceCrawlingProjectPerMinute',
+        'defaultGovernanceCrawlingProjectParallel' => 'defaultGovernanceCrawlingProjectParallel',
+        'appliedGovernanceCrawlingProjectPerMinute' => 'appliedGovernanceCrawlingProjectPerMinute',
+        'appliedGovernanceCrawlingProjectParallel' => 'appliedGovernanceCrawlingProjectParallel',
     ];
 
     /**
@@ -150,10 +174,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'setProjectParallel',
         'sitePerMinute' => 'setSitePerMinute',
         'siteParallel' => 'setSiteParallel',
+        'governanceCrawlingProjectPerMinute' => 'setGovernanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'setGovernanceCrawlingProjectParallel',
         'defaultPerSitePerMinute' => 'setDefaultPerSitePerMinute',
         'defaultPerSiteParallel' => 'setDefaultPerSiteParallel',
         'appliedSitePerMinute' => 'setAppliedSitePerMinute',
         'appliedSiteParallel' => 'setAppliedSiteParallel',
+        'defaultGovernanceCrawlingProjectPerMinute' => 'setDefaultGovernanceCrawlingProjectPerMinute',
+        'defaultGovernanceCrawlingProjectParallel' => 'setDefaultGovernanceCrawlingProjectParallel',
+        'appliedGovernanceCrawlingProjectPerMinute' => 'setAppliedGovernanceCrawlingProjectPerMinute',
+        'appliedGovernanceCrawlingProjectParallel' => 'setAppliedGovernanceCrawlingProjectParallel',
     ];
 
     /**
@@ -168,10 +198,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'getProjectParallel',
         'sitePerMinute' => 'getSitePerMinute',
         'siteParallel' => 'getSiteParallel',
+        'governanceCrawlingProjectPerMinute' => 'getGovernanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'getGovernanceCrawlingProjectParallel',
         'defaultPerSitePerMinute' => 'getDefaultPerSitePerMinute',
         'defaultPerSiteParallel' => 'getDefaultPerSiteParallel',
         'appliedSitePerMinute' => 'getAppliedSitePerMinute',
         'appliedSiteParallel' => 'getAppliedSiteParallel',
+        'defaultGovernanceCrawlingProjectPerMinute' => 'getDefaultGovernanceCrawlingProjectPerMinute',
+        'defaultGovernanceCrawlingProjectParallel' => 'getDefaultGovernanceCrawlingProjectParallel',
+        'appliedGovernanceCrawlingProjectPerMinute' => 'getAppliedGovernanceCrawlingProjectPerMinute',
+        'appliedGovernanceCrawlingProjectParallel' => 'getAppliedGovernanceCrawlingProjectParallel',
     ];
 
     /**
@@ -195,10 +231,16 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         $this->setIfExists('projectParallel', $data ?? [], null);
         $this->setIfExists('sitePerMinute', $data ?? [], null);
         $this->setIfExists('siteParallel', $data ?? [], null);
+        $this->setIfExists('governanceCrawlingProjectPerMinute', $data ?? [], null);
+        $this->setIfExists('governanceCrawlingProjectParallel', $data ?? [], null);
         $this->setIfExists('defaultPerSitePerMinute', $data ?? [], null);
         $this->setIfExists('defaultPerSiteParallel', $data ?? [], null);
         $this->setIfExists('appliedSitePerMinute', $data ?? [], null);
         $this->setIfExists('appliedSiteParallel', $data ?? [], null);
+        $this->setIfExists('defaultGovernanceCrawlingProjectPerMinute', $data ?? [], null);
+        $this->setIfExists('defaultGovernanceCrawlingProjectParallel', $data ?? [], null);
+        $this->setIfExists('appliedGovernanceCrawlingProjectPerMinute', $data ?? [], null);
+        $this->setIfExists('appliedGovernanceCrawlingProjectParallel', $data ?? [], null);
     }
 
     /**
@@ -311,6 +353,18 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         }
         if (null === $this->container['appliedSiteParallel']) {
             $invalidProperties[] = "'appliedSiteParallel' can't be null";
+        }
+        if (null === $this->container['defaultGovernanceCrawlingProjectPerMinute']) {
+            $invalidProperties[] = "'defaultGovernanceCrawlingProjectPerMinute' can't be null";
+        }
+        if (null === $this->container['defaultGovernanceCrawlingProjectParallel']) {
+            $invalidProperties[] = "'defaultGovernanceCrawlingProjectParallel' can't be null";
+        }
+        if (null === $this->container['appliedGovernanceCrawlingProjectPerMinute']) {
+            $invalidProperties[] = "'appliedGovernanceCrawlingProjectPerMinute' can't be null";
+        }
+        if (null === $this->container['appliedGovernanceCrawlingProjectParallel']) {
+            $invalidProperties[] = "'appliedGovernanceCrawlingProjectParallel' can't be null";
         }
 
         return $invalidProperties;
@@ -532,6 +586,74 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
     }
 
     /**
+     * Gets governanceCrawlingProjectPerMinute.
+     *
+     * @return null|float
+     */
+    public function getGovernanceCrawlingProjectPerMinute()
+    {
+        return $this->container['governanceCrawlingProjectPerMinute'];
+    }
+
+    /**
+     * Sets governanceCrawlingProjectPerMinute.
+     *
+     * @param null|float $governanceCrawlingProjectPerMinute governanceCrawlingProjectPerMinute
+     *
+     * @return self
+     */
+    public function setGovernanceCrawlingProjectPerMinute($governanceCrawlingProjectPerMinute)
+    {
+        if (is_null($governanceCrawlingProjectPerMinute)) {
+            array_push($this->openAPINullablesSetToNull, 'governanceCrawlingProjectPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('governanceCrawlingProjectPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['governanceCrawlingProjectPerMinute'] = $governanceCrawlingProjectPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets governanceCrawlingProjectParallel.
+     *
+     * @return null|float
+     */
+    public function getGovernanceCrawlingProjectParallel()
+    {
+        return $this->container['governanceCrawlingProjectParallel'];
+    }
+
+    /**
+     * Sets governanceCrawlingProjectParallel.
+     *
+     * @param null|float $governanceCrawlingProjectParallel governanceCrawlingProjectParallel
+     *
+     * @return self
+     */
+    public function setGovernanceCrawlingProjectParallel($governanceCrawlingProjectParallel)
+    {
+        if (is_null($governanceCrawlingProjectParallel)) {
+            array_push($this->openAPINullablesSetToNull, 'governanceCrawlingProjectParallel');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('governanceCrawlingProjectParallel', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['governanceCrawlingProjectParallel'] = $governanceCrawlingProjectParallel;
+
+        return $this;
+    }
+
+    /**
      * Gets defaultPerSitePerMinute.
      *
      * @return float
@@ -635,6 +757,114 @@ class GetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
             throw new \InvalidArgumentException('non-nullable appliedSiteParallel cannot be null');
         }
         $this->container['appliedSiteParallel'] = $appliedSiteParallel;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultGovernanceCrawlingProjectPerMinute.
+     *
+     * @return float
+     */
+    public function getDefaultGovernanceCrawlingProjectPerMinute()
+    {
+        return $this->container['defaultGovernanceCrawlingProjectPerMinute'];
+    }
+
+    /**
+     * Sets defaultGovernanceCrawlingProjectPerMinute.
+     *
+     * @param float $defaultGovernanceCrawlingProjectPerMinute defaultGovernanceCrawlingProjectPerMinute
+     *
+     * @return self
+     */
+    public function setDefaultGovernanceCrawlingProjectPerMinute($defaultGovernanceCrawlingProjectPerMinute)
+    {
+        if (is_null($defaultGovernanceCrawlingProjectPerMinute)) {
+            throw new \InvalidArgumentException('non-nullable defaultGovernanceCrawlingProjectPerMinute cannot be null');
+        }
+        $this->container['defaultGovernanceCrawlingProjectPerMinute'] = $defaultGovernanceCrawlingProjectPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets defaultGovernanceCrawlingProjectParallel.
+     *
+     * @return float
+     */
+    public function getDefaultGovernanceCrawlingProjectParallel()
+    {
+        return $this->container['defaultGovernanceCrawlingProjectParallel'];
+    }
+
+    /**
+     * Sets defaultGovernanceCrawlingProjectParallel.
+     *
+     * @param float $defaultGovernanceCrawlingProjectParallel defaultGovernanceCrawlingProjectParallel
+     *
+     * @return self
+     */
+    public function setDefaultGovernanceCrawlingProjectParallel($defaultGovernanceCrawlingProjectParallel)
+    {
+        if (is_null($defaultGovernanceCrawlingProjectParallel)) {
+            throw new \InvalidArgumentException('non-nullable defaultGovernanceCrawlingProjectParallel cannot be null');
+        }
+        $this->container['defaultGovernanceCrawlingProjectParallel'] = $defaultGovernanceCrawlingProjectParallel;
+
+        return $this;
+    }
+
+    /**
+     * Gets appliedGovernanceCrawlingProjectPerMinute.
+     *
+     * @return float
+     */
+    public function getAppliedGovernanceCrawlingProjectPerMinute()
+    {
+        return $this->container['appliedGovernanceCrawlingProjectPerMinute'];
+    }
+
+    /**
+     * Sets appliedGovernanceCrawlingProjectPerMinute.
+     *
+     * @param float $appliedGovernanceCrawlingProjectPerMinute appliedGovernanceCrawlingProjectPerMinute
+     *
+     * @return self
+     */
+    public function setAppliedGovernanceCrawlingProjectPerMinute($appliedGovernanceCrawlingProjectPerMinute)
+    {
+        if (is_null($appliedGovernanceCrawlingProjectPerMinute)) {
+            throw new \InvalidArgumentException('non-nullable appliedGovernanceCrawlingProjectPerMinute cannot be null');
+        }
+        $this->container['appliedGovernanceCrawlingProjectPerMinute'] = $appliedGovernanceCrawlingProjectPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets appliedGovernanceCrawlingProjectParallel.
+     *
+     * @return float
+     */
+    public function getAppliedGovernanceCrawlingProjectParallel()
+    {
+        return $this->container['appliedGovernanceCrawlingProjectParallel'];
+    }
+
+    /**
+     * Sets appliedGovernanceCrawlingProjectParallel.
+     *
+     * @param float $appliedGovernanceCrawlingProjectParallel appliedGovernanceCrawlingProjectParallel
+     *
+     * @return self
+     */
+    public function setAppliedGovernanceCrawlingProjectParallel($appliedGovernanceCrawlingProjectParallel)
+    {
+        if (is_null($appliedGovernanceCrawlingProjectParallel)) {
+            throw new \InvalidArgumentException('non-nullable appliedGovernanceCrawlingProjectParallel cannot be null');
+        }
+        $this->container['appliedGovernanceCrawlingProjectParallel'] = $appliedGovernanceCrawlingProjectParallel;
 
         return $this;
     }

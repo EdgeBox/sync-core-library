@@ -44,6 +44,26 @@ class SyndicationOperationType
     /**
      * Possible values of this enum.
      */
+    public const INITIALIZE = 'initialize';
+
+    public const RETRIEVE = 'retrieve';
+
+    public const PARSE = 'parse';
+
+    public const CLASSIFY = 'classify';
+
+    public const SCORE = 'score';
+
+    public const SELECT = 'select';
+
+    public const EXTRACT = 'extract';
+
+    public const REDUCE = 'reduce';
+
+    public const TRIGGER = 'trigger';
+
+    public const PENDING = 'pending';
+
     public const RETRIEVE_ENTITY_LIST_PAGE = 'retrieve-entity-list-page';
 
     public const RETRIEVE_ENTITY_LIST_INIT = 'retrieve-entity-list-init';
@@ -80,6 +100,16 @@ class SyndicationOperationType
     public static function getAllowableEnumValues()
     {
         return [
+            self::INITIALIZE,
+            self::RETRIEVE,
+            self::PARSE,
+            self::CLASSIFY,
+            self::SCORE,
+            self::SELECT,
+            self::EXTRACT,
+            self::REDUCE,
+            self::TRIGGER,
+            self::PENDING,
             self::RETRIEVE_ENTITY_LIST_PAGE,
             self::RETRIEVE_ENTITY_LIST_INIT,
             self::RETRIEVE_ENTITY,

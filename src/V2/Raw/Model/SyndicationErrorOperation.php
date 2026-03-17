@@ -63,7 +63,7 @@ class SyndicationErrorOperation implements ModelInterface, \ArrayAccess, \JsonSe
         'operationIndex' => 'float',
         'status' => 'SyndicationStatus',
         'type' => 'SyndicationOperationType',
-        'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\SyndicationError[]',
+        'errors' => '\EdgeBox\SyncCore\V2\Raw\Model\TaskError[]',
         'entityTypeNamespaceMachineName' => 'string',
         'entityTypeMachineName' => 'string',
         'entityName' => 'string',
@@ -411,7 +411,7 @@ class SyndicationErrorOperation implements ModelInterface, \ArrayAccess, \JsonSe
     /**
      * Gets errors.
      *
-     * @return null|SyndicationError[]
+     * @return null|TaskError[]
      */
     public function getErrors()
     {
@@ -421,7 +421,7 @@ class SyndicationErrorOperation implements ModelInterface, \ArrayAccess, \JsonSe
     /**
      * Sets errors.
      *
-     * @param null|SyndicationError[] $errors errors
+     * @param null|TaskError[] $errors errors
      *
      * @return self
      */

@@ -66,6 +66,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'float',
         'sitePerMinute' => 'float',
         'siteParallel' => 'float',
+        'governanceCrawlingProjectPerMinute' => 'float',
+        'governanceCrawlingProjectParallel' => 'float',
     ];
 
     /**
@@ -84,6 +86,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => null,
         'sitePerMinute' => null,
         'siteParallel' => null,
+        'governanceCrawlingProjectPerMinute' => null,
+        'governanceCrawlingProjectParallel' => null,
     ];
 
     /**
@@ -98,6 +102,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => true,
         'sitePerMinute' => true,
         'siteParallel' => true,
+        'governanceCrawlingProjectPerMinute' => true,
+        'governanceCrawlingProjectParallel' => true,
     ];
 
     /**
@@ -120,6 +126,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'projectParallel',
         'sitePerMinute' => 'sitePerMinute',
         'siteParallel' => 'siteParallel',
+        'governanceCrawlingProjectPerMinute' => 'governanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'governanceCrawlingProjectParallel',
     ];
 
     /**
@@ -134,6 +142,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'setProjectParallel',
         'sitePerMinute' => 'setSitePerMinute',
         'siteParallel' => 'setSiteParallel',
+        'governanceCrawlingProjectPerMinute' => 'setGovernanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'setGovernanceCrawlingProjectParallel',
     ];
 
     /**
@@ -148,6 +158,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         'projectParallel' => 'getProjectParallel',
         'sitePerMinute' => 'getSitePerMinute',
         'siteParallel' => 'getSiteParallel',
+        'governanceCrawlingProjectPerMinute' => 'getGovernanceCrawlingProjectPerMinute',
+        'governanceCrawlingProjectParallel' => 'getGovernanceCrawlingProjectParallel',
     ];
 
     /**
@@ -171,6 +183,8 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
         $this->setIfExists('projectParallel', $data ?? [], null);
         $this->setIfExists('sitePerMinute', $data ?? [], null);
         $this->setIfExists('siteParallel', $data ?? [], null);
+        $this->setIfExists('governanceCrawlingProjectPerMinute', $data ?? [], null);
+        $this->setIfExists('governanceCrawlingProjectParallel', $data ?? [], null);
     }
 
     /**
@@ -484,6 +498,74 @@ class SetThrottlingDto implements ModelInterface, \ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['siteParallel'] = $siteParallel;
+
+        return $this;
+    }
+
+    /**
+     * Gets governanceCrawlingProjectPerMinute.
+     *
+     * @return null|float
+     */
+    public function getGovernanceCrawlingProjectPerMinute()
+    {
+        return $this->container['governanceCrawlingProjectPerMinute'];
+    }
+
+    /**
+     * Sets governanceCrawlingProjectPerMinute.
+     *
+     * @param null|float $governanceCrawlingProjectPerMinute governanceCrawlingProjectPerMinute
+     *
+     * @return self
+     */
+    public function setGovernanceCrawlingProjectPerMinute($governanceCrawlingProjectPerMinute)
+    {
+        if (is_null($governanceCrawlingProjectPerMinute)) {
+            array_push($this->openAPINullablesSetToNull, 'governanceCrawlingProjectPerMinute');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('governanceCrawlingProjectPerMinute', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['governanceCrawlingProjectPerMinute'] = $governanceCrawlingProjectPerMinute;
+
+        return $this;
+    }
+
+    /**
+     * Gets governanceCrawlingProjectParallel.
+     *
+     * @return null|float
+     */
+    public function getGovernanceCrawlingProjectParallel()
+    {
+        return $this->container['governanceCrawlingProjectParallel'];
+    }
+
+    /**
+     * Sets governanceCrawlingProjectParallel.
+     *
+     * @param null|float $governanceCrawlingProjectParallel governanceCrawlingProjectParallel
+     *
+     * @return self
+     */
+    public function setGovernanceCrawlingProjectParallel($governanceCrawlingProjectParallel)
+    {
+        if (is_null($governanceCrawlingProjectParallel)) {
+            array_push($this->openAPINullablesSetToNull, 'governanceCrawlingProjectParallel');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('governanceCrawlingProjectParallel', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['governanceCrawlingProjectParallel'] = $governanceCrawlingProjectParallel;
 
         return $this;
     }

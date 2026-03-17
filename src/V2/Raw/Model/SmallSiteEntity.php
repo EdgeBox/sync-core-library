@@ -71,8 +71,9 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'bool',
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'crawling' => 'SiteCrawlingSettings',
         'featureFlags' => 'mixed',
-        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteLocaleDefinition[]',
         'defaultLanguageCode' => 'string',
         'uuid' => 'string',
         'environmentType' => 'SiteEnvironmentType',
@@ -80,12 +81,13 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'lastActivity' => 'float',
+        'terms' => 'Terms',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
+        'restUrls' => 'SiteRestUrls',
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
         'notAvailableCounter' => 'float',
@@ -114,6 +116,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => null,
         'domains' => null,
         'extensions' => null,
+        'crawling' => null,
         'featureFlags' => null,
         'languages' => null,
         'defaultLanguageCode' => null,
@@ -123,6 +126,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => null,
         'project' => null,
         'lastActivity' => null,
+        'terms' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -153,6 +157,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => true,
         'domains' => true,
         'extensions' => true,
+        'crawling' => true,
         'featureFlags' => true,
         'languages' => true,
         'defaultLanguageCode' => true,
@@ -162,12 +167,13 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => false,
         'project' => false,
         'lastActivity' => false,
+        'terms' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
         'secret' => true,
-        'restUrls' => false,
+        'restUrls' => true,
         'maxRequestsPerMinute' => true,
         'maxParallelRequests' => true,
         'notAvailableCounter' => true,
@@ -200,6 +206,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'useProxy',
         'domains' => 'domains',
         'extensions' => 'extensions',
+        'crawling' => 'crawling',
         'featureFlags' => 'featureFlags',
         'languages' => 'languages',
         'defaultLanguageCode' => 'defaultLanguageCode',
@@ -209,6 +216,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => 'contract',
         'project' => 'project',
         'lastActivity' => 'lastActivity',
+        'terms' => 'terms',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -239,6 +247,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'setUseProxy',
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
+        'crawling' => 'setCrawling',
         'featureFlags' => 'setFeatureFlags',
         'languages' => 'setLanguages',
         'defaultLanguageCode' => 'setDefaultLanguageCode',
@@ -248,6 +257,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => 'setContract',
         'project' => 'setProject',
         'lastActivity' => 'setLastActivity',
+        'terms' => 'setTerms',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -278,6 +288,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'getUseProxy',
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
+        'crawling' => 'getCrawling',
         'featureFlags' => 'getFeatureFlags',
         'languages' => 'getLanguages',
         'defaultLanguageCode' => 'getDefaultLanguageCode',
@@ -287,6 +298,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contract' => 'getContract',
         'project' => 'getProject',
         'lastActivity' => 'getLastActivity',
+        'terms' => 'getTerms',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -326,6 +338,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('crawling', $data ?? [], null);
         $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('languages', $data ?? [], null);
         $this->setIfExists('defaultLanguageCode', $data ?? [], null);
@@ -335,6 +348,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('lastActivity', $data ?? [], null);
+        $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -491,9 +505,6 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['updatedAt']) {
             $invalidProperties[] = "'updatedAt' can't be null";
-        }
-        if (null === $this->container['restUrls']) {
-            $invalidProperties[] = "'restUrls' can't be null";
         }
 
         return $invalidProperties;
@@ -843,6 +854,40 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets crawling.
+     *
+     * @return null|SiteCrawlingSettings
+     */
+    public function getCrawling()
+    {
+        return $this->container['crawling'];
+    }
+
+    /**
+     * Sets crawling.
+     *
+     * @param null|SiteCrawlingSettings $crawling crawling
+     *
+     * @return self
+     */
+    public function setCrawling($crawling)
+    {
+        if (is_null($crawling)) {
+            array_push($this->openAPINullablesSetToNull, 'crawling');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('crawling', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['crawling'] = $crawling;
+
+        return $this;
+    }
+
+    /**
      * Gets featureFlags.
      *
      * @return null|mixed
@@ -879,7 +924,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets languages.
      *
-     * @return null|LanguageDefinition[]
+     * @return null|SiteLocaleDefinition[]
      */
     public function getLanguages()
     {
@@ -889,7 +934,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets languages.
      *
-     * @param null|LanguageDefinition[] $languages languages
+     * @param null|SiteLocaleDefinition[] $languages languages
      *
      * @return self
      */
@@ -1107,6 +1152,40 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets terms.
+     *
+     * @return null|Terms
+     */
+    public function getTerms()
+    {
+        return $this->container['terms'];
+    }
+
+    /**
+     * Sets terms.
+     *
+     * @param null|Terms $terms terms
+     *
+     * @return self
+     */
+    public function setTerms($terms)
+    {
+        if (is_null($terms)) {
+            array_push($this->openAPINullablesSetToNull, 'terms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('terms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['terms'] = $terms;
+
+        return $this;
+    }
+
+    /**
      * Gets id.
      *
      * @return string
@@ -1258,7 +1337,7 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return RegisterNewSiteDtoRestUrls
+     * @return null|SiteRestUrls
      */
     public function getRestUrls()
     {
@@ -1268,14 +1347,21 @@ class SmallSiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param null|SiteRestUrls $restUrls restUrls
      *
      * @return self
      */
     public function setRestUrls($restUrls)
     {
         if (is_null($restUrls)) {
-            throw new \InvalidArgumentException('non-nullable restUrls cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'restUrls');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('restUrls', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['restUrls'] = $restUrls;
 

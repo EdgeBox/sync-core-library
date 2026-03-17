@@ -64,6 +64,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => 'string',
         'name' => 'string',
         'mode' => 'FlowSyndicationMode',
+        'clone' => 'bool',
+        'overlappingFlows' => 'string[]',
         'id' => 'string',
     ];
 
@@ -81,6 +83,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => null,
         'name' => null,
         'mode' => null,
+        'clone' => null,
+        'overlappingFlows' => null,
         'id' => null,
     ];
 
@@ -94,6 +98,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => false,
         'name' => false,
         'mode' => true,
+        'clone' => true,
+        'overlappingFlows' => true,
         'id' => true,
     ];
 
@@ -115,6 +121,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => 'machineName',
         'name' => 'name',
         'mode' => 'mode',
+        'clone' => 'clone',
+        'overlappingFlows' => 'overlappingFlows',
         'id' => 'id',
     ];
 
@@ -128,6 +136,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => 'setMachineName',
         'name' => 'setName',
         'mode' => 'setMode',
+        'clone' => 'setClone',
+        'overlappingFlows' => 'setOverlappingFlows',
         'id' => 'setId',
     ];
 
@@ -141,6 +151,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         'machineName' => 'getMachineName',
         'name' => 'getName',
         'mode' => 'getMode',
+        'clone' => 'getClone',
+        'overlappingFlows' => 'getOverlappingFlows',
         'id' => 'getId',
     ];
 
@@ -163,6 +175,8 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
         $this->setIfExists('machineName', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('mode', $data ?? [], null);
+        $this->setIfExists('clone', $data ?? [], null);
+        $this->setIfExists('overlappingFlows', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
     }
 
@@ -400,6 +414,74 @@ class PullDashboardPullEntityType implements ModelInterface, \ArrayAccess, \Json
             }
         }
         $this->container['mode'] = $mode;
+
+        return $this;
+    }
+
+    /**
+     * Gets clone.
+     *
+     * @return null|bool
+     */
+    public function getClone()
+    {
+        return $this->container['clone'];
+    }
+
+    /**
+     * Sets clone.
+     *
+     * @param null|bool $clone clone
+     *
+     * @return self
+     */
+    public function setClone($clone)
+    {
+        if (is_null($clone)) {
+            array_push($this->openAPINullablesSetToNull, 'clone');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('clone', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['clone'] = $clone;
+
+        return $this;
+    }
+
+    /**
+     * Gets overlappingFlows.
+     *
+     * @return null|string[]
+     */
+    public function getOverlappingFlows()
+    {
+        return $this->container['overlappingFlows'];
+    }
+
+    /**
+     * Sets overlappingFlows.
+     *
+     * @param null|string[] $overlappingFlows overlappingFlows
+     *
+     * @return self
+     */
+    public function setOverlappingFlows($overlappingFlows)
+    {
+        if (is_null($overlappingFlows)) {
+            array_push($this->openAPINullablesSetToNull, 'overlappingFlows');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('overlappingFlows', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['overlappingFlows'] = $overlappingFlows;
 
         return $this;
     }

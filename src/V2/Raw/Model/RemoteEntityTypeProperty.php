@@ -72,6 +72,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeProperty[]',
         'format' => 'RemoteEntityTypePropertyFormat',
         'encoding' => 'RemoteEntityTypePropertyEncoding',
+        'textProfile' => 'DynamicReference',
+        'conditionalDirectives' => '\EdgeBox\SyncCore\V2\Raw\Model\ConditionalPropertyDirective[]',
         'allowedValues' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityPropertyDraft[]',
         'minValue' => 'float',
         'maxValue' => 'float',
@@ -109,6 +111,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => null,
         'format' => null,
         'encoding' => null,
+        'textProfile' => null,
+        'conditionalDirectives' => null,
         'allowedValues' => null,
         'minValue' => null,
         'maxValue' => null,
@@ -142,6 +146,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => true,
         'format' => true,
         'encoding' => true,
+        'textProfile' => true,
+        'conditionalDirectives' => true,
         'allowedValues' => true,
         'minValue' => true,
         'maxValue' => true,
@@ -183,6 +189,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => 'properties',
         'format' => 'format',
         'encoding' => 'encoding',
+        'textProfile' => 'textProfile',
+        'conditionalDirectives' => 'conditionalDirectives',
         'allowedValues' => 'allowedValues',
         'minValue' => 'minValue',
         'maxValue' => 'maxValue',
@@ -216,6 +224,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => 'setProperties',
         'format' => 'setFormat',
         'encoding' => 'setEncoding',
+        'textProfile' => 'setTextProfile',
+        'conditionalDirectives' => 'setConditionalDirectives',
         'allowedValues' => 'setAllowedValues',
         'minValue' => 'setMinValue',
         'maxValue' => 'setMaxValue',
@@ -249,6 +259,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         'properties' => 'getProperties',
         'format' => 'getFormat',
         'encoding' => 'getEncoding',
+        'textProfile' => 'getTextProfile',
+        'conditionalDirectives' => 'getConditionalDirectives',
         'allowedValues' => 'getAllowedValues',
         'minValue' => 'getMinValue',
         'maxValue' => 'getMaxValue',
@@ -291,6 +303,8 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
         $this->setIfExists('properties', $data ?? [], null);
         $this->setIfExists('format', $data ?? [], null);
         $this->setIfExists('encoding', $data ?? [], null);
+        $this->setIfExists('textProfile', $data ?? [], null);
+        $this->setIfExists('conditionalDirectives', $data ?? [], null);
         $this->setIfExists('allowedValues', $data ?? [], null);
         $this->setIfExists('minValue', $data ?? [], null);
         $this->setIfExists('maxValue', $data ?? [], null);
@@ -812,6 +826,74 @@ class RemoteEntityTypeProperty implements ModelInterface, \ArrayAccess, \JsonSer
             }
         }
         $this->container['encoding'] = $encoding;
+
+        return $this;
+    }
+
+    /**
+     * Gets textProfile.
+     *
+     * @return null|DynamicReference
+     */
+    public function getTextProfile()
+    {
+        return $this->container['textProfile'];
+    }
+
+    /**
+     * Sets textProfile.
+     *
+     * @param null|DynamicReference $textProfile textProfile
+     *
+     * @return self
+     */
+    public function setTextProfile($textProfile)
+    {
+        if (is_null($textProfile)) {
+            array_push($this->openAPINullablesSetToNull, 'textProfile');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('textProfile', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['textProfile'] = $textProfile;
+
+        return $this;
+    }
+
+    /**
+     * Gets conditionalDirectives.
+     *
+     * @return null|ConditionalPropertyDirective[]
+     */
+    public function getConditionalDirectives()
+    {
+        return $this->container['conditionalDirectives'];
+    }
+
+    /**
+     * Sets conditionalDirectives.
+     *
+     * @param null|ConditionalPropertyDirective[] $conditionalDirectives conditionalDirectives
+     *
+     * @return self
+     */
+    public function setConditionalDirectives($conditionalDirectives)
+    {
+        if (is_null($conditionalDirectives)) {
+            array_push($this->openAPINullablesSetToNull, 'conditionalDirectives');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('conditionalDirectives', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['conditionalDirectives'] = $conditionalDirectives;
 
         return $this;
     }

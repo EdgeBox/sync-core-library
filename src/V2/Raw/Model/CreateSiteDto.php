@@ -71,8 +71,9 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'bool',
         'domains' => 'string[]',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
+        'crawling' => 'SiteCrawlingSettings',
         'featureFlags' => 'mixed',
-        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteLocaleDefinition[]',
         'defaultLanguageCode' => 'string',
         'customer' => 'DynamicReference',
         'contract' => 'DynamicReference',
@@ -81,7 +82,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => 'string',
         'environmentType' => 'SiteEnvironmentType',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
+        'restUrls' => 'SiteRestUrls',
     ];
 
     /**
@@ -105,6 +106,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => null,
         'domains' => null,
         'extensions' => null,
+        'crawling' => null,
         'featureFlags' => null,
         'languages' => null,
         'defaultLanguageCode' => null,
@@ -135,6 +137,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => true,
         'domains' => true,
         'extensions' => true,
+        'crawling' => true,
         'featureFlags' => true,
         'languages' => true,
         'defaultLanguageCode' => true,
@@ -145,7 +148,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => false,
         'environmentType' => false,
         'secret' => true,
-        'restUrls' => false,
+        'restUrls' => true,
     ];
 
     /**
@@ -173,6 +176,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'useProxy',
         'domains' => 'domains',
         'extensions' => 'extensions',
+        'crawling' => 'crawling',
         'featureFlags' => 'featureFlags',
         'languages' => 'languages',
         'defaultLanguageCode' => 'defaultLanguageCode',
@@ -203,6 +207,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'setUseProxy',
         'domains' => 'setDomains',
         'extensions' => 'setExtensions',
+        'crawling' => 'setCrawling',
         'featureFlags' => 'setFeatureFlags',
         'languages' => 'setLanguages',
         'defaultLanguageCode' => 'setDefaultLanguageCode',
@@ -233,6 +238,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'useProxy' => 'getUseProxy',
         'domains' => 'getDomains',
         'extensions' => 'getExtensions',
+        'crawling' => 'getCrawling',
         'featureFlags' => 'getFeatureFlags',
         'languages' => 'getLanguages',
         'defaultLanguageCode' => 'getDefaultLanguageCode',
@@ -272,6 +278,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('useProxy', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
+        $this->setIfExists('crawling', $data ?? [], null);
         $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('languages', $data ?? [], null);
         $this->setIfExists('defaultLanguageCode', $data ?? [], null);
@@ -407,9 +414,6 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['environmentType']) {
             $invalidProperties[] = "'environmentType' can't be null";
-        }
-        if (null === $this->container['restUrls']) {
-            $invalidProperties[] = "'restUrls' can't be null";
         }
 
         return $invalidProperties;
@@ -759,6 +763,40 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets crawling.
+     *
+     * @return null|SiteCrawlingSettings
+     */
+    public function getCrawling()
+    {
+        return $this->container['crawling'];
+    }
+
+    /**
+     * Sets crawling.
+     *
+     * @param null|SiteCrawlingSettings $crawling crawling
+     *
+     * @return self
+     */
+    public function setCrawling($crawling)
+    {
+        if (is_null($crawling)) {
+            array_push($this->openAPINullablesSetToNull, 'crawling');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('crawling', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['crawling'] = $crawling;
+
+        return $this;
+    }
+
+    /**
      * Gets featureFlags.
      *
      * @return null|mixed
@@ -795,7 +833,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets languages.
      *
-     * @return null|LanguageDefinition[]
+     * @return null|SiteLocaleDefinition[]
      */
     public function getLanguages()
     {
@@ -805,7 +843,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets languages.
      *
-     * @param null|LanguageDefinition[] $languages languages
+     * @param null|SiteLocaleDefinition[] $languages languages
      *
      * @return self
      */
@@ -1087,7 +1125,7 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return RegisterNewSiteDtoRestUrls
+     * @return null|SiteRestUrls
      */
     public function getRestUrls()
     {
@@ -1097,14 +1135,21 @@ class CreateSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param null|SiteRestUrls $restUrls restUrls
      *
      * @return self
      */
     public function setRestUrls($restUrls)
     {
         if (is_null($restUrls)) {
-            throw new \InvalidArgumentException('non-nullable restUrls cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'restUrls');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('restUrls', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['restUrls'] = $restUrls;
 

@@ -62,7 +62,7 @@ class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'uuid' => 'string',
         'secret' => 'string',
-        'restUrls' => '\EdgeBox\SyncCore\V2\Raw\Model\RegisterNewSiteDtoRestUrls',
+        'restUrls' => 'SiteRestUrls',
         'baseUrl' => 'string',
         'authenticationType' => 'AuthenticationType',
         'authenticationUsername' => 'string',
@@ -94,7 +94,7 @@ class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'uuid' => false,
         'secret' => false,
-        'restUrls' => false,
+        'restUrls' => true,
         'baseUrl' => true,
         'authenticationType' => true,
         'authenticationUsername' => true,
@@ -278,9 +278,6 @@ class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         if (null === $this->container['secret']) {
             $invalidProperties[] = "'secret' can't be null";
         }
-        if (null === $this->container['restUrls']) {
-            $invalidProperties[] = "'restUrls' can't be null";
-        }
 
         return $invalidProperties;
     }
@@ -353,7 +350,7 @@ class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets restUrls.
      *
-     * @return RegisterNewSiteDtoRestUrls
+     * @return null|SiteRestUrls
      */
     public function getRestUrls()
     {
@@ -363,14 +360,21 @@ class RegisterSiteDto implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets restUrls.
      *
-     * @param RegisterNewSiteDtoRestUrls $restUrls restUrls
+     * @param null|SiteRestUrls $restUrls restUrls
      *
      * @return self
      */
     public function setRestUrls($restUrls)
     {
         if (is_null($restUrls)) {
-            throw new \InvalidArgumentException('non-nullable restUrls cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'restUrls');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('restUrls', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['restUrls'] = $restUrls;
 

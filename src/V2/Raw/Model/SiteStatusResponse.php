@@ -65,6 +65,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => 'string',
         'appVersion' => 'string',
         'appModuleVersion' => 'string',
+        'appType' => 'SiteApplicationType',
         'featureFlags' => 'mixed',
         'extensions' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteExtension[]',
         'domains' => 'string[]',
@@ -86,6 +87,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => null,
         'appVersion' => null,
         'appModuleVersion' => null,
+        'appType' => null,
         'featureFlags' => null,
         'extensions' => null,
         'domains' => null,
@@ -103,6 +105,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => true,
         'appVersion' => false,
         'appModuleVersion' => false,
+        'appType' => true,
         'featureFlags' => true,
         'extensions' => true,
         'domains' => true,
@@ -128,6 +131,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => 'uuid',
         'appVersion' => 'appVersion',
         'appModuleVersion' => 'appModuleVersion',
+        'appType' => 'appType',
         'featureFlags' => 'featureFlags',
         'extensions' => 'extensions',
         'domains' => 'domains',
@@ -145,6 +149,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => 'setUuid',
         'appVersion' => 'setAppVersion',
         'appModuleVersion' => 'setAppModuleVersion',
+        'appType' => 'setAppType',
         'featureFlags' => 'setFeatureFlags',
         'extensions' => 'setExtensions',
         'domains' => 'setDomains',
@@ -162,6 +167,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'uuid' => 'getUuid',
         'appVersion' => 'getAppVersion',
         'appModuleVersion' => 'getAppModuleVersion',
+        'appType' => 'getAppType',
         'featureFlags' => 'getFeatureFlags',
         'extensions' => 'getExtensions',
         'domains' => 'getDomains',
@@ -188,6 +194,7 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('appVersion', $data ?? [], null);
         $this->setIfExists('appModuleVersion', $data ?? [], null);
+        $this->setIfExists('appType', $data ?? [], null);
         $this->setIfExists('featureFlags', $data ?? [], null);
         $this->setIfExists('extensions', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
@@ -461,6 +468,40 @@ class SiteStatusResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
             throw new \InvalidArgumentException('non-nullable appModuleVersion cannot be null');
         }
         $this->container['appModuleVersion'] = $appModuleVersion;
+
+        return $this;
+    }
+
+    /**
+     * Gets appType.
+     *
+     * @return null|SiteApplicationType
+     */
+    public function getAppType()
+    {
+        return $this->container['appType'];
+    }
+
+    /**
+     * Sets appType.
+     *
+     * @param null|SiteApplicationType $appType appType
+     *
+     * @return self
+     */
+    public function setAppType($appType)
+    {
+        if (is_null($appType)) {
+            array_push($this->openAPINullablesSetToNull, 'appType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('appType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['appType'] = $appType;
 
         return $this;
     }

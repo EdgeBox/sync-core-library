@@ -65,7 +65,7 @@ class PreviewItem implements ModelInterface, \ArrayAccess, \JsonSerializable
         'previewHtml' => 'string',
         'localUsage' => 'RemoteEntityUsageEntity',
         'sourceUsage' => '\EdgeBox\SyncCore\V2\Raw\Model\PreviewItemSourceUsage',
-        'lastPull' => 'SyndicationEntity',
+        'lastPull' => 'TaskEntity',
     ];
 
     /**
@@ -448,7 +448,7 @@ class PreviewItem implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Gets lastPull.
      *
-     * @return null|SyndicationEntity
+     * @return null|TaskEntity
      */
     public function getLastPull()
     {
@@ -458,7 +458,7 @@ class PreviewItem implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets lastPull.
      *
-     * @param null|SyndicationEntity $lastPull lastPull
+     * @param null|TaskEntity $lastPull lastPull
      *
      * @return self
      */

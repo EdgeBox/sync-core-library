@@ -54,6 +54,24 @@ class FileType
 
     public const POLLED_REQUEST = 'polled-request';
 
+    public const TASK_TEMPORARY = 'task.temporary';
+
+    public const DISCOVERY_DOCUMENT_RAW = 'discovery-document.raw';
+
+    public const DISCOVERY_DOCUMENT_PARSED = 'discovery-document.parsed';
+
+    public const CONTENT_RAW = 'content.raw';
+
+    public const CONTENT_REQUEST = 'content.request';
+
+    public const CONTENT_EXTRACTION = 'content.extraction';
+
+    public const AI_EXECUTION_EVIDENCE = 'ai.execution-evidence';
+
+    public const MONITORING_PROMPT_RAW = 'monitoring-prompt.raw';
+
+    public const MONITORING_PROMPT_PARSED = 'monitoring-prompt.parsed';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -67,6 +85,15 @@ class FileType
             self::REMOTE_FLOW_CONFIG,
             self::REQUEST_DETAILS,
             self::POLLED_REQUEST,
+            self::TASK_TEMPORARY,
+            self::DISCOVERY_DOCUMENT_RAW,
+            self::DISCOVERY_DOCUMENT_PARSED,
+            self::CONTENT_RAW,
+            self::CONTENT_REQUEST,
+            self::CONTENT_EXTRACTION,
+            self::AI_EXECUTION_EVIDENCE,
+            self::MONITORING_PROMPT_RAW,
+            self::MONITORING_PROMPT_PARSED,
         ];
     }
 }

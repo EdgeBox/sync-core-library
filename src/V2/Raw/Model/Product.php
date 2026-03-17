@@ -48,6 +48,8 @@ class Product
 
     public const SYNDICATION = 'syndication';
 
+    public const GOVERNANCE = 'governance';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -58,6 +60,7 @@ class Product
         return [
             self::STAGING,
             self::SYNDICATION,
+            self::GOVERNANCE,
         ];
     }
 }

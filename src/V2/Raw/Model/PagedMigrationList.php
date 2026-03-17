@@ -64,7 +64,7 @@ class PagedMigrationList implements ModelInterface, \ArrayAccess, \JsonSerializa
         'numberOfPages' => 'float',
         'itemsPerPage' => 'float',
         'totalNumberOfItems' => 'float',
-        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity[]',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity[]',
     ];
 
     /**
@@ -406,7 +406,7 @@ class PagedMigrationList implements ModelInterface, \ArrayAccess, \JsonSerializa
     /**
      * Gets items.
      *
-     * @return MigrationEntity[]
+     * @return TaskGroupEntity[]
      */
     public function getItems()
     {
@@ -416,7 +416,7 @@ class PagedMigrationList implements ModelInterface, \ArrayAccess, \JsonSerializa
     /**
      * Sets items.
      *
-     * @param MigrationEntity[] $items items
+     * @param TaskGroupEntity[] $items items
      *
      * @return self
      */

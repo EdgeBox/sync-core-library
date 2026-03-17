@@ -54,6 +54,8 @@ class SiteApplicationType
 
     public const PANTHEON_PUBLISHER = 'pantheon-publisher';
 
+    public const WEBSITE = 'website';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -67,6 +69,7 @@ class SiteApplicationType
             self::SYNC_CORE,
             self::CONTENT_CLOUD,
             self::PANTHEON_PUBLISHER,
+            self::WEBSITE,
         ];
     }
 }

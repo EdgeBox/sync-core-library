@@ -64,6 +64,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => 'SiteEnvironmentType',
         'status' => 'ProjectStatus',
         'appType' => 'SiteApplicationType',
+        'enabledProducts' => '\EdgeBox\SyncCore\V2\Raw\Model\Product[]',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'contract' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'name' => 'string',
@@ -73,6 +74,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => 'bool',
         'transientEntityTypes' => 'bool',
         'uuid' => 'string',
+        'crawling' => 'ExtendedProjectCrawlingSettings',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -98,6 +100,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => null,
         'status' => null,
         'appType' => null,
+        'enabledProducts' => null,
         'customer' => null,
         'contract' => null,
         'name' => null,
@@ -107,6 +110,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => null,
         'transientEntityTypes' => null,
         'uuid' => null,
+        'crawling' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -128,6 +132,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => false,
         'status' => true,
         'appType' => true,
+        'enabledProducts' => true,
         'customer' => false,
         'contract' => false,
         'name' => false,
@@ -137,6 +142,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => true,
         'transientEntityTypes' => true,
         'uuid' => false,
+        'crawling' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -166,6 +172,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => 'type',
         'status' => 'status',
         'appType' => 'appType',
+        'enabledProducts' => 'enabledProducts',
         'customer' => 'customer',
         'contract' => 'contract',
         'name' => 'name',
@@ -175,6 +182,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => 'transientEntities',
         'transientEntityTypes' => 'transientEntityTypes',
         'uuid' => 'uuid',
+        'crawling' => 'crawling',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -196,6 +204,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => 'setType',
         'status' => 'setStatus',
         'appType' => 'setAppType',
+        'enabledProducts' => 'setEnabledProducts',
         'customer' => 'setCustomer',
         'contract' => 'setContract',
         'name' => 'setName',
@@ -205,6 +214,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => 'setTransientEntities',
         'transientEntityTypes' => 'setTransientEntityTypes',
         'uuid' => 'setUuid',
+        'crawling' => 'setCrawling',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -226,6 +236,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'type' => 'getType',
         'status' => 'getStatus',
         'appType' => 'getAppType',
+        'enabledProducts' => 'getEnabledProducts',
         'customer' => 'getCustomer',
         'contract' => 'getContract',
         'name' => 'getName',
@@ -235,6 +246,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntities' => 'getTransientEntities',
         'transientEntityTypes' => 'getTransientEntityTypes',
         'uuid' => 'getUuid',
+        'crawling' => 'getCrawling',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -265,6 +277,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('type', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('appType', $data ?? [], null);
+        $this->setIfExists('enabledProducts', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('contract', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
@@ -274,6 +287,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('transientEntities', $data ?? [], null);
         $this->setIfExists('transientEntityTypes', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
+        $this->setIfExists('crawling', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -553,6 +567,40 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets enabledProducts.
+     *
+     * @return null|Product[]
+     */
+    public function getEnabledProducts()
+    {
+        return $this->container['enabledProducts'];
+    }
+
+    /**
+     * Sets enabledProducts.
+     *
+     * @param null|Product[] $enabledProducts enabledProducts
+     *
+     * @return self
+     */
+    public function setEnabledProducts($enabledProducts)
+    {
+        if (is_null($enabledProducts)) {
+            array_push($this->openAPINullablesSetToNull, 'enabledProducts');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('enabledProducts', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['enabledProducts'] = $enabledProducts;
+
+        return $this;
+    }
+
+    /**
      * Gets customer.
      *
      * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
@@ -826,6 +874,40 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable uuid cannot be null');
         }
         $this->container['uuid'] = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Gets crawling.
+     *
+     * @return null|ExtendedProjectCrawlingSettings
+     */
+    public function getCrawling()
+    {
+        return $this->container['crawling'];
+    }
+
+    /**
+     * Sets crawling.
+     *
+     * @param null|ExtendedProjectCrawlingSettings $crawling crawling
+     *
+     * @return self
+     */
+    public function setCrawling($crawling)
+    {
+        if (is_null($crawling)) {
+            array_push($this->openAPINullablesSetToNull, 'crawling');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('crawling', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['crawling'] = $crawling;
 
         return $this;
     }

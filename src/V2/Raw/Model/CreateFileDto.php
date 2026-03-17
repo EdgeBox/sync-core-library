@@ -64,6 +64,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'string',
         'remoteFilePath' => 'string',
         'remoteDownloadUrl' => 'string',
+        'retentionUntil' => 'float',
+        'eTag' => 'string',
         'hash' => 'string',
         'fileSize' => 'float',
         'fixedMimeType' => 'string',
@@ -83,6 +85,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => null,
         'remoteFilePath' => null,
         'remoteDownloadUrl' => null,
+        'retentionUntil' => null,
+        'eTag' => null,
         'hash' => null,
         'fileSize' => null,
         'fixedMimeType' => null,
@@ -98,6 +102,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => false,
         'remoteFilePath' => true,
         'remoteDownloadUrl' => true,
+        'retentionUntil' => true,
+        'eTag' => true,
         'hash' => true,
         'fileSize' => true,
         'fixedMimeType' => true,
@@ -121,6 +127,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'fileName',
         'remoteFilePath' => 'remoteFilePath',
         'remoteDownloadUrl' => 'remoteDownloadUrl',
+        'retentionUntil' => 'retentionUntil',
+        'eTag' => 'eTag',
         'hash' => 'hash',
         'fileSize' => 'fileSize',
         'fixedMimeType' => 'fixedMimeType',
@@ -136,6 +144,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'setFileName',
         'remoteFilePath' => 'setRemoteFilePath',
         'remoteDownloadUrl' => 'setRemoteDownloadUrl',
+        'retentionUntil' => 'setRetentionUntil',
+        'eTag' => 'setETag',
         'hash' => 'setHash',
         'fileSize' => 'setFileSize',
         'fixedMimeType' => 'setFixedMimeType',
@@ -151,6 +161,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         'fileName' => 'getFileName',
         'remoteFilePath' => 'getRemoteFilePath',
         'remoteDownloadUrl' => 'getRemoteDownloadUrl',
+        'retentionUntil' => 'getRetentionUntil',
+        'eTag' => 'getETag',
         'hash' => 'getHash',
         'fileSize' => 'getFileSize',
         'fixedMimeType' => 'getFixedMimeType',
@@ -175,6 +187,8 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('fileName', $data ?? [], null);
         $this->setIfExists('remoteFilePath', $data ?? [], null);
         $this->setIfExists('remoteDownloadUrl', $data ?? [], null);
+        $this->setIfExists('retentionUntil', $data ?? [], null);
+        $this->setIfExists('eTag', $data ?? [], null);
         $this->setIfExists('hash', $data ?? [], null);
         $this->setIfExists('fileSize', $data ?? [], null);
         $this->setIfExists('fixedMimeType', $data ?? [], null);
@@ -418,6 +432,74 @@ class CreateFileDto implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['remoteDownloadUrl'] = $remoteDownloadUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets retentionUntil.
+     *
+     * @return null|float
+     */
+    public function getRetentionUntil()
+    {
+        return $this->container['retentionUntil'];
+    }
+
+    /**
+     * Sets retentionUntil.
+     *
+     * @param null|float $retentionUntil retentionUntil
+     *
+     * @return self
+     */
+    public function setRetentionUntil($retentionUntil)
+    {
+        if (is_null($retentionUntil)) {
+            array_push($this->openAPINullablesSetToNull, 'retentionUntil');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('retentionUntil', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['retentionUntil'] = $retentionUntil;
+
+        return $this;
+    }
+
+    /**
+     * Gets eTag.
+     *
+     * @return null|string
+     */
+    public function getETag()
+    {
+        return $this->container['eTag'];
+    }
+
+    /**
+     * Sets eTag.
+     *
+     * @param null|string $eTag eTag
+     *
+     * @return self
+     */
+    public function setETag($eTag)
+    {
+        if (is_null($eTag)) {
+            array_push($this->openAPINullablesSetToNull, 'eTag');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('eTag', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['eTag'] = $eTag;
 
         return $this;
     }

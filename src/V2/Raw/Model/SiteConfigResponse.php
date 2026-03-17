@@ -67,8 +67,9 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'entityTypeCount' => 'float',
         'entityTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateRemoteEntityTypeVersionDto[]',
         'languageCount' => 'float',
-        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\LanguageDefinition[]',
+        'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteLocaleDefinition[]',
         'defaultLanguageCode' => 'string',
+        'textProfiles' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateTextProfileDto[]',
     ];
 
     /**
@@ -90,6 +91,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languageCount' => null,
         'languages' => null,
         'defaultLanguageCode' => null,
+        'textProfiles' => null,
     ];
 
     /**
@@ -107,6 +109,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languageCount' => true,
         'languages' => true,
         'defaultLanguageCode' => true,
+        'textProfiles' => true,
     ];
 
     /**
@@ -132,6 +135,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languageCount' => 'languageCount',
         'languages' => 'languages',
         'defaultLanguageCode' => 'defaultLanguageCode',
+        'textProfiles' => 'textProfiles',
     ];
 
     /**
@@ -149,6 +153,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languageCount' => 'setLanguageCount',
         'languages' => 'setLanguages',
         'defaultLanguageCode' => 'setDefaultLanguageCode',
+        'textProfiles' => 'setTextProfiles',
     ];
 
     /**
@@ -166,6 +171,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languageCount' => 'getLanguageCount',
         'languages' => 'getLanguages',
         'defaultLanguageCode' => 'getDefaultLanguageCode',
+        'textProfiles' => 'getTextProfiles',
     ];
 
     /**
@@ -192,6 +198,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('languageCount', $data ?? [], null);
         $this->setIfExists('languages', $data ?? [], null);
         $this->setIfExists('defaultLanguageCode', $data ?? [], null);
+        $this->setIfExists('textProfiles', $data ?? [], null);
     }
 
     /**
@@ -546,7 +553,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
     /**
      * Gets languages.
      *
-     * @return null|LanguageDefinition[]
+     * @return null|SiteLocaleDefinition[]
      */
     public function getLanguages()
     {
@@ -556,7 +563,7 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
     /**
      * Sets languages.
      *
-     * @param null|LanguageDefinition[] $languages languages
+     * @param null|SiteLocaleDefinition[] $languages languages
      *
      * @return self
      */
@@ -607,6 +614,40 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['defaultLanguageCode'] = $defaultLanguageCode;
+
+        return $this;
+    }
+
+    /**
+     * Gets textProfiles.
+     *
+     * @return null|CreateTextProfileDto[]
+     */
+    public function getTextProfiles()
+    {
+        return $this->container['textProfiles'];
+    }
+
+    /**
+     * Sets textProfiles.
+     *
+     * @param null|CreateTextProfileDto[] $textProfiles textProfiles
+     *
+     * @return self
+     */
+    public function setTextProfiles($textProfiles)
+    {
+        if (is_null($textProfiles)) {
+            array_push($this->openAPINullablesSetToNull, 'textProfiles');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('textProfiles', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['textProfiles'] = $textProfiles;
 
         return $this;
     }
