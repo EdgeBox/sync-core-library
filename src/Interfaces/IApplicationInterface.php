@@ -53,6 +53,14 @@ interface IApplicationInterface
     public const REST_ACTION_LIST_ENTITIES = 'list';
 
     /**
+     * @var string REST_ACTION_RENDER_ENTITY
+     *
+     * Render an entity by applying incoming update payload in-memory without
+     * persisting it
+     */
+    public const REST_ACTION_RENDER_ENTITY = 'render';
+
+    /**
      * @var string REST_ACTION_SITE_STATUS
      *
      * Provide some status information about the site like the CMS version and
@@ -192,7 +200,8 @@ interface IApplicationInterface
      * - IApplicationInterface::REST_ACTION_CREATE_ENTITY
      * - IApplicationInterface::REST_ACTION_DELETE_ENTITY
      * - IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY
-     * - IApplicationInterface::REST_ACTION_LIST_ENTITIES.
+     * - IApplicationInterface::REST_ACTION_LIST_ENTITIES
+     * - IApplicationInterface::REST_ACTION_RENDER_ENTITY.
      *
      * Used by the Sync Core v2.
      *

@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -43,6 +44,14 @@ class EmbedService implements IEmbedService
     public function entityStatus(array $params)
     {
         return new EntityStatusEmbed($this->core, $params);
+    }
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function optimize(array $params)
+    {
+        return new OptimizeEmbed($this->core, $params);
     }
 
     public function updateStatusBox(array $params)

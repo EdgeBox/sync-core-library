@@ -1079,6 +1079,10 @@ class SyncCore implements ISyncCore
         $urls->setDeleteEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_DELETE_ENTITY));
         $urls->setRetrieveEntity(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY));
         $urls->setListEntities(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_LIST_ENTITIES));
+        $render_entity_route = $this->getRelativeReference(IApplicationInterface::REST_ACTION_RENDER_ENTITY);
+        if ($render_entity_route) {
+            $urls->setRenderEntity(self::PLACEHOLDER_SITE_BASE_URL.$render_entity_route);
+        }
         $urls->setSiteStatus(self::PLACEHOLDER_SITE_BASE_URL.$this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_STATUS));
         $site_config_route = $this->getRelativeReference(IApplicationInterface::REST_ACTION_SITE_CONFIG);
         if ($site_config_route) {

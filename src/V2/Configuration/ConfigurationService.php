@@ -62,6 +62,11 @@ class ConfigurationService implements IConfigurationService
         return new DefineEntityType($this->core, $type_machine_name, $bundle_machine_name, $version_id, $name);
     }
 
+    public function defineTextProfile(string $machine_name, ?string $label = null)
+    {
+        return new DefineTextProfile($this->core, $machine_name, $label);
+    }
+
     public function listRemotePools()
     {
         $request = $this

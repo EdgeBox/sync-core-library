@@ -53,6 +53,11 @@ interface IConfigurationService
     public function defineEntityType(?string $pool_id, string $type_machine_name, string $bundle_machine_name, string $version_id, ?string $name = null);
 
     /**
+     * @return IDefineTextProfile
+     */
+    public function defineTextProfile(string $machine_name, ?string $label = null);
+
+    /**
      * @return $this
      */
     public function deleteFlows(array $keep_machine_names);

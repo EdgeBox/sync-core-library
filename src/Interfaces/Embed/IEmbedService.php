@@ -9,6 +9,7 @@ interface IEmbedService
     public const SITE_REGISTERED = 'site-registered';
     public const SITE_SETTINGS = 'site-settings';
     public const ENTITY_STATUS = 'entity-status';
+    public const OPTIMIZE = 'optimize';
     public const BOX_UPDATE_STATUS = 'box.update-status';
     public const MIGRATE = 'migrate';
     public const FLOW_FORM = 'flow-form';
@@ -38,6 +39,11 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function entityStatus(array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function optimize(array $params);
 
     /**
      * @return IEmbedFeature
