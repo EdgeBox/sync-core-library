@@ -1,17 +1,19 @@
 <?php
+
 /**
- * ServiceSecretStatus
+ * ServiceSecretStatus.
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 
 /**
- * Sync Core
+ * Sync Core.
  *
  * The Sync Core that sends and receives content from all connected sites and services for Content Sync.
  *
@@ -27,20 +29,20 @@
  */
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
-use \EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * ServiceSecretStatus Class Doc Comment
+ * ServiceSecretStatus Class Doc Comment.
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class ServiceSecretStatus
 {
     /**
-     * Possible values of this enum
+     * Possible values of this enum.
      */
     public const _100_DRAFT = '100-draft';
 
@@ -51,7 +53,8 @@ class ServiceSecretStatus
     public const _999_PREVIOUS_REVISION = '999-previous-revision';
 
     /**
-     * Gets allowable values of the enum
+     * Gets allowable values of the enum.
+     *
      * @return string[]
      */
     public static function getAllowableEnumValues()
@@ -60,9 +63,7 @@ class ServiceSecretStatus
             self::_100_DRAFT,
             self::_200_ACTIVE,
             self::_300_ARCHIVED,
-            self::_999_PREVIOUS_REVISION
+            self::_999_PREVIOUS_REVISION,
         ];
     }
 }
-
-

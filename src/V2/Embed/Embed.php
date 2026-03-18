@@ -67,12 +67,6 @@ abstract class Embed
         $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_LIST_ENTITIES);
         $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
-        if (!empty($application->getFeatureFlags()['custom_embed_message_handling'])) {
-            $process_messages_javascript = $application->getCustomEmbedMessageHandlingJavascript();
-        } else {
-            $process_messages_javascript = '';
-        }
-
         $size = empty($options['embedSize']) ? 'page' : $options['embedSize'];
         $is_page = 'page' === $size;
         $is_line = 'line' === $size;
@@ -132,7 +126,13 @@ abstract class Embed
       },
       onMessage: function onMessage({message}) {
         // Code provided by the parent application to add custom message handling.
-        '.$process_messages_javascript.'
+        if(window.ContentSyncEmbed && Array.isArray(window.ContentSyncEmbed.messageHandlers)) {
+          for(var i=0; i<window.ContentSyncEmbed.messageHandlers.length; i++) {
+            if(window.ContentSyncEmbed.messageHandlers[i]({ message: message, iframe: iframe, iframeParent: iframeParent })) {
+              return;
+            }
+          }
+        }
 
         // Need a fresh access token.
         if(message.type==="reload") {
