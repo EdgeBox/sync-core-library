@@ -1,17 +1,19 @@
 <?php
+
 /**
- * RemoteRequestQueryParamsSiteStatus
+ * RemoteRequestQueryParamsSiteStatus.
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 
 /**
- * Sync Core
+ * Sync Core.
  *
  * The Sync Core that sends and receives content from all connected sites and services for Content Sync.
  *
@@ -28,73 +30,143 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use \ArrayAccess;
-use \EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
+use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RemoteRequestQueryParamsSiteStatus Class Doc Comment
+ * RemoteRequestQueryParamsSiteStatus Class Doc Comment.
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+class RemoteRequestQueryParamsSiteStatus implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $openAPIModelName = 'RemoteRequestQueryParamsSiteStatus';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     */
     protected static $openAPITypes = [
         'mode' => 'RemoteSiteStatusRequestMode',
         'force2xx' => 'string',
-        'trace' => 'string'
+        'trace' => 'string',
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     *
+     * @phpstan-var array<string, string|null>
+     *
+     * @psalm-var array<string, string|null>
+     */
     protected static $openAPIFormats = [
         'mode' => null,
         'force2xx' => null,
-        'trace' => null
+        'trace' => null,
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization.
+     *
+     * @var bool[]
+     */
     protected static array $openAPINullables = [
         'mode' => false,
-		'force2xx' => true,
-		'trace' => true
+        'force2xx' => true,
+        'trace' => true,
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here.
+     *
+     * @var bool[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
+     * Array of attributes where the key is the local name,
+     * and the value is the original name.
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'mode' => 'mode',
+        'force2xx' => 'force2xx',
+        'trace' => 'trace',
+    ];
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses).
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'mode' => 'setMode',
+        'force2xx' => 'setForce2xx',
+        'trace' => 'setTrace',
+    ];
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests).
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'mode' => 'getMode',
+        'force2xx' => 'getForce2xx',
+        'trace' => 'getTrace',
+    ];
+
+    /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(?array $data = null)
+    {
+        $this->setIfExists('mode', $data ?? [], null);
+        $this->setIfExists('force2xx', $data ?? [], null);
+        $this->setIfExists('trace', $data ?? [], null);
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -104,7 +176,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Array of property to format mappings. Used for (de)serialization
+     * Array of property to format mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -114,40 +186,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Array of nullable properties
-     *
-     * @return array
-     */
-    protected static function openAPINullables(): array
-    {
-        return self::$openAPINullables;
-    }
-
-    /**
-     * Array of nullable field names deliberately set to null
-     *
-     * @return boolean[]
-     */
-    private function getOpenAPINullablesSetToNull(): array
-    {
-        return $this->openAPINullablesSetToNull;
-    }
-
-    /**
-     * Setter - Array of nullable field names deliberately set to null
-     *
-     * @param boolean[] $openAPINullablesSetToNull
-     */
-    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
-    {
-        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
-    }
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
+     * Checks if a property is nullable.
      */
     public static function isNullable(string $property): bool
     {
@@ -156,9 +195,6 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
 
     /**
      * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
      */
     public function isNullableSetToNull(string $property): bool
     {
@@ -167,41 +203,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
 
     /**
      * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @var string[]
-     */
-    protected static $attributeMap = [
-        'mode' => 'mode',
-        'force2xx' => 'force2xx',
-        'trace' => 'trace'
-    ];
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @var string[]
-     */
-    protected static $setters = [
-        'mode' => 'setMode',
-        'force2xx' => 'setForce2xx',
-        'trace' => 'setTrace'
-    ];
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @var string[]
-     */
-    protected static $getters = [
-        'mode' => 'getMode',
-        'force2xx' => 'getForce2xx',
-        'trace' => 'getTrace'
-    ];
-
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
+     * and the value is the original name.
      *
      * @return array
      */
@@ -211,7 +213,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Array of attributes to setter functions (for deserialization of responses)
+     * Array of attributes to setter functions (for deserialization of responses).
      *
      * @return array
      */
@@ -221,7 +223,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Array of attributes to getter functions (for serialization of requests)
+     * Array of attributes to getter functions (for serialization of requests).
      *
      * @return array
      */
@@ -240,45 +242,6 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
         return self::$openAPIModelName;
     }
 
-
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->setIfExists('mode', $data ?? [], null);
-        $this->setIfExists('force2xx', $data ?? [], null);
-        $this->setIfExists('trace', $data ?? [], null);
-    }
-
-    /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
-    private function setIfExists(string $variableName, array $fields, $defaultValue): void
-    {
-        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
-            $this->openAPINullablesSetToNull[] = $variableName;
-        }
-
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
-    }
-
     /**
      * Show all the invalid properties with reasons.
      *
@@ -288,26 +251,26 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     {
         $invalidProperties = [];
 
-        if ($this->container['mode'] === null) {
+        if (null === $this->container['mode']) {
             $invalidProperties[] = "'mode' can't be null";
         }
+
         return $invalidProperties;
     }
 
     /**
      * Validate all the properties in the model
-     * return true if all passed
+     * return true if all passed.
      *
      * @return bool True if all properties are valid
      */
     public function valid()
     {
-        return count($this->listInvalidProperties()) === 0;
+        return 0 === count($this->listInvalidProperties());
     }
 
-
     /**
-     * Gets mode
+     * Gets mode.
      *
      * @return RemoteSiteStatusRequestMode
      */
@@ -317,7 +280,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Sets mode
+     * Sets mode.
      *
      * @param RemoteSiteStatusRequestMode $mode mode
      *
@@ -334,9 +297,9 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Gets force2xx
+     * Gets force2xx.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getForce2xx()
     {
@@ -344,9 +307,9 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Sets force2xx
+     * Sets force2xx.
      *
-     * @param string|null $force2xx force2xx
+     * @param null|string $force2xx force2xx
      *
      * @return self
      */
@@ -357,7 +320,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('force2xx', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -368,9 +331,9 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Gets trace
+     * Gets trace.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getTrace()
     {
@@ -378,9 +341,9 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     }
 
     /**
-     * Sets trace
+     * Sets trace.
      *
-     * @param string|null $trace trace
+     * @param null|string $trace trace
      *
      * @return self
      */
@@ -391,7 +354,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('trace', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -400,12 +363,11 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
-     *
-     * @return boolean
+     * @param int $offset Offset
      */
     public function offsetExists($offset): bool
     {
@@ -415,9 +377,9 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -428,10 +390,8 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -445,9 +405,7 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
-     *
-     * @return void
+     * @param int $offset Offset
      */
     public function offsetUnset($offset): void
     {
@@ -456,32 +414,20 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
 
     /**
      * Serializes the object to a value that can be serialized natively by json_encode().
-     * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return mixed Returns data which can be serialized by json_encode(), which is a value
-     * of any type other than a resource.
+     * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
+     *
+     * @return mixed returns data which can be serialized by json_encode(), which is a value
+     * of any type other than a resource
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
-    }
-
-    /**
-     * Gets a header-safe presentation of the object
+     * Gets a header-safe presentation of the object.
      *
      * @return string
      */
@@ -489,6 +435,48 @@ class RemoteRequestQueryParamsSiteStatus implements ModelInterface, ArrayAccess,
     {
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
+
+    /**
+     * Array of nullable properties.
+     */
+    protected static function openAPINullables(): array
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null.
+     *
+     * @return bool[]
+     */
+    private function getOpenAPINullablesSetToNull(): array
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    /**
+     * Setter - Array of nullable field names deliberately set to null.
+     *
+     * @param bool[] $openAPINullablesSetToNull
+     */
+    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
+    {
+        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
+    }
+
+    /**
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array.
+     *
+     * @param mixed  $defaultValue
+     */
+    private function setIfExists(string $variableName, array $fields, $defaultValue): void
+    {
+        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
+            $this->openAPINullablesSetToNull[] = $variableName;
+        }
+
+        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+    }
 }
-
-

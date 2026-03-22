@@ -43,8 +43,9 @@ use EdgeBox\SyncCore\V2\Raw\Model\SiteRestUrls;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
-use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
 use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use Firebase\JWT\JWT;
@@ -919,16 +920,16 @@ class SyncCore implements ISyncCore
         $request = $this->client->siteControllerUpdateConfigRequest(siteConfigUpdateRequestDto: $dto);
 
         /**
-         * @var SyndicationEntity $response
+         * @var TaskEntity $response
          */
-        $response = $this->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 0);
+        $response = $this->sendToSyncCoreAndExpect($request, TaskEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 0);
 
         if ($wait) {
             $running_statuses = [SyndicationStatus::_100_INITIALIZING, SyndicationStatus::_200_RUNNING, SyndicationStatus::_300_RETRYING];
             do {
                 sleep(3);
-                $request = $this->client->syndicationControllerItemRequest($response->getId());
-                $response = $this->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 3);
+                $request = $this->client->taskControllerItemRequest($response->getId());
+                $response = $this->sendToSyncCoreAndExpect($request, SyndicationEntityWithUsage::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, 3);
             } while (in_array($response->getStatus(), $running_statuses));
             if (SyndicationStatus::_400_FINISHED !== $response->getStatus()) {
                 throw new SyncCoreException("Failed to update config: update status is {$response->getStatus()}.");

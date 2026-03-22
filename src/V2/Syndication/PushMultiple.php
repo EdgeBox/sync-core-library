@@ -4,14 +4,14 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPushMultiple;
-use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateTaskGroupDto;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class PushMultiple implements IPushMultiple
 {
     /**
-     * @var CreateMigrationDto
+     * @var CreateTaskGroupDto
      */
     protected $dto;
 
@@ -27,9 +27,9 @@ class PushMultiple implements IPushMultiple
     {
         $this->core = $core;
 
-        $this->dto = new CreateMigrationDto();
+        $this->dto = new CreateTaskGroupDto();
 
-        $this->dto->setType(MigrationType::PUSH_MANUALLY);
+        $this->dto->setType(TaskGroupType::PUSH_MANUALLY);
         $this->dto->setEntityReferences([]);
         $this->dto->setFlowMachineName($flowMachineName);
     }

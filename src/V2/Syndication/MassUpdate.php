@@ -4,12 +4,12 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
-use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateTaskGroupDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class MassUpdate
@@ -55,7 +55,7 @@ abstract class MassUpdate
     protected $includeOtherSites;
 
     /**
-     * @var MigrationEntity[]
+     * @var TaskGroupEntity[]
      */
     protected $dtos;
 
@@ -207,13 +207,13 @@ abstract class MassUpdate
             throw new InternalContentSyncError('Entity type version is required.');
         }
 
-        $migrationDto = new CreateMigrationDto();
-        if (MigrationType::PUSH_ALL === $type && $this->initial) {
+        $migrationDto = new CreateTaskGroupDto();
+        if (TaskGroupType::PUSH_ALL === $type && $this->initial) {
             $migrationDto->setSkipSyndication(true);
         }
 
         /**
-         * @var MigrationType $type
+         * @var TaskGroupType $type
          */
         $migrationDto->setType($type);
         $migrationDto->setInitialSetup($this->initial);
@@ -224,8 +224,8 @@ abstract class MassUpdate
         $entityType->setVersionId($this->versionId);
         $migrationDto->setEntityTypeReference($entityType);
 
-        $request = $this->core->getClient()->migrationControllerCreateRequest(createMigrationDto: $migrationDto);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PUSH_RETRY_COUNT);
+        $request = $this->core->getClient()->migrationControllerCreateRequest(createTaskGroupDto: $migrationDto);
+        $response = $this->core->sendToSyncCoreAndExpect($request, TaskGroupEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PUSH_RETRY_COUNT);
         $this->migrationId = $response->getId();
         $this->dtos = [$response];
 

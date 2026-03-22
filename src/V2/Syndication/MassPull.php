@@ -3,7 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Interfaces\Syndication\IMassPull;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class MassPull extends MassUpdate implements IMassPull
@@ -19,12 +19,12 @@ class MassPull extends MassUpdate implements IMassPull
     public function usingMigrationType(string $type)
     {
         if (!in_array($type, [
-            MigrationType::PULL_ALL,
-            MigrationType::PULL_CHANGED,
-            MigrationType::PULL_FAILED,
-            MigrationType::RETRIEVE_FAILED,
-            MigrationType::PULL_ALL_LIMIT_EXCEEDED,
-            MigrationType::MAP_EXISTING_BY_ID,
+            TaskGroupType::PULL_ALL,
+            TaskGroupType::PULL_CHANGED,
+            TaskGroupType::PULL_FAILED,
+            TaskGroupType::RETRIEVE_FAILED,
+            TaskGroupType::PULL_ALL_LIMIT_EXCEEDED,
+            TaskGroupType::MAP_EXISTING_BY_ID,
         ])) {
             throw new \InvalidArgumentException('Migration type '.$type.' is not allowed.');
         }
@@ -40,6 +40,6 @@ class MassPull extends MassUpdate implements IMassPull
             return $this->migrationType;
         }
 
-        return $this->initial ? MigrationType::MAP_EXISTING_BY_ID : MigrationType::PULL_ALL;
+        return $this->initial ? TaskGroupType::MAP_EXISTING_BY_ID : TaskGroupType::PULL_ALL;
     }
 }

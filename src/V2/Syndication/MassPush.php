@@ -3,7 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Syndication;
 
 use EdgeBox\SyncCore\Interfaces\Syndication\IMassPush;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class MassPush extends MassUpdate implements IMassPush
@@ -19,9 +19,9 @@ class MassPush extends MassUpdate implements IMassPush
     public function usingMigrationType(string $type)
     {
         if (!in_array($type, [
-            MigrationType::PUSH_ALL,
-            MigrationType::PUSH_ALL_LATEST,
-            MigrationType::PUSH_FAILED,
+            TaskGroupType::PUSH_ALL,
+            TaskGroupType::PUSH_ALL_LATEST,
+            TaskGroupType::PUSH_FAILED,
         ])) {
             throw new \InvalidArgumentException('Migration type '.$type.' is not allowed.');
         }
@@ -37,6 +37,6 @@ class MassPush extends MassUpdate implements IMassPush
             return $this->migrationType;
         }
 
-        return MigrationType::PUSH_ALL;
+        return TaskGroupType::PUSH_ALL;
     }
 }

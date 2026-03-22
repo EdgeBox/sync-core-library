@@ -5,12 +5,12 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\IPullAll;
-use EdgeBox\SyncCore\V2\Raw\Model\CreateMigrationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateTaskGroupDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionReference;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
-use EdgeBox\SyncCore\V2\Raw\Model\MigrationType;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SerializableWithSyncCoreReference;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -47,7 +47,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
     protected $migrationId;
 
     /**
-     * @var null|MigrationEntity
+     * @var null|TaskGroupEntity
      */
     protected $dto;
 
@@ -146,14 +146,14 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
 
     public function execute()
     {
-        $migrationDto = new CreateMigrationDto();
+        $migrationDto = new CreateTaskGroupDto();
 
         /**
-         * @var MigrationType $type
+         * @var TaskGroupType $type
          */
         $type = $this->pullAll
-        ? MigrationType::PULL_ALL
-        : MigrationType::PULL_CHANGED;
+        ? TaskGroupType::PULL_ALL
+        : TaskGroupType::PULL_CHANGED;
         $migrationDto->setType($type);
         $migrationDto->setInitialSetup(false);
         $migrationDto->setFlowMachineName($this->flow);
@@ -163,8 +163,8 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         $entityType->setVersionId($this->versionId);
         $migrationDto->setEntityTypeReference($entityType);
 
-        $request = $this->core->getClient()->migrationControllerCreateRequest(createMigrationDto: $migrationDto);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PULL_RETRY_COUNT);
+        $request = $this->core->getClient()->migrationControllerCreateRequest(createTaskGroupDto: $migrationDto);
+        $response = $this->core->sendToSyncCoreAndExpect($request, TaskGroupEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::PULL_RETRY_COUNT);
         $this->dto = $response;
 
         $this->migrationId = $this->dto->getId();
@@ -218,7 +218,7 @@ class PullAll extends SerializableWithSyncCoreReference implements IPullAll
         }
 
         $request = $this->core->getClient()->migrationControllerItemRequest(id: $this->migrationId);
-        $response = $this->core->sendToSyncCoreAndExpect($request, MigrationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
+        $response = $this->core->sendToSyncCoreAndExpect($request, TaskGroupEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::UPDATES_GET_RETRY_COUNT);
 
         return $this->dto = $response;
     }

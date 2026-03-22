@@ -5,9 +5,9 @@ namespace EdgeBox\SyncCore\V2;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\IReportingService;
 use EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo;
-use EdgeBox\SyncCore\V2\Raw\Model\SyndicationError;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorList;
-use EdgeBox\SyncCore\V2\Raw\Model\SyndicationErrorType;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskError;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskErrorType;
 use EdgeBox\SyncCore\V2\Raw\Model\UsageSummary;
 
 class ReportingService implements IReportingService
@@ -106,7 +106,7 @@ class ReportingService implements IReportingService
         ];
     }
 
-    protected function getOperationErrorMessage(SyndicationError $error)
+    protected function getOperationErrorMessage(TaskError $error)
     {
         /**
          * @var string $type
@@ -115,18 +115,18 @@ class ReportingService implements IReportingService
         $timestamp = $error->getTimestamp();
         $date = date('Y-m-d--H-i-s', (int) $timestamp).': ';
 
-        if (SyndicationErrorType::TIMEOUT === $type) {
+        if (TaskErrorType::TIMEOUT === $type) {
             return $date.'The request timed out.';
         }
 
-        if (SyndicationErrorType::BAD_RESPONSE_CODE === $type) {
+        if (TaskErrorType::BAD_RESPONSE_CODE === $type) {
             $status = $error->getStatusCode();
 
             return $date."The site responded with status code {$status}.";
         }
 
         $message = $error->getErrorMessage();
-        if (SyndicationErrorType::INVALID_DEPENDENCY === $type) {
+        if (TaskErrorType::INVALID_DEPENDENCY === $type) {
             return $date."Invalid dependency: {$message}";
         }
 

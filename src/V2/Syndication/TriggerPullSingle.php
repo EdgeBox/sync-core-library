@@ -5,8 +5,8 @@ namespace EdgeBox\SyncCore\V2\Syndication;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
 use EdgeBox\SyncCore\V2\Helper;
-use EdgeBox\SyncCore\V2\Raw\Model\CreateSyndicationDto;
-use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateTaskDto;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class TriggerPullSingle implements ITriggerPullSingle
@@ -17,14 +17,14 @@ class TriggerPullSingle implements ITriggerPullSingle
     protected $core;
 
     /**
-     * @var CreateSyndicationDto
+     * @var CreateTaskDto
      */
     protected $dto;
 
     /**
      * The Syndication Entity, set when running ->execute().
      *
-     * @var SyndicationEntity
+     * @var TaskEntity
      */
     protected $syndication;
 
@@ -35,7 +35,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     {
         $this->core = $core;
 
-        $this->dto = new CreateSyndicationDto();
+        $this->dto = new CreateTaskDto();
         $this->dto->setFlowMachineName($flow_id);
         $this->dto->setPoolMachineNames([]);
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
@@ -74,8 +74,8 @@ class TriggerPullSingle implements ITriggerPullSingle
 
     public function execute()
     {
-        $request = $this->core->getClient()->syndicationControllerCreateRequest(createSyndicationDto: $this->dto);
-        $this->syndication = $this->core->sendToSyncCoreAndExpect($request, SyndicationEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
+        $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
+        $this->syndication = $this->core->sendToSyncCoreAndExpect($request, TaskEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
 
         return $this;
     }

@@ -1,17 +1,19 @@
 <?php
+
 /**
- * ConditionalPropertyDirectiveType
+ * ConditionalPropertyDirectiveType.
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 
 /**
- * Sync Core
+ * Sync Core.
  *
  * The Sync Core that sends and receives content from all connected sites and services for Content Sync.
  *
@@ -27,33 +29,32 @@
  */
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
-use \EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * ConditionalPropertyDirectiveType Class Doc Comment
+ * ConditionalPropertyDirectiveType Class Doc Comment.
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class ConditionalPropertyDirectiveType
 {
     /**
-     * Possible values of this enum
+     * Possible values of this enum.
      */
     public const ADD_TEXT_PROFILE = 'add-text-profile';
 
     /**
-     * Gets allowable values of the enum
+     * Gets allowable values of the enum.
+     *
      * @return string[]
      */
     public static function getAllowableEnumValues()
     {
         return [
-            self::ADD_TEXT_PROFILE
+            self::ADD_TEXT_PROFILE,
         ];
     }
 }
-
-

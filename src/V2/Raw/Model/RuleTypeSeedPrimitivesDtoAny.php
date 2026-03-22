@@ -1,17 +1,19 @@
 <?php
+
 /**
- * RuleTypeSeedPrimitivesDtoAny
+ * RuleTypeSeedPrimitivesDtoAny.
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 
 /**
- * Sync Core
+ * Sync Core.
  *
  * The Sync Core that sends and receives content from all connected sites and services for Content Sync.
  *
@@ -28,34 +30,35 @@
 
 namespace EdgeBox\SyncCore\V2\Raw\Model;
 
-use \ArrayAccess;
-use \EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
+use EdgeBox\SyncCore\V2\Raw\ObjectSerializer;
 
 /**
- * RuleTypeSeedPrimitivesDtoAny Class Doc Comment
+ * RuleTypeSeedPrimitivesDtoAny Class Doc Comment.
  *
  * @category Class
- * @package  EdgeBox\SyncCore\V2\Raw
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \JsonSerializable
+class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $openAPIModelName = 'RuleTypeSeedPrimitivesDto_Any';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     */
     protected static $openAPITypes = [
         'kind' => 'FormulaTypeKind',
         'nullable' => 'bool',
@@ -69,16 +72,18 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         'paramTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\FormulaTypeDto[]',
         'returnType' => 'FormulaTypeDto',
         'minArity' => 'float',
-        'maxArity' => 'float'
+        'maxArity' => 'float',
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     *
+     * @phpstan-var array<string, string|null>
+     *
+     * @psalm-var array<string, string|null>
+     */
     protected static $openAPIFormats = [
         'kind' => null,
         'nullable' => null,
@@ -92,112 +97,40 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         'paramTypes' => null,
         'returnType' => null,
         'minArity' => null,
-        'maxArity' => null
+        'maxArity' => null,
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization.
+     *
+     * @var bool[]
+     */
     protected static array $openAPINullables = [
         'kind' => false,
-		'nullable' => true,
-		'description' => true,
-		'of' => true,
-		'clarifier' => true,
-		'properties' => true,
-		'name' => true,
-		'constraint' => true,
-		'reference' => true,
-		'paramTypes' => true,
-		'returnType' => true,
-		'minArity' => true,
-		'maxArity' => true
+        'nullable' => true,
+        'description' => true,
+        'of' => true,
+        'clarifier' => true,
+        'properties' => true,
+        'name' => true,
+        'constraint' => true,
+        'reference' => true,
+        'paramTypes' => true,
+        'returnType' => true,
+        'minArity' => true,
+        'maxArity' => true,
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here.
+     *
+     * @var bool[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function openAPITypes()
-    {
-        return self::$openAPITypes;
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function openAPIFormats()
-    {
-        return self::$openAPIFormats;
-    }
-
-    /**
-     * Array of nullable properties
-     *
-     * @return array
-     */
-    protected static function openAPINullables(): array
-    {
-        return self::$openAPINullables;
-    }
-
-    /**
-     * Array of nullable field names deliberately set to null
-     *
-     * @return boolean[]
-     */
-    private function getOpenAPINullablesSetToNull(): array
-    {
-        return $this->openAPINullablesSetToNull;
-    }
-
-    /**
-     * Setter - Array of nullable field names deliberately set to null
-     *
-     * @param boolean[] $openAPINullablesSetToNull
-     */
-    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
-    {
-        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
-    }
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
-     */
-    public static function isNullable(string $property): bool
-    {
-        return self::openAPINullables()[$property] ?? false;
-    }
-
-    /**
-     * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
-     */
-    public function isNullableSetToNull(string $property): bool
-    {
-        return in_array($property, $this->getOpenAPINullablesSetToNull(), true);
-    }
-
-    /**
      * Array of attributes where the key is the local name,
-     * and the value is the original name
+     * and the value is the original name.
      *
      * @var string[]
      */
@@ -214,11 +147,11 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         'paramTypes' => 'paramTypes',
         'returnType' => 'returnType',
         'minArity' => 'minArity',
-        'maxArity' => 'maxArity'
+        'maxArity' => 'maxArity',
     ];
 
     /**
-     * Array of attributes to setter functions (for deserialization of responses)
+     * Array of attributes to setter functions (for deserialization of responses).
      *
      * @var string[]
      */
@@ -235,11 +168,11 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         'paramTypes' => 'setParamTypes',
         'returnType' => 'setReturnType',
         'minArity' => 'setMinArity',
-        'maxArity' => 'setMaxArity'
+        'maxArity' => 'setMaxArity',
     ];
 
     /**
-     * Array of attributes to getter functions (for serialization of requests)
+     * Array of attributes to getter functions (for serialization of requests).
      *
      * @var string[]
      */
@@ -256,12 +189,91 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         'paramTypes' => 'getParamTypes',
         'returnType' => 'getReturnType',
         'minArity' => 'getMinArity',
-        'maxArity' => 'getMaxArity'
+        'maxArity' => 'getMaxArity',
     ];
 
     /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(?array $data = null)
+    {
+        $this->setIfExists('kind', $data ?? [], null);
+        $this->setIfExists('nullable', $data ?? [], null);
+        $this->setIfExists('description', $data ?? [], null);
+        $this->setIfExists('of', $data ?? [], null);
+        $this->setIfExists('clarifier', $data ?? [], null);
+        $this->setIfExists('properties', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('constraint', $data ?? [], null);
+        $this->setIfExists('reference', $data ?? [], null);
+        $this->setIfExists('paramTypes', $data ?? [], null);
+        $this->setIfExists('returnType', $data ?? [], null);
+        $this->setIfExists('minArity', $data ?? [], null);
+        $this->setIfExists('maxArity', $data ?? [], null);
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPITypes()
+    {
+        return self::$openAPITypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @return array
+     */
+    public static function openAPIFormats()
+    {
+        return self::$openAPIFormats;
+    }
+
+    /**
+     * Checks if a property is nullable.
+     */
+    public static function isNullable(string $property): bool
+    {
+        return self::openAPINullables()[$property] ?? false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        return in_array($property, $this->getOpenAPINullablesSetToNull(), true);
+    }
+
+    /**
      * Array of attributes where the key is the local name,
-     * and the value is the original name
+     * and the value is the original name.
      *
      * @return array
      */
@@ -271,7 +283,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Array of attributes to setter functions (for deserialization of responses)
+     * Array of attributes to setter functions (for deserialization of responses).
      *
      * @return array
      */
@@ -281,7 +293,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Array of attributes to getter functions (for serialization of requests)
+     * Array of attributes to getter functions (for serialization of requests).
      *
      * @return array
      */
@@ -300,55 +312,6 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         return self::$openAPIModelName;
     }
 
-
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->setIfExists('kind', $data ?? [], null);
-        $this->setIfExists('nullable', $data ?? [], null);
-        $this->setIfExists('description', $data ?? [], null);
-        $this->setIfExists('of', $data ?? [], null);
-        $this->setIfExists('clarifier', $data ?? [], null);
-        $this->setIfExists('properties', $data ?? [], null);
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('constraint', $data ?? [], null);
-        $this->setIfExists('reference', $data ?? [], null);
-        $this->setIfExists('paramTypes', $data ?? [], null);
-        $this->setIfExists('returnType', $data ?? [], null);
-        $this->setIfExists('minArity', $data ?? [], null);
-        $this->setIfExists('maxArity', $data ?? [], null);
-    }
-
-    /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
-    private function setIfExists(string $variableName, array $fields, $defaultValue): void
-    {
-        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
-            $this->openAPINullablesSetToNull[] = $variableName;
-        }
-
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
-    }
-
     /**
      * Show all the invalid properties with reasons.
      *
@@ -358,26 +321,26 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     {
         $invalidProperties = [];
 
-        if ($this->container['kind'] === null) {
+        if (null === $this->container['kind']) {
             $invalidProperties[] = "'kind' can't be null";
         }
+
         return $invalidProperties;
     }
 
     /**
      * Validate all the properties in the model
-     * return true if all passed
+     * return true if all passed.
      *
      * @return bool True if all properties are valid
      */
     public function valid()
     {
-        return count($this->listInvalidProperties()) === 0;
+        return 0 === count($this->listInvalidProperties());
     }
 
-
     /**
-     * Gets kind
+     * Gets kind.
      *
      * @return FormulaTypeKind
      */
@@ -387,7 +350,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets kind
+     * Sets kind.
      *
      * @param FormulaTypeKind $kind kind
      *
@@ -404,9 +367,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets nullable
+     * Gets nullable.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getNullable()
     {
@@ -414,9 +377,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets nullable
+     * Sets nullable.
      *
-     * @param bool|null $nullable nullable
+     * @param null|bool $nullable nullable
      *
      * @return self
      */
@@ -427,7 +390,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('nullable', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -438,9 +401,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets description
+     * Gets description.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getDescription()
     {
@@ -448,9 +411,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets description
+     * Sets description.
      *
-     * @param string|null $description description
+     * @param null|string $description description
      *
      * @return self
      */
@@ -461,7 +424,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('description', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -472,9 +435,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets of
+     * Gets of.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getOf()
     {
@@ -482,9 +445,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets of
+     * Sets of.
      *
-     * @param mixed|null $of of
+     * @param null|mixed $of of
      *
      * @return self
      */
@@ -495,7 +458,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('of', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -506,9 +469,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets clarifier
+     * Gets clarifier.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getClarifier()
     {
@@ -516,9 +479,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets clarifier
+     * Sets clarifier.
      *
-     * @param string|null $clarifier clarifier
+     * @param null|string $clarifier clarifier
      *
      * @return self
      */
@@ -529,7 +492,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('clarifier', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -540,9 +503,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets properties
+     * Gets properties.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getProperties()
     {
@@ -550,9 +513,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets properties
+     * Sets properties.
      *
-     * @param mixed|null $properties properties
+     * @param null|mixed $properties properties
      *
      * @return self
      */
@@ -563,7 +526,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('properties', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -574,9 +537,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets name
+     * Gets name.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getName()
     {
@@ -584,9 +547,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets name
+     * Sets name.
      *
-     * @param string|null $name name
+     * @param null|string $name name
      *
      * @return self
      */
@@ -597,7 +560,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('name', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -608,9 +571,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets constraint
+     * Gets constraint.
      *
-     * @return FormulaTypeDto|null
+     * @return null|FormulaTypeDto
      */
     public function getConstraint()
     {
@@ -618,9 +581,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets constraint
+     * Sets constraint.
      *
-     * @param FormulaTypeDto|null $constraint constraint
+     * @param null|FormulaTypeDto $constraint constraint
      *
      * @return self
      */
@@ -631,7 +594,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('constraint', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -642,9 +605,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets reference
+     * Gets reference.
      *
-     * @return CallableReferenceKind|null
+     * @return null|CallableReferenceKind
      */
     public function getReference()
     {
@@ -652,9 +615,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets reference
+     * Sets reference.
      *
-     * @param CallableReferenceKind|null $reference reference
+     * @param null|CallableReferenceKind $reference reference
      *
      * @return self
      */
@@ -665,7 +628,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('reference', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -676,9 +639,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets paramTypes
+     * Gets paramTypes.
      *
-     * @return \EdgeBox\SyncCore\V2\Raw\Model\FormulaTypeDto[]|null
+     * @return null|FormulaTypeDto[]
      */
     public function getParamTypes()
     {
@@ -686,9 +649,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets paramTypes
+     * Sets paramTypes.
      *
-     * @param \EdgeBox\SyncCore\V2\Raw\Model\FormulaTypeDto[]|null $paramTypes paramTypes
+     * @param null|FormulaTypeDto[] $paramTypes paramTypes
      *
      * @return self
      */
@@ -699,7 +662,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('paramTypes', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -710,9 +673,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets returnType
+     * Gets returnType.
      *
-     * @return FormulaTypeDto|null
+     * @return null|FormulaTypeDto
      */
     public function getReturnType()
     {
@@ -720,9 +683,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets returnType
+     * Sets returnType.
      *
-     * @param FormulaTypeDto|null $returnType returnType
+     * @param null|FormulaTypeDto $returnType returnType
      *
      * @return self
      */
@@ -733,7 +696,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('returnType', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -744,9 +707,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets minArity
+     * Gets minArity.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMinArity()
     {
@@ -754,9 +717,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets minArity
+     * Sets minArity.
      *
-     * @param float|null $minArity minArity
+     * @param null|float $minArity minArity
      *
      * @return self
      */
@@ -767,7 +730,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('minArity', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -778,9 +741,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Gets maxArity
+     * Gets maxArity.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getMaxArity()
     {
@@ -788,9 +751,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     }
 
     /**
-     * Sets maxArity
+     * Sets maxArity.
      *
-     * @param float|null $maxArity maxArity
+     * @param null|float $maxArity maxArity
      *
      * @return self
      */
@@ -801,7 +764,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
             $index = array_search('maxArity', $nullablesSetToNull);
-            if ($index !== FALSE) {
+            if (false !== $index) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
@@ -810,12 +773,11 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
-     *
-     * @return boolean
+     * @param int $offset Offset
      */
     public function offsetExists($offset): bool
     {
@@ -825,9 +787,9 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -838,10 +800,8 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -855,9 +815,7 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
-     *
-     * @return void
+     * @param int $offset Offset
      */
     public function offsetUnset($offset): void
     {
@@ -866,32 +824,20 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
 
     /**
      * Serializes the object to a value that can be serialized natively by json_encode().
-     * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return mixed Returns data which can be serialized by json_encode(), which is a value
-     * of any type other than a resource.
+     * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
+     *
+     * @return mixed returns data which can be serialized by json_encode(), which is a value
+     * of any type other than a resource
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
-    }
-
-    /**
-     * Gets a header-safe presentation of the object
+     * Gets a header-safe presentation of the object.
      *
      * @return string
      */
@@ -899,6 +845,48 @@ class RuleTypeSeedPrimitivesDtoAny implements ModelInterface, ArrayAccess, \Json
     {
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
+
+    /**
+     * Array of nullable properties.
+     */
+    protected static function openAPINullables(): array
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null.
+     *
+     * @return bool[]
+     */
+    private function getOpenAPINullablesSetToNull(): array
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    /**
+     * Setter - Array of nullable field names deliberately set to null.
+     *
+     * @param bool[] $openAPINullablesSetToNull
+     */
+    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
+    {
+        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
+    }
+
+    /**
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array.
+     *
+     * @param mixed  $defaultValue
+     */
+    private function setIfExists(string $variableName, array $fields, $defaultValue): void
+    {
+        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
+            $this->openAPINullablesSetToNull[] = $variableName;
+        }
+
+        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+    }
 }
-
-
