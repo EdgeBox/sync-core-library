@@ -49,11 +49,15 @@ jobs:
           token: ${{ secrets.SYNC_CORE_READ_TOKEN }}
           path: sync-core
 
+      # Without an unbounded memory limit the fixer runs out of memory on the
+      # generated client, and under a default limit it reports success while
+      # having skipped the file.
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           coverage: none
+          ini-values: memory_limit=-1
 
       - name: Install the tools
         working-directory: library
@@ -91,11 +95,20 @@ jobs:
           fi
 
       # --sequential keeps the run on one process: the configuration sizes its
-      # worker pool from the host's cores, and on a two-core runner a worker
-      # exceeds its 120 second timeout partway through the generated client.
+      # worker pool from the host's cores, and a worker exceeds its 120 second
+      # timeout on the API class, which is one file of 67,000 lines. That file
+      # also needs a second pass, because the fixer reaches its own per-file
+      # iteration limit before it settles. The third run proves it settled.
       - name: Format the generated client
         working-directory: library
-        run: tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
+        run: |
+          set -e
+          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
+          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
+          if ! tools/vendor/bin/php-cs-fixer fix --dry-run --sequential --config=tools/.php-cs-fixer.php src/V2/Raw; then
+            echo "::error::the generated client does not settle under tools/.php-cs-fixer.php within two passes"
+            exit 1
+          fi
 
       - name: Report what the generation changed
         working-directory: library
