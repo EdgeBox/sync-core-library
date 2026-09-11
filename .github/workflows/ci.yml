@@ -73,8 +73,11 @@ jobs:
       - name: Install the tools
         run: composer install --working-dir=tools --no-interaction --no-progress
 
+      # The configuration sizes its worker pool from the host's cores, and on a
+      # two-core runner a worker exceeds its 120 second timeout partway through
+      # the generated client. --sequential keeps the run on one process.
       - name: Check the code style
-        run: tools/vendor/bin/php-cs-fixer fix --dry-run --diff --config=tools/.php-cs-fixer.php
+        run: tools/vendor/bin/php-cs-fixer fix --dry-run --diff --sequential --config=tools/.php-cs-fixer.php
 
   phpunit:
     name: phpunit

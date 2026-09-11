@@ -90,9 +90,12 @@ jobs:
             exit 1
           fi
 
+      # --sequential keeps the run on one process: the configuration sizes its
+      # worker pool from the host's cores, and on a two-core runner a worker
+      # exceeds its 120 second timeout partway through the generated client.
       - name: Format the generated client
         working-directory: library
-        run: tools/vendor/bin/php-cs-fixer fix --config=tools/.php-cs-fixer.php src/V2/Raw
+        run: tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
 
       - name: Report what the generation changed
         working-directory: library
