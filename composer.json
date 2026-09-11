@@ -24,7 +24,8 @@
         "lint": "tools/vendor/bin/phplint ./ --exclude=vendor --warning",
         "analyze": "tools/vendor/bin/phpstan analyse -c tools/phpstan.neon src",
         "test-cs": "tools/vendor/bin/php-cs-fixer fix --dry-run --config tools/.php-cs-fixer.php",
-        "fix-cs": "tools/vendor/bin/php-cs-fixer fix --config tools/.php-cs-fixer.php"
+        "fix-cs": "tools/vendor/bin/php-cs-fixer fix --config tools/.php-cs-fixer.php",
+        "test": "vendor/bin/phpunit"
     },
     "require": {
         "php": ">=8.0.0",
@@ -32,9 +33,17 @@
         "firebase/php-jwt": "^5.2|| ^6.0|| ^7.0",
         "ext-json": "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
     "autoload": {
         "psr-4": {
             "EdgeBox\\SyncCore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EdgeBox\\SyncCore\\Tests\\": "tests/"
         }
     }
 }
