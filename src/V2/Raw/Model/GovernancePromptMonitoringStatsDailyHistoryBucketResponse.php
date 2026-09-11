@@ -64,6 +64,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => 'float',
         'timestamp' => 'float',
         'count' => 'float',
+        'promptCount' => 'float',
+        'promptRunCount' => 'float',
         'visibility' => 'float',
         'sentiment' => 'float',
         'shareOfVoice' => 'float',
@@ -73,7 +75,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => 'float',
         'averageSentiment' => 'float',
         'averageShareOfVoice' => 'float',
+        'recommendation' => 'float',
+        'competitorRecommendation' => 'float',
+        'averageRecommendation' => 'float',
+        'voteDisagreementRate' => 'float',
+        'divergenceRate' => 'float',
+        'contestedUnitCount' => 'float',
         'terms' => '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsHistoryTermResponse[]',
+        'sources' => '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsSourceResponse[]',
         'month' => 'float',
         'day' => 'float',
     ];
@@ -92,6 +101,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => null,
         'timestamp' => null,
         'count' => null,
+        'promptCount' => null,
+        'promptRunCount' => null,
         'visibility' => null,
         'sentiment' => null,
         'shareOfVoice' => null,
@@ -101,7 +112,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => null,
         'averageSentiment' => null,
         'averageShareOfVoice' => null,
+        'recommendation' => null,
+        'competitorRecommendation' => null,
+        'averageRecommendation' => null,
+        'voteDisagreementRate' => null,
+        'divergenceRate' => null,
+        'contestedUnitCount' => null,
         'terms' => null,
+        'sources' => null,
         'month' => null,
         'day' => null,
     ];
@@ -116,6 +134,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => false,
         'timestamp' => false,
         'count' => false,
+        'promptCount' => false,
+        'promptRunCount' => false,
         'visibility' => true,
         'sentiment' => true,
         'shareOfVoice' => true,
@@ -125,7 +145,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => true,
         'averageSentiment' => true,
         'averageShareOfVoice' => true,
+        'recommendation' => true,
+        'competitorRecommendation' => true,
+        'averageRecommendation' => true,
+        'voteDisagreementRate' => true,
+        'divergenceRate' => true,
+        'contestedUnitCount' => true,
         'terms' => true,
+        'sources' => true,
         'month' => false,
         'day' => false,
     ];
@@ -148,6 +175,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => 'year',
         'timestamp' => 'timestamp',
         'count' => 'count',
+        'promptCount' => 'promptCount',
+        'promptRunCount' => 'promptRunCount',
         'visibility' => 'visibility',
         'sentiment' => 'sentiment',
         'shareOfVoice' => 'shareOfVoice',
@@ -157,7 +186,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => 'averageVisibility',
         'averageSentiment' => 'averageSentiment',
         'averageShareOfVoice' => 'averageShareOfVoice',
+        'recommendation' => 'recommendation',
+        'competitorRecommendation' => 'competitorRecommendation',
+        'averageRecommendation' => 'averageRecommendation',
+        'voteDisagreementRate' => 'voteDisagreementRate',
+        'divergenceRate' => 'divergenceRate',
+        'contestedUnitCount' => 'contestedUnitCount',
         'terms' => 'terms',
+        'sources' => 'sources',
         'month' => 'month',
         'day' => 'day',
     ];
@@ -172,6 +208,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => 'setYear',
         'timestamp' => 'setTimestamp',
         'count' => 'setCount',
+        'promptCount' => 'setPromptCount',
+        'promptRunCount' => 'setPromptRunCount',
         'visibility' => 'setVisibility',
         'sentiment' => 'setSentiment',
         'shareOfVoice' => 'setShareOfVoice',
@@ -181,7 +219,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => 'setAverageVisibility',
         'averageSentiment' => 'setAverageSentiment',
         'averageShareOfVoice' => 'setAverageShareOfVoice',
+        'recommendation' => 'setRecommendation',
+        'competitorRecommendation' => 'setCompetitorRecommendation',
+        'averageRecommendation' => 'setAverageRecommendation',
+        'voteDisagreementRate' => 'setVoteDisagreementRate',
+        'divergenceRate' => 'setDivergenceRate',
+        'contestedUnitCount' => 'setContestedUnitCount',
         'terms' => 'setTerms',
+        'sources' => 'setSources',
         'month' => 'setMonth',
         'day' => 'setDay',
     ];
@@ -196,6 +241,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'year' => 'getYear',
         'timestamp' => 'getTimestamp',
         'count' => 'getCount',
+        'promptCount' => 'getPromptCount',
+        'promptRunCount' => 'getPromptRunCount',
         'visibility' => 'getVisibility',
         'sentiment' => 'getSentiment',
         'shareOfVoice' => 'getShareOfVoice',
@@ -205,7 +252,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         'averageVisibility' => 'getAverageVisibility',
         'averageSentiment' => 'getAverageSentiment',
         'averageShareOfVoice' => 'getAverageShareOfVoice',
+        'recommendation' => 'getRecommendation',
+        'competitorRecommendation' => 'getCompetitorRecommendation',
+        'averageRecommendation' => 'getAverageRecommendation',
+        'voteDisagreementRate' => 'getVoteDisagreementRate',
+        'divergenceRate' => 'getDivergenceRate',
+        'contestedUnitCount' => 'getContestedUnitCount',
         'terms' => 'getTerms',
+        'sources' => 'getSources',
         'month' => 'getMonth',
         'day' => 'getDay',
     ];
@@ -229,6 +283,8 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         $this->setIfExists('year', $data ?? [], null);
         $this->setIfExists('timestamp', $data ?? [], null);
         $this->setIfExists('count', $data ?? [], null);
+        $this->setIfExists('promptCount', $data ?? [], null);
+        $this->setIfExists('promptRunCount', $data ?? [], null);
         $this->setIfExists('visibility', $data ?? [], null);
         $this->setIfExists('sentiment', $data ?? [], null);
         $this->setIfExists('shareOfVoice', $data ?? [], null);
@@ -238,7 +294,14 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         $this->setIfExists('averageVisibility', $data ?? [], null);
         $this->setIfExists('averageSentiment', $data ?? [], null);
         $this->setIfExists('averageShareOfVoice', $data ?? [], null);
+        $this->setIfExists('recommendation', $data ?? [], null);
+        $this->setIfExists('competitorRecommendation', $data ?? [], null);
+        $this->setIfExists('averageRecommendation', $data ?? [], null);
+        $this->setIfExists('voteDisagreementRate', $data ?? [], null);
+        $this->setIfExists('divergenceRate', $data ?? [], null);
+        $this->setIfExists('contestedUnitCount', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
+        $this->setIfExists('sources', $data ?? [], null);
         $this->setIfExists('month', $data ?? [], null);
         $this->setIfExists('day', $data ?? [], null);
     }
@@ -353,6 +416,12 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
         }
         if (null === $this->container['count']) {
             $invalidProperties[] = "'count' can't be null";
+        }
+        if (null === $this->container['promptCount']) {
+            $invalidProperties[] = "'promptCount' can't be null";
+        }
+        if (null === $this->container['promptRunCount']) {
+            $invalidProperties[] = "'promptRunCount' can't be null";
         }
         if (null === $this->container['month']) {
             $invalidProperties[] = "'month' can't be null";
@@ -479,6 +548,60 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
             throw new \InvalidArgumentException('non-nullable count cannot be null');
         }
         $this->container['count'] = $count;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptCount.
+     *
+     * @return float
+     */
+    public function getPromptCount()
+    {
+        return $this->container['promptCount'];
+    }
+
+    /**
+     * Sets promptCount.
+     *
+     * @param float $promptCount promptCount
+     *
+     * @return self
+     */
+    public function setPromptCount($promptCount)
+    {
+        if (is_null($promptCount)) {
+            throw new \InvalidArgumentException('non-nullable promptCount cannot be null');
+        }
+        $this->container['promptCount'] = $promptCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptRunCount.
+     *
+     * @return float
+     */
+    public function getPromptRunCount()
+    {
+        return $this->container['promptRunCount'];
+    }
+
+    /**
+     * Sets promptRunCount.
+     *
+     * @param float $promptRunCount promptRunCount
+     *
+     * @return self
+     */
+    public function setPromptRunCount($promptRunCount)
+    {
+        if (is_null($promptRunCount)) {
+            throw new \InvalidArgumentException('non-nullable promptRunCount cannot be null');
+        }
+        $this->container['promptRunCount'] = $promptRunCount;
 
         return $this;
     }
@@ -790,6 +913,210 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
     }
 
     /**
+     * Gets recommendation.
+     *
+     * @return null|float
+     */
+    public function getRecommendation()
+    {
+        return $this->container['recommendation'];
+    }
+
+    /**
+     * Sets recommendation.
+     *
+     * @param null|float $recommendation recommendation
+     *
+     * @return self
+     */
+    public function setRecommendation($recommendation)
+    {
+        if (is_null($recommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendation'] = $recommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets competitorRecommendation.
+     *
+     * @return null|float
+     */
+    public function getCompetitorRecommendation()
+    {
+        return $this->container['competitorRecommendation'];
+    }
+
+    /**
+     * Sets competitorRecommendation.
+     *
+     * @param null|float $competitorRecommendation competitorRecommendation
+     *
+     * @return self
+     */
+    public function setCompetitorRecommendation($competitorRecommendation)
+    {
+        if (is_null($competitorRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'competitorRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('competitorRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['competitorRecommendation'] = $competitorRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageRecommendation.
+     *
+     * @return null|float
+     */
+    public function getAverageRecommendation()
+    {
+        return $this->container['averageRecommendation'];
+    }
+
+    /**
+     * Sets averageRecommendation.
+     *
+     * @param null|float $averageRecommendation averageRecommendation
+     *
+     * @return self
+     */
+    public function setAverageRecommendation($averageRecommendation)
+    {
+        if (is_null($averageRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'averageRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageRecommendation'] = $averageRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets voteDisagreementRate.
+     *
+     * @return null|float
+     */
+    public function getVoteDisagreementRate()
+    {
+        return $this->container['voteDisagreementRate'];
+    }
+
+    /**
+     * Sets voteDisagreementRate.
+     *
+     * @param null|float $voteDisagreementRate voteDisagreementRate
+     *
+     * @return self
+     */
+    public function setVoteDisagreementRate($voteDisagreementRate)
+    {
+        if (is_null($voteDisagreementRate)) {
+            array_push($this->openAPINullablesSetToNull, 'voteDisagreementRate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('voteDisagreementRate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['voteDisagreementRate'] = $voteDisagreementRate;
+
+        return $this;
+    }
+
+    /**
+     * Gets divergenceRate.
+     *
+     * @return null|float
+     */
+    public function getDivergenceRate()
+    {
+        return $this->container['divergenceRate'];
+    }
+
+    /**
+     * Sets divergenceRate.
+     *
+     * @param null|float $divergenceRate divergenceRate
+     *
+     * @return self
+     */
+    public function setDivergenceRate($divergenceRate)
+    {
+        if (is_null($divergenceRate)) {
+            array_push($this->openAPINullablesSetToNull, 'divergenceRate');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('divergenceRate', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['divergenceRate'] = $divergenceRate;
+
+        return $this;
+    }
+
+    /**
+     * Gets contestedUnitCount.
+     *
+     * @return null|float
+     */
+    public function getContestedUnitCount()
+    {
+        return $this->container['contestedUnitCount'];
+    }
+
+    /**
+     * Sets contestedUnitCount.
+     *
+     * @param null|float $contestedUnitCount contestedUnitCount
+     *
+     * @return self
+     */
+    public function setContestedUnitCount($contestedUnitCount)
+    {
+        if (is_null($contestedUnitCount)) {
+            array_push($this->openAPINullablesSetToNull, 'contestedUnitCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('contestedUnitCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['contestedUnitCount'] = $contestedUnitCount;
+
+        return $this;
+    }
+
+    /**
      * Gets terms.
      *
      * @return null|GovernancePromptMonitoringStatsHistoryTermResponse[]
@@ -819,6 +1146,40 @@ class GovernancePromptMonitoringStatsDailyHistoryBucketResponse implements Model
             }
         }
         $this->container['terms'] = $terms;
+
+        return $this;
+    }
+
+    /**
+     * Gets sources.
+     *
+     * @return null|GovernancePromptMonitoringStatsSourceResponse[]
+     */
+    public function getSources()
+    {
+        return $this->container['sources'];
+    }
+
+    /**
+     * Sets sources.
+     *
+     * @param null|GovernancePromptMonitoringStatsSourceResponse[] $sources sources
+     *
+     * @return self
+     */
+    public function setSources($sources)
+    {
+        if (is_null($sources)) {
+            array_push($this->openAPINullablesSetToNull, 'sources');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('sources', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['sources'] = $sources;
 
         return $this;
     }

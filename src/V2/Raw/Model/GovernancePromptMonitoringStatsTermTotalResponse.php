@@ -62,6 +62,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static $openAPITypes = [
         'term' => 'object',
         'count' => 'float',
+        'answerCount' => 'float',
+        'avgPosition' => 'float',
+        'positionRunCount' => 'float',
+        'avgNormalizedPosition' => 'float',
+        'normalizedPositionRunCount' => 'float',
         'visibility' => 'float',
         'sentiment' => 'float',
         'shareOfVoice' => 'float',
@@ -71,6 +76,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => 'float',
         'averageSentiment' => 'float',
         'averageShareOfVoice' => 'float',
+        'recommendation' => 'float',
+        'competitorRecommendation' => 'float',
+        'averageRecommendation' => 'float',
+        'aspectScore' => 'float',
+        'averageAspectScore' => 'float',
+        'coverage' => 'float',
     ];
 
     /**
@@ -85,6 +96,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static $openAPIFormats = [
         'term' => null,
         'count' => null,
+        'answerCount' => null,
+        'avgPosition' => null,
+        'positionRunCount' => null,
+        'avgNormalizedPosition' => null,
+        'normalizedPositionRunCount' => null,
         'visibility' => null,
         'sentiment' => null,
         'shareOfVoice' => null,
@@ -94,6 +110,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => null,
         'averageSentiment' => null,
         'averageShareOfVoice' => null,
+        'recommendation' => null,
+        'competitorRecommendation' => null,
+        'averageRecommendation' => null,
+        'aspectScore' => null,
+        'averageAspectScore' => null,
+        'coverage' => null,
     ];
 
     /**
@@ -104,6 +126,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static array $openAPINullables = [
         'term' => true,
         'count' => false,
+        'answerCount' => true,
+        'avgPosition' => true,
+        'positionRunCount' => true,
+        'avgNormalizedPosition' => true,
+        'normalizedPositionRunCount' => true,
         'visibility' => true,
         'sentiment' => true,
         'shareOfVoice' => true,
@@ -113,6 +140,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => true,
         'averageSentiment' => true,
         'averageShareOfVoice' => true,
+        'recommendation' => true,
+        'competitorRecommendation' => true,
+        'averageRecommendation' => true,
+        'aspectScore' => true,
+        'averageAspectScore' => true,
+        'coverage' => true,
     ];
 
     /**
@@ -131,6 +164,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static $attributeMap = [
         'term' => 'term',
         'count' => 'count',
+        'answerCount' => 'answerCount',
+        'avgPosition' => 'avgPosition',
+        'positionRunCount' => 'positionRunCount',
+        'avgNormalizedPosition' => 'avgNormalizedPosition',
+        'normalizedPositionRunCount' => 'normalizedPositionRunCount',
         'visibility' => 'visibility',
         'sentiment' => 'sentiment',
         'shareOfVoice' => 'shareOfVoice',
@@ -140,6 +178,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => 'averageVisibility',
         'averageSentiment' => 'averageSentiment',
         'averageShareOfVoice' => 'averageShareOfVoice',
+        'recommendation' => 'recommendation',
+        'competitorRecommendation' => 'competitorRecommendation',
+        'averageRecommendation' => 'averageRecommendation',
+        'aspectScore' => 'aspectScore',
+        'averageAspectScore' => 'averageAspectScore',
+        'coverage' => 'coverage',
     ];
 
     /**
@@ -150,6 +194,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static $setters = [
         'term' => 'setTerm',
         'count' => 'setCount',
+        'answerCount' => 'setAnswerCount',
+        'avgPosition' => 'setAvgPosition',
+        'positionRunCount' => 'setPositionRunCount',
+        'avgNormalizedPosition' => 'setAvgNormalizedPosition',
+        'normalizedPositionRunCount' => 'setNormalizedPositionRunCount',
         'visibility' => 'setVisibility',
         'sentiment' => 'setSentiment',
         'shareOfVoice' => 'setShareOfVoice',
@@ -159,6 +208,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => 'setAverageVisibility',
         'averageSentiment' => 'setAverageSentiment',
         'averageShareOfVoice' => 'setAverageShareOfVoice',
+        'recommendation' => 'setRecommendation',
+        'competitorRecommendation' => 'setCompetitorRecommendation',
+        'averageRecommendation' => 'setAverageRecommendation',
+        'aspectScore' => 'setAspectScore',
+        'averageAspectScore' => 'setAverageAspectScore',
+        'coverage' => 'setCoverage',
     ];
 
     /**
@@ -169,6 +224,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     protected static $getters = [
         'term' => 'getTerm',
         'count' => 'getCount',
+        'answerCount' => 'getAnswerCount',
+        'avgPosition' => 'getAvgPosition',
+        'positionRunCount' => 'getPositionRunCount',
+        'avgNormalizedPosition' => 'getAvgNormalizedPosition',
+        'normalizedPositionRunCount' => 'getNormalizedPositionRunCount',
         'visibility' => 'getVisibility',
         'sentiment' => 'getSentiment',
         'shareOfVoice' => 'getShareOfVoice',
@@ -178,6 +238,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'averageVisibility' => 'getAverageVisibility',
         'averageSentiment' => 'getAverageSentiment',
         'averageShareOfVoice' => 'getAverageShareOfVoice',
+        'recommendation' => 'getRecommendation',
+        'competitorRecommendation' => 'getCompetitorRecommendation',
+        'averageRecommendation' => 'getAverageRecommendation',
+        'aspectScore' => 'getAspectScore',
+        'averageAspectScore' => 'getAverageAspectScore',
+        'coverage' => 'getCoverage',
     ];
 
     /**
@@ -197,6 +263,11 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
     {
         $this->setIfExists('term', $data ?? [], null);
         $this->setIfExists('count', $data ?? [], null);
+        $this->setIfExists('answerCount', $data ?? [], null);
+        $this->setIfExists('avgPosition', $data ?? [], null);
+        $this->setIfExists('positionRunCount', $data ?? [], null);
+        $this->setIfExists('avgNormalizedPosition', $data ?? [], null);
+        $this->setIfExists('normalizedPositionRunCount', $data ?? [], null);
         $this->setIfExists('visibility', $data ?? [], null);
         $this->setIfExists('sentiment', $data ?? [], null);
         $this->setIfExists('shareOfVoice', $data ?? [], null);
@@ -206,6 +277,12 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         $this->setIfExists('averageVisibility', $data ?? [], null);
         $this->setIfExists('averageSentiment', $data ?? [], null);
         $this->setIfExists('averageShareOfVoice', $data ?? [], null);
+        $this->setIfExists('recommendation', $data ?? [], null);
+        $this->setIfExists('competitorRecommendation', $data ?? [], null);
+        $this->setIfExists('averageRecommendation', $data ?? [], null);
+        $this->setIfExists('aspectScore', $data ?? [], null);
+        $this->setIfExists('averageAspectScore', $data ?? [], null);
+        $this->setIfExists('coverage', $data ?? [], null);
     }
 
     /**
@@ -382,6 +459,176 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
             throw new \InvalidArgumentException('non-nullable count cannot be null');
         }
         $this->container['count'] = $count;
+
+        return $this;
+    }
+
+    /**
+     * Gets answerCount.
+     *
+     * @return null|float
+     */
+    public function getAnswerCount()
+    {
+        return $this->container['answerCount'];
+    }
+
+    /**
+     * Sets answerCount.
+     *
+     * @param null|float $answerCount answerCount
+     *
+     * @return self
+     */
+    public function setAnswerCount($answerCount)
+    {
+        if (is_null($answerCount)) {
+            array_push($this->openAPINullablesSetToNull, 'answerCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('answerCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['answerCount'] = $answerCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets avgPosition.
+     *
+     * @return null|float
+     */
+    public function getAvgPosition()
+    {
+        return $this->container['avgPosition'];
+    }
+
+    /**
+     * Sets avgPosition.
+     *
+     * @param null|float $avgPosition avgPosition
+     *
+     * @return self
+     */
+    public function setAvgPosition($avgPosition)
+    {
+        if (is_null($avgPosition)) {
+            array_push($this->openAPINullablesSetToNull, 'avgPosition');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('avgPosition', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['avgPosition'] = $avgPosition;
+
+        return $this;
+    }
+
+    /**
+     * Gets positionRunCount.
+     *
+     * @return null|float
+     */
+    public function getPositionRunCount()
+    {
+        return $this->container['positionRunCount'];
+    }
+
+    /**
+     * Sets positionRunCount.
+     *
+     * @param null|float $positionRunCount positionRunCount
+     *
+     * @return self
+     */
+    public function setPositionRunCount($positionRunCount)
+    {
+        if (is_null($positionRunCount)) {
+            array_push($this->openAPINullablesSetToNull, 'positionRunCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('positionRunCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['positionRunCount'] = $positionRunCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets avgNormalizedPosition.
+     *
+     * @return null|float
+     */
+    public function getAvgNormalizedPosition()
+    {
+        return $this->container['avgNormalizedPosition'];
+    }
+
+    /**
+     * Sets avgNormalizedPosition.
+     *
+     * @param null|float $avgNormalizedPosition avgNormalizedPosition
+     *
+     * @return self
+     */
+    public function setAvgNormalizedPosition($avgNormalizedPosition)
+    {
+        if (is_null($avgNormalizedPosition)) {
+            array_push($this->openAPINullablesSetToNull, 'avgNormalizedPosition');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('avgNormalizedPosition', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['avgNormalizedPosition'] = $avgNormalizedPosition;
+
+        return $this;
+    }
+
+    /**
+     * Gets normalizedPositionRunCount.
+     *
+     * @return null|float
+     */
+    public function getNormalizedPositionRunCount()
+    {
+        return $this->container['normalizedPositionRunCount'];
+    }
+
+    /**
+     * Sets normalizedPositionRunCount.
+     *
+     * @param null|float $normalizedPositionRunCount normalizedPositionRunCount
+     *
+     * @return self
+     */
+    public function setNormalizedPositionRunCount($normalizedPositionRunCount)
+    {
+        if (is_null($normalizedPositionRunCount)) {
+            array_push($this->openAPINullablesSetToNull, 'normalizedPositionRunCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('normalizedPositionRunCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['normalizedPositionRunCount'] = $normalizedPositionRunCount;
 
         return $this;
     }
@@ -688,6 +935,210 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
             }
         }
         $this->container['averageShareOfVoice'] = $averageShareOfVoice;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendation.
+     *
+     * @return null|float
+     */
+    public function getRecommendation()
+    {
+        return $this->container['recommendation'];
+    }
+
+    /**
+     * Sets recommendation.
+     *
+     * @param null|float $recommendation recommendation
+     *
+     * @return self
+     */
+    public function setRecommendation($recommendation)
+    {
+        if (is_null($recommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendation'] = $recommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets competitorRecommendation.
+     *
+     * @return null|float
+     */
+    public function getCompetitorRecommendation()
+    {
+        return $this->container['competitorRecommendation'];
+    }
+
+    /**
+     * Sets competitorRecommendation.
+     *
+     * @param null|float $competitorRecommendation competitorRecommendation
+     *
+     * @return self
+     */
+    public function setCompetitorRecommendation($competitorRecommendation)
+    {
+        if (is_null($competitorRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'competitorRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('competitorRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['competitorRecommendation'] = $competitorRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageRecommendation.
+     *
+     * @return null|float
+     */
+    public function getAverageRecommendation()
+    {
+        return $this->container['averageRecommendation'];
+    }
+
+    /**
+     * Sets averageRecommendation.
+     *
+     * @param null|float $averageRecommendation averageRecommendation
+     *
+     * @return self
+     */
+    public function setAverageRecommendation($averageRecommendation)
+    {
+        if (is_null($averageRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'averageRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageRecommendation'] = $averageRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets aspectScore.
+     *
+     * @return null|float
+     */
+    public function getAspectScore()
+    {
+        return $this->container['aspectScore'];
+    }
+
+    /**
+     * Sets aspectScore.
+     *
+     * @param null|float $aspectScore aspectScore
+     *
+     * @return self
+     */
+    public function setAspectScore($aspectScore)
+    {
+        if (is_null($aspectScore)) {
+            array_push($this->openAPINullablesSetToNull, 'aspectScore');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aspectScore', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aspectScore'] = $aspectScore;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageAspectScore.
+     *
+     * @return null|float
+     */
+    public function getAverageAspectScore()
+    {
+        return $this->container['averageAspectScore'];
+    }
+
+    /**
+     * Sets averageAspectScore.
+     *
+     * @param null|float $averageAspectScore averageAspectScore
+     *
+     * @return self
+     */
+    public function setAverageAspectScore($averageAspectScore)
+    {
+        if (is_null($averageAspectScore)) {
+            array_push($this->openAPINullablesSetToNull, 'averageAspectScore');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageAspectScore', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageAspectScore'] = $averageAspectScore;
+
+        return $this;
+    }
+
+    /**
+     * Gets coverage.
+     *
+     * @return null|float
+     */
+    public function getCoverage()
+    {
+        return $this->container['coverage'];
+    }
+
+    /**
+     * Sets coverage.
+     *
+     * @param null|float $coverage coverage
+     *
+     * @return self
+     */
+    public function setCoverage($coverage)
+    {
+        if (is_null($coverage)) {
+            array_push($this->openAPINullablesSetToNull, 'coverage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('coverage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['coverage'] = $coverage;
 
         return $this;
     }

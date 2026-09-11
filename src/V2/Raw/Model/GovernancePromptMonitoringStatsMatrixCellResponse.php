@@ -62,6 +62,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static $openAPITypes = [
         'term' => 'string',
         'count' => 'float',
+        'aspectScore' => 'float',
+        'averageAspectScore' => 'float',
+        'coverage' => 'float',
         'visibility' => 'float',
         'sentiment' => 'float',
         'shareOfVoice' => 'float',
@@ -71,6 +74,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => 'float',
         'averageSentiment' => 'float',
         'averageShareOfVoice' => 'float',
+        'recommendation' => 'float',
+        'competitorRecommendation' => 'float',
+        'averageRecommendation' => 'float',
     ];
 
     /**
@@ -85,6 +91,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static $openAPIFormats = [
         'term' => null,
         'count' => null,
+        'aspectScore' => null,
+        'averageAspectScore' => null,
+        'coverage' => null,
         'visibility' => null,
         'sentiment' => null,
         'shareOfVoice' => null,
@@ -94,6 +103,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => null,
         'averageSentiment' => null,
         'averageShareOfVoice' => null,
+        'recommendation' => null,
+        'competitorRecommendation' => null,
+        'averageRecommendation' => null,
     ];
 
     /**
@@ -104,6 +116,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static array $openAPINullables = [
         'term' => false,
         'count' => false,
+        'aspectScore' => true,
+        'averageAspectScore' => true,
+        'coverage' => true,
         'visibility' => true,
         'sentiment' => true,
         'shareOfVoice' => true,
@@ -113,6 +128,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => true,
         'averageSentiment' => true,
         'averageShareOfVoice' => true,
+        'recommendation' => true,
+        'competitorRecommendation' => true,
+        'averageRecommendation' => true,
     ];
 
     /**
@@ -131,6 +149,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static $attributeMap = [
         'term' => 'term',
         'count' => 'count',
+        'aspectScore' => 'aspectScore',
+        'averageAspectScore' => 'averageAspectScore',
+        'coverage' => 'coverage',
         'visibility' => 'visibility',
         'sentiment' => 'sentiment',
         'shareOfVoice' => 'shareOfVoice',
@@ -140,6 +161,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => 'averageVisibility',
         'averageSentiment' => 'averageSentiment',
         'averageShareOfVoice' => 'averageShareOfVoice',
+        'recommendation' => 'recommendation',
+        'competitorRecommendation' => 'competitorRecommendation',
+        'averageRecommendation' => 'averageRecommendation',
     ];
 
     /**
@@ -150,6 +174,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static $setters = [
         'term' => 'setTerm',
         'count' => 'setCount',
+        'aspectScore' => 'setAspectScore',
+        'averageAspectScore' => 'setAverageAspectScore',
+        'coverage' => 'setCoverage',
         'visibility' => 'setVisibility',
         'sentiment' => 'setSentiment',
         'shareOfVoice' => 'setShareOfVoice',
@@ -159,6 +186,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => 'setAverageVisibility',
         'averageSentiment' => 'setAverageSentiment',
         'averageShareOfVoice' => 'setAverageShareOfVoice',
+        'recommendation' => 'setRecommendation',
+        'competitorRecommendation' => 'setCompetitorRecommendation',
+        'averageRecommendation' => 'setAverageRecommendation',
     ];
 
     /**
@@ -169,6 +199,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     protected static $getters = [
         'term' => 'getTerm',
         'count' => 'getCount',
+        'aspectScore' => 'getAspectScore',
+        'averageAspectScore' => 'getAverageAspectScore',
+        'coverage' => 'getCoverage',
         'visibility' => 'getVisibility',
         'sentiment' => 'getSentiment',
         'shareOfVoice' => 'getShareOfVoice',
@@ -178,6 +211,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         'averageVisibility' => 'getAverageVisibility',
         'averageSentiment' => 'getAverageSentiment',
         'averageShareOfVoice' => 'getAverageShareOfVoice',
+        'recommendation' => 'getRecommendation',
+        'competitorRecommendation' => 'getCompetitorRecommendation',
+        'averageRecommendation' => 'getAverageRecommendation',
     ];
 
     /**
@@ -197,6 +233,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
     {
         $this->setIfExists('term', $data ?? [], null);
         $this->setIfExists('count', $data ?? [], null);
+        $this->setIfExists('aspectScore', $data ?? [], null);
+        $this->setIfExists('averageAspectScore', $data ?? [], null);
+        $this->setIfExists('coverage', $data ?? [], null);
         $this->setIfExists('visibility', $data ?? [], null);
         $this->setIfExists('sentiment', $data ?? [], null);
         $this->setIfExists('shareOfVoice', $data ?? [], null);
@@ -206,6 +245,9 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
         $this->setIfExists('averageVisibility', $data ?? [], null);
         $this->setIfExists('averageSentiment', $data ?? [], null);
         $this->setIfExists('averageShareOfVoice', $data ?? [], null);
+        $this->setIfExists('recommendation', $data ?? [], null);
+        $this->setIfExists('competitorRecommendation', $data ?? [], null);
+        $this->setIfExists('averageRecommendation', $data ?? [], null);
     }
 
     /**
@@ -378,6 +420,108 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
             throw new \InvalidArgumentException('non-nullable count cannot be null');
         }
         $this->container['count'] = $count;
+
+        return $this;
+    }
+
+    /**
+     * Gets aspectScore.
+     *
+     * @return null|float
+     */
+    public function getAspectScore()
+    {
+        return $this->container['aspectScore'];
+    }
+
+    /**
+     * Sets aspectScore.
+     *
+     * @param null|float $aspectScore aspectScore
+     *
+     * @return self
+     */
+    public function setAspectScore($aspectScore)
+    {
+        if (is_null($aspectScore)) {
+            array_push($this->openAPINullablesSetToNull, 'aspectScore');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aspectScore', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aspectScore'] = $aspectScore;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageAspectScore.
+     *
+     * @return null|float
+     */
+    public function getAverageAspectScore()
+    {
+        return $this->container['averageAspectScore'];
+    }
+
+    /**
+     * Sets averageAspectScore.
+     *
+     * @param null|float $averageAspectScore averageAspectScore
+     *
+     * @return self
+     */
+    public function setAverageAspectScore($averageAspectScore)
+    {
+        if (is_null($averageAspectScore)) {
+            array_push($this->openAPINullablesSetToNull, 'averageAspectScore');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageAspectScore', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageAspectScore'] = $averageAspectScore;
+
+        return $this;
+    }
+
+    /**
+     * Gets coverage.
+     *
+     * @return null|float
+     */
+    public function getCoverage()
+    {
+        return $this->container['coverage'];
+    }
+
+    /**
+     * Sets coverage.
+     *
+     * @param null|float $coverage coverage
+     *
+     * @return self
+     */
+    public function setCoverage($coverage)
+    {
+        if (is_null($coverage)) {
+            array_push($this->openAPINullablesSetToNull, 'coverage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('coverage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['coverage'] = $coverage;
 
         return $this;
     }
@@ -684,6 +828,108 @@ class GovernancePromptMonitoringStatsMatrixCellResponse implements ModelInterfac
             }
         }
         $this->container['averageShareOfVoice'] = $averageShareOfVoice;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendation.
+     *
+     * @return null|float
+     */
+    public function getRecommendation()
+    {
+        return $this->container['recommendation'];
+    }
+
+    /**
+     * Sets recommendation.
+     *
+     * @param null|float $recommendation recommendation
+     *
+     * @return self
+     */
+    public function setRecommendation($recommendation)
+    {
+        if (is_null($recommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendation'] = $recommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets competitorRecommendation.
+     *
+     * @return null|float
+     */
+    public function getCompetitorRecommendation()
+    {
+        return $this->container['competitorRecommendation'];
+    }
+
+    /**
+     * Sets competitorRecommendation.
+     *
+     * @param null|float $competitorRecommendation competitorRecommendation
+     *
+     * @return self
+     */
+    public function setCompetitorRecommendation($competitorRecommendation)
+    {
+        if (is_null($competitorRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'competitorRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('competitorRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['competitorRecommendation'] = $competitorRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageRecommendation.
+     *
+     * @return null|float
+     */
+    public function getAverageRecommendation()
+    {
+        return $this->container['averageRecommendation'];
+    }
+
+    /**
+     * Sets averageRecommendation.
+     *
+     * @param null|float $averageRecommendation averageRecommendation
+     *
+     * @return self
+     */
+    public function setAverageRecommendation($averageRecommendation)
+    {
+        if (is_null($averageRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'averageRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageRecommendation'] = $averageRecommendation;
 
         return $this;
     }

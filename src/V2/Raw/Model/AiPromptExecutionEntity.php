@@ -79,6 +79,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => 'DynamicReference',
         'outputFixExecution' => 'DynamicReference',
         'usage' => '\EdgeBox\SyncCore\V2\Raw\Model\AiPromptExecutionEntityUsage',
+        'promptTokens' => 'float',
+        'completionTokens' => 'float',
         'terms' => 'Terms',
         'meta' => 'mixed',
         'customer' => 'DynamicReference',
@@ -118,6 +120,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => null,
         'outputFixExecution' => null,
         'usage' => null,
+        'promptTokens' => null,
+        'completionTokens' => null,
         'terms' => null,
         'meta' => null,
         'customer' => null,
@@ -153,6 +157,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => true,
         'outputFixExecution' => true,
         'usage' => false,
+        'promptTokens' => true,
+        'completionTokens' => true,
         'terms' => true,
         'meta' => true,
         'customer' => true,
@@ -196,6 +202,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => 'outputLogFile',
         'outputFixExecution' => 'outputFixExecution',
         'usage' => 'usage',
+        'promptTokens' => 'promptTokens',
+        'completionTokens' => 'completionTokens',
         'terms' => 'terms',
         'meta' => 'meta',
         'customer' => 'customer',
@@ -231,6 +239,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => 'setOutputLogFile',
         'outputFixExecution' => 'setOutputFixExecution',
         'usage' => 'setUsage',
+        'promptTokens' => 'setPromptTokens',
+        'completionTokens' => 'setCompletionTokens',
         'terms' => 'setTerms',
         'meta' => 'setMeta',
         'customer' => 'setCustomer',
@@ -266,6 +276,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         'outputLogFile' => 'getOutputLogFile',
         'outputFixExecution' => 'getOutputFixExecution',
         'usage' => 'getUsage',
+        'promptTokens' => 'getPromptTokens',
+        'completionTokens' => 'getCompletionTokens',
         'terms' => 'getTerms',
         'meta' => 'getMeta',
         'customer' => 'getCustomer',
@@ -310,6 +322,8 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
         $this->setIfExists('outputLogFile', $data ?? [], null);
         $this->setIfExists('outputFixExecution', $data ?? [], null);
         $this->setIfExists('usage', $data ?? [], null);
+        $this->setIfExists('promptTokens', $data ?? [], null);
+        $this->setIfExists('completionTokens', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('meta', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -1041,6 +1055,74 @@ class AiPromptExecutionEntity implements ModelInterface, \ArrayAccess, \JsonSeri
             throw new \InvalidArgumentException('non-nullable usage cannot be null');
         }
         $this->container['usage'] = $usage;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptTokens.
+     *
+     * @return null|float
+     */
+    public function getPromptTokens()
+    {
+        return $this->container['promptTokens'];
+    }
+
+    /**
+     * Sets promptTokens.
+     *
+     * @param null|float $promptTokens promptTokens
+     *
+     * @return self
+     */
+    public function setPromptTokens($promptTokens)
+    {
+        if (is_null($promptTokens)) {
+            array_push($this->openAPINullablesSetToNull, 'promptTokens');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('promptTokens', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['promptTokens'] = $promptTokens;
+
+        return $this;
+    }
+
+    /**
+     * Gets completionTokens.
+     *
+     * @return null|float
+     */
+    public function getCompletionTokens()
+    {
+        return $this->container['completionTokens'];
+    }
+
+    /**
+     * Sets completionTokens.
+     *
+     * @param null|float $completionTokens completionTokens
+     *
+     * @return self
+     */
+    public function setCompletionTokens($completionTokens)
+    {
+        if (is_null($completionTokens)) {
+            array_push($this->openAPINullablesSetToNull, 'completionTokens');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('completionTokens', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['completionTokens'] = $completionTokens;
 
         return $this;
     }

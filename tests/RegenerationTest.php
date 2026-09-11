@@ -38,7 +38,10 @@ final class RegenerationTest extends TestCase
         $api = file_get_contents(__DIR__.'/../src/V2/Raw/Api/DefaultApi.php');
 
         $this->assertIsString($api);
-        $this->assertStringNotContainsString('\GuzzleHttp\Utils::jsonEncode(', $api);
+        // Both spellings: the generator writes the name in full, the formatter
+        // shortens it against the import the same file carries.
+        $this->assertStringNotContainsString('Utils::jsonEncode(', $api);
+        $this->assertStringContainsString('ObjectSerializer::guzzleJsonEncode(', $api);
     }
 
     public function testAModelNameWithoutItsNamespaceDeserializes(): void

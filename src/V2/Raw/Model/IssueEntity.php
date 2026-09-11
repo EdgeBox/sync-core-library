@@ -68,6 +68,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignmentTerm',
         'key' => 'string',
         'status' => 'IssueStatus',
+        'resolutionResponsibility' => 'IssueResolutionResponsibility',
         'firstDetectedAt' => 'float',
         'lastDetectedAt' => 'float',
         'resolvedAt' => 'float',
@@ -98,6 +99,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => null,
         'key' => null,
         'status' => null,
+        'resolutionResponsibility' => null,
         'firstDetectedAt' => null,
         'lastDetectedAt' => null,
         'resolvedAt' => null,
@@ -124,6 +126,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => false,
         'key' => false,
         'status' => false,
+        'resolutionResponsibility' => false,
         'firstDetectedAt' => false,
         'lastDetectedAt' => false,
         'resolvedAt' => true,
@@ -158,6 +161,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'issueType',
         'key' => 'key',
         'status' => 'status',
+        'resolutionResponsibility' => 'resolutionResponsibility',
         'firstDetectedAt' => 'firstDetectedAt',
         'lastDetectedAt' => 'lastDetectedAt',
         'resolvedAt' => 'resolvedAt',
@@ -184,6 +188,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'setIssueType',
         'key' => 'setKey',
         'status' => 'setStatus',
+        'resolutionResponsibility' => 'setResolutionResponsibility',
         'firstDetectedAt' => 'setFirstDetectedAt',
         'lastDetectedAt' => 'setLastDetectedAt',
         'resolvedAt' => 'setResolvedAt',
@@ -210,6 +215,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'getIssueType',
         'key' => 'getKey',
         'status' => 'getStatus',
+        'resolutionResponsibility' => 'getResolutionResponsibility',
         'firstDetectedAt' => 'getFirstDetectedAt',
         'lastDetectedAt' => 'getLastDetectedAt',
         'resolvedAt' => 'getResolvedAt',
@@ -245,6 +251,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('issueType', $data ?? [], null);
         $this->setIfExists('key', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('resolutionResponsibility', $data ?? [], null);
         $this->setIfExists('firstDetectedAt', $data ?? [], null);
         $this->setIfExists('lastDetectedAt', $data ?? [], null);
         $this->setIfExists('resolvedAt', $data ?? [], null);
@@ -370,6 +377,9 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         }
         if (null === $this->container['status']) {
             $invalidProperties[] = "'status' can't be null";
+        }
+        if (null === $this->container['resolutionResponsibility']) {
+            $invalidProperties[] = "'resolutionResponsibility' can't be null";
         }
         if (null === $this->container['firstDetectedAt']) {
             $invalidProperties[] = "'firstDetectedAt' can't be null";
@@ -640,6 +650,33 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable status cannot be null');
         }
         $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets resolutionResponsibility.
+     *
+     * @return IssueResolutionResponsibility
+     */
+    public function getResolutionResponsibility()
+    {
+        return $this->container['resolutionResponsibility'];
+    }
+
+    /**
+     * Sets resolutionResponsibility.
+     *
+     * @param IssueResolutionResponsibility $resolutionResponsibility resolutionResponsibility
+     *
+     * @return self
+     */
+    public function setResolutionResponsibility($resolutionResponsibility)
+    {
+        if (is_null($resolutionResponsibility)) {
+            throw new \InvalidArgumentException('non-nullable resolutionResponsibility cannot be null');
+        }
+        $this->container['resolutionResponsibility'] = $resolutionResponsibility;
 
         return $this;
     }

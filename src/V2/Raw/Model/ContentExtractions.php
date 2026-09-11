@@ -66,6 +66,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => 'ContentExtractionDescriptor',
         'contentSnapshot' => 'ContentExtractionDescriptor',
         'contentSnapshotDelta' => 'ContentExtractionDescriptor',
+        'qaPairs' => 'ContentExtractionDescriptor',
     ];
 
     /**
@@ -84,6 +85,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => null,
         'contentSnapshot' => null,
         'contentSnapshotDelta' => null,
+        'qaPairs' => null,
     ];
 
     /**
@@ -98,6 +100,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => true,
         'contentSnapshot' => true,
         'contentSnapshotDelta' => true,
+        'qaPairs' => true,
     ];
 
     /**
@@ -120,6 +123,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => 'image_description',
         'contentSnapshot' => 'content_snapshot',
         'contentSnapshotDelta' => 'content_snapshot_delta',
+        'qaPairs' => 'qa_pairs',
     ];
 
     /**
@@ -134,6 +138,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => 'setImageDescription',
         'contentSnapshot' => 'setContentSnapshot',
         'contentSnapshotDelta' => 'setContentSnapshotDelta',
+        'qaPairs' => 'setQaPairs',
     ];
 
     /**
@@ -148,6 +153,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         'imageDescription' => 'getImageDescription',
         'contentSnapshot' => 'getContentSnapshot',
         'contentSnapshotDelta' => 'getContentSnapshotDelta',
+        'qaPairs' => 'getQaPairs',
     ];
 
     /**
@@ -171,6 +177,7 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('imageDescription', $data ?? [], null);
         $this->setIfExists('contentSnapshot', $data ?? [], null);
         $this->setIfExists('contentSnapshotDelta', $data ?? [], null);
+        $this->setIfExists('qaPairs', $data ?? [], null);
     }
 
     /**
@@ -484,6 +491,40 @@ class ContentExtractions implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['contentSnapshotDelta'] = $contentSnapshotDelta;
+
+        return $this;
+    }
+
+    /**
+     * Gets qaPairs.
+     *
+     * @return null|ContentExtractionDescriptor
+     */
+    public function getQaPairs()
+    {
+        return $this->container['qaPairs'];
+    }
+
+    /**
+     * Sets qaPairs.
+     *
+     * @param null|ContentExtractionDescriptor $qaPairs qaPairs
+     *
+     * @return self
+     */
+    public function setQaPairs($qaPairs)
+    {
+        if (is_null($qaPairs)) {
+            array_push($this->openAPINullablesSetToNull, 'qaPairs');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('qaPairs', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['qaPairs'] = $qaPairs;
 
         return $this;
     }

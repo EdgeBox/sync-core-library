@@ -80,6 +80,14 @@ class TaskType
 
     public const MONITORING_PROMPT_RUN = 'monitoring-prompt.run';
 
+    public const TAXONOMY_TERM_DETECT_COLOR = 'taxonomy-term.detect-color';
+
+    public const EXPORT_PLAN = 'export.plan';
+
+    public const EXPORT_CHUNK = 'export.chunk';
+
+    public const EXPORT_MERGE = 'export.merge';
+
     public const OPTIMIZE = 'optimize';
 
     public const OPTIMIZE_REVIEW = 'optimize.review';
@@ -112,6 +120,10 @@ class TaskType
             self::CLASSIFY_CONTENT,
             self::SCORE_CONTENT,
             self::MONITORING_PROMPT_RUN,
+            self::TAXONOMY_TERM_DETECT_COLOR,
+            self::EXPORT_PLAN,
+            self::EXPORT_CHUNK,
+            self::EXPORT_MERGE,
             self::OPTIMIZE,
             self::OPTIMIZE_REVIEW,
             self::ONBOARDING,

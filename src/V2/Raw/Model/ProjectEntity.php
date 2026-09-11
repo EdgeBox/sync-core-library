@@ -75,6 +75,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => 'bool',
         'uuid' => 'string',
         'crawling' => 'ExtendedProjectCrawlingSettings',
+        'ai' => 'ProjectAiSettings',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -84,6 +85,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'float',
         'maxParallelRequests' => 'float',
         'backendRemoteServiceId' => 'string',
+        'organizationType' => 'ProjectOrganizationType',
     ];
 
     /**
@@ -111,6 +113,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => null,
         'uuid' => null,
         'crawling' => null,
+        'ai' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -120,6 +123,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => null,
         'maxParallelRequests' => null,
         'backendRemoteServiceId' => null,
+        'organizationType' => null,
     ];
 
     /**
@@ -143,6 +147,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => true,
         'uuid' => false,
         'crawling' => true,
+        'ai' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -152,6 +157,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => true,
         'maxParallelRequests' => true,
         'backendRemoteServiceId' => true,
+        'organizationType' => true,
     ];
 
     /**
@@ -183,6 +189,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => 'transientEntityTypes',
         'uuid' => 'uuid',
         'crawling' => 'crawling',
+        'ai' => 'ai',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -192,6 +199,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'maxRequestsPerMinute',
         'maxParallelRequests' => 'maxParallelRequests',
         'backendRemoteServiceId' => 'backendRemoteServiceId',
+        'organizationType' => 'organizationType',
     ];
 
     /**
@@ -215,6 +223,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => 'setTransientEntityTypes',
         'uuid' => 'setUuid',
         'crawling' => 'setCrawling',
+        'ai' => 'setAi',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -224,6 +233,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'setMaxRequestsPerMinute',
         'maxParallelRequests' => 'setMaxParallelRequests',
         'backendRemoteServiceId' => 'setBackendRemoteServiceId',
+        'organizationType' => 'setOrganizationType',
     ];
 
     /**
@@ -247,6 +257,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'transientEntityTypes' => 'getTransientEntityTypes',
         'uuid' => 'getUuid',
         'crawling' => 'getCrawling',
+        'ai' => 'getAi',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -256,6 +267,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxRequestsPerMinute' => 'getMaxRequestsPerMinute',
         'maxParallelRequests' => 'getMaxParallelRequests',
         'backendRemoteServiceId' => 'getBackendRemoteServiceId',
+        'organizationType' => 'getOrganizationType',
     ];
 
     /**
@@ -288,6 +300,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('transientEntityTypes', $data ?? [], null);
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('crawling', $data ?? [], null);
+        $this->setIfExists('ai', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -297,6 +310,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('maxRequestsPerMinute', $data ?? [], null);
         $this->setIfExists('maxParallelRequests', $data ?? [], null);
         $this->setIfExists('backendRemoteServiceId', $data ?? [], null);
+        $this->setIfExists('organizationType', $data ?? [], null);
     }
 
     /**
@@ -913,6 +927,40 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets ai.
+     *
+     * @return null|ProjectAiSettings
+     */
+    public function getAi()
+    {
+        return $this->container['ai'];
+    }
+
+    /**
+     * Sets ai.
+     *
+     * @param null|ProjectAiSettings $ai ai
+     *
+     * @return self
+     */
+    public function setAi($ai)
+    {
+        if (is_null($ai)) {
+            array_push($this->openAPINullablesSetToNull, 'ai');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('ai', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['ai'] = $ai;
+
+        return $this;
+    }
+
+    /**
      * Gets id.
      *
      * @return string
@@ -1193,6 +1241,40 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['backendRemoteServiceId'] = $backendRemoteServiceId;
+
+        return $this;
+    }
+
+    /**
+     * Gets organizationType.
+     *
+     * @return null|ProjectOrganizationType
+     */
+    public function getOrganizationType()
+    {
+        return $this->container['organizationType'];
+    }
+
+    /**
+     * Sets organizationType.
+     *
+     * @param null|ProjectOrganizationType $organizationType organizationType
+     *
+     * @return self
+     */
+    public function setOrganizationType($organizationType)
+    {
+        if (is_null($organizationType)) {
+            array_push($this->openAPINullablesSetToNull, 'organizationType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('organizationType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['organizationType'] = $organizationType;
 
         return $this;
     }
