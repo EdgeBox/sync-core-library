@@ -1,0 +1,117 @@
+# The gates every pull request has to pass.
+#
+# A maintainer runs the same checks locally:
+#   composer install --working-dir=tools
+#   composer lint
+#   composer analyze
+#   composer test-cs
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - 4.x
+  push:
+    branches:
+      - 4.x
+
+permissions:
+  contents: read
+
+jobs:
+  phplint:
+    name: phplint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install the tools
+        run: composer install --working-dir=tools --no-interaction --no-progress
+
+      - name: Lint every PHP file
+        run: tools/vendor/bin/phplint ./ --exclude=vendor --exclude=tools/vendor --warning
+
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install the tools
+        run: composer install --working-dir=tools --no-interaction --no-progress
+
+      - name: Analyse the hand-written tree
+        run: tools/vendor/bin/phpstan analyse -c tools/phpstan.neon src --no-progress --memory-limit=1G
+
+  php-cs-fixer:
+    name: php-cs-fixer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v4
+
+      # Without an unbounded memory limit the fixer runs out of memory on the
+      # generated client, and under a default limit it reports success while
+      # having skipped the file.
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          ini-values: memory_limit=-1
+
+      - name: Install the tools
+        run: composer install --working-dir=tools --no-interaction --no-progress
+
+      # The fixer re-analyses only the files whose content or rules changed, and
+      # analysing the generated client takes minutes, so the cache is what keeps
+      # this job short after its first run.
+      - name: Restore the style cache
+        uses: actions/cache@v4
+        with:
+          path: .php-cs-fixer.cache
+          key: php-cs-fixer-${{ hashFiles('tools/composer.lock', 'tools/.php-cs-fixer.php') }}-${{ github.sha }}
+          restore-keys: php-cs-fixer-${{ hashFiles('tools/composer.lock', 'tools/.php-cs-fixer.php') }}-
+
+      # The configuration sizes its worker pool from the host's cores, and a
+      # worker exceeds its 120 second timeout on the generated client, which
+      # is one file of 67,000 lines. --sequential keeps the run on one process.
+      - name: Check the code style
+        run: tools/vendor/bin/php-cs-fixer fix --dry-run --diff --sequential --config=tools/.php-cs-fixer.php
+
+  phpunit:
+    name: phpunit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Run the test suite
+        run: |
+          set -e
+          if [ ! -f phpunit.xml.dist ]; then
+            echo "The test lane has no tests yet: phpunit.xml.dist does not exist." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          composer install --no-interaction --no-progress
+          vendor/bin/phpunit
