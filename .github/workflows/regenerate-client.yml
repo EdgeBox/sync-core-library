@@ -1,0 +1,145 @@
+# Regenerates src/V2/Raw from the Sync Core OpenAPI document, re-applies the
+# committed client fixes, formats the result and commits it to the branch the
+# run was dispatched on.
+#
+# The Sync Core repository is private, so this workflow needs a repository
+# secret named SYNC_CORE_READ_TOKEN: a fine-grained personal access token that
+# grants read-only Contents access to EdgeBox/sync-core and nothing else.
+# No other workflow in this repository uses it.
+#
+# Dispatch:
+#   gh workflow run regenerate-client.yml --ref <branch> -f sync_core_ref=master
+#
+# With assert_empty the run commits nothing and fails when the generation
+# differs from what is committed, which is how a scheduled or manual drift
+# check is run.
+name: Regenerate the client
+
+on:
+  workflow_dispatch:
+    inputs:
+      sync_core_ref:
+        description: The Sync Core ref to generate from.
+        required: false
+        default: master
+      assert_empty:
+        description: Fail when the generation differs from the committed client instead of committing it.
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    name: regenerate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v4
+        with:
+          path: library
+
+      - name: Check out the Sync Core
+        uses: actions/checkout@v4
+        with:
+          repository: EdgeBox/sync-core
+          ref: ${{ inputs.sync_core_ref }}
+          token: ${{ secrets.SYNC_CORE_READ_TOKEN }}
+          path: sync-core
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install the tools
+        working-directory: library
+        run: composer install --working-dir=tools --no-interaction --no-progress
+
+      - name: Record the Sync Core revision
+        run: echo "SYNC_CORE_SHA=$(git -C sync-core rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: Generate the client
+        run: |
+          set -e
+          mkdir -p generated
+          cp sync-core/docs/swagger.yaml generated/swagger.yaml
+          docker run --rm -v "$PWD/generated:/local" openapitools/openapi-generator-cli:v6.4.0 generate \
+            -i /local/swagger.yaml \
+            -g php \
+            -o /local/dist \
+            --additional-properties=invokerPackage=EdgeBox\\SyncCore\\V2\\Raw \
+            --additional-properties=variableNamingConvention=camelCase
+          sudo chown -R "$(id -u):$(id -g)" generated
+
+      - name: Copy the generation over the client
+        run: cp -R generated/dist/lib/. library/src/V2/Raw/
+
+      - name: Re-apply the client fixes
+        working-directory: library
+        run: |
+          if git apply --check -p1 patches/openapi-client-fixes.patch; then
+            git apply -p1 patches/openapi-client-fixes.patch
+            echo "The client fixes in patches/openapi-client-fixes.patch apply."
+          else
+            echo "::error::patches/openapi-client-fixes.patch does not apply to this generation. Refresh the patch against the generated tree and dispatch again."
+            git apply --check -p1 --verbose patches/openapi-client-fixes.patch || true
+            exit 1
+          fi
+
+      - name: Format the generated client
+        working-directory: library
+        run: tools/vendor/bin/php-cs-fixer fix --config=tools/.php-cs-fixer.php src/V2/Raw
+
+      - name: Report what the generation changed
+        working-directory: library
+        run: |
+          set -e
+          added=$(git status --porcelain --untracked-files=all -- src/V2/Raw | grep -c '^??' || true)
+          changed=$(git status --porcelain --untracked-files=all -- src/V2/Raw | grep -c '^ M' || true)
+          git ls-files src/V2/Raw | sed 's#^src/V2/Raw/##' | sort > "$RUNNER_TEMP/committed.txt"
+          (cd ../generated/dist/lib && find . -type f | sed 's#^\./##' | sort) > "$RUNNER_TEMP/generated.txt"
+          removed=$(comm -23 "$RUNNER_TEMP/committed.txt" "$RUNNER_TEMP/generated.txt" | wc -l | tr -d ' ')
+          echo "ADDED=$added" >> "$GITHUB_ENV"
+          echo "CHANGED=$changed" >> "$GITHUB_ENV"
+          echo "REMOVED=$removed" >> "$GITHUB_ENV"
+          {
+            echo "Generated from Sync Core $SYNC_CORE_SHA"
+            echo ""
+            echo "- added: $added"
+            echo "- changed: $changed"
+            echo "- no longer generated: $removed"
+            echo ""
+            echo "Files the generation no longer produces stay in place; the run deletes nothing."
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail when the committed client is out of date
+        if: ${{ inputs.assert_empty }}
+        working-directory: library
+        run: |
+          if [ -n "$(git status --porcelain --untracked-files=all -- src/V2/Raw)" ]; then
+            echo "::error::the committed client does not match the Sync Core document at $SYNC_CORE_SHA"
+            git status --porcelain --untracked-files=all -- src/V2/Raw
+            exit 1
+          fi
+          echo "The committed client matches the Sync Core document at $SYNC_CORE_SHA."
+
+      - name: Commit the regeneration
+        if: ${{ !inputs.assert_empty }}
+        working-directory: library
+        run: |
+          set -e
+          if [ -z "$(git status --porcelain --untracked-files=all -- src/V2/Raw)" ]; then
+            echo "The committed client already matches the Sync Core document at $SYNC_CORE_SHA."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/V2/Raw
+          git commit \
+            -m "chore: regenerate the client from sync-core $SYNC_CORE_SHA" \
+            -m "added: $ADDED, changed: $CHANGED, no longer generated: $REMOVED"
+          git push origin "HEAD:${{ github.ref_name }}"
