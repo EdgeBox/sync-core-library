@@ -19,9 +19,9 @@ on:
   workflow_dispatch:
     inputs:
       sync_core_ref:
-        description: The Sync Core ref to generate from.
+        description: The Sync Core ref to generate from. Defaults to stage, which is where the released document lives; name a tag or a commit to generate from something else.
         required: false
-        default: master
+        default: stage
       assert_empty:
         description: Fail when the generation differs from the committed client instead of committing it.
         type: boolean
@@ -103,9 +103,9 @@ jobs:
         working-directory: library
         run: |
           set -e
-          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
-          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
-          if ! tools/vendor/bin/php-cs-fixer fix --dry-run --sequential --config=tools/.php-cs-fixer.php src/V2/Raw; then
+          tools/vendor/bin/php-cs-fixer fix --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw
+          tools/vendor/bin/php-cs-fixer fix --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw
+          if ! tools/vendor/bin/php-cs-fixer fix --dry-run --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw; then
             echo "::error::the generated client does not settle under tools/.php-cs-fixer.php within two passes"
             exit 1
           fi
