@@ -1,5 +1,13 @@
+includes:
+  # The findings that predate the gate. New findings fail the analysis; this
+  # list only ever shrinks.
+  - phpstan-baseline.neon
+
 parameters:
   # See https://phpstan.org/user-guide/rule-levels
   level: 5
+  # The generated client is not analysed, but its classes stay visible so the
+  # hand-written code that uses them resolves.
   excludePaths:
-  - ../src/V2/Raw/*
+    analyse:
+    - ../src/V2/Raw/*

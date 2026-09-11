@@ -1,0 +1,361 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method EdgeBox\\SyncCore\\Interfaces\\IApplicationInterface\:\:getHttpClient\(\) has invalid return type GuzzleHttp\\Client\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/Interfaces/IApplicationInterface.php
+
+		-
+			message: '#^Call to EdgeBox\\SyncCore\\V2\\BatchOperation\:\:optimize\(\) on a separate line has no effect\.$#'
+			identifier: staticMethod.resultUnused
+			count: 1
+			path: ../src/V2/Configuration/DefineFlow.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowStatus is not subtype of native type ''100\-active''\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: ../src/V2/Configuration/DefineFlow.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowSyndicationMode is not subtype of native type ''all''\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: ../src/V2/Configuration/DefineFlow.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''200\-inactive'' and EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowStatus\|null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: ../src/V2/Configuration/DefineFlow.php
+
+		-
+			message: '#^Variable \$configs in PHPDoc tag @var does not match assigned variable \$optimize\.$#'
+			identifier: varTag.differentVariable
+			count: 1
+			path: ../src/V2/Configuration/DefineFlow.php
+
+		-
+			message: '#^Parameter \#1 \$encoding of method EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityTypeProperty\:\:setEncoding\(\) expects EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityTypePropertyEncoding\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/Configuration/DefineProperty.php
+
+		-
+			message: '#^Parameter \#1 \$format of method EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityTypeProperty\:\:setFormat\(\) expects EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityTypePropertyFormat\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/Configuration/DefineProperty.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowSyndicationFilterType is not subtype of native type ''property\-includes…''\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/Configuration/FlowPullConfiguration.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowSyndicationMode is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/Configuration/FlowPullConfiguration.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\FlowSyndicationMode is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/Configuration/FlowPushConfiguration.php
+
+		-
+			message: '#^Access to constant BODY on an unknown class GuzzleHttp\\RequestOptions\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Access to constant HEADERS on an unknown class GuzzleHttp\\RequestOptions\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Access to constant HTTP_ERRORS on an unknown class GuzzleHttp\\RequestOptions\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Access to constant TIMEOUT on an unknown class GuzzleHttp\\RequestOptions\.$#'
+			identifier: class.notFound
+			count: 4
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to method getMessage\(\) on an unknown class GuzzleHttp\\Exception\\ConnectException\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to method getMessage\(\) on an unknown class GuzzleHttp\\Exception\\GuzzleException\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to method getMethod\(\) on an unknown class GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 6
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to method getUri\(\) on an unknown class GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 6
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to method send\(\) on an unknown class GuzzleHttp\\Client\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Call to static method encode\(\) on an unknown class Firebase\\JWT\\JWT\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Caught class GuzzleHttp\\Exception\\ConnectException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Caught class GuzzleHttp\\Exception\\GuzzleException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Instantiated class GuzzleHttp\\Client not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Instantiated class GuzzleHttp\\Psr7\\MultipartStream not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Instantiated class GuzzleHttp\\Psr7\\Request not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Method EdgeBox\\SyncCore\\V2\\SyncCore\:\:countRequestsWaitingToBePolled\(\) should return int but returns float\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Method EdgeBox\\SyncCore\\V2\\SyncCore\:\:getSitePriority\(\) should return int\|null but returns float\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Method EdgeBox\\SyncCore\\V2\\SyncCore\:\:getSiteSelf\(\) should return EdgeBox\\SyncCore\\V2\\Raw\\Model\\SiteSelfDto but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 3
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$mode contains unknown class EdgeBox\\SyncCore\\V2\\RemoteSiteConfigRequestMode\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\AuthenticationType is not subtype of native type ''basic_auth''\|''drupal8_services''\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\RemoteSiteConfigRequestMode is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^PHPDoc tag @var with type float is not subtype of native type int\<0, max\>\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \#1 \$client of class EdgeBox\\SyncCore\\V2\\Raw\\Api\\DefaultApi constructor expects GuzzleHttp\\ClientInterface\|null, GuzzleHttp\\Client given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \#1 \$mode of method EdgeBox\\SyncCore\\V2\\Raw\\Model\\SiteConfigUpdateRequestDto\:\:setMode\(\) expects EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteSiteConfigRequestMode\|null, EdgeBox\\SyncCore\\V2\\RemoteSiteConfigRequestMode given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$itemsPerPage of method EdgeBox\\SyncCore\\V2\\Raw\\Api\\DefaultApi\:\:remoteEntityUsageControllerListRequest\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$itemsPerPage of method EdgeBox\\SyncCore\\V2\\Raw\\Api\\DefaultApi\:\:siteControllerGetRequestsRequest\(\) expects string\|null, float\|int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$itemsPerPage of method EdgeBox\\SyncCore\\V2\\Raw\\Api\\DefaultApi\:\:siteControllerGetRequestsRequest\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$request of method EdgeBox\\SyncCore\\V2\\SyncCore\:\:sendRaw\(\) has invalid type GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$request of method EdgeBox\\SyncCore\\V2\\SyncCore\:\:sendToSyncCore\(\) has invalid type GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$request of method EdgeBox\\SyncCore\\V2\\SyncCore\:\:sendToSyncCoreAndExpect\(\) has invalid type GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$request of method EdgeBox\\SyncCore\\V2\\SyncCore\:\:sendToSyncCoreWithJwt\(\) has invalid type GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$request of method EdgeBox\\SyncCore\\V2\\SyncCore\:\:sendToSyncCoreWithJwtAndExpect\(\) has invalid type GuzzleHttp\\Psr7\\Request\.$#'
+			identifier: class.notFound
+			count: 2
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^Parameter \$targetType of method EdgeBox\\SyncCore\\V2\\Raw\\Api\\DefaultApi\:\:featuresControllerUpdateRequest\(\) expects EdgeBox\\SyncCore\\V2\\Raw\\Api\\FeatureFlagTargetType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/SyncCore.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\TaskGroupType is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/Syndication/MassUpdate.php
+
+		-
+			message: '#^Variable \$count on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: ../src/V2/Syndication/MassUpdate.php
+
+		-
+			message: '#^PHPDoc tag @var with type EdgeBox\\SyncCore\\V2\\Raw\\Model\\TaskGroupType is not subtype of native type ''pull\-all''\|''pull\-changed''\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: ../src/V2/Syndication/PullAll.php
+
+		-
+			message: '#^Call to function is_array\(\) with non\-empty\-array\<EdgeBox\\SyncCore\\V2\\Raw\\Model\\CreateRemoteEntityRevisionDto\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Call to function is_array\(\) with non\-empty\-array\<EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityEmbed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Call to function is_array\(\) with non\-empty\-array\<EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityEmbedDraft\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Call to function method_exists\(\) with EdgeBox\\SyncCore\\V2\\Raw\\Model\\CreateRemoteEntityRevisionDto\|EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityEmbed\|EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityEmbedDraft\|EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityEmbedRootDraft\|EdgeBox\\SyncCore\\V2\\Raw\\Model\\RemoteEntityRootEmbed and ''getViewUrl'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$embed contains unknown class EdgeBox\\SyncCore\\V2\\Syndication\\RemoteEntityRootEmbedDraft\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Variable \$file in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
+			count: 1
+			path: ../src/V2/Syndication/PullOperation.php
+
+		-
+			message: '#^Parameter \#1 \$type of method EdgeBox\\SyncCore\\V2\\Raw\\Model\\CreateTaskGroupDto\:\:setType\(\) expects EdgeBox\\SyncCore\\V2\\Raw\\Model\\TaskGroupType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/V2/Syndication/PushMultiple.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''dtoClass'' \(''dtoClass'', ''dtoClass''\)\.$#'
+			identifier: array.duplicateKey
+			count: 1
+			path: ../src/V2/Syndication/PushSingle.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 3
+			path: ../src/V2/Syndication/PushSingle.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''exists'' and EdgeBox\\SyncCore\\V2\\Raw\\Model\\EntityRemoteStatus will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../src/V2/Syndication/SyndicationService.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../src/V2/Syndication/TriggerPullSingle.php
