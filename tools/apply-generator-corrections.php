@@ -27,8 +27,9 @@ declare(strict_types=1);
  * and both are idempotent: run again on an already-corrected tree, they find
  * their target state already in place and make no further change. Every
  * failure mode - an anchor missing, an anchor matching more than once, or the
- * asserted target state not holding after the rewrite - exits non-zero with
- * an explanation instead of leaving a half-corrected tree.
+ * asserted target state not holding after the rewrite - is checked before
+ * either file is written, and exits non-zero with an explanation instead of
+ * leaving one file corrected and the other not.
  *
  * Usage: php apply-generator-corrections.php <path to a src/V2/Raw directory>
  */
@@ -63,9 +64,11 @@ if ('' === $raw || !is_dir($raw)) {
 }
 
 // --- Correction 1: route every request-body encoding call site through the
-// version-independent helper. ---
+// version-independent helper. Computed only - nothing is written until every
+// check below, for both files, has passed. ---
 $apiPath = $raw.'/Api/DefaultApi.php';
 $api = readOrDie($apiPath);
+$apiChanged = false;
 
 $directCallSites = substr_count($api, '\GuzzleHttp\Utils::jsonEncode(');
 $alreadyRouted = str_contains($api, 'ObjectSerializer::guzzleJsonEncode(');
@@ -73,19 +76,24 @@ if (0 === $directCallSites && !$alreadyRouted) {
     abort("no request-body encoding call site, direct or routed, in {$apiPath}; the generator output changed shape and the pattern needs revisiting.");
 }
 if ($directCallSites > 0) {
-    writeOrDie($apiPath, str_replace('\GuzzleHttp\Utils::jsonEncode(', 'ObjectSerializer::guzzleJsonEncode(', $api));
-    echo "routed {$directCallSites} request-body encoding call site(s) through ObjectSerializer::guzzleJsonEncode()\n";
-} else {
-    echo "request-body encoding call sites already route through ObjectSerializer::guzzleJsonEncode()\n";
+    $api = str_replace('\GuzzleHttp\Utils::jsonEncode(', 'ObjectSerializer::guzzleJsonEncode(', $api);
+    $apiChanged = true;
 }
 
 // --- ObjectSerializer.php carries both the helper correction 1 routes
-// through and correction 2's namespace guard. ---
+// through and correction 2's namespace guard. Also computed only, for the
+// same reason. ---
 $serializerPath = $raw.'/ObjectSerializer.php';
 $serializer = readOrDie($serializerPath);
 $serializerChanged = false;
 
+// The signature decides whether a definition already exists at all, so a
+// second one is never inserted (which would be a fatal redeclaration); the
+// return statement is the entire semantic payload of the helper, and is what
+// the final verification below checks - a body a signature match alone would
+// not catch a mutation of.
 $helperSignature = 'public static function guzzleJsonEncode($data)';
+$helperReturn = "return class_exists('\GuzzleHttp\Utils') && method_exists('\GuzzleHttp\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode(\$data) : \GuzzleHttp\json_encode(\$data);";
 $helperCount = substr_count($serializer, $helperSignature);
 if ($helperCount > 1) {
     abort("guzzleJsonEncode is defined {$helperCount} times in {$serializerPath}, expected at most one.");
@@ -113,12 +121,12 @@ if (0 === $helperCount) {
 PHP;
     $serializer = str_replace($formatAnchor, $formatAnchor.$helper, $serializer);
     $serializerChanged = true;
-    echo "added ObjectSerializer::guzzleJsonEncode()\n";
-} else {
-    echo "ObjectSerializer::guzzleJsonEncode() already defined\n";
 }
 
+// Same split: the condition line decides whether a guard already exists, the
+// assignment is the payload the final verification checks.
 $namespaceGuard = "if (!class_exists(\$class) && '\\\\' !== substr(\$class, 0, 1)) {";
+$namespacePrefix = "\$class = '\EdgeBox\SyncCore\V2\Raw\Model\\\\'.\$class;";
 $guardCount = substr_count($serializer, $namespaceGuard);
 if ($guardCount > 1) {
     abort("the deserialize() namespace guard appears {$guardCount} times in {$serializerPath}, expected at most one.");
@@ -139,18 +147,27 @@ if (0 === $guardCount) {
 PHP;
     $serializer = str_replace($enumAnchor, $guard.$enumAnchor, $serializer);
     $serializerChanged = true;
-    echo "added the deserialize() namespace guard\n";
-} else {
-    echo "the deserialize() namespace guard is already in place\n";
 }
 
+// --- Every check above passed for both files: only now is anything written.
+// A later abort here is only ever a raw I/O failure, reported by
+// writeOrDie(), never a pattern that failed to match. ---
+if ($apiChanged) {
+    writeOrDie($apiPath, $api);
+    echo "routed {$directCallSites} request-body encoding call site(s) through ObjectSerializer::guzzleJsonEncode()\n";
+} else {
+    echo "request-body encoding call sites already route through ObjectSerializer::guzzleJsonEncode()\n";
+}
 if ($serializerChanged) {
     writeOrDie($serializerPath, $serializer);
 }
+echo $helperCount > 0 ? "ObjectSerializer::guzzleJsonEncode() already defined\n" : "added ObjectSerializer::guzzleJsonEncode()\n";
+echo $guardCount > 0 ? "the deserialize() namespace guard is already in place\n" : "added the deserialize() namespace guard\n";
 
-// --- Verify the target state. A pattern above can match something other
-// than what it was written against, so the state is asserted again from
-// disk rather than trusted from the rewrite that ran. ---
+// --- Verify the target state from disk, payload and all, not just the
+// signature or condition line a mutation could leave untouched. A pattern
+// above can match something other than what it was written against, so
+// nothing here is trusted from the rewrite that ran. ---
 $api = readOrDie($apiPath);
 if (str_contains($api, 'Utils::jsonEncode(')) {
     abort("{$apiPath} still calls a Guzzle-version-specific encoder directly after the rewrite.");
@@ -164,9 +181,15 @@ $helperCount = substr_count($serializer, $helperSignature);
 if (1 !== $helperCount) {
     abort("{$serializerPath} defines guzzleJsonEncode {$helperCount} time(s) after the rewrite, expected exactly one.");
 }
+if (1 !== substr_count($serializer, $helperReturn)) {
+    abort("{$serializerPath} defines guzzleJsonEncode, but not with the version-dependent return statement expected, after the rewrite.");
+}
 $guardCount = substr_count($serializer, $namespaceGuard);
 if (1 !== $guardCount) {
     abort("{$serializerPath} carries the deserialize() namespace guard {$guardCount} time(s) after the rewrite, expected exactly one.");
 }
+if (1 !== substr_count($serializer, $namespacePrefix)) {
+    abort("{$serializerPath} carries the deserialize() namespace guard, but not with the namespace-prefixing assignment expected, after the rewrite.");
+}
 
-echo "verified: no direct Guzzle-version-specific encoder call remains, ObjectSerializer::guzzleJsonEncode() is defined once, the deserialize() namespace guard is in place once.\n";
+echo "verified: no direct Guzzle-version-specific encoder call remains, ObjectSerializer::guzzleJsonEncode() is defined once with the expected body, the deserialize() namespace guard is in place once with the expected assignment.\n";

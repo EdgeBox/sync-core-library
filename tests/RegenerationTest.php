@@ -23,7 +23,9 @@ use PHPUnit\Framework\TestCase;
  * These tests cover what a checkout can answer on its own: the two
  * corrections hold under the Guzzle version the lock file resolves, and the
  * script that applies them is idempotent. A generation that reached the
- * branch without the script having run turns the first two red.
+ * branch without the script having run turns every test in this file red,
+ * the idempotence one included: it compares the script's own output against
+ * the (then still uncorrected) committed source.
  *
  * @internal
  */

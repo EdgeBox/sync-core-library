@@ -1,6 +1,6 @@
-# Regenerates src/V2/Raw from the Sync Core OpenAPI document, re-applies the
-# committed client fixes, formats the result and commits it to the branch the
-# run was dispatched on.
+# Regenerates src/V2/Raw from the Sync Core OpenAPI document, runs
+# tools/apply-generator-corrections.php to re-apply the client corrections,
+# formats the result and commits it to the branch the run was dispatched on.
 #
 # The Sync Core repository is private, so this workflow needs a repository
 # secret named SYNC_CORE_READ_TOKEN: a fine-grained personal access token that
