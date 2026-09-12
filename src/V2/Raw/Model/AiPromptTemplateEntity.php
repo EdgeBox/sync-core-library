@@ -84,6 +84,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => 'float',
         'costsMax' => 'float',
         'defaultParameters' => 'mixed',
+        'recommendedModels' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreAiPromptTemplateRecommendedModel[]',
+        'evaluations' => '\EdgeBox\SyncCore\V2\Raw\Model\SyncCoreAiPromptTemplateEvaluation[]',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
         'id' => 'string',
@@ -126,6 +128,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => null,
         'costsMax' => null,
         'defaultParameters' => null,
+        'recommendedModels' => null,
+        'evaluations' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -164,6 +168,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => true,
         'costsMax' => true,
         'defaultParameters' => true,
+        'recommendedModels' => true,
+        'evaluations' => true,
         'customer' => true,
         'project' => true,
         'id' => false,
@@ -210,6 +216,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => 'costsMin',
         'costsMax' => 'costsMax',
         'defaultParameters' => 'defaultParameters',
+        'recommendedModels' => 'recommendedModels',
+        'evaluations' => 'evaluations',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -248,6 +256,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => 'setCostsMin',
         'costsMax' => 'setCostsMax',
         'defaultParameters' => 'setDefaultParameters',
+        'recommendedModels' => 'setRecommendedModels',
+        'evaluations' => 'setEvaluations',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -286,6 +296,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         'costsMin' => 'getCostsMin',
         'costsMax' => 'getCostsMax',
         'defaultParameters' => 'getDefaultParameters',
+        'recommendedModels' => 'getRecommendedModels',
+        'evaluations' => 'getEvaluations',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -333,6 +345,8 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
         $this->setIfExists('costsMin', $data ?? [], null);
         $this->setIfExists('costsMax', $data ?? [], null);
         $this->setIfExists('defaultParameters', $data ?? [], null);
+        $this->setIfExists('recommendedModels', $data ?? [], null);
+        $this->setIfExists('evaluations', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -1230,6 +1244,74 @@ class AiPromptTemplateEntity implements ModelInterface, \ArrayAccess, \JsonSeria
             }
         }
         $this->container['defaultParameters'] = $defaultParameters;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendedModels.
+     *
+     * @return null|SyncCoreAiPromptTemplateRecommendedModel[]
+     */
+    public function getRecommendedModels()
+    {
+        return $this->container['recommendedModels'];
+    }
+
+    /**
+     * Sets recommendedModels.
+     *
+     * @param null|SyncCoreAiPromptTemplateRecommendedModel[] $recommendedModels recommendedModels
+     *
+     * @return self
+     */
+    public function setRecommendedModels($recommendedModels)
+    {
+        if (is_null($recommendedModels)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendedModels');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendedModels', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendedModels'] = $recommendedModels;
+
+        return $this;
+    }
+
+    /**
+     * Gets evaluations.
+     *
+     * @return null|SyncCoreAiPromptTemplateEvaluation[]
+     */
+    public function getEvaluations()
+    {
+        return $this->container['evaluations'];
+    }
+
+    /**
+     * Sets evaluations.
+     *
+     * @param null|SyncCoreAiPromptTemplateEvaluation[] $evaluations evaluations
+     *
+     * @return self
+     */
+    public function setEvaluations($evaluations)
+    {
+        if (is_null($evaluations)) {
+            array_push($this->openAPINullablesSetToNull, 'evaluations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('evaluations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['evaluations'] = $evaluations;
 
         return $this;
     }

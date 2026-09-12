@@ -106,12 +106,11 @@ jobs:
           php-version: '8.3'
           coverage: none
 
+      - name: Install the library
+        run: composer install --no-interaction --no-progress
+
+      - name: Install the tools
+        run: composer install --working-dir=tools --no-interaction --no-progress
+
       - name: Run the test suite
-        run: |
-          set -e
-          if [ ! -f phpunit.xml.dist ]; then
-            echo "The test lane has no tests yet: phpunit.xml.dist does not exist." | tee -a "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          composer install --no-interaction --no-progress
-          vendor/bin/phpunit
+        run: tools/vendor/bin/phpunit

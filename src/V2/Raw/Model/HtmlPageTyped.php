@@ -66,6 +66,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => 'string',
         'slug' => 'string',
         'path' => 'string',
+        'h1' => 'string[]',
         'content' => 'Json',
         'markup' => 'Json',
     ];
@@ -86,6 +87,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => null,
         'slug' => null,
         'path' => null,
+        'h1' => null,
         'content' => null,
         'markup' => null,
     ];
@@ -102,6 +104,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => false,
         'slug' => true,
         'path' => false,
+        'h1' => true,
         'content' => false,
         'markup' => false,
     ];
@@ -126,6 +129,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => 'display_url',
         'slug' => 'slug',
         'path' => 'path',
+        'h1' => 'h1',
         'content' => 'content',
         'markup' => 'markup',
     ];
@@ -142,6 +146,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => 'setDisplayUrl',
         'slug' => 'setSlug',
         'path' => 'setPath',
+        'h1' => 'setH1',
         'content' => 'setContent',
         'markup' => 'setMarkup',
     ];
@@ -158,6 +163,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         'displayUrl' => 'getDisplayUrl',
         'slug' => 'getSlug',
         'path' => 'getPath',
+        'h1' => 'getH1',
         'content' => 'getContent',
         'markup' => 'getMarkup',
     ];
@@ -183,6 +189,7 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('displayUrl', $data ?? [], null);
         $this->setIfExists('slug', $data ?? [], null);
         $this->setIfExists('path', $data ?? [], null);
+        $this->setIfExists('h1', $data ?? [], null);
         $this->setIfExists('content', $data ?? [], null);
         $this->setIfExists('markup', $data ?? [], null);
     }
@@ -495,6 +502,40 @@ class HtmlPageTyped implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable path cannot be null');
         }
         $this->container['path'] = $path;
+
+        return $this;
+    }
+
+    /**
+     * Gets h1.
+     *
+     * @return null|string[]
+     */
+    public function getH1()
+    {
+        return $this->container['h1'];
+    }
+
+    /**
+     * Sets h1.
+     *
+     * @param null|string[] $h1 h1
+     *
+     * @return self
+     */
+    public function setH1($h1)
+    {
+        if (is_null($h1)) {
+            array_push($this->openAPINullablesSetToNull, 'h1');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('h1', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['h1'] = $h1;
 
         return $this;
     }

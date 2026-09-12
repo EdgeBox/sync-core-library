@@ -1,6 +1,6 @@
-# Regenerates src/V2/Raw from the Sync Core OpenAPI document, re-applies the
-# committed client fixes, formats the result and commits it to the branch the
-# run was dispatched on.
+# Regenerates src/V2/Raw from the Sync Core OpenAPI document, runs
+# tools/apply-generator-corrections.php to re-apply the client corrections,
+# formats the result and commits it to the branch the run was dispatched on.
 #
 # The Sync Core repository is private, so this workflow needs a repository
 # secret named SYNC_CORE_READ_TOKEN: a fine-grained personal access token that
@@ -19,9 +19,9 @@ on:
   workflow_dispatch:
     inputs:
       sync_core_ref:
-        description: The Sync Core ref to generate from.
+        description: The Sync Core ref to generate from. Defaults to stage, which is where the released document lives; name a tag or a commit to generate from something else.
         required: false
-        default: master
+        default: stage
       assert_empty:
         description: Fail when the generation differs from the committed client instead of committing it.
         type: boolean
@@ -82,17 +82,9 @@ jobs:
       - name: Copy the generation over the client
         run: cp -R generated/dist/lib/. library/src/V2/Raw/
 
-      - name: Re-apply the client fixes
+      - name: Apply the generator corrections
         working-directory: library
-        run: |
-          if git apply --check -p1 patches/openapi-client-fixes.patch; then
-            git apply -p1 patches/openapi-client-fixes.patch
-            echo "The client fixes in patches/openapi-client-fixes.patch apply."
-          else
-            echo "::error::patches/openapi-client-fixes.patch does not apply to this generation. Refresh the patch against the generated tree and dispatch again."
-            git apply --check -p1 --verbose patches/openapi-client-fixes.patch || true
-            exit 1
-          fi
+        run: php tools/apply-generator-corrections.php src/V2/Raw
 
       # --sequential keeps the run on one process: the configuration sizes its
       # worker pool from the host's cores, and a worker exceeds its 120 second
@@ -103,9 +95,9 @@ jobs:
         working-directory: library
         run: |
           set -e
-          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
-          tools/vendor/bin/php-cs-fixer fix --sequential --config=tools/.php-cs-fixer.php src/V2/Raw
-          if ! tools/vendor/bin/php-cs-fixer fix --dry-run --sequential --config=tools/.php-cs-fixer.php src/V2/Raw; then
+          tools/vendor/bin/php-cs-fixer fix --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw
+          tools/vendor/bin/php-cs-fixer fix --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw
+          if ! tools/vendor/bin/php-cs-fixer fix --dry-run --sequential --using-cache=no --config=tools/.php-cs-fixer.php src/V2/Raw; then
             echo "::error::the generated client does not settle under tools/.php-cs-fixer.php within two passes"
             exit 1
           fi

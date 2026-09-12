@@ -63,6 +63,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => 'string',
         'httpStatus' => 'float',
         'warnings' => '\EdgeBox\SyncCore\V2\Raw\Model\AiOrchestrationWarning[]',
+        'errorMessage' => 'string',
     ];
 
     /**
@@ -78,6 +79,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => null,
         'httpStatus' => null,
         'warnings' => null,
+        'errorMessage' => null,
     ];
 
     /**
@@ -89,6 +91,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => true,
         'httpStatus' => true,
         'warnings' => true,
+        'errorMessage' => true,
     ];
 
     /**
@@ -108,6 +111,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => 'providerRequestId',
         'httpStatus' => 'httpStatus',
         'warnings' => 'warnings',
+        'errorMessage' => 'errorMessage',
     ];
 
     /**
@@ -119,6 +123,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => 'setProviderRequestId',
         'httpStatus' => 'setHttpStatus',
         'warnings' => 'setWarnings',
+        'errorMessage' => 'setErrorMessage',
     ];
 
     /**
@@ -130,6 +135,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         'providerRequestId' => 'getProviderRequestId',
         'httpStatus' => 'getHttpStatus',
         'warnings' => 'getWarnings',
+        'errorMessage' => 'getErrorMessage',
     ];
 
     /**
@@ -150,6 +156,7 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
         $this->setIfExists('providerRequestId', $data ?? [], null);
         $this->setIfExists('httpStatus', $data ?? [], null);
         $this->setIfExists('warnings', $data ?? [], null);
+        $this->setIfExists('errorMessage', $data ?? [], null);
     }
 
     /**
@@ -361,6 +368,40 @@ class AiPromptExecutionMeta implements ModelInterface, \ArrayAccess, \JsonSerial
             }
         }
         $this->container['warnings'] = $warnings;
+
+        return $this;
+    }
+
+    /**
+     * Gets errorMessage.
+     *
+     * @return null|string
+     */
+    public function getErrorMessage()
+    {
+        return $this->container['errorMessage'];
+    }
+
+    /**
+     * Sets errorMessage.
+     *
+     * @param null|string $errorMessage errorMessage
+     *
+     * @return self
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        if (is_null($errorMessage)) {
+            array_push($this->openAPINullablesSetToNull, 'errorMessage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('errorMessage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['errorMessage'] = $errorMessage;
 
         return $this;
     }

@@ -67,6 +67,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'DynamicRevisionReference',
         'issueId' => 'string',
         'previousIssueId' => 'string',
+        'confidence' => 'object',
+        'confidenceState' => 'HealthConfidenceState',
+        'explanation' => 'object',
     ];
 
     /**
@@ -86,6 +89,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => null,
         'issueId' => null,
         'previousIssueId' => null,
+        'confidence' => null,
+        'confidenceState' => null,
+        'explanation' => null,
     ];
 
     /**
@@ -101,6 +107,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => true,
         'issueId' => true,
         'previousIssueId' => true,
+        'confidence' => true,
+        'confidenceState' => true,
+        'explanation' => true,
     ];
 
     /**
@@ -124,6 +133,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'issueType',
         'issueId' => 'issueId',
         'previousIssueId' => 'previousIssueId',
+        'confidence' => 'confidence',
+        'confidenceState' => 'confidenceState',
+        'explanation' => 'explanation',
     ];
 
     /**
@@ -139,6 +151,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'setIssueType',
         'issueId' => 'setIssueId',
         'previousIssueId' => 'setPreviousIssueId',
+        'confidence' => 'setConfidence',
+        'confidenceState' => 'setConfidenceState',
+        'explanation' => 'setExplanation',
     ];
 
     /**
@@ -154,6 +169,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'issueType' => 'getIssueType',
         'issueId' => 'getIssueId',
         'previousIssueId' => 'getPreviousIssueId',
+        'confidence' => 'getConfidence',
+        'confidenceState' => 'getConfidenceState',
+        'explanation' => 'getExplanation',
     ];
 
     /**
@@ -178,6 +196,9 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('issueType', $data ?? [], null);
         $this->setIfExists('issueId', $data ?? [], null);
         $this->setIfExists('previousIssueId', $data ?? [], null);
+        $this->setIfExists('confidence', $data ?? [], null);
+        $this->setIfExists('confidenceState', $data ?? [], null);
+        $this->setIfExists('explanation', $data ?? [], null);
     }
 
     /**
@@ -520,6 +541,108 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['previousIssueId'] = $previousIssueId;
+
+        return $this;
+    }
+
+    /**
+     * Gets confidence.
+     *
+     * @return null|object
+     */
+    public function getConfidence()
+    {
+        return $this->container['confidence'];
+    }
+
+    /**
+     * Sets confidence.
+     *
+     * @param null|object $confidence confidence
+     *
+     * @return self
+     */
+    public function setConfidence($confidence)
+    {
+        if (is_null($confidence)) {
+            array_push($this->openAPINullablesSetToNull, 'confidence');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('confidence', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['confidence'] = $confidence;
+
+        return $this;
+    }
+
+    /**
+     * Gets confidenceState.
+     *
+     * @return null|HealthConfidenceState
+     */
+    public function getConfidenceState()
+    {
+        return $this->container['confidenceState'];
+    }
+
+    /**
+     * Sets confidenceState.
+     *
+     * @param null|HealthConfidenceState $confidenceState confidenceState
+     *
+     * @return self
+     */
+    public function setConfidenceState($confidenceState)
+    {
+        if (is_null($confidenceState)) {
+            array_push($this->openAPINullablesSetToNull, 'confidenceState');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('confidenceState', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['confidenceState'] = $confidenceState;
+
+        return $this;
+    }
+
+    /**
+     * Gets explanation.
+     *
+     * @return null|object
+     */
+    public function getExplanation()
+    {
+        return $this->container['explanation'];
+    }
+
+    /**
+     * Sets explanation.
+     *
+     * @param null|object $explanation explanation
+     *
+     * @return self
+     */
+    public function setExplanation($explanation)
+    {
+        if (is_null($explanation)) {
+            array_push($this->openAPINullablesSetToNull, 'explanation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('explanation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['explanation'] = $explanation;
 
         return $this;
     }

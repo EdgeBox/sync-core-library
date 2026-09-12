@@ -37,6 +37,10 @@ use EdgeBox\SyncCore\V2\Raw\Model\AiPromptExecutionEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\AiPromptTemplateEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\AiProviderEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\AiProviderModelListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationDto;
+use EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentGroupEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemAutocompleteResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemContentAreaHtmlResponse;
@@ -69,6 +73,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateTaxonomyTermDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateWebhookDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CustomerEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
+use EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaResponse;
@@ -83,11 +88,13 @@ use EdgeBox\SyncCore\V2\Raw\Model\GenerateFormulaWithAiRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\GenerateFormulaWithAiResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GetBasicAuthDto;
 use EdgeBox\SyncCore\V2\Raw\Model\GetThrottlingDto;
+use EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernanceContentItemChecksResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernanceContentItemMatrixResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernanceContentItemMonthlyHistoryBucketResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernanceContentItemTotalResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernanceContentItemWeeklyHistoryBucketResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsDailyHistoryBucketResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMonthlyHistoryBucketResponse;
@@ -97,10 +104,13 @@ use EdgeBox\SyncCore\V2\Raw\Model\HealthCheckEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady200Response;
 use EdgeBox\SyncCore\V2\Raw\Model\HealthControllerReady503Response;
 use EdgeBox\SyncCore\V2\Raw\Model\IssueEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\IssuePatchBody;
 use EdgeBox\SyncCore\V2\Raw\Model\JwtResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\LocaleEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\LoggingIdsResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\ManageContentItemTermsDto;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunEntity;
@@ -125,6 +135,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\PagedContentOptimizationTypeListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedHealthCheckListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedIssueListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedLanguageDefinitionList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedLocaleListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
@@ -166,6 +177,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteSelfDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SmallSiteEntityWithDetails;
+use EdgeBox\SyncCore\V2\Raw\Model\StartAnswerExportDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SuccessResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\SyncCoreInfo;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationDeleteRequest;
@@ -195,8 +207,8 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
-use GuzzleHttp\Utils;
 
 /**
  * DefaultApi Class Doc Comment.
@@ -313,6 +325,12 @@ class DefaultApi
         'contentItemControllerRevisionsByPreviousStatus' => [
             'application/json',
         ],
+        'contentItemControllerTerms' => [
+            'application/json',
+        ],
+        'contentOptimizationControllerApplyChanges' => [
+            'application/json',
+        ],
         'contentOptimizationControllerCreate' => [
             'application/json',
         ],
@@ -406,6 +424,9 @@ class DefaultApi
         'formulaControllerValidate' => [
             'application/json',
         ],
+        'governanceContentItemStatsControllerBotProtection' => [
+            'application/json',
+        ],
         'governanceContentItemStatsControllerChecks' => [
             'application/json',
         ],
@@ -422,6 +443,9 @@ class DefaultApi
             'application/json',
         ],
         'governancePromptMonitoringStatsControllerDailyHistory' => [
+            'application/json',
+        ],
+        'governancePromptMonitoringStatsControllerEntityDomains' => [
             'application/json',
         ],
         'governancePromptMonitoringStatsControllerMatrix' => [
@@ -469,6 +493,15 @@ class DefaultApi
         'issueControllerList' => [
             'application/json',
         ],
+        'issueControllerPatchStatus' => [
+            'application/json',
+        ],
+        'issueOccurrenceControllerItem' => [
+            'application/json',
+        ],
+        'issueOccurrenceControllerList' => [
+            'application/json',
+        ],
         'localFileControllerDownload' => [
             'application/json',
         ],
@@ -511,6 +544,9 @@ class DefaultApi
         'migrationControllerSummary' => [
             'application/json',
         ],
+        'monitoringPromptControllerBulkTerms' => [
+            'application/json',
+        ],
         'monitoringPromptControllerCreate' => [
             'application/json',
         ],
@@ -529,10 +565,16 @@ class DefaultApi
         'monitoringPromptControllerUpdate' => [
             'application/json',
         ],
+        'monitoringPromptRunControllerCountAnswerExport' => [
+            'application/json',
+        ],
         'monitoringPromptRunControllerItem' => [
             'application/json',
         ],
         'monitoringPromptRunControllerList' => [
+            'application/json',
+        ],
+        'monitoringPromptRunControllerStartAnswerExport' => [
             'application/json',
         ],
         'onboardingUtilityControllerGetContentItemTerms' => [
@@ -557,6 +599,9 @@ class DefaultApi
             'application/json',
         ],
         'onboardingUtilityControllerSubmitSelectedPages' => [
+            'application/json',
+        ],
+        'oxylabsCallbackControllerJobCompleted' => [
             'application/json',
         ],
         'poolControllerCreate' => [
@@ -650,6 +695,9 @@ class DefaultApi
             'application/json',
         ],
         'remoteEntityUsageControllerList' => [
+            'application/json',
+        ],
+        'scrapeControllerFavicon' => [
             'application/json',
         ],
         'serviceSecretsControllerActiveByTarget' => [
@@ -800,6 +848,9 @@ class DefaultApi
             'application/json',
         ],
         'taxonomyTermControllerCreate' => [
+            'application/json',
+        ],
+        'taxonomyTermControllerDetectColor' => [
             'application/json',
         ],
         'taxonomyTermControllerItem' => [
@@ -1147,7 +1198,7 @@ class DefaultApi
         if (isset($createAiModelDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createAiModelDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createAiModelDto));
             } else {
                 $httpBody = $createAiModelDto;
             }
@@ -1167,7 +1218,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -1452,7 +1503,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -1815,7 +1866,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -2078,7 +2129,7 @@ class DefaultApi
         if (isset($aiModelEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($aiModelEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($aiModelEntity));
             } else {
                 $httpBody = $aiModelEntity;
             }
@@ -2098,7 +2149,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -2383,7 +2434,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -2774,7 +2825,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -3079,7 +3130,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -3342,7 +3393,7 @@ class DefaultApi
         if (isset($createAiPromptTemplateDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createAiPromptTemplateDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createAiPromptTemplateDto));
             } else {
                 $httpBody = $createAiPromptTemplateDto;
             }
@@ -3362,7 +3413,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -3647,7 +3698,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -4052,7 +4103,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -4386,7 +4437,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -4649,7 +4700,7 @@ class DefaultApi
         if (isset($aiPromptTemplateEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($aiPromptTemplateEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($aiPromptTemplateEntity));
             } else {
                 $httpBody = $aiPromptTemplateEntity;
             }
@@ -4669,7 +4720,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -4932,7 +4983,7 @@ class DefaultApi
         if (isset($createAiProviderDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createAiProviderDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createAiProviderDto));
             } else {
                 $httpBody = $createAiProviderDto;
             }
@@ -4952,7 +5003,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -5237,7 +5288,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -5586,7 +5637,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -5871,7 +5922,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -6134,7 +6185,7 @@ class DefaultApi
         if (isset($aiProviderEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($aiProviderEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($aiProviderEntity));
             } else {
                 $httpBody = $aiProviderEntity;
             }
@@ -6154,7 +6205,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -6417,7 +6468,7 @@ class DefaultApi
         if (isset($createAuthenticationDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createAuthenticationDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createAuthenticationDto));
             } else {
                 $httpBody = $createAuthenticationDto;
             }
@@ -6437,7 +6488,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -6701,7 +6752,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -6964,7 +7015,7 @@ class DefaultApi
         if (isset($setBasicAuthDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setBasicAuthDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setBasicAuthDto));
             } else {
                 $httpBody = $setBasicAuthDto;
             }
@@ -6984,7 +7035,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -7269,7 +7320,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -7554,7 +7605,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -7839,7 +7890,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -8103,7 +8154,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -8367,7 +8418,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -8631,7 +8682,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -8916,7 +8967,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -9209,7 +9260,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -9565,7 +9616,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -9603,6 +9654,7 @@ class DefaultApi
      * Operation contentItemControllerContentAreaHtml.
      *
      * @param  string $id id (required)
+     * @param  string $mode mode (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerContentAreaHtml'] to see the possible values for this operation
      *
      * @return ContentItemContentAreaHtmlResponse
@@ -9610,9 +9662,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function contentItemControllerContentAreaHtml($id, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
+    public function contentItemControllerContentAreaHtml($id, $mode = null, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
     {
-        [$response] = $this->contentItemControllerContentAreaHtmlWithHttpInfo($id, $contentType);
+        [$response] = $this->contentItemControllerContentAreaHtmlWithHttpInfo($id, $mode, $contentType);
 
         return $response;
     }
@@ -9621,6 +9673,7 @@ class DefaultApi
      * Operation contentItemControllerContentAreaHtmlWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $mode (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerContentAreaHtml'] to see the possible values for this operation
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentItemContentAreaHtmlResponse, HTTP status code, HTTP response headers (array of strings)
@@ -9628,9 +9681,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function contentItemControllerContentAreaHtmlWithHttpInfo($id, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
+    public function contentItemControllerContentAreaHtmlWithHttpInfo($id, $mode = null, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
     {
-        $request = $this->contentItemControllerContentAreaHtmlRequest($id, $contentType);
+        $request = $this->contentItemControllerContentAreaHtmlRequest($id, $mode, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -9722,15 +9775,16 @@ class DefaultApi
      * Operation contentItemControllerContentAreaHtmlAsync.
      *
      * @param  string $id (required)
+     * @param  string $mode (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerContentAreaHtml'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function contentItemControllerContentAreaHtmlAsync($id, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
+    public function contentItemControllerContentAreaHtmlAsync($id, $mode = null, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
     {
-        return $this->contentItemControllerContentAreaHtmlAsyncWithHttpInfo($id, $contentType)
+        return $this->contentItemControllerContentAreaHtmlAsyncWithHttpInfo($id, $mode, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -9743,16 +9797,17 @@ class DefaultApi
      * Operation contentItemControllerContentAreaHtmlAsyncWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $mode (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerContentAreaHtml'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function contentItemControllerContentAreaHtmlAsyncWithHttpInfo($id, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
+    public function contentItemControllerContentAreaHtmlAsyncWithHttpInfo($id, $mode = null, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemContentAreaHtmlResponse';
-        $request = $this->contentItemControllerContentAreaHtmlRequest($id, $contentType);
+        $request = $this->contentItemControllerContentAreaHtmlRequest($id, $mode, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -9796,13 +9851,14 @@ class DefaultApi
      * Create request for operation 'contentItemControllerContentAreaHtml'.
      *
      * @param  string $id (required)
+     * @param  string $mode (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerContentAreaHtml'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function contentItemControllerContentAreaHtmlRequest($id, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
+    public function contentItemControllerContentAreaHtmlRequest($id, $mode = null, string $contentType = self::contentTypes['contentItemControllerContentAreaHtml'][0])
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
@@ -9817,6 +9873,16 @@ class DefaultApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $mode,
+            'mode', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
 
         // path params
         if (null !== $id) {
@@ -9850,7 +9916,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -10135,7 +10201,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -10440,7 +10506,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -10915,7 +10981,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -11249,7 +11315,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -11277,6 +11343,614 @@ class DefaultApi
 
         return new Request(
             'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentItemControllerTerms.
+     *
+     * @param  string $id id (required)
+     * @param  ManageContentItemTermsDto $manageContentItemTermsDto manageContentItemTermsDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerTerms'] to see the possible values for this operation
+     *
+     * @return ContentItemEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentItemControllerTerms($id, $manageContentItemTermsDto, string $contentType = self::contentTypes['contentItemControllerTerms'][0])
+    {
+        [$response] = $this->contentItemControllerTermsWithHttpInfo($id, $manageContentItemTermsDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentItemControllerTermsWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  ManageContentItemTermsDto $manageContentItemTermsDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerTerms'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentItemControllerTermsWithHttpInfo($id, $manageContentItemTermsDto, string $contentType = self::contentTypes['contentItemControllerTerms'][0])
+    {
+        $request = $this->contentItemControllerTermsRequest($id, $manageContentItemTermsDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentItemControllerTermsAsync.
+     *
+     * @param  string $id (required)
+     * @param  ManageContentItemTermsDto $manageContentItemTermsDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerTerms'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentItemControllerTermsAsync($id, $manageContentItemTermsDto, string $contentType = self::contentTypes['contentItemControllerTerms'][0])
+    {
+        return $this->contentItemControllerTermsAsyncWithHttpInfo($id, $manageContentItemTermsDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentItemControllerTermsAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  ManageContentItemTermsDto $manageContentItemTermsDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerTerms'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentItemControllerTermsAsyncWithHttpInfo($id, $manageContentItemTermsDto, string $contentType = self::contentTypes['contentItemControllerTerms'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity';
+        $request = $this->contentItemControllerTermsRequest($id, $manageContentItemTermsDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentItemControllerTerms'.
+     *
+     * @param  string $id (required)
+     * @param  ManageContentItemTermsDto $manageContentItemTermsDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerTerms'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentItemControllerTermsRequest($id, $manageContentItemTermsDto, string $contentType = self::contentTypes['contentItemControllerTerms'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentItemControllerTerms'
+            );
+        }
+
+        // verify the required parameter 'manageContentItemTermsDto' is set
+        if (null === $manageContentItemTermsDto || (is_array($manageContentItemTermsDto) && 0 === count($manageContentItemTermsDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $manageContentItemTermsDto when calling contentItemControllerTerms'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-item/{id}/terms';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($manageContentItemTermsDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($manageContentItemTermsDto));
+            } else {
+                $httpBody = $manageContentItemTermsDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentOptimizationControllerApplyChanges.
+     *
+     * @param  string $id id (required)
+     * @param  object $body body (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerApplyChanges'] to see the possible values for this operation
+     *
+     * @return ApplyContentOptimizationChangesResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerApplyChanges($id, $body, string $contentType = self::contentTypes['contentOptimizationControllerApplyChanges'][0])
+    {
+        [$response] = $this->contentOptimizationControllerApplyChangesWithHttpInfo($id, $body, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentOptimizationControllerApplyChangesWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerApplyChanges'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerApplyChangesWithHttpInfo($id, $body, string $contentType = self::contentTypes['contentOptimizationControllerApplyChanges'][0])
+    {
+        $request = $this->contentOptimizationControllerApplyChangesRequest($id, $body, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentOptimizationControllerApplyChangesAsync.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerApplyChanges'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerApplyChangesAsync($id, $body, string $contentType = self::contentTypes['contentOptimizationControllerApplyChanges'][0])
+    {
+        return $this->contentOptimizationControllerApplyChangesAsyncWithHttpInfo($id, $body, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentOptimizationControllerApplyChangesAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerApplyChanges'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerApplyChangesAsyncWithHttpInfo($id, $body, string $contentType = self::contentTypes['contentOptimizationControllerApplyChanges'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse';
+        $request = $this->contentOptimizationControllerApplyChangesRequest($id, $body, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentOptimizationControllerApplyChanges'.
+     *
+     * @param  string $id (required)
+     * @param  object $body (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerApplyChanges'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerApplyChangesRequest($id, $body, string $contentType = self::contentTypes['contentOptimizationControllerApplyChanges'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentOptimizationControllerApplyChanges'
+            );
+        }
+
+        // verify the required parameter 'body' is set
+        if (null === $body || (is_array($body) && 0 === count($body))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling contentOptimizationControllerApplyChanges'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-optimization/{id}/apply';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -11512,7 +12186,7 @@ class DefaultApi
         if (isset($createContentOptimizationDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createContentOptimizationDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createContentOptimizationDto));
             } else {
                 $httpBody = $createContentOptimizationDto;
             }
@@ -11532,7 +12206,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -11795,7 +12469,7 @@ class DefaultApi
         if (isset($createContentOptimizationsDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createContentOptimizationsDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createContentOptimizationsDto));
             } else {
                 $httpBody = $createContentOptimizationsDto;
             }
@@ -11815,7 +12489,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -12100,7 +12774,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -12137,6 +12811,7 @@ class DefaultApi
     /**
      * Operation contentOptimizationControllerList.
      *
+     * @param  string $inputPageKey inputPageKey (optional)
      * @param  mixed $optimizationTypeKey optimizationTypeKey (optional)
      * @param  mixed $statuses statuses (optional)
      * @param  string $page page (optional)
@@ -12148,9 +12823,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function contentOptimizationControllerList($optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
+    public function contentOptimizationControllerList($inputPageKey = null, $optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
     {
-        [$response] = $this->contentOptimizationControllerListWithHttpInfo($optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
+        [$response] = $this->contentOptimizationControllerListWithHttpInfo($inputPageKey, $optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -12158,6 +12833,7 @@ class DefaultApi
     /**
      * Operation contentOptimizationControllerListWithHttpInfo.
      *
+     * @param  string $inputPageKey (optional)
      * @param  mixed $optimizationTypeKey (optional)
      * @param  mixed $statuses (optional)
      * @param  string $page (optional)
@@ -12169,9 +12845,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function contentOptimizationControllerListWithHttpInfo($optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
+    public function contentOptimizationControllerListWithHttpInfo($inputPageKey = null, $optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
     {
-        $request = $this->contentOptimizationControllerListRequest($optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
+        $request = $this->contentOptimizationControllerListRequest($inputPageKey, $optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -12262,6 +12938,7 @@ class DefaultApi
     /**
      * Operation contentOptimizationControllerListAsync.
      *
+     * @param  string $inputPageKey (optional)
      * @param  mixed $optimizationTypeKey (optional)
      * @param  mixed $statuses (optional)
      * @param  string $page (optional)
@@ -12272,9 +12949,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function contentOptimizationControllerListAsync($optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
+    public function contentOptimizationControllerListAsync($inputPageKey = null, $optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
     {
-        return $this->contentOptimizationControllerListAsyncWithHttpInfo($optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType)
+        return $this->contentOptimizationControllerListAsyncWithHttpInfo($inputPageKey, $optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -12286,6 +12963,7 @@ class DefaultApi
     /**
      * Operation contentOptimizationControllerListAsyncWithHttpInfo.
      *
+     * @param  string $inputPageKey (optional)
      * @param  mixed $optimizationTypeKey (optional)
      * @param  mixed $statuses (optional)
      * @param  string $page (optional)
@@ -12296,10 +12974,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function contentOptimizationControllerListAsyncWithHttpInfo($optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
+    public function contentOptimizationControllerListAsyncWithHttpInfo($inputPageKey = null, $optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedContentOptimizationListResponse';
-        $request = $this->contentOptimizationControllerListRequest($optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
+        $request = $this->contentOptimizationControllerListRequest($inputPageKey, $optimizationTypeKey, $statuses, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -12342,6 +13020,7 @@ class DefaultApi
     /**
      * Create request for operation 'contentOptimizationControllerList'.
      *
+     * @param  string $inputPageKey (optional)
      * @param  mixed $optimizationTypeKey (optional)
      * @param  mixed $statuses (optional)
      * @param  string $page (optional)
@@ -12352,7 +13031,7 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function contentOptimizationControllerListRequest($optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
+    public function contentOptimizationControllerListRequest($inputPageKey = null, $optimizationTypeKey = null, $statuses = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentOptimizationControllerList'][0])
     {
         $resourcePath = '/sync-core/content-optimization';
         $formParams = [];
@@ -12361,6 +13040,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $inputPageKey,
+            'inputPageKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $optimizationTypeKey,
@@ -12421,7 +13109,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -12706,7 +13394,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -13011,7 +13699,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -13332,7 +14020,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -13666,7 +14354,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -13951,7 +14639,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -14236,7 +14924,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -14521,7 +15209,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -14806,7 +15494,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -15091,7 +15779,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -15376,7 +16064,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -15640,7 +16328,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -15904,7 +16592,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -16208,7 +16896,7 @@ class DefaultApi
         if (isset($setFeatureFlagDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setFeatureFlagDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setFeatureFlagDto));
             } else {
                 $httpBody = $setFeatureFlagDto;
             }
@@ -16228,7 +16916,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -16491,7 +17179,7 @@ class DefaultApi
         if (isset($createFileDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createFileDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createFileDto));
             } else {
                 $httpBody = $createFileDto;
             }
@@ -16511,7 +17199,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -16796,7 +17484,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -17081,7 +17769,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -17366,7 +18054,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -17651,7 +18339,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -17909,7 +18597,7 @@ class DefaultApi
         if (isset($createFlowDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createFlowDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createFlowDto));
             } else {
                 $httpBody = $createFlowDto;
             }
@@ -17929,7 +18617,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -18192,7 +18880,7 @@ class DefaultApi
         if (isset($flowDeleteRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($flowDeleteRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($flowDeleteRequest));
             } else {
                 $httpBody = $flowDeleteRequest;
             }
@@ -18212,7 +18900,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -18497,7 +19185,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -18832,7 +19520,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -19111,7 +19799,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -19374,7 +20062,7 @@ class DefaultApi
         if (isset($evaluateFormulaRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($evaluateFormulaRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($evaluateFormulaRequest));
             } else {
                 $httpBody = $evaluateFormulaRequest;
             }
@@ -19394,7 +20082,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -19657,7 +20345,7 @@ class DefaultApi
         if (isset($generateFormulaWithAiRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($generateFormulaWithAiRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($generateFormulaWithAiRequest));
             } else {
                 $httpBody = $generateFormulaWithAiRequest;
             }
@@ -19677,7 +20365,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -19940,7 +20628,7 @@ class DefaultApi
         if (isset($parseFormulaRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($parseFormulaRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($parseFormulaRequest));
             } else {
                 $httpBody = $parseFormulaRequest;
             }
@@ -19960,7 +20648,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -20223,7 +20911,7 @@ class DefaultApi
         if (isset($validateFormulaRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($validateFormulaRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($validateFormulaRequest));
             } else {
                 $httpBody = $validateFormulaRequest;
             }
@@ -20243,7 +20931,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -20271,6 +20959,320 @@ class DefaultApi
 
         return new Request(
             'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation governanceContentItemStatsControllerBotProtection.
+     *
+     * @param  string $type type (required)
+     * @param  float $to to (optional)
+     * @param  float $from from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governanceContentItemStatsControllerBotProtection'] to see the possible values for this operation
+     *
+     * @return GovernanceBotProtectionSiteStatsResponse[]
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function governanceContentItemStatsControllerBotProtection($type, $to = null, $from = null, string $contentType = self::contentTypes['governanceContentItemStatsControllerBotProtection'][0])
+    {
+        [$response] = $this->governanceContentItemStatsControllerBotProtectionWithHttpInfo($type, $to, $from, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation governanceContentItemStatsControllerBotProtectionWithHttpInfo.
+     *
+     * @param  string $type (required)
+     * @param  float $to (optional)
+     * @param  float $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governanceContentItemStatsControllerBotProtection'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[], HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function governanceContentItemStatsControllerBotProtectionWithHttpInfo($type, $to = null, $from = null, string $contentType = self::contentTypes['governanceContentItemStatsControllerBotProtection'][0])
+    {
+        $request = $this->governanceContentItemStatsControllerBotProtectionRequest($type, $to, $from, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation governanceContentItemStatsControllerBotProtectionAsync.
+     *
+     * @param  string $type (required)
+     * @param  float $to (optional)
+     * @param  float $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governanceContentItemStatsControllerBotProtection'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governanceContentItemStatsControllerBotProtectionAsync($type, $to = null, $from = null, string $contentType = self::contentTypes['governanceContentItemStatsControllerBotProtection'][0])
+    {
+        return $this->governanceContentItemStatsControllerBotProtectionAsyncWithHttpInfo($type, $to, $from, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation governanceContentItemStatsControllerBotProtectionAsyncWithHttpInfo.
+     *
+     * @param  string $type (required)
+     * @param  float $to (optional)
+     * @param  float $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governanceContentItemStatsControllerBotProtection'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governanceContentItemStatsControllerBotProtectionAsyncWithHttpInfo($type, $to = null, $from = null, string $contentType = self::contentTypes['governanceContentItemStatsControllerBotProtection'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceBotProtectionSiteStatsResponse[]';
+        $request = $this->governanceContentItemStatsControllerBotProtectionRequest($type, $to, $from, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'governanceContentItemStatsControllerBotProtection'.
+     *
+     * @param  string $type (required)
+     * @param  float $to (optional)
+     * @param  float $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governanceContentItemStatsControllerBotProtection'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governanceContentItemStatsControllerBotProtectionRequest($type, $to = null, $from = null, string $contentType = self::contentTypes['governanceContentItemStatsControllerBotProtection'][0])
+    {
+        // verify the required parameter 'type' is set
+        if (null === $type || (is_array($type) && 0 === count($type))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $type when calling governanceContentItemStatsControllerBotProtection'
+            );
+        }
+
+        $resourcePath = '/sync-core/governance-stats/content-item/{type}/bot-protection';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $to,
+            'to', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from,
+            'from', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // path params
+        if (null !== $type) {
+            $resourcePath = str_replace(
+                '{type}',
+                ObjectSerializer::toPathValue($type),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -20739,7 +21741,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -21235,7 +22237,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -21751,7 +22753,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -22247,7 +23249,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -22763,7 +23765,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -22801,12 +23803,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerDailyHistory.
      *
      * @param  string $numberOfDays numberOfDays (required)
+     * @param  string $purposeTermKey purposeTermKey (required)
      * @param  string $promptKey promptKey (optional)
      * @param  string $engineKey engineKey (optional)
      * @param  string $localeKey localeKey (optional)
      * @param  string $country country (optional)
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms xAxisTerms (optional)
@@ -22822,9 +23829,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerDailyHistory($numberOfDays, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
+    public function governancePromptMonitoringStatsControllerDailyHistory($numberOfDays, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
     {
-        [$response] = $this->governancePromptMonitoringStatsControllerDailyHistoryWithHttpInfo($numberOfDays, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        [$response] = $this->governancePromptMonitoringStatsControllerDailyHistoryWithHttpInfo($numberOfDays, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $response;
     }
@@ -22833,12 +23840,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerDailyHistoryWithHttpInfo.
      *
      * @param  string $numberOfDays (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -22854,9 +23866,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerDailyHistoryWithHttpInfo($numberOfDays, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
+    public function governancePromptMonitoringStatsControllerDailyHistoryWithHttpInfo($numberOfDays, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
     {
-        $request = $this->governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -22948,12 +23960,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerDailyHistoryAsync.
      *
      * @param  string $numberOfDays (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -22968,9 +23985,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerDailyHistoryAsync($numberOfDays, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
+    public function governancePromptMonitoringStatsControllerDailyHistoryAsync($numberOfDays, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
     {
-        return $this->governancePromptMonitoringStatsControllerDailyHistoryAsyncWithHttpInfo($numberOfDays, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+        return $this->governancePromptMonitoringStatsControllerDailyHistoryAsyncWithHttpInfo($numberOfDays, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -22983,12 +24000,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerDailyHistoryAsyncWithHttpInfo.
      *
      * @param  string $numberOfDays (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23003,10 +24025,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerDailyHistoryAsyncWithHttpInfo($numberOfDays, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
+    public function governancePromptMonitoringStatsControllerDailyHistoryAsyncWithHttpInfo($numberOfDays, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsDailyHistoryBucketResponse[]';
-        $request = $this->governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -23050,12 +24072,17 @@ class DefaultApi
      * Create request for operation 'governancePromptMonitoringStatsControllerDailyHistory'.
      *
      * @param  string $numberOfDays (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23070,12 +24097,19 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
+    public function governancePromptMonitoringStatsControllerDailyHistoryRequest($numberOfDays, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerDailyHistory'][0])
     {
         // verify the required parameter 'numberOfDays' is set
         if (null === $numberOfDays || (is_array($numberOfDays) && 0 === count($numberOfDays))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $numberOfDays when calling governancePromptMonitoringStatsControllerDailyHistory'
+            );
+        }
+
+        // verify the required parameter 'purposeTermKey' is set
+        if (null === $purposeTermKey || (is_array($purposeTermKey) && 0 === count($purposeTermKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $purposeTermKey when calling governancePromptMonitoringStatsControllerDailyHistory'
             );
         }
 
@@ -23086,6 +24120,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -23135,6 +24178,42 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $facetTaxonomyKey,
             'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -23245,7 +24324,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -23280,14 +24359,19 @@ class DefaultApi
     }
 
     /**
-     * Operation governancePromptMonitoringStatsControllerMatrix.
+     * Operation governancePromptMonitoringStatsControllerEntityDomains.
      *
+     * @param  string $purposeTermKey purposeTermKey (optional)
      * @param  string $promptKey promptKey (optional)
      * @param  string $engineKey engineKey (optional)
      * @param  string $localeKey localeKey (optional)
      * @param  string $country country (optional)
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms xAxisTerms (optional)
@@ -23296,29 +24380,34 @@ class DefaultApi
      * @param  float $buckets buckets (optional)
      * @param  float $from from (optional)
      * @param  float $to to (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'] to see the possible values for this operation
      *
-     * @return GovernancePromptMonitoringStatsMatrixResponse
+     * @return GovernanceEntityDomainsResponse
      *
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMatrix($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    public function governancePromptMonitoringStatsControllerEntityDomains($purposeTermKey = null, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'][0])
     {
-        [$response] = $this->governancePromptMonitoringStatsControllerMatrixWithHttpInfo($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        [$response] = $this->governancePromptMonitoringStatsControllerEntityDomainsWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $response;
     }
 
     /**
-     * Operation governancePromptMonitoringStatsControllerMatrixWithHttpInfo.
+     * Operation governancePromptMonitoringStatsControllerEntityDomainsWithHttpInfo.
      *
+     * @param  string $purposeTermKey (optional)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23327,16 +24416,16 @@ class DefaultApi
      * @param  float $buckets (optional)
      * @param  float $from (optional)
      * @param  float $to (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'] to see the possible values for this operation
      *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse, HTTP status code, HTTP response headers (array of strings)
      *
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMatrixWithHttpInfo($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    public function governancePromptMonitoringStatsControllerEntityDomainsWithHttpInfo($purposeTermKey = null, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'][0])
     {
-        $request = $this->governancePromptMonitoringStatsControllerMatrixRequest($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerEntityDomainsRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -23376,23 +24465,23 @@ class DefaultApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse' === '\SplFileObject') {
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse' === '\SplFileObject') {
                         $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse' !== 'string') {
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse', []),
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
             }
 
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse';
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse';
             if ('\SplFileObject' === $returnType) {
                 $content = $response->getBody(); // stream goes to serializer
             } else {
@@ -23412,7 +24501,7 @@ class DefaultApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse',
+                        '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -23425,14 +24514,19 @@ class DefaultApi
     }
 
     /**
-     * Operation governancePromptMonitoringStatsControllerMatrixAsync.
+     * Operation governancePromptMonitoringStatsControllerEntityDomainsAsync.
      *
+     * @param  string $purposeTermKey (optional)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23441,15 +24535,15 @@ class DefaultApi
      * @param  float $buckets (optional)
      * @param  float $from (optional)
      * @param  float $to (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMatrixAsync($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    public function governancePromptMonitoringStatsControllerEntityDomainsAsync($purposeTermKey = null, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'][0])
     {
-        return $this->governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+        return $this->governancePromptMonitoringStatsControllerEntityDomainsAsyncWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -23459,14 +24553,19 @@ class DefaultApi
     }
 
     /**
-     * Operation governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo.
+     * Operation governancePromptMonitoringStatsControllerEntityDomainsAsyncWithHttpInfo.
      *
+     * @param  string $purposeTermKey (optional)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23475,16 +24574,16 @@ class DefaultApi
      * @param  float $buckets (optional)
      * @param  float $from (optional)
      * @param  float $to (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    public function governancePromptMonitoringStatsControllerEntityDomainsAsyncWithHttpInfo($purposeTermKey = null, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'][0])
     {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse';
-        $request = $this->governancePromptMonitoringStatsControllerMatrixRequest($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernanceEntityDomainsResponse';
+        $request = $this->governancePromptMonitoringStatsControllerEntityDomainsRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -23525,14 +24624,19 @@ class DefaultApi
     }
 
     /**
-     * Create request for operation 'governancePromptMonitoringStatsControllerMatrix'.
+     * Create request for operation 'governancePromptMonitoringStatsControllerEntityDomains'.
      *
+     * @param  string $purposeTermKey (optional)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23541,21 +24645,30 @@ class DefaultApi
      * @param  float $buckets (optional)
      * @param  float $from (optional)
      * @param  float $to (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMatrixRequest($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    public function governancePromptMonitoringStatsControllerEntityDomainsRequest($purposeTermKey = null, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerEntityDomains'][0])
     {
-        $resourcePath = '/sync-core/governance-stats/prompt-monitoring/matrix';
+        $resourcePath = '/sync-core/governance-stats/prompt-monitoring/entity-domains';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -23605,6 +24718,42 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $facetTaxonomyKey,
             'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -23706,7 +24855,545 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation governancePromptMonitoringStatsControllerMatrix.
+     *
+     * @param  string $purposeTermKey purposeTermKey (required)
+     * @param  string $promptKey promptKey (optional)
+     * @param  string $engineKey engineKey (optional)
+     * @param  string $localeKey localeKey (optional)
+     * @param  string $country country (optional)
+     * @param  string $taxonomyTerms taxonomyTerms (optional)
+     * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
+     * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
+     * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
+     * @param  string $xAxisTerms xAxisTerms (optional)
+     * @param  string $yAxisTerms yAxisTerms (optional)
+     * @param  string $timezone timezone (optional)
+     * @param  float $buckets buckets (optional)
+     * @param  float $from from (optional)
+     * @param  float $to to (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     *
+     * @return GovernancePromptMonitoringStatsMatrixResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function governancePromptMonitoringStatsControllerMatrix($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    {
+        [$response] = $this->governancePromptMonitoringStatsControllerMatrixWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation governancePromptMonitoringStatsControllerMatrixWithHttpInfo.
+     *
+     * @param  string $purposeTermKey (required)
+     * @param  string $promptKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $country (optional)
+     * @param  string $taxonomyTerms (optional)
+     * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
+     * @param  string $xAxisTaxonomyKey (optional)
+     * @param  string $yAxisTaxonomyKey (optional)
+     * @param  string $xAxisTerms (optional)
+     * @param  string $yAxisTerms (optional)
+     * @param  string $timezone (optional)
+     * @param  float $buckets (optional)
+     * @param  float $from (optional)
+     * @param  float $to (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function governancePromptMonitoringStatsControllerMatrixWithHttpInfo($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    {
+        $request = $this->governancePromptMonitoringStatsControllerMatrixRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation governancePromptMonitoringStatsControllerMatrixAsync.
+     *
+     * @param  string $purposeTermKey (required)
+     * @param  string $promptKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $country (optional)
+     * @param  string $taxonomyTerms (optional)
+     * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
+     * @param  string $xAxisTaxonomyKey (optional)
+     * @param  string $yAxisTaxonomyKey (optional)
+     * @param  string $xAxisTerms (optional)
+     * @param  string $yAxisTerms (optional)
+     * @param  string $timezone (optional)
+     * @param  float $buckets (optional)
+     * @param  float $from (optional)
+     * @param  float $to (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governancePromptMonitoringStatsControllerMatrixAsync($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    {
+        return $this->governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo.
+     *
+     * @param  string $purposeTermKey (required)
+     * @param  string $promptKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $country (optional)
+     * @param  string $taxonomyTerms (optional)
+     * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
+     * @param  string $xAxisTaxonomyKey (optional)
+     * @param  string $yAxisTaxonomyKey (optional)
+     * @param  string $xAxisTerms (optional)
+     * @param  string $yAxisTerms (optional)
+     * @param  string $timezone (optional)
+     * @param  float $buckets (optional)
+     * @param  float $from (optional)
+     * @param  float $to (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governancePromptMonitoringStatsControllerMatrixAsyncWithHttpInfo($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMatrixResponse';
+        $request = $this->governancePromptMonitoringStatsControllerMatrixRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'governancePromptMonitoringStatsControllerMatrix'.
+     *
+     * @param  string $purposeTermKey (required)
+     * @param  string $promptKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $country (optional)
+     * @param  string $taxonomyTerms (optional)
+     * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
+     * @param  string $xAxisTaxonomyKey (optional)
+     * @param  string $yAxisTaxonomyKey (optional)
+     * @param  string $xAxisTerms (optional)
+     * @param  string $yAxisTerms (optional)
+     * @param  string $timezone (optional)
+     * @param  float $buckets (optional)
+     * @param  float $from (optional)
+     * @param  float $to (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['governancePromptMonitoringStatsControllerMatrix'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function governancePromptMonitoringStatsControllerMatrixRequest($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMatrix'][0])
+    {
+        // verify the required parameter 'purposeTermKey' is set
+        if (null === $purposeTermKey || (is_array($purposeTermKey) && 0 === count($purposeTermKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $purposeTermKey when calling governancePromptMonitoringStatsControllerMatrix'
+            );
+        }
+
+        $resourcePath = '/sync-core/governance-stats/prompt-monitoring/matrix';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $promptKey,
+            'promptKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $engineKey,
+            'engineKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $localeKey,
+            'localeKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $country,
+            'country', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $taxonomyTerms,
+            'taxonomyTerms', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $facetTaxonomyKey,
+            'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $xAxisTaxonomyKey,
+            'xAxisTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $yAxisTaxonomyKey,
+            'yAxisTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $xAxisTerms,
+            'xAxisTerms', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $yAxisTerms,
+            'yAxisTerms', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $timezone,
+            'timezone', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $buckets,
+            'buckets', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from,
+            'from', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $to,
+            'to', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -23744,12 +25431,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerMonthlyHistory.
      *
      * @param  string $numberOfMonths numberOfMonths (required)
+     * @param  string $purposeTermKey purposeTermKey (required)
      * @param  string $promptKey promptKey (optional)
      * @param  string $engineKey engineKey (optional)
      * @param  string $localeKey localeKey (optional)
      * @param  string $country country (optional)
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms xAxisTerms (optional)
@@ -23765,9 +25457,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMonthlyHistory($numberOfMonths, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
+    public function governancePromptMonitoringStatsControllerMonthlyHistory($numberOfMonths, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
     {
-        [$response] = $this->governancePromptMonitoringStatsControllerMonthlyHistoryWithHttpInfo($numberOfMonths, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        [$response] = $this->governancePromptMonitoringStatsControllerMonthlyHistoryWithHttpInfo($numberOfMonths, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $response;
     }
@@ -23776,12 +25468,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerMonthlyHistoryWithHttpInfo.
      *
      * @param  string $numberOfMonths (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23797,9 +25494,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMonthlyHistoryWithHttpInfo($numberOfMonths, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
+    public function governancePromptMonitoringStatsControllerMonthlyHistoryWithHttpInfo($numberOfMonths, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
     {
-        $request = $this->governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -23891,12 +25588,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerMonthlyHistoryAsync.
      *
      * @param  string $numberOfMonths (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23911,9 +25613,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMonthlyHistoryAsync($numberOfMonths, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
+    public function governancePromptMonitoringStatsControllerMonthlyHistoryAsync($numberOfMonths, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
     {
-        return $this->governancePromptMonitoringStatsControllerMonthlyHistoryAsyncWithHttpInfo($numberOfMonths, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+        return $this->governancePromptMonitoringStatsControllerMonthlyHistoryAsyncWithHttpInfo($numberOfMonths, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -23926,12 +25628,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerMonthlyHistoryAsyncWithHttpInfo.
      *
      * @param  string $numberOfMonths (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -23946,10 +25653,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMonthlyHistoryAsyncWithHttpInfo($numberOfMonths, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
+    public function governancePromptMonitoringStatsControllerMonthlyHistoryAsyncWithHttpInfo($numberOfMonths, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsMonthlyHistoryBucketResponse[]';
-        $request = $this->governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -23993,12 +25700,17 @@ class DefaultApi
      * Create request for operation 'governancePromptMonitoringStatsControllerMonthlyHistory'.
      *
      * @param  string $numberOfMonths (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24013,12 +25725,19 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
+    public function governancePromptMonitoringStatsControllerMonthlyHistoryRequest($numberOfMonths, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerMonthlyHistory'][0])
     {
         // verify the required parameter 'numberOfMonths' is set
         if (null === $numberOfMonths || (is_array($numberOfMonths) && 0 === count($numberOfMonths))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $numberOfMonths when calling governancePromptMonitoringStatsControllerMonthlyHistory'
+            );
+        }
+
+        // verify the required parameter 'purposeTermKey' is set
+        if (null === $purposeTermKey || (is_array($purposeTermKey) && 0 === count($purposeTermKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $purposeTermKey when calling governancePromptMonitoringStatsControllerMonthlyHistory'
             );
         }
 
@@ -24029,6 +25748,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -24078,6 +25806,42 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $facetTaxonomyKey,
             'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -24188,7 +25952,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -24225,12 +25989,17 @@ class DefaultApi
     /**
      * Operation governancePromptMonitoringStatsControllerTotal.
      *
+     * @param  string $purposeTermKey purposeTermKey (required)
      * @param  string $promptKey promptKey (optional)
      * @param  string $engineKey engineKey (optional)
      * @param  string $localeKey localeKey (optional)
      * @param  string $country country (optional)
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms xAxisTerms (optional)
@@ -24246,9 +26015,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerTotal($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
+    public function governancePromptMonitoringStatsControllerTotal($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
     {
-        [$response] = $this->governancePromptMonitoringStatsControllerTotalWithHttpInfo($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        [$response] = $this->governancePromptMonitoringStatsControllerTotalWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $response;
     }
@@ -24256,12 +26025,17 @@ class DefaultApi
     /**
      * Operation governancePromptMonitoringStatsControllerTotalWithHttpInfo.
      *
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24277,9 +26051,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerTotalWithHttpInfo($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
+    public function governancePromptMonitoringStatsControllerTotalWithHttpInfo($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
     {
-        $request = $this->governancePromptMonitoringStatsControllerTotalRequest($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerTotalRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -24370,12 +26144,17 @@ class DefaultApi
     /**
      * Operation governancePromptMonitoringStatsControllerTotalAsync.
      *
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24390,9 +26169,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerTotalAsync($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
+    public function governancePromptMonitoringStatsControllerTotalAsync($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
     {
-        return $this->governancePromptMonitoringStatsControllerTotalAsyncWithHttpInfo($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+        return $this->governancePromptMonitoringStatsControllerTotalAsyncWithHttpInfo($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -24404,12 +26183,17 @@ class DefaultApi
     /**
      * Operation governancePromptMonitoringStatsControllerTotalAsyncWithHttpInfo.
      *
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24424,10 +26208,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerTotalAsyncWithHttpInfo($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
+    public function governancePromptMonitoringStatsControllerTotalAsyncWithHttpInfo($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsTotalResponse';
-        $request = $this->governancePromptMonitoringStatsControllerTotalRequest($promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerTotalRequest($purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -24470,12 +26254,17 @@ class DefaultApi
     /**
      * Create request for operation 'governancePromptMonitoringStatsControllerTotal'.
      *
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24490,8 +26279,15 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerTotalRequest($promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
+    public function governancePromptMonitoringStatsControllerTotalRequest($purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerTotal'][0])
     {
+        // verify the required parameter 'purposeTermKey' is set
+        if (null === $purposeTermKey || (is_array($purposeTermKey) && 0 === count($purposeTermKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $purposeTermKey when calling governancePromptMonitoringStatsControllerTotal'
+            );
+        }
+
         $resourcePath = '/sync-core/governance-stats/prompt-monitoring/total';
         $formParams = [];
         $queryParams = [];
@@ -24499,6 +26295,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -24548,6 +26353,42 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $facetTaxonomyKey,
             'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -24649,7 +26490,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -24687,12 +26528,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerWeeklyHistory.
      *
      * @param  string $numberOfWeeks numberOfWeeks (required)
+     * @param  string $purposeTermKey purposeTermKey (required)
      * @param  string $promptKey promptKey (optional)
      * @param  string $engineKey engineKey (optional)
      * @param  string $localeKey localeKey (optional)
      * @param  string $country country (optional)
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
+     * @param  string $includeSources includeSources (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
+     * @param  string $groupBy groupBy (optional)
+     * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms xAxisTerms (optional)
@@ -24708,9 +26554,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerWeeklyHistory($numberOfWeeks, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
+    public function governancePromptMonitoringStatsControllerWeeklyHistory($numberOfWeeks, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
     {
-        [$response] = $this->governancePromptMonitoringStatsControllerWeeklyHistoryWithHttpInfo($numberOfWeeks, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        [$response] = $this->governancePromptMonitoringStatsControllerWeeklyHistoryWithHttpInfo($numberOfWeeks, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $response;
     }
@@ -24719,12 +26565,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerWeeklyHistoryWithHttpInfo.
      *
      * @param  string $numberOfWeeks (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24740,9 +26591,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerWeeklyHistoryWithHttpInfo($numberOfWeeks, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
+    public function governancePromptMonitoringStatsControllerWeeklyHistoryWithHttpInfo($numberOfWeeks, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
     {
-        $request = $this->governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -24834,12 +26685,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerWeeklyHistoryAsync.
      *
      * @param  string $numberOfWeeks (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24854,9 +26710,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerWeeklyHistoryAsync($numberOfWeeks, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
+    public function governancePromptMonitoringStatsControllerWeeklyHistoryAsync($numberOfWeeks, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
     {
-        return $this->governancePromptMonitoringStatsControllerWeeklyHistoryAsyncWithHttpInfo($numberOfWeeks, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
+        return $this->governancePromptMonitoringStatsControllerWeeklyHistoryAsyncWithHttpInfo($numberOfWeeks, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -24869,12 +26725,17 @@ class DefaultApi
      * Operation governancePromptMonitoringStatsControllerWeeklyHistoryAsyncWithHttpInfo.
      *
      * @param  string $numberOfWeeks (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24889,10 +26750,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerWeeklyHistoryAsyncWithHttpInfo($numberOfWeeks, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
+    public function governancePromptMonitoringStatsControllerWeeklyHistoryAsyncWithHttpInfo($numberOfWeeks, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse[]';
-        $request = $this->governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
+        $request = $this->governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $purposeTermKey, $promptKey, $engineKey, $localeKey, $country, $taxonomyTerms, $facetTaxonomyKey, $includeSources, $entityTermKey, $groupBy, $sourceHosts, $xAxisTaxonomyKey, $yAxisTaxonomyKey, $xAxisTerms, $yAxisTerms, $timezone, $buckets, $from, $to, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -24936,12 +26797,17 @@ class DefaultApi
      * Create request for operation 'governancePromptMonitoringStatsControllerWeeklyHistory'.
      *
      * @param  string $numberOfWeeks (required)
+     * @param  string $purposeTermKey (required)
      * @param  string $promptKey (optional)
      * @param  string $engineKey (optional)
      * @param  string $localeKey (optional)
      * @param  string $country (optional)
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
+     * @param  string $includeSources (optional)
+     * @param  string $entityTermKey (optional)
+     * @param  string $groupBy (optional)
+     * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
      * @param  string $yAxisTaxonomyKey (optional)
      * @param  string $xAxisTerms (optional)
@@ -24956,12 +26822,19 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
+    public function governancePromptMonitoringStatsControllerWeeklyHistoryRequest($numberOfWeeks, $purposeTermKey, $promptKey = null, $engineKey = null, $localeKey = null, $country = null, $taxonomyTerms = null, $facetTaxonomyKey = null, $includeSources = null, $entityTermKey = null, $groupBy = null, $sourceHosts = null, $xAxisTaxonomyKey = null, $yAxisTaxonomyKey = null, $xAxisTerms = null, $yAxisTerms = null, $timezone = null, $buckets = null, $from = null, $to = null, string $contentType = self::contentTypes['governancePromptMonitoringStatsControllerWeeklyHistory'][0])
     {
         // verify the required parameter 'numberOfWeeks' is set
         if (null === $numberOfWeeks || (is_array($numberOfWeeks) && 0 === count($numberOfWeeks))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $numberOfWeeks when calling governancePromptMonitoringStatsControllerWeeklyHistory'
+            );
+        }
+
+        // verify the required parameter 'purposeTermKey' is set
+        if (null === $purposeTermKey || (is_array($purposeTermKey) && 0 === count($purposeTermKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $purposeTermKey when calling governancePromptMonitoringStatsControllerWeeklyHistory'
             );
         }
 
@@ -24972,6 +26845,15 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $purposeTermKey,
+            'purposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -25021,6 +26903,42 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $facetTaxonomyKey,
             'facetTaxonomyKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $includeSources,
+            'includeSources', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $entityTermKey,
+            'entityTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $groupBy,
+            'groupBy', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sourceHosts,
+            'sourceHosts', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -25131,7 +27049,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -25394,7 +27312,7 @@ class DefaultApi
         if (isset($createHealthCheckDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createHealthCheckDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createHealthCheckDto));
             } else {
                 $httpBody = $createHealthCheckDto;
             }
@@ -25414,7 +27332,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -25699,7 +27617,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -26004,7 +27922,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -26289,7 +28207,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -26610,7 +28528,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -26944,7 +28862,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -27207,7 +29125,7 @@ class DefaultApi
         if (isset($healthCheckEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($healthCheckEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($healthCheckEntity));
             } else {
                 $httpBody = $healthCheckEntity;
             }
@@ -27227,7 +29145,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -27517,7 +29435,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -27802,7 +29720,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -28082,7 +30000,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -28119,6 +30037,11 @@ class DefaultApi
     /**
      * Operation issueControllerList.
      *
+     * @param  string $site site (optional)
+     * @param  string $responsibility responsibility (optional)
+     * @param  string $issueType issueType (optional)
+     * @param  string $status status (optional)
+     * @param  string $contentItemKey contentItemKey (optional)
      * @param  string $page page (optional)
      * @param  string $itemsPerPage itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
@@ -28128,9 +30051,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function issueControllerList($page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerList($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        [$response] = $this->issueControllerListWithHttpInfo($page, $itemsPerPage, $contentType);
+        [$response] = $this->issueControllerListWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -28138,6 +30061,11 @@ class DefaultApi
     /**
      * Operation issueControllerListWithHttpInfo.
      *
+     * @param  string $site (optional)
+     * @param  string $responsibility (optional)
+     * @param  string $issueType (optional)
+     * @param  string $status (optional)
+     * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
@@ -28147,9 +30075,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListWithHttpInfo($page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        $request = $this->issueControllerListRequest($page, $itemsPerPage, $contentType);
+        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -28240,6 +30168,11 @@ class DefaultApi
     /**
      * Operation issueControllerListAsync.
      *
+     * @param  string $site (optional)
+     * @param  string $responsibility (optional)
+     * @param  string $issueType (optional)
+     * @param  string $status (optional)
+     * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
@@ -28248,9 +30181,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListAsync($page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListAsync($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        return $this->issueControllerListAsyncWithHttpInfo($page, $itemsPerPage, $contentType)
+        return $this->issueControllerListAsyncWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -28262,6 +30195,11 @@ class DefaultApi
     /**
      * Operation issueControllerListAsyncWithHttpInfo.
      *
+     * @param  string $site (optional)
+     * @param  string $responsibility (optional)
+     * @param  string $issueType (optional)
+     * @param  string $status (optional)
+     * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
@@ -28270,10 +30208,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListAsyncWithHttpInfo($page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListAsyncWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueListResponse';
-        $request = $this->issueControllerListRequest($page, $itemsPerPage, $contentType);
+        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -28316,6 +30254,11 @@ class DefaultApi
     /**
      * Create request for operation 'issueControllerList'.
      *
+     * @param  string $site (optional)
+     * @param  string $responsibility (optional)
+     * @param  string $issueType (optional)
+     * @param  string $status (optional)
+     * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
@@ -28324,7 +30267,7 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListRequest($page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListRequest($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
         $resourcePath = '/sync-core/issue';
         $formParams = [];
@@ -28333,6 +30276,51 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $site,
+            'site', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $responsibility,
+            'responsibility', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $issueType,
+            'issueType', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $status,
+            'status', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $contentItemKey,
+            'contentItemKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $page,
@@ -28375,7 +30363,959 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation issueControllerPatchStatus.
+     *
+     * @param  string $id id (required)
+     * @param  IssuePatchBody $issuePatchBody issuePatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return IssueEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueControllerPatchStatus($id, $issuePatchBody, string $contentType = self::contentTypes['issueControllerPatchStatus'][0])
+    {
+        [$response] = $this->issueControllerPatchStatusWithHttpInfo($id, $issuePatchBody, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation issueControllerPatchStatusWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  IssuePatchBody $issuePatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\IssueEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueControllerPatchStatusWithHttpInfo($id, $issuePatchBody, string $contentType = self::contentTypes['issueControllerPatchStatus'][0])
+    {
+        $request = $this->issueControllerPatchStatusRequest($id, $issuePatchBody, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation issueControllerPatchStatusAsync.
+     *
+     * @param  string $id (required)
+     * @param  IssuePatchBody $issuePatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueControllerPatchStatusAsync($id, $issuePatchBody, string $contentType = self::contentTypes['issueControllerPatchStatus'][0])
+    {
+        return $this->issueControllerPatchStatusAsyncWithHttpInfo($id, $issuePatchBody, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation issueControllerPatchStatusAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  IssuePatchBody $issuePatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueControllerPatchStatusAsyncWithHttpInfo($id, $issuePatchBody, string $contentType = self::contentTypes['issueControllerPatchStatus'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\IssueEntity';
+        $request = $this->issueControllerPatchStatusRequest($id, $issuePatchBody, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'issueControllerPatchStatus'.
+     *
+     * @param  string $id (required)
+     * @param  IssuePatchBody $issuePatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueControllerPatchStatusRequest($id, $issuePatchBody, string $contentType = self::contentTypes['issueControllerPatchStatus'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling issueControllerPatchStatus'
+            );
+        }
+
+        // verify the required parameter 'issuePatchBody' is set
+        if (null === $issuePatchBody || (is_array($issuePatchBody) && 0 === count($issuePatchBody))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $issuePatchBody when calling issueControllerPatchStatus'
+            );
+        }
+
+        $resourcePath = '/sync-core/issue/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($issuePatchBody)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($issuePatchBody));
+            } else {
+                $httpBody = $issuePatchBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'PATCH',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation issueOccurrenceControllerItem.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerItem'] to see the possible values for this operation
+     *
+     * @return IssueOccurrenceEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerItem($id, string $contentType = self::contentTypes['issueOccurrenceControllerItem'][0])
+    {
+        [$response] = $this->issueOccurrenceControllerItemWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation issueOccurrenceControllerItemWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerItem'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['issueOccurrenceControllerItem'][0])
+    {
+        $request = $this->issueOccurrenceControllerItemRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation issueOccurrenceControllerItemAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerItemAsync($id, string $contentType = self::contentTypes['issueOccurrenceControllerItem'][0])
+    {
+        return $this->issueOccurrenceControllerItemAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation issueOccurrenceControllerItemAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['issueOccurrenceControllerItem'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\IssueOccurrenceEntity';
+        $request = $this->issueOccurrenceControllerItemRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'issueOccurrenceControllerItem'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerItem'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerItemRequest($id, string $contentType = self::contentTypes['issueOccurrenceControllerItem'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling issueOccurrenceControllerItem'
+            );
+        }
+
+        $resourcePath = '/sync-core/issue-occurrence/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation issueOccurrenceControllerList.
+     *
+     * @param  string $issueKey issueKey (optional)
+     * @param  string $targetId targetId (optional)
+     * @param  string $targetKey targetKey (optional)
+     * @param  string $createdAtAfter createdAtAfter (optional)
+     * @param  mixed $targetType targetType (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerList'] to see the possible values for this operation
+     *
+     * @return PagedIssueOccurrenceListResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerList($issueKey = null, $targetId = null, $targetKey = null, $createdAtAfter = null, $targetType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueOccurrenceControllerList'][0])
+    {
+        [$response] = $this->issueOccurrenceControllerListWithHttpInfo($issueKey, $targetId, $targetKey, $createdAtAfter, $targetType, $page, $itemsPerPage, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation issueOccurrenceControllerListWithHttpInfo.
+     *
+     * @param  string $issueKey (optional)
+     * @param  string $targetId (optional)
+     * @param  string $targetKey (optional)
+     * @param  string $createdAtAfter (optional)
+     * @param  mixed $targetType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerList'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerListWithHttpInfo($issueKey = null, $targetId = null, $targetKey = null, $createdAtAfter = null, $targetType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueOccurrenceControllerList'][0])
+    {
+        $request = $this->issueOccurrenceControllerListRequest($issueKey, $targetId, $targetKey, $createdAtAfter, $targetType, $page, $itemsPerPage, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation issueOccurrenceControllerListAsync.
+     *
+     * @param  string $issueKey (optional)
+     * @param  string $targetId (optional)
+     * @param  string $targetKey (optional)
+     * @param  string $createdAtAfter (optional)
+     * @param  mixed $targetType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerListAsync($issueKey = null, $targetId = null, $targetKey = null, $createdAtAfter = null, $targetType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueOccurrenceControllerList'][0])
+    {
+        return $this->issueOccurrenceControllerListAsyncWithHttpInfo($issueKey, $targetId, $targetKey, $createdAtAfter, $targetType, $page, $itemsPerPage, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation issueOccurrenceControllerListAsyncWithHttpInfo.
+     *
+     * @param  string $issueKey (optional)
+     * @param  string $targetId (optional)
+     * @param  string $targetKey (optional)
+     * @param  string $createdAtAfter (optional)
+     * @param  mixed $targetType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerListAsyncWithHttpInfo($issueKey = null, $targetId = null, $targetKey = null, $createdAtAfter = null, $targetType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueOccurrenceControllerList'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueOccurrenceListResponse';
+        $request = $this->issueOccurrenceControllerListRequest($issueKey, $targetId, $targetKey, $createdAtAfter, $targetType, $page, $itemsPerPage, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'issueOccurrenceControllerList'.
+     *
+     * @param  string $issueKey (optional)
+     * @param  string $targetId (optional)
+     * @param  string $targetKey (optional)
+     * @param  string $createdAtAfter (optional)
+     * @param  mixed $targetType (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueOccurrenceControllerList'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function issueOccurrenceControllerListRequest($issueKey = null, $targetId = null, $targetKey = null, $createdAtAfter = null, $targetType = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueOccurrenceControllerList'][0])
+    {
+        $resourcePath = '/sync-core/issue-occurrence';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $issueKey,
+            'issueKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetId,
+            'targetId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetKey,
+            'targetKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $createdAtAfter,
+            'createdAt[after]', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetType,
+            'targetType', // param base name
+            'mixed', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -28660,7 +31600,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -28928,7 +31868,7 @@ class DefaultApi
             $formParams['file'] = [];
             $paramFiles = is_array($file) ? $file : [$file];
             foreach ($paramFiles as $paramFile) {
-                $formParams['file'][] = \GuzzleHttp\Psr7\Utils::tryFopen(
+                $formParams['file'][] = Utils::tryFopen(
                     ObjectSerializer::toFormValue($paramFile),
                     'rb'
                 );
@@ -28958,7 +31898,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -29238,7 +32178,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -29523,7 +32463,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -29786,7 +32726,7 @@ class DefaultApi
         if (isset($createLocaleDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createLocaleDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createLocaleDto));
             } else {
                 $httpBody = $createLocaleDto;
             }
@@ -29806,7 +32746,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -30091,7 +33031,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -30468,7 +33408,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -30731,7 +33671,7 @@ class DefaultApi
         if (isset($localeEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($localeEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($localeEntity));
             } else {
                 $httpBody = $localeEntity;
             }
@@ -30751,7 +33691,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -31014,7 +33954,7 @@ class DefaultApi
         if (isset($loggingIdsRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($loggingIdsRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($loggingIdsRequest));
             } else {
                 $httpBody = $loggingIdsRequest;
             }
@@ -31034,7 +33974,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -31297,7 +34237,7 @@ class DefaultApi
         if (isset($createTaskGroupDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskGroupDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskGroupDto));
             } else {
                 $httpBody = $createTaskGroupDto;
             }
@@ -31317,7 +34257,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -31602,7 +34542,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -31887,7 +34827,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -32334,7 +35274,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -32619,7 +35559,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -32647,6 +35587,289 @@ class DefaultApi
 
         return new Request(
             'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation monitoringPromptControllerBulkTerms.
+     *
+     * @param  BulkMonitoringPromptTermAssociationDto $bulkMonitoringPromptTermAssociationDto bulkMonitoringPromptTermAssociationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerBulkTerms'] to see the possible values for this operation
+     *
+     * @return BulkMonitoringPromptTermAssociationResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptControllerBulkTerms($bulkMonitoringPromptTermAssociationDto, string $contentType = self::contentTypes['monitoringPromptControllerBulkTerms'][0])
+    {
+        [$response] = $this->monitoringPromptControllerBulkTermsWithHttpInfo($bulkMonitoringPromptTermAssociationDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation monitoringPromptControllerBulkTermsWithHttpInfo.
+     *
+     * @param  BulkMonitoringPromptTermAssociationDto $bulkMonitoringPromptTermAssociationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerBulkTerms'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptControllerBulkTermsWithHttpInfo($bulkMonitoringPromptTermAssociationDto, string $contentType = self::contentTypes['monitoringPromptControllerBulkTerms'][0])
+    {
+        $request = $this->monitoringPromptControllerBulkTermsRequest($bulkMonitoringPromptTermAssociationDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation monitoringPromptControllerBulkTermsAsync.
+     *
+     * @param  BulkMonitoringPromptTermAssociationDto $bulkMonitoringPromptTermAssociationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerBulkTerms'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptControllerBulkTermsAsync($bulkMonitoringPromptTermAssociationDto, string $contentType = self::contentTypes['monitoringPromptControllerBulkTerms'][0])
+    {
+        return $this->monitoringPromptControllerBulkTermsAsyncWithHttpInfo($bulkMonitoringPromptTermAssociationDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation monitoringPromptControllerBulkTermsAsyncWithHttpInfo.
+     *
+     * @param  BulkMonitoringPromptTermAssociationDto $bulkMonitoringPromptTermAssociationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerBulkTerms'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptControllerBulkTermsAsyncWithHttpInfo($bulkMonitoringPromptTermAssociationDto, string $contentType = self::contentTypes['monitoringPromptControllerBulkTerms'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse';
+        $request = $this->monitoringPromptControllerBulkTermsRequest($bulkMonitoringPromptTermAssociationDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'monitoringPromptControllerBulkTerms'.
+     *
+     * @param  BulkMonitoringPromptTermAssociationDto $bulkMonitoringPromptTermAssociationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerBulkTerms'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptControllerBulkTermsRequest($bulkMonitoringPromptTermAssociationDto, string $contentType = self::contentTypes['monitoringPromptControllerBulkTerms'][0])
+    {
+        // verify the required parameter 'bulkMonitoringPromptTermAssociationDto' is set
+        if (null === $bulkMonitoringPromptTermAssociationDto || (is_array($bulkMonitoringPromptTermAssociationDto) && 0 === count($bulkMonitoringPromptTermAssociationDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $bulkMonitoringPromptTermAssociationDto when calling monitoringPromptControllerBulkTerms'
+            );
+        }
+
+        $resourcePath = '/sync-core/monitoring-prompt/terms';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($bulkMonitoringPromptTermAssociationDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($bulkMonitoringPromptTermAssociationDto));
+            } else {
+                $httpBody = $bulkMonitoringPromptTermAssociationDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -32882,7 +36105,7 @@ class DefaultApi
         if (isset($createMonitoringPromptDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createMonitoringPromptDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createMonitoringPromptDto));
             } else {
                 $httpBody = $createMonitoringPromptDto;
             }
@@ -32902,7 +36125,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -33187,7 +36410,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -33492,7 +36715,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -33529,6 +36752,8 @@ class DefaultApi
     /**
      * Operation monitoringPromptControllerList.
      *
+     * @param  mixed $targetTermsKey targetTermsKey (optional)
+     * @param  mixed $termsKey termsKey (optional)
      * @param  mixed $staticTermsKey staticTermsKey (optional)
      * @param  mixed $enginesKey enginesKey (optional)
      * @param  mixed $localesKey localesKey (optional)
@@ -33547,9 +36772,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptControllerList($staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
+    public function monitoringPromptControllerList($targetTermsKey = null, $termsKey = null, $staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
     {
-        [$response] = $this->monitoringPromptControllerListWithHttpInfo($staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
+        [$response] = $this->monitoringPromptControllerListWithHttpInfo($targetTermsKey, $termsKey, $staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -33557,6 +36782,8 @@ class DefaultApi
     /**
      * Operation monitoringPromptControllerListWithHttpInfo.
      *
+     * @param  mixed $targetTermsKey (optional)
+     * @param  mixed $termsKey (optional)
      * @param  mixed $staticTermsKey (optional)
      * @param  mixed $enginesKey (optional)
      * @param  mixed $localesKey (optional)
@@ -33575,9 +36802,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptControllerListWithHttpInfo($staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
+    public function monitoringPromptControllerListWithHttpInfo($targetTermsKey = null, $termsKey = null, $staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
     {
-        $request = $this->monitoringPromptControllerListRequest($staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
+        $request = $this->monitoringPromptControllerListRequest($targetTermsKey, $termsKey, $staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -33668,6 +36895,8 @@ class DefaultApi
     /**
      * Operation monitoringPromptControllerListAsync.
      *
+     * @param  mixed $targetTermsKey (optional)
+     * @param  mixed $termsKey (optional)
      * @param  mixed $staticTermsKey (optional)
      * @param  mixed $enginesKey (optional)
      * @param  mixed $localesKey (optional)
@@ -33685,9 +36914,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptControllerListAsync($staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
+    public function monitoringPromptControllerListAsync($targetTermsKey = null, $termsKey = null, $staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
     {
-        return $this->monitoringPromptControllerListAsyncWithHttpInfo($staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType)
+        return $this->monitoringPromptControllerListAsyncWithHttpInfo($targetTermsKey, $termsKey, $staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -33699,6 +36928,8 @@ class DefaultApi
     /**
      * Operation monitoringPromptControllerListAsyncWithHttpInfo.
      *
+     * @param  mixed $targetTermsKey (optional)
+     * @param  mixed $termsKey (optional)
      * @param  mixed $staticTermsKey (optional)
      * @param  mixed $enginesKey (optional)
      * @param  mixed $localesKey (optional)
@@ -33716,10 +36947,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptControllerListAsyncWithHttpInfo($staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
+    public function monitoringPromptControllerListAsyncWithHttpInfo($targetTermsKey = null, $termsKey = null, $staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptListResponse';
-        $request = $this->monitoringPromptControllerListRequest($staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
+        $request = $this->monitoringPromptControllerListRequest($targetTermsKey, $termsKey, $staticTermsKey, $enginesKey, $localesKey, $templateTermsKey, $promptLocaleKey, $templatePromptKey, $countries, $type, $status, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -33762,6 +36993,8 @@ class DefaultApi
     /**
      * Create request for operation 'monitoringPromptControllerList'.
      *
+     * @param  mixed $targetTermsKey (optional)
+     * @param  mixed $termsKey (optional)
      * @param  mixed $staticTermsKey (optional)
      * @param  mixed $enginesKey (optional)
      * @param  mixed $localesKey (optional)
@@ -33779,7 +37012,7 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptControllerListRequest($staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
+    public function monitoringPromptControllerListRequest($targetTermsKey = null, $termsKey = null, $staticTermsKey = null, $enginesKey = null, $localesKey = null, $templateTermsKey = null, $promptLocaleKey = null, $templatePromptKey = null, $countries = null, $type = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptControllerList'][0])
     {
         $resourcePath = '/sync-core/monitoring-prompt';
         $formParams = [];
@@ -33788,6 +37021,24 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetTermsKey,
+            'targetTermsKey', // param base name
+            'mixed', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $termsKey,
+            'termsKey', // param base name
+            'mixed', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $staticTermsKey,
@@ -33911,7 +37162,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -34245,7 +37496,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -34508,7 +37759,7 @@ class DefaultApi
         if (isset($monitoringPromptUpdateFlagsDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($monitoringPromptUpdateFlagsDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($monitoringPromptUpdateFlagsDto));
             } else {
                 $httpBody = $monitoringPromptUpdateFlagsDto;
             }
@@ -34528,7 +37779,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -34563,9 +37814,345 @@ class DefaultApi
     }
 
     /**
+     * Operation monitoringPromptRunControllerCountAnswerExport.
+     *
+     * @param  string $prompts prompts (optional)
+     * @param  string $countryLocales countryLocales (optional)
+     * @param  string $engines engines (optional)
+     * @param  string $to to (optional)
+     * @param  string $from from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerCountAnswerExport'] to see the possible values for this operation
+     *
+     * @return AnswerExportCountResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerCountAnswerExport($prompts = null, $countryLocales = null, $engines = null, $to = null, $from = null, string $contentType = self::contentTypes['monitoringPromptRunControllerCountAnswerExport'][0])
+    {
+        [$response] = $this->monitoringPromptRunControllerCountAnswerExportWithHttpInfo($prompts, $countryLocales, $engines, $to, $from, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerCountAnswerExportWithHttpInfo.
+     *
+     * @param  string $prompts (optional)
+     * @param  string $countryLocales (optional)
+     * @param  string $engines (optional)
+     * @param  string $to (optional)
+     * @param  string $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerCountAnswerExport'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerCountAnswerExportWithHttpInfo($prompts = null, $countryLocales = null, $engines = null, $to = null, $from = null, string $contentType = self::contentTypes['monitoringPromptRunControllerCountAnswerExport'][0])
+    {
+        $request = $this->monitoringPromptRunControllerCountAnswerExportRequest($prompts, $countryLocales, $engines, $to, $from, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerCountAnswerExportAsync.
+     *
+     * @param  string $prompts (optional)
+     * @param  string $countryLocales (optional)
+     * @param  string $engines (optional)
+     * @param  string $to (optional)
+     * @param  string $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerCountAnswerExport'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerCountAnswerExportAsync($prompts = null, $countryLocales = null, $engines = null, $to = null, $from = null, string $contentType = self::contentTypes['monitoringPromptRunControllerCountAnswerExport'][0])
+    {
+        return $this->monitoringPromptRunControllerCountAnswerExportAsyncWithHttpInfo($prompts, $countryLocales, $engines, $to, $from, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerCountAnswerExportAsyncWithHttpInfo.
+     *
+     * @param  string $prompts (optional)
+     * @param  string $countryLocales (optional)
+     * @param  string $engines (optional)
+     * @param  string $to (optional)
+     * @param  string $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerCountAnswerExport'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerCountAnswerExportAsyncWithHttpInfo($prompts = null, $countryLocales = null, $engines = null, $to = null, $from = null, string $contentType = self::contentTypes['monitoringPromptRunControllerCountAnswerExport'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse';
+        $request = $this->monitoringPromptRunControllerCountAnswerExportRequest($prompts, $countryLocales, $engines, $to, $from, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'monitoringPromptRunControllerCountAnswerExport'.
+     *
+     * @param  string $prompts (optional)
+     * @param  string $countryLocales (optional)
+     * @param  string $engines (optional)
+     * @param  string $to (optional)
+     * @param  string $from (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerCountAnswerExport'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerCountAnswerExportRequest($prompts = null, $countryLocales = null, $engines = null, $to = null, $from = null, string $contentType = self::contentTypes['monitoringPromptRunControllerCountAnswerExport'][0])
+    {
+        $resourcePath = '/sync-core/monitoring-prompt-run/export/answers/count';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $prompts,
+            'prompts', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $countryLocales,
+            'countryLocales', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $engines,
+            'engines', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $to,
+            'to', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from,
+            'from', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation monitoringPromptRunControllerItem.
      *
      * @param  string $id id (required)
+     * @param  string $promptTranslationLocaleKey promptTranslationLocaleKey (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerItem'] to see the possible values for this operation
      *
      * @return MonitoringPromptRunEntity
@@ -34573,9 +38160,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerItem($id, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
+    public function monitoringPromptRunControllerItem($id, $promptTranslationLocaleKey = null, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
     {
-        [$response] = $this->monitoringPromptRunControllerItemWithHttpInfo($id, $contentType);
+        [$response] = $this->monitoringPromptRunControllerItemWithHttpInfo($id, $promptTranslationLocaleKey, $contentType);
 
         return $response;
     }
@@ -34584,6 +38171,7 @@ class DefaultApi
      * Operation monitoringPromptRunControllerItemWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $promptTranslationLocaleKey (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerItem'] to see the possible values for this operation
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunEntity, HTTP status code, HTTP response headers (array of strings)
@@ -34591,9 +38179,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
+    public function monitoringPromptRunControllerItemWithHttpInfo($id, $promptTranslationLocaleKey = null, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
     {
-        $request = $this->monitoringPromptRunControllerItemRequest($id, $contentType);
+        $request = $this->monitoringPromptRunControllerItemRequest($id, $promptTranslationLocaleKey, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -34685,15 +38273,16 @@ class DefaultApi
      * Operation monitoringPromptRunControllerItemAsync.
      *
      * @param  string $id (required)
+     * @param  string $promptTranslationLocaleKey (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerItem'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerItemAsync($id, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
+    public function monitoringPromptRunControllerItemAsync($id, $promptTranslationLocaleKey = null, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
     {
-        return $this->monitoringPromptRunControllerItemAsyncWithHttpInfo($id, $contentType)
+        return $this->monitoringPromptRunControllerItemAsyncWithHttpInfo($id, $promptTranslationLocaleKey, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -34706,16 +38295,17 @@ class DefaultApi
      * Operation monitoringPromptRunControllerItemAsyncWithHttpInfo.
      *
      * @param  string $id (required)
+     * @param  string $promptTranslationLocaleKey (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerItem'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
+    public function monitoringPromptRunControllerItemAsyncWithHttpInfo($id, $promptTranslationLocaleKey = null, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunEntity';
-        $request = $this->monitoringPromptRunControllerItemRequest($id, $contentType);
+        $request = $this->monitoringPromptRunControllerItemRequest($id, $promptTranslationLocaleKey, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -34759,13 +38349,14 @@ class DefaultApi
      * Create request for operation 'monitoringPromptRunControllerItem'.
      *
      * @param  string $id (required)
+     * @param  string $promptTranslationLocaleKey (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerItem'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerItemRequest($id, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
+    public function monitoringPromptRunControllerItemRequest($id, $promptTranslationLocaleKey = null, string $contentType = self::contentTypes['monitoringPromptRunControllerItem'][0])
     {
         // verify the required parameter 'id' is set
         if (null === $id || (is_array($id) && 0 === count($id))) {
@@ -34780,6 +38371,16 @@ class DefaultApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $promptTranslationLocaleKey,
+            'promptTranslationLocaleKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
 
         // path params
         if (null !== $id) {
@@ -34813,7 +38414,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -34850,6 +38451,23 @@ class DefaultApi
     /**
      * Operation monitoringPromptRunControllerList.
      *
+     * @param  string $contentItemKey contentItemKey (optional)
+     * @param  string $before before (optional)
+     * @param  string $after after (optional)
+     * @param  string $promptTranslationLocaleKey promptTranslationLocaleKey (optional)
+     * @param  string $notMentionedFacetKey notMentionedFacetKey (optional)
+     * @param  string $mentionedFacetKey mentionedFacetKey (optional)
+     * @param  string $localeKey localeKey (optional)
+     * @param  string $engineKey engineKey (optional)
+     * @param  string $promptPurposeTermKey promptPurposeTermKey (optional)
+     * @param  string $noWinner noWinner (optional)
+     * @param  string $untrackedCoSubjectNorm untrackedCoSubjectNorm (optional)
+     * @param  string $citedTermKey citedTermKey (optional)
+     * @param  string $citedDomain citedDomain (optional)
+     * @param  string $citedHost citedHost (optional)
+     * @param  string $aspectTermKey aspectTermKey (optional)
+     * @param  string $recommendedFacetKey recommendedFacetKey (optional)
+     * @param  string $recommendedTermKey recommendedTermKey (optional)
      * @param  mixed $promptKey promptKey (optional)
      * @param  mixed $status status (optional)
      * @param  string $page page (optional)
@@ -34861,9 +38479,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerList($promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
+    public function monitoringPromptRunControllerList($contentItemKey = null, $before = null, $after = null, $promptTranslationLocaleKey = null, $notMentionedFacetKey = null, $mentionedFacetKey = null, $localeKey = null, $engineKey = null, $promptPurposeTermKey = null, $noWinner = null, $untrackedCoSubjectNorm = null, $citedTermKey = null, $citedDomain = null, $citedHost = null, $aspectTermKey = null, $recommendedFacetKey = null, $recommendedTermKey = null, $promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
     {
-        [$response] = $this->monitoringPromptRunControllerListWithHttpInfo($promptKey, $status, $page, $itemsPerPage, $contentType);
+        [$response] = $this->monitoringPromptRunControllerListWithHttpInfo($contentItemKey, $before, $after, $promptTranslationLocaleKey, $notMentionedFacetKey, $mentionedFacetKey, $localeKey, $engineKey, $promptPurposeTermKey, $noWinner, $untrackedCoSubjectNorm, $citedTermKey, $citedDomain, $citedHost, $aspectTermKey, $recommendedFacetKey, $recommendedTermKey, $promptKey, $status, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -34871,6 +38489,23 @@ class DefaultApi
     /**
      * Operation monitoringPromptRunControllerListWithHttpInfo.
      *
+     * @param  string $contentItemKey (optional)
+     * @param  string $before (optional)
+     * @param  string $after (optional)
+     * @param  string $promptTranslationLocaleKey (optional)
+     * @param  string $notMentionedFacetKey (optional)
+     * @param  string $mentionedFacetKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $promptPurposeTermKey (optional)
+     * @param  string $noWinner (optional)
+     * @param  string $untrackedCoSubjectNorm (optional)
+     * @param  string $citedTermKey (optional)
+     * @param  string $citedDomain (optional)
+     * @param  string $citedHost (optional)
+     * @param  string $aspectTermKey (optional)
+     * @param  string $recommendedFacetKey (optional)
+     * @param  string $recommendedTermKey (optional)
      * @param  mixed $promptKey (optional)
      * @param  mixed $status (optional)
      * @param  string $page (optional)
@@ -34882,9 +38517,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerListWithHttpInfo($promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
+    public function monitoringPromptRunControllerListWithHttpInfo($contentItemKey = null, $before = null, $after = null, $promptTranslationLocaleKey = null, $notMentionedFacetKey = null, $mentionedFacetKey = null, $localeKey = null, $engineKey = null, $promptPurposeTermKey = null, $noWinner = null, $untrackedCoSubjectNorm = null, $citedTermKey = null, $citedDomain = null, $citedHost = null, $aspectTermKey = null, $recommendedFacetKey = null, $recommendedTermKey = null, $promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
     {
-        $request = $this->monitoringPromptRunControllerListRequest($promptKey, $status, $page, $itemsPerPage, $contentType);
+        $request = $this->monitoringPromptRunControllerListRequest($contentItemKey, $before, $after, $promptTranslationLocaleKey, $notMentionedFacetKey, $mentionedFacetKey, $localeKey, $engineKey, $promptPurposeTermKey, $noWinner, $untrackedCoSubjectNorm, $citedTermKey, $citedDomain, $citedHost, $aspectTermKey, $recommendedFacetKey, $recommendedTermKey, $promptKey, $status, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -34975,6 +38610,23 @@ class DefaultApi
     /**
      * Operation monitoringPromptRunControllerListAsync.
      *
+     * @param  string $contentItemKey (optional)
+     * @param  string $before (optional)
+     * @param  string $after (optional)
+     * @param  string $promptTranslationLocaleKey (optional)
+     * @param  string $notMentionedFacetKey (optional)
+     * @param  string $mentionedFacetKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $promptPurposeTermKey (optional)
+     * @param  string $noWinner (optional)
+     * @param  string $untrackedCoSubjectNorm (optional)
+     * @param  string $citedTermKey (optional)
+     * @param  string $citedDomain (optional)
+     * @param  string $citedHost (optional)
+     * @param  string $aspectTermKey (optional)
+     * @param  string $recommendedFacetKey (optional)
+     * @param  string $recommendedTermKey (optional)
      * @param  mixed $promptKey (optional)
      * @param  mixed $status (optional)
      * @param  string $page (optional)
@@ -34985,9 +38637,9 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerListAsync($promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
+    public function monitoringPromptRunControllerListAsync($contentItemKey = null, $before = null, $after = null, $promptTranslationLocaleKey = null, $notMentionedFacetKey = null, $mentionedFacetKey = null, $localeKey = null, $engineKey = null, $promptPurposeTermKey = null, $noWinner = null, $untrackedCoSubjectNorm = null, $citedTermKey = null, $citedDomain = null, $citedHost = null, $aspectTermKey = null, $recommendedFacetKey = null, $recommendedTermKey = null, $promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
     {
-        return $this->monitoringPromptRunControllerListAsyncWithHttpInfo($promptKey, $status, $page, $itemsPerPage, $contentType)
+        return $this->monitoringPromptRunControllerListAsyncWithHttpInfo($contentItemKey, $before, $after, $promptTranslationLocaleKey, $notMentionedFacetKey, $mentionedFacetKey, $localeKey, $engineKey, $promptPurposeTermKey, $noWinner, $untrackedCoSubjectNorm, $citedTermKey, $citedDomain, $citedHost, $aspectTermKey, $recommendedFacetKey, $recommendedTermKey, $promptKey, $status, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -34999,6 +38651,23 @@ class DefaultApi
     /**
      * Operation monitoringPromptRunControllerListAsyncWithHttpInfo.
      *
+     * @param  string $contentItemKey (optional)
+     * @param  string $before (optional)
+     * @param  string $after (optional)
+     * @param  string $promptTranslationLocaleKey (optional)
+     * @param  string $notMentionedFacetKey (optional)
+     * @param  string $mentionedFacetKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $promptPurposeTermKey (optional)
+     * @param  string $noWinner (optional)
+     * @param  string $untrackedCoSubjectNorm (optional)
+     * @param  string $citedTermKey (optional)
+     * @param  string $citedDomain (optional)
+     * @param  string $citedHost (optional)
+     * @param  string $aspectTermKey (optional)
+     * @param  string $recommendedFacetKey (optional)
+     * @param  string $recommendedTermKey (optional)
      * @param  mixed $promptKey (optional)
      * @param  mixed $status (optional)
      * @param  string $page (optional)
@@ -35009,10 +38678,10 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerListAsyncWithHttpInfo($promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
+    public function monitoringPromptRunControllerListAsyncWithHttpInfo($contentItemKey = null, $before = null, $after = null, $promptTranslationLocaleKey = null, $notMentionedFacetKey = null, $mentionedFacetKey = null, $localeKey = null, $engineKey = null, $promptPurposeTermKey = null, $noWinner = null, $untrackedCoSubjectNorm = null, $citedTermKey = null, $citedDomain = null, $citedHost = null, $aspectTermKey = null, $recommendedFacetKey = null, $recommendedTermKey = null, $promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptRunListResponse';
-        $request = $this->monitoringPromptRunControllerListRequest($promptKey, $status, $page, $itemsPerPage, $contentType);
+        $request = $this->monitoringPromptRunControllerListRequest($contentItemKey, $before, $after, $promptTranslationLocaleKey, $notMentionedFacetKey, $mentionedFacetKey, $localeKey, $engineKey, $promptPurposeTermKey, $noWinner, $untrackedCoSubjectNorm, $citedTermKey, $citedDomain, $citedHost, $aspectTermKey, $recommendedFacetKey, $recommendedTermKey, $promptKey, $status, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -35055,6 +38724,23 @@ class DefaultApi
     /**
      * Create request for operation 'monitoringPromptRunControllerList'.
      *
+     * @param  string $contentItemKey (optional)
+     * @param  string $before (optional)
+     * @param  string $after (optional)
+     * @param  string $promptTranslationLocaleKey (optional)
+     * @param  string $notMentionedFacetKey (optional)
+     * @param  string $mentionedFacetKey (optional)
+     * @param  string $localeKey (optional)
+     * @param  string $engineKey (optional)
+     * @param  string $promptPurposeTermKey (optional)
+     * @param  string $noWinner (optional)
+     * @param  string $untrackedCoSubjectNorm (optional)
+     * @param  string $citedTermKey (optional)
+     * @param  string $citedDomain (optional)
+     * @param  string $citedHost (optional)
+     * @param  string $aspectTermKey (optional)
+     * @param  string $recommendedFacetKey (optional)
+     * @param  string $recommendedTermKey (optional)
      * @param  mixed $promptKey (optional)
      * @param  mixed $status (optional)
      * @param  string $page (optional)
@@ -35065,7 +38751,7 @@ class DefaultApi
      *
      * @throws \InvalidArgumentException
      */
-    public function monitoringPromptRunControllerListRequest($promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
+    public function monitoringPromptRunControllerListRequest($contentItemKey = null, $before = null, $after = null, $promptTranslationLocaleKey = null, $notMentionedFacetKey = null, $mentionedFacetKey = null, $localeKey = null, $engineKey = null, $promptPurposeTermKey = null, $noWinner = null, $untrackedCoSubjectNorm = null, $citedTermKey = null, $citedDomain = null, $citedHost = null, $aspectTermKey = null, $recommendedFacetKey = null, $recommendedTermKey = null, $promptKey = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['monitoringPromptRunControllerList'][0])
     {
         $resourcePath = '/sync-core/monitoring-prompt-run';
         $formParams = [];
@@ -35074,6 +38760,159 @@ class DefaultApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $contentItemKey,
+            'contentItemKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $before,
+            'before', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $after,
+            'after', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $promptTranslationLocaleKey,
+            'promptTranslationLocaleKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $notMentionedFacetKey,
+            'notMentionedFacetKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $mentionedFacetKey,
+            'mentionedFacetKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $localeKey,
+            'localeKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $engineKey,
+            'engineKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $promptPurposeTermKey,
+            'promptPurposeTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $noWinner,
+            'noWinner', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $untrackedCoSubjectNorm,
+            'untrackedCoSubjectNorm', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $citedTermKey,
+            'citedTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $citedDomain,
+            'citedDomain', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $citedHost,
+            'citedHost', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $aspectTermKey,
+            'aspectTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $recommendedFacetKey,
+            'recommendedFacetKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $recommendedTermKey,
+            'recommendedTermKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $promptKey,
@@ -35134,7 +38973,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -35162,6 +39001,289 @@ class DefaultApi
 
         return new Request(
             'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerStartAnswerExport.
+     *
+     * @param  StartAnswerExportDto $startAnswerExportDto startAnswerExportDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerStartAnswerExport'] to see the possible values for this operation
+     *
+     * @return TaskGroupEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerStartAnswerExport($startAnswerExportDto, string $contentType = self::contentTypes['monitoringPromptRunControllerStartAnswerExport'][0])
+    {
+        [$response] = $this->monitoringPromptRunControllerStartAnswerExportWithHttpInfo($startAnswerExportDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerStartAnswerExportWithHttpInfo.
+     *
+     * @param  StartAnswerExportDto $startAnswerExportDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerStartAnswerExport'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerStartAnswerExportWithHttpInfo($startAnswerExportDto, string $contentType = self::contentTypes['monitoringPromptRunControllerStartAnswerExport'][0])
+    {
+        $request = $this->monitoringPromptRunControllerStartAnswerExportRequest($startAnswerExportDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerStartAnswerExportAsync.
+     *
+     * @param  StartAnswerExportDto $startAnswerExportDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerStartAnswerExport'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerStartAnswerExportAsync($startAnswerExportDto, string $contentType = self::contentTypes['monitoringPromptRunControllerStartAnswerExport'][0])
+    {
+        return $this->monitoringPromptRunControllerStartAnswerExportAsyncWithHttpInfo($startAnswerExportDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation monitoringPromptRunControllerStartAnswerExportAsyncWithHttpInfo.
+     *
+     * @param  StartAnswerExportDto $startAnswerExportDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerStartAnswerExport'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerStartAnswerExportAsyncWithHttpInfo($startAnswerExportDto, string $contentType = self::contentTypes['monitoringPromptRunControllerStartAnswerExport'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity';
+        $request = $this->monitoringPromptRunControllerStartAnswerExportRequest($startAnswerExportDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'monitoringPromptRunControllerStartAnswerExport'.
+     *
+     * @param  StartAnswerExportDto $startAnswerExportDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptRunControllerStartAnswerExport'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function monitoringPromptRunControllerStartAnswerExportRequest($startAnswerExportDto, string $contentType = self::contentTypes['monitoringPromptRunControllerStartAnswerExport'][0])
+    {
+        // verify the required parameter 'startAnswerExportDto' is set
+        if (null === $startAnswerExportDto || (is_array($startAnswerExportDto) && 0 === count($startAnswerExportDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $startAnswerExportDto when calling monitoringPromptRunControllerStartAnswerExport'
+            );
+        }
+
+        $resourcePath = '/sync-core/monitoring-prompt-run/export/answers';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($startAnswerExportDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($startAnswerExportDto));
+            } else {
+                $httpBody = $startAnswerExportDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -35427,7 +39549,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -35734,7 +39856,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -36041,7 +40163,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -36348,7 +40470,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -36655,7 +40777,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -36962,7 +41084,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -37269,7 +41391,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -37561,7 +41683,7 @@ class DefaultApi
         if (isset($body)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
             }
@@ -37581,7 +41703,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -37591,6 +41713,271 @@ class DefaultApi
         // this endpoint requires Bearer (JWT) authentication (access token)
         if (!empty($this->config->getAccessToken())) {
             $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation oxylabsCallbackControllerJobCompleted.
+     *
+     * @param  string $runId runId (required)
+     * @param  string $sub sub (required)
+     * @param  string $sig sig (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['oxylabsCallbackControllerJobCompleted'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function oxylabsCallbackControllerJobCompleted($runId, $sub, $sig, string $contentType = self::contentTypes['oxylabsCallbackControllerJobCompleted'][0])
+    {
+        $this->oxylabsCallbackControllerJobCompletedWithHttpInfo($runId, $sub, $sig, $contentType);
+    }
+
+    /**
+     * Operation oxylabsCallbackControllerJobCompletedWithHttpInfo.
+     *
+     * @param  string $runId (required)
+     * @param  string $sub (required)
+     * @param  string $sig (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['oxylabsCallbackControllerJobCompleted'] to see the possible values for this operation
+     *
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function oxylabsCallbackControllerJobCompletedWithHttpInfo($runId, $sub, $sig, string $contentType = self::contentTypes['oxylabsCallbackControllerJobCompleted'][0])
+    {
+        $request = $this->oxylabsCallbackControllerJobCompletedRequest($runId, $sub, $sig, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation oxylabsCallbackControllerJobCompletedAsync.
+     *
+     * @param  string $runId (required)
+     * @param  string $sub (required)
+     * @param  string $sig (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['oxylabsCallbackControllerJobCompleted'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function oxylabsCallbackControllerJobCompletedAsync($runId, $sub, $sig, string $contentType = self::contentTypes['oxylabsCallbackControllerJobCompleted'][0])
+    {
+        return $this->oxylabsCallbackControllerJobCompletedAsyncWithHttpInfo($runId, $sub, $sig, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation oxylabsCallbackControllerJobCompletedAsyncWithHttpInfo.
+     *
+     * @param  string $runId (required)
+     * @param  string $sub (required)
+     * @param  string $sig (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['oxylabsCallbackControllerJobCompleted'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function oxylabsCallbackControllerJobCompletedAsyncWithHttpInfo($runId, $sub, $sig, string $contentType = self::contentTypes['oxylabsCallbackControllerJobCompleted'][0])
+    {
+        $returnType = '';
+        $request = $this->oxylabsCallbackControllerJobCompletedRequest($runId, $sub, $sig, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'oxylabsCallbackControllerJobCompleted'.
+     *
+     * @param  string $runId (required)
+     * @param  string $sub (required)
+     * @param  string $sig (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['oxylabsCallbackControllerJobCompleted'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function oxylabsCallbackControllerJobCompletedRequest($runId, $sub, $sig, string $contentType = self::contentTypes['oxylabsCallbackControllerJobCompleted'][0])
+    {
+        // verify the required parameter 'runId' is set
+        if (null === $runId || (is_array($runId) && 0 === count($runId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $runId when calling oxylabsCallbackControllerJobCompleted'
+            );
+        }
+
+        // verify the required parameter 'sub' is set
+        if (null === $sub || (is_array($sub) && 0 === count($sub))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $sub when calling oxylabsCallbackControllerJobCompleted'
+            );
+        }
+
+        // verify the required parameter 'sig' is set
+        if (null === $sig || (is_array($sig) && 0 === count($sig))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $sig when calling oxylabsCallbackControllerJobCompleted'
+            );
+        }
+
+        $resourcePath = '/sync-core/governance/oxylabs/callback/{runId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sub,
+            'sub', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sig,
+            'sig', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
+
+        // path params
+        if (null !== $runId) {
+            $resourcePath = str_replace(
+                '{runId}',
+                ObjectSerializer::toPathValue($runId),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            [],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
         }
 
         $defaultHeaders = [];
@@ -37844,7 +42231,7 @@ class DefaultApi
         if (isset($createPoolDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createPoolDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createPoolDto));
             } else {
                 $httpBody = $createPoolDto;
             }
@@ -37864,7 +42251,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -38149,7 +42536,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -38413,7 +42800,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -38846,7 +43233,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -39300,7 +43687,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -39585,7 +43972,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -39870,7 +44257,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -40155,7 +44542,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -40439,7 +44826,7 @@ class DefaultApi
         if (isset($extendedProjectCrawlingSettings)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($extendedProjectCrawlingSettings));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($extendedProjectCrawlingSettings));
             } else {
                 $httpBody = $extendedProjectCrawlingSettings;
             }
@@ -40459,7 +44846,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -40744,7 +45131,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -41029,7 +45416,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -41314,7 +45701,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -41599,7 +45986,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -41933,7 +46320,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -42324,7 +46711,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -42686,7 +47073,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -42949,7 +47336,7 @@ class DefaultApi
         if (isset($createRemoteEntityRevisionDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityRevisionDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityRevisionDto));
             } else {
                 $httpBody = $createRemoteEntityRevisionDto;
             }
@@ -42969,7 +47356,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -43232,7 +47619,7 @@ class DefaultApi
         if (isset($deleteRemoteEntityRevisionDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($deleteRemoteEntityRevisionDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($deleteRemoteEntityRevisionDto));
             } else {
                 $httpBody = $deleteRemoteEntityRevisionDto;
             }
@@ -43252,7 +47639,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -43537,7 +47924,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -43822,7 +48209,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -44185,7 +48572,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -44499,7 +48886,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -44804,7 +49191,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -45089,7 +49476,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -45353,7 +49740,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -45616,7 +50003,7 @@ class DefaultApi
         if (isset($createRemoteEntityTypeVersionDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityTypeVersionDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createRemoteEntityTypeVersionDto));
             } else {
                 $httpBody = $createRemoteEntityTypeVersionDto;
             }
@@ -45636,7 +50023,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -45961,7 +50348,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -46246,7 +50633,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -46571,7 +50958,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -46856,7 +51243,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -47219,7 +51606,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -47229,6 +51616,243 @@ class DefaultApi
         // this endpoint requires Bearer (JWT) authentication (access token)
         if (!empty($this->config->getAccessToken())) {
             $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation scrapeControllerFavicon.
+     *
+     * @param  string $domain The domain to fetch the favicon for (hostname only). (required)
+     * @param  float $size Desired favicon size in pixels (1–256, default 32). (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['scrapeControllerFavicon'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function scrapeControllerFavicon($domain, $size = null, string $contentType = self::contentTypes['scrapeControllerFavicon'][0])
+    {
+        $this->scrapeControllerFaviconWithHttpInfo($domain, $size, $contentType);
+    }
+
+    /**
+     * Operation scrapeControllerFaviconWithHttpInfo.
+     *
+     * @param  string $domain The domain to fetch the favicon for (hostname only). (required)
+     * @param  float $size Desired favicon size in pixels (1–256, default 32). (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['scrapeControllerFavicon'] to see the possible values for this operation
+     *
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function scrapeControllerFaviconWithHttpInfo($domain, $size = null, string $contentType = self::contentTypes['scrapeControllerFavicon'][0])
+    {
+        $request = $this->scrapeControllerFaviconRequest($domain, $size, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation scrapeControllerFaviconAsync.
+     *
+     * @param  string $domain The domain to fetch the favicon for (hostname only). (required)
+     * @param  float $size Desired favicon size in pixels (1–256, default 32). (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['scrapeControllerFavicon'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function scrapeControllerFaviconAsync($domain, $size = null, string $contentType = self::contentTypes['scrapeControllerFavicon'][0])
+    {
+        return $this->scrapeControllerFaviconAsyncWithHttpInfo($domain, $size, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation scrapeControllerFaviconAsyncWithHttpInfo.
+     *
+     * @param  string $domain The domain to fetch the favicon for (hostname only). (required)
+     * @param  float $size Desired favicon size in pixels (1–256, default 32). (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['scrapeControllerFavicon'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function scrapeControllerFaviconAsyncWithHttpInfo($domain, $size = null, string $contentType = self::contentTypes['scrapeControllerFavicon'][0])
+    {
+        $returnType = '';
+        $request = $this->scrapeControllerFaviconRequest($domain, $size, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'scrapeControllerFavicon'.
+     *
+     * @param  string $domain The domain to fetch the favicon for (hostname only). (required)
+     * @param  float $size Desired favicon size in pixels (1–256, default 32). (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['scrapeControllerFavicon'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function scrapeControllerFaviconRequest($domain, $size = null, string $contentType = self::contentTypes['scrapeControllerFavicon'][0])
+    {
+        // verify the required parameter 'domain' is set
+        if (null === $domain || (is_array($domain) && 0 === count($domain))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $domain when calling scrapeControllerFavicon'
+            );
+        }
+
+        $resourcePath = '/sync-core/utility/scrape/favicon/{domain}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $size,
+            'size', // param base name
+            'number', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // path params
+        if (null !== $domain) {
+            $resourcePath = str_replace(
+                '{domain}',
+                ObjectSerializer::toPathValue($domain),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            [],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
         }
 
         $defaultHeaders = [];
@@ -47524,7 +52148,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -47809,7 +52433,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -48094,7 +52718,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -48429,7 +53053,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -48763,7 +53387,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -49047,7 +53671,7 @@ class DefaultApi
         if (isset($body)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
             }
@@ -49067,7 +53691,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -49360,7 +53984,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -49624,7 +54248,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -49909,7 +54533,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -50194,7 +54818,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -50457,7 +55081,7 @@ class DefaultApi
         if (isset($registerSiteDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($registerSiteDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($registerSiteDto));
             } else {
                 $httpBody = $registerSiteDto;
             }
@@ -50477,7 +55101,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -50740,7 +55364,7 @@ class DefaultApi
         if (isset($registerNewSiteDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($registerNewSiteDto));
             } else {
                 $httpBody = $registerNewSiteDto;
             }
@@ -50760,7 +55384,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -51044,7 +55668,7 @@ class DefaultApi
         if (isset($requestResponseDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($requestResponseDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($requestResponseDto));
             } else {
                 $httpBody = $requestResponseDto;
             }
@@ -51064,7 +55688,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -51385,7 +56009,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -51649,7 +56273,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -51912,7 +56536,7 @@ class DefaultApi
         if (isset($setThrottlingDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($setThrottlingDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setThrottlingDto));
             } else {
                 $httpBody = $setThrottlingDto;
             }
@@ -51932,7 +56556,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -52195,7 +56819,7 @@ class DefaultApi
         if (isset($createSiteDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createSiteDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createSiteDto));
             } else {
                 $httpBody = $createSiteDto;
             }
@@ -52215,7 +56839,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -52478,7 +57102,7 @@ class DefaultApi
         if (isset($siteConfigUpdateRequestDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($siteConfigUpdateRequestDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($siteConfigUpdateRequestDto));
             } else {
                 $httpBody = $siteConfigUpdateRequestDto;
             }
@@ -52498,7 +57122,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -52761,7 +57385,7 @@ class DefaultApi
         if (isset($createTaskDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskDto));
             } else {
                 $httpBody = $createTaskDto;
             }
@@ -52781,7 +57405,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -53044,7 +57668,7 @@ class DefaultApi
         if (isset($syndicationDeleteRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
             } else {
                 $httpBody = $syndicationDeleteRequest;
             }
@@ -53064,7 +57688,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -53357,7 +57981,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -53657,7 +58281,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -54230,7 +58854,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -54514,7 +59138,7 @@ class DefaultApi
         if (isset($syndicationRetryRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationRetryRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationRetryRequest));
             } else {
                 $httpBody = $syndicationRetryRequest;
             }
@@ -54534,7 +59158,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -54839,7 +59463,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -55123,7 +59747,7 @@ class DefaultApi
         if (isset($syndicationTraceRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationTraceRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationTraceRequest));
             } else {
                 $httpBody = $syndicationTraceRequest;
             }
@@ -55143,7 +59767,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -55428,7 +60052,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -55840,7 +60464,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -56103,7 +60727,7 @@ class DefaultApi
         if (isset($createTaskDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskDto));
             } else {
                 $httpBody = $createTaskDto;
             }
@@ -56123,7 +60747,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -56386,7 +61010,7 @@ class DefaultApi
         if (isset($syndicationDeleteRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationDeleteRequest));
             } else {
                 $httpBody = $syndicationDeleteRequest;
             }
@@ -56406,7 +61030,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -56699,7 +61323,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -56999,7 +61623,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -57572,7 +62196,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -57856,7 +62480,7 @@ class DefaultApi
         if (isset($syndicationRetryRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationRetryRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationRetryRequest));
             } else {
                 $httpBody = $syndicationRetryRequest;
             }
@@ -57876,7 +62500,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -58181,7 +62805,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -58465,7 +63089,7 @@ class DefaultApi
         if (isset($syndicationTraceRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationTraceRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($syndicationTraceRequest));
             } else {
                 $httpBody = $syndicationTraceRequest;
             }
@@ -58485,7 +63109,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -58770,7 +63394,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -59182,7 +63806,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -59445,7 +64069,7 @@ class DefaultApi
         if (isset($createTaskGroupDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskGroupDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaskGroupDto));
             } else {
                 $httpBody = $createTaskGroupDto;
             }
@@ -59465,7 +64089,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -59750,7 +64374,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -60035,7 +64659,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -60482,7 +65106,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -60767,7 +65391,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -61030,7 +65654,7 @@ class DefaultApi
         if (isset($createTaxonomyDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaxonomyDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaxonomyDto));
             } else {
                 $httpBody = $createTaxonomyDto;
             }
@@ -61050,7 +65674,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -61335,7 +65959,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -61620,7 +66244,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -61905,7 +66529,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -62282,7 +66906,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -62545,7 +67169,7 @@ class DefaultApi
         if (isset($taxonomyEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($taxonomyEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($taxonomyEntity));
             } else {
                 $httpBody = $taxonomyEntity;
             }
@@ -62565,7 +67189,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -62828,7 +67452,7 @@ class DefaultApi
         if (isset($createTaxonomyTermDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createTaxonomyTermDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createTaxonomyTermDto));
             } else {
                 $httpBody = $createTaxonomyTermDto;
             }
@@ -62848,7 +67472,292 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation taxonomyTermControllerDetectColor.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['taxonomyTermControllerDetectColor'] to see the possible values for this operation
+     *
+     * @return DetectTermColorResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function taxonomyTermControllerDetectColor($id, string $contentType = self::contentTypes['taxonomyTermControllerDetectColor'][0])
+    {
+        [$response] = $this->taxonomyTermControllerDetectColorWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation taxonomyTermControllerDetectColorWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['taxonomyTermControllerDetectColor'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function taxonomyTermControllerDetectColorWithHttpInfo($id, string $contentType = self::contentTypes['taxonomyTermControllerDetectColor'][0])
+    {
+        $request = $this->taxonomyTermControllerDetectColorRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation taxonomyTermControllerDetectColorAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['taxonomyTermControllerDetectColor'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function taxonomyTermControllerDetectColorAsync($id, string $contentType = self::contentTypes['taxonomyTermControllerDetectColor'][0])
+    {
+        return $this->taxonomyTermControllerDetectColorAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation taxonomyTermControllerDetectColorAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['taxonomyTermControllerDetectColor'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function taxonomyTermControllerDetectColorAsyncWithHttpInfo($id, string $contentType = self::contentTypes['taxonomyTermControllerDetectColor'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\DetectTermColorResponse';
+        $request = $this->taxonomyTermControllerDetectColorRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'taxonomyTermControllerDetectColor'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['taxonomyTermControllerDetectColor'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function taxonomyTermControllerDetectColorRequest($id, string $contentType = self::contentTypes['taxonomyTermControllerDetectColor'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling taxonomyTermControllerDetectColor'
+            );
+        }
+
+        $resourcePath = '/sync-core/taxonomy-term/{id}/detect-color';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -63133,7 +68042,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -63438,7 +68347,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -63829,7 +68738,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -64163,7 +69072,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -64426,7 +69335,7 @@ class DefaultApi
         if (isset($taxonomyTermEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($taxonomyTermEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($taxonomyTermEntity));
             } else {
                 $httpBody = $taxonomyTermEntity;
             }
@@ -64446,7 +69355,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -64731,7 +69640,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -64770,18 +69679,18 @@ class DefaultApi
      *
      * @param  mixed $fingerprint fingerprint (optional)
      * @param  mixed $appType appType (optional)
-     * @param  mixed $contentType contentType (optional)
+     * @param  mixed $textContentType textContentType (optional)
      * @param  mixed $machineName machineName (optional)
-     * @param  string $contentTypeHeader The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
      *
      * @return PagedTextProfileListResponse
      *
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function textProfileControllerList($fingerprint = null, $appType = null, $contentType = null, $machineName = null, string $contentTypeHeader = self::contentTypes['textProfileControllerList'][0])
+    public function textProfileControllerList($fingerprint = null, $appType = null, $textContentType = null, $machineName = null, string $contentType = self::contentTypes['textProfileControllerList'][0])
     {
-        [$response] = $this->textProfileControllerListWithHttpInfo($fingerprint, $appType, $contentType, $machineName, $contentTypeHeader);
+        [$response] = $this->textProfileControllerListWithHttpInfo($fingerprint, $appType, $textContentType, $machineName, $contentType);
 
         return $response;
     }
@@ -64791,18 +69700,18 @@ class DefaultApi
      *
      * @param  mixed $fingerprint (optional)
      * @param  mixed $appType (optional)
-     * @param  mixed $contentType (optional)
+     * @param  mixed $textContentType (optional)
      * @param  mixed $machineName (optional)
-     * @param  string $contentTypeHeader The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedTextProfileListResponse, HTTP status code, HTTP response headers (array of strings)
      *
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function textProfileControllerListWithHttpInfo($fingerprint = null, $appType = null, $contentType = null, $machineName = null, string $contentTypeHeader = self::contentTypes['textProfileControllerList'][0])
+    public function textProfileControllerListWithHttpInfo($fingerprint = null, $appType = null, $textContentType = null, $machineName = null, string $contentType = self::contentTypes['textProfileControllerList'][0])
     {
-        $request = $this->textProfileControllerListRequest($fingerprint, $appType, $contentType, $machineName, $contentTypeHeader);
+        $request = $this->textProfileControllerListRequest($fingerprint, $appType, $textContentType, $machineName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -64895,17 +69804,17 @@ class DefaultApi
      *
      * @param  mixed $fingerprint (optional)
      * @param  mixed $appType (optional)
-     * @param  mixed $contentType (optional)
+     * @param  mixed $textContentType (optional)
      * @param  mixed $machineName (optional)
-     * @param  string $contentTypeHeader The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function textProfileControllerListAsync($fingerprint = null, $appType = null, $contentType = null, $machineName = null, string $contentTypeHeader = self::contentTypes['textProfileControllerList'][0])
+    public function textProfileControllerListAsync($fingerprint = null, $appType = null, $textContentType = null, $machineName = null, string $contentType = self::contentTypes['textProfileControllerList'][0])
     {
-        return $this->textProfileControllerListAsyncWithHttpInfo($fingerprint, $appType, $contentType, $machineName, $contentTypeHeader)
+        return $this->textProfileControllerListAsyncWithHttpInfo($fingerprint, $appType, $textContentType, $machineName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -64919,18 +69828,18 @@ class DefaultApi
      *
      * @param  mixed $fingerprint (optional)
      * @param  mixed $appType (optional)
-     * @param  mixed $contentType (optional)
+     * @param  mixed $textContentType (optional)
      * @param  mixed $machineName (optional)
-     * @param  string $contentTypeHeader The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function textProfileControllerListAsyncWithHttpInfo($fingerprint = null, $appType = null, $contentType = null, $machineName = null, string $contentTypeHeader = self::contentTypes['textProfileControllerList'][0])
+    public function textProfileControllerListAsyncWithHttpInfo($fingerprint = null, $appType = null, $textContentType = null, $machineName = null, string $contentType = self::contentTypes['textProfileControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedTextProfileListResponse';
-        $request = $this->textProfileControllerListRequest($fingerprint, $appType, $contentType, $machineName, $contentTypeHeader);
+        $request = $this->textProfileControllerListRequest($fingerprint, $appType, $textContentType, $machineName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -64975,15 +69884,15 @@ class DefaultApi
      *
      * @param  mixed $fingerprint (optional)
      * @param  mixed $appType (optional)
-     * @param  mixed $contentType (optional)
+     * @param  mixed $textContentType (optional)
      * @param  mixed $machineName (optional)
-     * @param  string $contentTypeHeader The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['textProfileControllerList'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function textProfileControllerListRequest($fingerprint = null, $appType = null, $contentType = null, $machineName = null, string $contentTypeHeader = self::contentTypes['textProfileControllerList'][0])
+    public function textProfileControllerListRequest($fingerprint = null, $appType = null, $textContentType = null, $machineName = null, string $contentType = self::contentTypes['textProfileControllerList'][0])
     {
         $resourcePath = '/sync-core/text-profile';
         $formParams = [];
@@ -65012,8 +69921,8 @@ class DefaultApi
         ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $contentType,
-            'contentType', // param base name
+            $textContentType,
+            'textContentType', // param base name
             'mixed', // openApiType
             'form', // style
             true, // explode
@@ -65031,7 +69940,7 @@ class DefaultApi
 
         $headers = $this->headerSelector->selectHeaders(
             ['application/json'],
-            $contentTypeHeader,
+            $contentType,
             $multipart
         );
 
@@ -65052,7 +69961,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -65357,7 +70266,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -65642,7 +70551,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -65906,7 +70815,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -66169,7 +71078,7 @@ class DefaultApi
         if (isset($createWebhookDto)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($createWebhookDto));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createWebhookDto));
             } else {
                 $httpBody = $createWebhookDto;
             }
@@ -66189,7 +71098,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -66452,7 +71361,7 @@ class DefaultApi
         if (isset($webhookDeleteRequest)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($webhookDeleteRequest));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookDeleteRequest));
             } else {
                 $httpBody = $webhookDeleteRequest;
             }
@@ -66472,7 +71381,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -66757,7 +71666,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -67064,7 +71973,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -67348,7 +72257,7 @@ class DefaultApi
         if (isset($webhookResendVerificationEmail)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($webhookResendVerificationEmail));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookResendVerificationEmail));
             } else {
                 $httpBody = $webhookResendVerificationEmail;
             }
@@ -67368,7 +72277,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -67631,7 +72540,7 @@ class DefaultApi
         if (isset($webhookEntity)) {
             if (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($webhookEntity));
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($webhookEntity));
             } else {
                 $httpBody = $webhookEntity;
             }
@@ -67651,7 +72560,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);
@@ -67898,7 +72807,7 @@ class DefaultApi
                 $httpBody = new MultipartStream($multipartContents);
             } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
                 // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = Utils::jsonEncode($formParams);
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);

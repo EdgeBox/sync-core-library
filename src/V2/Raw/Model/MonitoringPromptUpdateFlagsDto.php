@@ -72,6 +72,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignmentTerm',
         'templateFacet' => 'TaxonomyFacet',
         'templateTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
+        'templateTerm' => 'DynamicRevisionReference',
+        'placeholderValue' => 'string',
         'engines' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'countryLocales' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptCountryLocale[]',
         'frequencyHours' => 'float',
@@ -111,6 +113,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => null,
         'templateFacet' => null,
         'templateTerms' => null,
+        'templateTerm' => null,
+        'placeholderValue' => null,
         'engines' => null,
         'countryLocales' => null,
         'frequencyHours' => null,
@@ -146,6 +150,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => false,
         'templateFacet' => true,
         'templateTerms' => true,
+        'templateTerm' => true,
+        'placeholderValue' => true,
         'engines' => false,
         'countryLocales' => false,
         'frequencyHours' => false,
@@ -189,6 +195,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => 'promptLocale',
         'templateFacet' => 'templateFacet',
         'templateTerms' => 'templateTerms',
+        'templateTerm' => 'templateTerm',
+        'placeholderValue' => 'placeholderValue',
         'engines' => 'engines',
         'countryLocales' => 'countryLocales',
         'frequencyHours' => 'frequencyHours',
@@ -224,6 +232,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => 'setPromptLocale',
         'templateFacet' => 'setTemplateFacet',
         'templateTerms' => 'setTemplateTerms',
+        'templateTerm' => 'setTemplateTerm',
+        'placeholderValue' => 'setPlaceholderValue',
         'engines' => 'setEngines',
         'countryLocales' => 'setCountryLocales',
         'frequencyHours' => 'setFrequencyHours',
@@ -259,6 +269,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'promptLocale' => 'getPromptLocale',
         'templateFacet' => 'getTemplateFacet',
         'templateTerms' => 'getTemplateTerms',
+        'templateTerm' => 'getTemplateTerm',
+        'placeholderValue' => 'getPlaceholderValue',
         'engines' => 'getEngines',
         'countryLocales' => 'getCountryLocales',
         'frequencyHours' => 'getFrequencyHours',
@@ -303,6 +315,8 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         $this->setIfExists('promptLocale', $data ?? [], null);
         $this->setIfExists('templateFacet', $data ?? [], null);
         $this->setIfExists('templateTerms', $data ?? [], null);
+        $this->setIfExists('templateTerm', $data ?? [], null);
+        $this->setIfExists('placeholderValue', $data ?? [], null);
         $this->setIfExists('engines', $data ?? [], null);
         $this->setIfExists('countryLocales', $data ?? [], null);
         $this->setIfExists('frequencyHours', $data ?? [], null);
@@ -834,6 +848,74 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
             }
         }
         $this->container['templateTerms'] = $templateTerms;
+
+        return $this;
+    }
+
+    /**
+     * Gets templateTerm.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getTemplateTerm()
+    {
+        return $this->container['templateTerm'];
+    }
+
+    /**
+     * Sets templateTerm.
+     *
+     * @param null|DynamicRevisionReference $templateTerm templateTerm
+     *
+     * @return self
+     */
+    public function setTemplateTerm($templateTerm)
+    {
+        if (is_null($templateTerm)) {
+            array_push($this->openAPINullablesSetToNull, 'templateTerm');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('templateTerm', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['templateTerm'] = $templateTerm;
+
+        return $this;
+    }
+
+    /**
+     * Gets placeholderValue.
+     *
+     * @return null|string
+     */
+    public function getPlaceholderValue()
+    {
+        return $this->container['placeholderValue'];
+    }
+
+    /**
+     * Sets placeholderValue.
+     *
+     * @param null|string $placeholderValue placeholderValue
+     *
+     * @return self
+     */
+    public function setPlaceholderValue($placeholderValue)
+    {
+        if (is_null($placeholderValue)) {
+            array_push($this->openAPINullablesSetToNull, 'placeholderValue');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('placeholderValue', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['placeholderValue'] = $placeholderValue;
 
         return $this;
     }

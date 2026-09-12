@@ -47,6 +47,9 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
 {
     public const DISCRIMINATOR = null;
 
+    public const COLOR_PROVENANCE_OPERATOR = 'operator';
+    public const COLOR_PROVENANCE_COMPUTED = 'computed';
+
     /**
      * The original name of the model.
      *
@@ -73,12 +76,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => 'string',
         'classificationPrompt' => 'string',
         'aliases' => 'string[]',
+        'subjectType' => 'string',
         'collectionTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'timeFrame' => 'TimeFrame',
         'priority' => 'TaxonomyTermPriority',
+        'purposeType' => 'MonitoringPromptPurposeType',
+        'purposeKpis' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptKpi[]',
         'thirdParty' => 'TaxonomyTermThirdParty',
+        'color' => 'string',
+        'colorProvenance' => 'string',
         'source' => 'TaxonomyTermSource',
         'localization' => 'mixed',
+        'suggestionStats' => 'TaxonomyTermSuggestionStats',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
         'terms' => 'Terms',
@@ -112,12 +121,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => null,
         'classificationPrompt' => null,
         'aliases' => null,
+        'subjectType' => null,
         'collectionTerms' => null,
         'timeFrame' => null,
         'priority' => null,
+        'purposeType' => null,
+        'purposeKpis' => null,
         'thirdParty' => null,
+        'color' => null,
+        'colorProvenance' => null,
         'source' => null,
         'localization' => null,
+        'suggestionStats' => null,
         'customer' => null,
         'project' => null,
         'terms' => null,
@@ -147,12 +162,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => true,
         'classificationPrompt' => true,
         'aliases' => true,
+        'subjectType' => true,
         'collectionTerms' => true,
         'timeFrame' => true,
         'priority' => true,
+        'purposeType' => true,
+        'purposeKpis' => true,
         'thirdParty' => true,
+        'color' => true,
+        'colorProvenance' => true,
         'source' => true,
         'localization' => true,
+        'suggestionStats' => true,
         'customer' => true,
         'project' => true,
         'terms' => true,
@@ -190,12 +211,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => 'description',
         'classificationPrompt' => 'classificationPrompt',
         'aliases' => 'aliases',
+        'subjectType' => 'subjectType',
         'collectionTerms' => 'collectionTerms',
         'timeFrame' => 'timeFrame',
         'priority' => 'priority',
+        'purposeType' => 'purposeType',
+        'purposeKpis' => 'purposeKpis',
         'thirdParty' => 'thirdParty',
+        'color' => 'color',
+        'colorProvenance' => 'colorProvenance',
         'source' => 'source',
         'localization' => 'localization',
+        'suggestionStats' => 'suggestionStats',
         'customer' => 'customer',
         'project' => 'project',
         'terms' => 'terms',
@@ -225,12 +252,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => 'setDescription',
         'classificationPrompt' => 'setClassificationPrompt',
         'aliases' => 'setAliases',
+        'subjectType' => 'setSubjectType',
         'collectionTerms' => 'setCollectionTerms',
         'timeFrame' => 'setTimeFrame',
         'priority' => 'setPriority',
+        'purposeType' => 'setPurposeType',
+        'purposeKpis' => 'setPurposeKpis',
         'thirdParty' => 'setThirdParty',
+        'color' => 'setColor',
+        'colorProvenance' => 'setColorProvenance',
         'source' => 'setSource',
         'localization' => 'setLocalization',
+        'suggestionStats' => 'setSuggestionStats',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'terms' => 'setTerms',
@@ -260,12 +293,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'description' => 'getDescription',
         'classificationPrompt' => 'getClassificationPrompt',
         'aliases' => 'getAliases',
+        'subjectType' => 'getSubjectType',
         'collectionTerms' => 'getCollectionTerms',
         'timeFrame' => 'getTimeFrame',
         'priority' => 'getPriority',
+        'purposeType' => 'getPurposeType',
+        'purposeKpis' => 'getPurposeKpis',
         'thirdParty' => 'getThirdParty',
+        'color' => 'getColor',
+        'colorProvenance' => 'getColorProvenance',
         'source' => 'getSource',
         'localization' => 'getLocalization',
+        'suggestionStats' => 'getSuggestionStats',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'terms' => 'getTerms',
@@ -304,12 +343,18 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('classificationPrompt', $data ?? [], null);
         $this->setIfExists('aliases', $data ?? [], null);
+        $this->setIfExists('subjectType', $data ?? [], null);
         $this->setIfExists('collectionTerms', $data ?? [], null);
         $this->setIfExists('timeFrame', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
+        $this->setIfExists('purposeType', $data ?? [], null);
+        $this->setIfExists('purposeKpis', $data ?? [], null);
         $this->setIfExists('thirdParty', $data ?? [], null);
+        $this->setIfExists('color', $data ?? [], null);
+        $this->setIfExists('colorProvenance', $data ?? [], null);
         $this->setIfExists('source', $data ?? [], null);
         $this->setIfExists('localization', $data ?? [], null);
+        $this->setIfExists('suggestionStats', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
@@ -411,6 +456,19 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
     }
 
     /**
+     * Gets allowable values of the enum.
+     *
+     * @return string[]
+     */
+    public function getColorProvenanceAllowableValues()
+    {
+        return [
+            self::COLOR_PROVENANCE_OPERATOR,
+            self::COLOR_PROVENANCE_COMPUTED,
+        ];
+    }
+
+    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
@@ -443,6 +501,19 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         if (null === $this->container['name']) {
             $invalidProperties[] = "'name' can't be null";
         }
+        if (!is_null($this->container['color']) && !preg_match('/^#[0-9a-f]{6}$/', $this->container['color'])) {
+            $invalidProperties[] = "invalid value for 'color', must be conform to the pattern /^#[0-9a-f]{6}$/.";
+        }
+
+        $allowedValues = $this->getColorProvenanceAllowableValues();
+        if (!is_null($this->container['colorProvenance']) && !in_array($this->container['colorProvenance'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'colorProvenance', must be one of '%s'",
+                $this->container['colorProvenance'],
+                implode("', '", $allowedValues)
+            );
+        }
+
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
         }
@@ -854,6 +925,40 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
     }
 
     /**
+     * Gets subjectType.
+     *
+     * @return null|string
+     */
+    public function getSubjectType()
+    {
+        return $this->container['subjectType'];
+    }
+
+    /**
+     * Sets subjectType.
+     *
+     * @param null|string $subjectType subjectType
+     *
+     * @return self
+     */
+    public function setSubjectType($subjectType)
+    {
+        if (is_null($subjectType)) {
+            array_push($this->openAPINullablesSetToNull, 'subjectType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('subjectType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['subjectType'] = $subjectType;
+
+        return $this;
+    }
+
+    /**
      * Gets collectionTerms.
      *
      * @return null|DynamicRevisionReference[]
@@ -956,6 +1061,74 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
     }
 
     /**
+     * Gets purposeType.
+     *
+     * @return null|MonitoringPromptPurposeType
+     */
+    public function getPurposeType()
+    {
+        return $this->container['purposeType'];
+    }
+
+    /**
+     * Sets purposeType.
+     *
+     * @param null|MonitoringPromptPurposeType $purposeType purposeType
+     *
+     * @return self
+     */
+    public function setPurposeType($purposeType)
+    {
+        if (is_null($purposeType)) {
+            array_push($this->openAPINullablesSetToNull, 'purposeType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('purposeType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['purposeType'] = $purposeType;
+
+        return $this;
+    }
+
+    /**
+     * Gets purposeKpis.
+     *
+     * @return null|MonitoringPromptKpi[]
+     */
+    public function getPurposeKpis()
+    {
+        return $this->container['purposeKpis'];
+    }
+
+    /**
+     * Sets purposeKpis.
+     *
+     * @param null|MonitoringPromptKpi[] $purposeKpis purposeKpis
+     *
+     * @return self
+     */
+    public function setPurposeKpis($purposeKpis)
+    {
+        if (is_null($purposeKpis)) {
+            array_push($this->openAPINullablesSetToNull, 'purposeKpis');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('purposeKpis', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['purposeKpis'] = $purposeKpis;
+
+        return $this;
+    }
+
+    /**
      * Gets thirdParty.
      *
      * @return null|TaxonomyTermThirdParty
@@ -985,6 +1158,89 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['thirdParty'] = $thirdParty;
+
+        return $this;
+    }
+
+    /**
+     * Gets color.
+     *
+     * @return null|string
+     */
+    public function getColor()
+    {
+        return $this->container['color'];
+    }
+
+    /**
+     * Sets color.
+     *
+     * @param null|string $color color
+     *
+     * @return self
+     */
+    public function setColor($color)
+    {
+        if (is_null($color)) {
+            array_push($this->openAPINullablesSetToNull, 'color');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('color', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+
+        if (!is_null($color) && (!preg_match('/^#[0-9a-f]{6}$/', $color))) {
+            throw new \InvalidArgumentException('invalid value for $color when calling TaxonomyTermEntity., must conform to the pattern /^#[0-9a-f]{6}$/.');
+        }
+
+        $this->container['color'] = $color;
+
+        return $this;
+    }
+
+    /**
+     * Gets colorProvenance.
+     *
+     * @return null|string
+     */
+    public function getColorProvenance()
+    {
+        return $this->container['colorProvenance'];
+    }
+
+    /**
+     * Sets colorProvenance.
+     *
+     * @param null|string $colorProvenance colorProvenance
+     *
+     * @return self
+     */
+    public function setColorProvenance($colorProvenance)
+    {
+        if (is_null($colorProvenance)) {
+            array_push($this->openAPINullablesSetToNull, 'colorProvenance');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('colorProvenance', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $allowedValues = $this->getColorProvenanceAllowableValues();
+        if (!is_null($colorProvenance) && !in_array($colorProvenance, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'colorProvenance', must be one of '%s'",
+                    $colorProvenance,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['colorProvenance'] = $colorProvenance;
 
         return $this;
     }
@@ -1053,6 +1309,40 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['localization'] = $localization;
+
+        return $this;
+    }
+
+    /**
+     * Gets suggestionStats.
+     *
+     * @return null|TaxonomyTermSuggestionStats
+     */
+    public function getSuggestionStats()
+    {
+        return $this->container['suggestionStats'];
+    }
+
+    /**
+     * Sets suggestionStats.
+     *
+     * @param null|TaxonomyTermSuggestionStats $suggestionStats suggestionStats
+     *
+     * @return self
+     */
+    public function setSuggestionStats($suggestionStats)
+    {
+        if (is_null($suggestionStats)) {
+            array_push($this->openAPINullablesSetToNull, 'suggestionStats');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('suggestionStats', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['suggestionStats'] = $suggestionStats;
 
         return $this;
     }
