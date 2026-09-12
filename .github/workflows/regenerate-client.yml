@@ -82,17 +82,9 @@ jobs:
       - name: Copy the generation over the client
         run: cp -R generated/dist/lib/. library/src/V2/Raw/
 
-      - name: Re-apply the client fixes
+      - name: Apply the generator corrections
         working-directory: library
-        run: |
-          if git apply --check -p1 patches/openapi-client-fixes.patch; then
-            git apply -p1 patches/openapi-client-fixes.patch
-            echo "The client fixes in patches/openapi-client-fixes.patch apply."
-          else
-            echo "::error::patches/openapi-client-fixes.patch does not apply to this generation. Refresh the patch against the generated tree and dispatch again."
-            git apply --check -p1 --verbose patches/openapi-client-fixes.patch || true
-            exit 1
-          fi
+        run: php tools/apply-generator-corrections.php src/V2/Raw
 
       # --sequential keeps the run on one process: the configuration sizes its
       # worker pool from the host's cores, and a worker exceeds its 120 second
