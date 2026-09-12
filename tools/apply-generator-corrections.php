@@ -26,10 +26,12 @@ declare(strict_types=1);
  * Both transforms are patterns over the generated code, never a line offset,
  * and both are idempotent: run again on an already-corrected tree, they find
  * their target state already in place and make no further change. Every
- * failure mode - an anchor missing, an anchor matching more than once, or the
- * asserted target state not holding after the rewrite - is checked before
- * either file is written, and exits non-zero with an explanation instead of
- * leaving one file corrected and the other not.
+ * pattern-matching failure mode - an anchor missing, an anchor matching more
+ * than once, or the asserted target state not holding after the rewrite - is
+ * checked for both files before either is written, so a validation failure
+ * never leaves one file corrected and the other not; only a raw disk failure
+ * between the two writes themselves still could, and writeOrDie() reports
+ * that by name rather than masking it.
  *
  * Usage: php apply-generator-corrections.php <path to a src/V2/Raw directory>
  */
@@ -71,8 +73,8 @@ $api = readOrDie($apiPath);
 $apiChanged = false;
 
 $directCallSites = substr_count($api, '\GuzzleHttp\Utils::jsonEncode(');
-$alreadyRouted = str_contains($api, 'ObjectSerializer::guzzleJsonEncode(');
-if (0 === $directCallSites && !$alreadyRouted) {
+$routedBefore = substr_count($api, 'ObjectSerializer::guzzleJsonEncode(');
+if (0 === $directCallSites && 0 === $routedBefore) {
     abort("no request-body encoding call site, direct or routed, in {$apiPath}; the generator output changed shape and the pattern needs revisiting.");
 }
 if ($directCallSites > 0) {
@@ -82,16 +84,18 @@ if ($directCallSites > 0) {
 
 // --- ObjectSerializer.php carries both the helper correction 1 routes
 // through and correction 2's namespace guard. Also computed only, for the
-// same reason. ---
+// same reason.
+//
+// Each insertion is built from the exact same variable the final
+// verification checks below - $helperReturn and $namespacePrefix are never
+// retyped a second time, so the inserted text and the asserted text cannot
+// drift apart. $helperSignature and $namespaceGuard decide only whether a
+// definition already exists at all, so a second one is never inserted
+// (which would be a fatal redeclaration). ---
 $serializerPath = $raw.'/ObjectSerializer.php';
 $serializer = readOrDie($serializerPath);
 $serializerChanged = false;
 
-// The signature decides whether a definition already exists at all, so a
-// second one is never inserted (which would be a fatal redeclaration); the
-// return statement is the entire semantic payload of the helper, and is what
-// the final verification below checks - a body a signature match alone would
-// not catch a mutation of.
 $helperSignature = 'public static function guzzleJsonEncode($data)';
 $helperReturn = "return class_exists('\GuzzleHttp\Utils') && method_exists('\GuzzleHttp\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode(\$data) : \GuzzleHttp\json_encode(\$data);";
 $helperCount = substr_count($serializer, $helperSignature);
@@ -104,47 +108,39 @@ if (0 === $helperCount) {
     if (1 !== $anchorCount) {
         abort("the date format declaration matches {$anchorCount} time(s) in {$serializerPath}, expected exactly one; the generator output changed shape.");
     }
-    $helper = <<<'PHP'
-    /**
-     * Pass on to the correct json encoder depending on the used Guzzle version.
-     *
-     * @param mixed $data
-     *
-     * @return string
-     */
-    public static function guzzleJsonEncode($data)
-    {
-        return class_exists('\GuzzleHttp\Utils') && method_exists('\GuzzleHttp\Utils', 'jsonEncode') ? \GuzzleHttp\Utils::jsonEncode($data) : \GuzzleHttp\json_encode($data);
-    }
-
-
-PHP;
+    $helper = "    /**\n".
+        "     * Pass on to the correct json encoder depending on the used Guzzle version.\n".
+        "     *\n".
+        "     * @param mixed \$data\n".
+        "     *\n".
+        "     * @return string\n".
+        "     */\n".
+        "    {$helperSignature}\n".
+        "    {\n".
+        "        {$helperReturn}\n".
+        "    }\n".
+        "\n";
     $serializer = str_replace($formatAnchor, $formatAnchor.$helper, $serializer);
     $serializerChanged = true;
 }
 
-// Same split: the condition line decides whether a guard already exists, the
-// assignment is the payload the final verification checks.
 $namespaceGuard = "if (!class_exists(\$class) && '\\\\' !== substr(\$class, 0, 1)) {";
 $namespacePrefix = "\$class = '\EdgeBox\SyncCore\V2\Raw\Model\\\\'.\$class;";
+$enumAnchor = "        if (method_exists(\$class, 'getAllowableEnumValues')) {\n";
 $guardCount = substr_count($serializer, $namespaceGuard);
 if ($guardCount > 1) {
     abort("the deserialize() namespace guard appears {$guardCount} times in {$serializerPath}, expected at most one.");
 }
 if (0 === $guardCount) {
-    $enumAnchor = "        if (method_exists(\$class, 'getAllowableEnumValues')) {\n";
     $anchorCount = substr_count($serializer, $enumAnchor);
     if (1 !== $anchorCount) {
         abort("the enum guard in deserialize() matches {$anchorCount} time(s) in {$serializerPath}, expected exactly one; the generator output changed shape.");
     }
-    $guard = <<<'PHP'
-        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136
-        if (!class_exists($class) && '\\' !== substr($class, 0, 1)) {
-            $class = '\EdgeBox\SyncCore\V2\Raw\Model\\'.$class;
-        }
-
-
-PHP;
+    $guard = "        // @see https://github.com/OpenAPITools/openapi-generator/issues/3136\n".
+        "        {$namespaceGuard}\n".
+        "            {$namespacePrefix}\n".
+        "        }\n".
+        "\n";
     $serializer = str_replace($enumAnchor, $guard.$enumAnchor, $serializer);
     $serializerChanged = true;
 }
@@ -172,8 +168,9 @@ $api = readOrDie($apiPath);
 if (str_contains($api, 'Utils::jsonEncode(')) {
     abort("{$apiPath} still calls a Guzzle-version-specific encoder directly after the rewrite.");
 }
-if (!str_contains($api, 'ObjectSerializer::guzzleJsonEncode(')) {
-    abort("{$apiPath} routes no call through ObjectSerializer::guzzleJsonEncode() after the rewrite.");
+$routedAfter = substr_count($api, 'ObjectSerializer::guzzleJsonEncode(');
+if ($routedAfter !== $routedBefore + $directCallSites) {
+    abort("{$apiPath} routes {$routedAfter} call(s) through ObjectSerializer::guzzleJsonEncode() after the rewrite, expected ".($routedBefore + $directCallSites).'.');
 }
 
 $serializer = readOrDie($serializerPath);
@@ -191,5 +188,10 @@ if (1 !== $guardCount) {
 if (1 !== substr_count($serializer, $namespacePrefix)) {
     abort("{$serializerPath} carries the deserialize() namespace guard, but not with the namespace-prefixing assignment expected, after the rewrite.");
 }
+$guardPosition = strpos($serializer, $namespaceGuard);
+$enumPosition = strpos($serializer, trim($enumAnchor));
+if (false === $enumPosition || $guardPosition >= $enumPosition) {
+    abort("{$serializerPath} carries the deserialize() namespace guard, but not before the enum check it has to run ahead of, after the rewrite.");
+}
 
-echo "verified: no direct Guzzle-version-specific encoder call remains, ObjectSerializer::guzzleJsonEncode() is defined once with the expected body, the deserialize() namespace guard is in place once with the expected assignment.\n";
+echo "verified: no direct Guzzle-version-specific encoder call remains, ObjectSerializer::guzzleJsonEncode() is defined once with the expected body, the deserialize() namespace guard is in place once, with the expected assignment, ahead of the enum check.\n";
