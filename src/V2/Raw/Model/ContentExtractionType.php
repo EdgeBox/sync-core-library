@@ -56,6 +56,8 @@ class ContentExtractionType
 
     public const CONTENT_SNAPSHOT_DELTA = 'content_snapshot_delta';
 
+    public const QA_PAIRS = 'qa_pairs';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -70,6 +72,7 @@ class ContentExtractionType
             self::IMAGE_DESCRIPTION,
             self::CONTENT_SNAPSHOT,
             self::CONTENT_SNAPSHOT_DELTA,
+            self::QA_PAIRS,
         ];
     }
 }

@@ -66,6 +66,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignmentSource',
         'confidence' => 'float',
         'reasoning' => 'string',
+        'filteredByThreshold' => 'float',
         'assignedAt' => 'float',
     ];
 
@@ -85,6 +86,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => null,
         'confidence' => null,
         'reasoning' => null,
+        'filteredByThreshold' => null,
         'assignedAt' => null,
     ];
 
@@ -100,6 +102,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => false,
         'confidence' => true,
         'reasoning' => true,
+        'filteredByThreshold' => true,
         'assignedAt' => true,
     ];
 
@@ -123,6 +126,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => 'source',
         'confidence' => 'confidence',
         'reasoning' => 'reasoning',
+        'filteredByThreshold' => 'filteredByThreshold',
         'assignedAt' => 'assignedAt',
     ];
 
@@ -138,6 +142,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => 'setSource',
         'confidence' => 'setConfidence',
         'reasoning' => 'setReasoning',
+        'filteredByThreshold' => 'setFilteredByThreshold',
         'assignedAt' => 'setAssignedAt',
     ];
 
@@ -153,6 +158,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         'source' => 'getSource',
         'confidence' => 'getConfidence',
         'reasoning' => 'getReasoning',
+        'filteredByThreshold' => 'getFilteredByThreshold',
         'assignedAt' => 'getAssignedAt',
     ];
 
@@ -177,6 +183,7 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('source', $data ?? [], null);
         $this->setIfExists('confidence', $data ?? [], null);
         $this->setIfExists('reasoning', $data ?? [], null);
+        $this->setIfExists('filteredByThreshold', $data ?? [], null);
         $this->setIfExists('assignedAt', $data ?? [], null);
     }
 
@@ -478,6 +485,40 @@ class TermAssignment implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['reasoning'] = $reasoning;
+
+        return $this;
+    }
+
+    /**
+     * Gets filteredByThreshold.
+     *
+     * @return null|float
+     */
+    public function getFilteredByThreshold()
+    {
+        return $this->container['filteredByThreshold'];
+    }
+
+    /**
+     * Sets filteredByThreshold.
+     *
+     * @param null|float $filteredByThreshold filteredByThreshold
+     *
+     * @return self
+     */
+    public function setFilteredByThreshold($filteredByThreshold)
+    {
+        if (is_null($filteredByThreshold)) {
+            array_push($this->openAPINullablesSetToNull, 'filteredByThreshold');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('filteredByThreshold', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['filteredByThreshold'] = $filteredByThreshold;
 
         return $this;
     }

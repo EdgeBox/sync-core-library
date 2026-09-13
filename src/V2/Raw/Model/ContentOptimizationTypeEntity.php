@@ -71,6 +71,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => 'string',
         'targetIssueTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'optimizationPrompt' => 'string',
+        'propertyTargetType' => 'ContentOptimizationTypePropertyTargetType',
+        'promptType' => 'ContentOptimizationTypePromptType',
+        'propertyPath' => 'string',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
         'id' => 'string',
@@ -100,6 +103,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => null,
         'targetIssueTypes' => null,
         'optimizationPrompt' => null,
+        'propertyTargetType' => null,
+        'promptType' => null,
+        'propertyPath' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -125,6 +131,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => true,
         'targetIssueTypes' => false,
         'optimizationPrompt' => false,
+        'propertyTargetType' => false,
+        'promptType' => false,
+        'propertyPath' => true,
         'customer' => true,
         'project' => true,
         'id' => false,
@@ -158,6 +167,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => 'description',
         'targetIssueTypes' => 'targetIssueTypes',
         'optimizationPrompt' => 'optimizationPrompt',
+        'propertyTargetType' => 'propertyTargetType',
+        'promptType' => 'promptType',
+        'propertyPath' => 'propertyPath',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -183,6 +195,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => 'setDescription',
         'targetIssueTypes' => 'setTargetIssueTypes',
         'optimizationPrompt' => 'setOptimizationPrompt',
+        'propertyTargetType' => 'setPropertyTargetType',
+        'promptType' => 'setPromptType',
+        'propertyPath' => 'setPropertyPath',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -208,6 +223,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         'description' => 'getDescription',
         'targetIssueTypes' => 'getTargetIssueTypes',
         'optimizationPrompt' => 'getOptimizationPrompt',
+        'propertyTargetType' => 'getPropertyTargetType',
+        'promptType' => 'getPromptType',
+        'propertyPath' => 'getPropertyPath',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -242,6 +260,9 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('targetIssueTypes', $data ?? [], null);
         $this->setIfExists('optimizationPrompt', $data ?? [], null);
+        $this->setIfExists('propertyTargetType', $data ?? [], null);
+        $this->setIfExists('promptType', $data ?? [], null);
+        $this->setIfExists('propertyPath', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -372,6 +393,12 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
         }
         if (null === $this->container['optimizationPrompt']) {
             $invalidProperties[] = "'optimizationPrompt' can't be null";
+        }
+        if (null === $this->container['propertyTargetType']) {
+            $invalidProperties[] = "'propertyTargetType' can't be null";
+        }
+        if (null === $this->container['promptType']) {
+            $invalidProperties[] = "'promptType' can't be null";
         }
         if (null === $this->container['id']) {
             $invalidProperties[] = "'id' can't be null";
@@ -711,6 +738,94 @@ class ContentOptimizationTypeEntity implements ModelInterface, \ArrayAccess, \Js
             throw new \InvalidArgumentException('non-nullable optimizationPrompt cannot be null');
         }
         $this->container['optimizationPrompt'] = $optimizationPrompt;
+
+        return $this;
+    }
+
+    /**
+     * Gets propertyTargetType.
+     *
+     * @return ContentOptimizationTypePropertyTargetType
+     */
+    public function getPropertyTargetType()
+    {
+        return $this->container['propertyTargetType'];
+    }
+
+    /**
+     * Sets propertyTargetType.
+     *
+     * @param ContentOptimizationTypePropertyTargetType $propertyTargetType propertyTargetType
+     *
+     * @return self
+     */
+    public function setPropertyTargetType($propertyTargetType)
+    {
+        if (is_null($propertyTargetType)) {
+            throw new \InvalidArgumentException('non-nullable propertyTargetType cannot be null');
+        }
+        $this->container['propertyTargetType'] = $propertyTargetType;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptType.
+     *
+     * @return ContentOptimizationTypePromptType
+     */
+    public function getPromptType()
+    {
+        return $this->container['promptType'];
+    }
+
+    /**
+     * Sets promptType.
+     *
+     * @param ContentOptimizationTypePromptType $promptType promptType
+     *
+     * @return self
+     */
+    public function setPromptType($promptType)
+    {
+        if (is_null($promptType)) {
+            throw new \InvalidArgumentException('non-nullable promptType cannot be null');
+        }
+        $this->container['promptType'] = $promptType;
+
+        return $this;
+    }
+
+    /**
+     * Gets propertyPath.
+     *
+     * @return null|string
+     */
+    public function getPropertyPath()
+    {
+        return $this->container['propertyPath'];
+    }
+
+    /**
+     * Sets propertyPath.
+     *
+     * @param null|string $propertyPath propertyPath
+     *
+     * @return self
+     */
+    public function setPropertyPath($propertyPath)
+    {
+        if (is_null($propertyPath)) {
+            array_push($this->openAPINullablesSetToNull, 'propertyPath');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('propertyPath', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['propertyPath'] = $propertyPath;
 
         return $this;
     }

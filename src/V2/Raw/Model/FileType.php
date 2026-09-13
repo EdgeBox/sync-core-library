@@ -72,6 +72,8 @@ class FileType
 
     public const MONITORING_PROMPT_PARSED = 'monitoring-prompt.parsed';
 
+    public const MONITORING_PROMPT_ANSWER_EXPORT = 'monitoring-prompt.answer-export';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -94,6 +96,7 @@ class FileType
             self::AI_EXECUTION_EVIDENCE,
             self::MONITORING_PROMPT_RAW,
             self::MONITORING_PROMPT_PARSED,
+            self::MONITORING_PROMPT_ANSWER_EXPORT,
         ];
     }
 }

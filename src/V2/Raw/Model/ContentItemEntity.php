@@ -107,6 +107,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'crawlBlockedReason' => 'ContentCrawlBlockReason',
+        'lastBlockedAt' => 'float',
+        'lastBlockedBy' => 'string',
+        'crawledViaProxy' => 'bool',
     ];
 
     /**
@@ -166,6 +170,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'crawlBlockedReason' => null,
+        'lastBlockedAt' => null,
+        'lastBlockedBy' => null,
+        'crawledViaProxy' => null,
     ];
 
     /**
@@ -221,6 +229,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'crawlBlockedReason' => true,
+        'lastBlockedAt' => true,
+        'lastBlockedBy' => true,
+        'crawledViaProxy' => true,
     ];
 
     /**
@@ -284,6 +296,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'crawlBlockedReason' => 'crawlBlockedReason',
+        'lastBlockedAt' => 'lastBlockedAt',
+        'lastBlockedBy' => 'lastBlockedBy',
+        'crawledViaProxy' => 'crawledViaProxy',
     ];
 
     /**
@@ -339,6 +355,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'crawlBlockedReason' => 'setCrawlBlockedReason',
+        'lastBlockedAt' => 'setLastBlockedAt',
+        'lastBlockedBy' => 'setLastBlockedBy',
+        'crawledViaProxy' => 'setCrawledViaProxy',
     ];
 
     /**
@@ -394,6 +414,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'crawlBlockedReason' => 'getCrawlBlockedReason',
+        'lastBlockedAt' => 'getLastBlockedAt',
+        'lastBlockedBy' => 'getLastBlockedBy',
+        'crawledViaProxy' => 'getCrawledViaProxy',
     ];
 
     /**
@@ -458,6 +482,10 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('crawlBlockedReason', $data ?? [], null);
+        $this->setIfExists('lastBlockedAt', $data ?? [], null);
+        $this->setIfExists('lastBlockedBy', $data ?? [], null);
+        $this->setIfExists('crawledViaProxy', $data ?? [], null);
     }
 
     /**
@@ -2116,6 +2144,142 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets crawlBlockedReason.
+     *
+     * @return null|ContentCrawlBlockReason
+     */
+    public function getCrawlBlockedReason()
+    {
+        return $this->container['crawlBlockedReason'];
+    }
+
+    /**
+     * Sets crawlBlockedReason.
+     *
+     * @param null|ContentCrawlBlockReason $crawlBlockedReason crawlBlockedReason
+     *
+     * @return self
+     */
+    public function setCrawlBlockedReason($crawlBlockedReason)
+    {
+        if (is_null($crawlBlockedReason)) {
+            array_push($this->openAPINullablesSetToNull, 'crawlBlockedReason');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('crawlBlockedReason', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['crawlBlockedReason'] = $crawlBlockedReason;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastBlockedAt.
+     *
+     * @return null|float
+     */
+    public function getLastBlockedAt()
+    {
+        return $this->container['lastBlockedAt'];
+    }
+
+    /**
+     * Sets lastBlockedAt.
+     *
+     * @param null|float $lastBlockedAt lastBlockedAt
+     *
+     * @return self
+     */
+    public function setLastBlockedAt($lastBlockedAt)
+    {
+        if (is_null($lastBlockedAt)) {
+            array_push($this->openAPINullablesSetToNull, 'lastBlockedAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastBlockedAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['lastBlockedAt'] = $lastBlockedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastBlockedBy.
+     *
+     * @return null|string
+     */
+    public function getLastBlockedBy()
+    {
+        return $this->container['lastBlockedBy'];
+    }
+
+    /**
+     * Sets lastBlockedBy.
+     *
+     * @param null|string $lastBlockedBy lastBlockedBy
+     *
+     * @return self
+     */
+    public function setLastBlockedBy($lastBlockedBy)
+    {
+        if (is_null($lastBlockedBy)) {
+            array_push($this->openAPINullablesSetToNull, 'lastBlockedBy');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastBlockedBy', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['lastBlockedBy'] = $lastBlockedBy;
+
+        return $this;
+    }
+
+    /**
+     * Gets crawledViaProxy.
+     *
+     * @return null|bool
+     */
+    public function getCrawledViaProxy()
+    {
+        return $this->container['crawledViaProxy'];
+    }
+
+    /**
+     * Sets crawledViaProxy.
+     *
+     * @param null|bool $crawledViaProxy crawledViaProxy
+     *
+     * @return self
+     */
+    public function setCrawledViaProxy($crawledViaProxy)
+    {
+        if (is_null($crawledViaProxy)) {
+            array_push($this->openAPINullablesSetToNull, 'crawledViaProxy');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('crawledViaProxy', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['crawledViaProxy'] = $crawledViaProxy;
 
         return $this;
     }

@@ -47,6 +47,11 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
 {
     public const DISCRIMINATOR = null;
 
+    public const DOMAIN_PROVENANCE_OPERATOR = 'operator';
+    public const DOMAIN_PROVENANCE_COMPUTED = 'computed';
+    public const DOMAIN_PROVENANCE_INHERITED = 'inherited';
+    public const DOMAIN_PROVENANCE_MODEL_INFERRED = 'model-inferred';
+
     /**
      * The original name of the model.
      *
@@ -62,6 +67,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static $openAPITypes = [
         'domain' => 'string',
         'domains' => 'string[]',
+        'domainProvenance' => 'string',
     ];
 
     /**
@@ -76,6 +82,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static $openAPIFormats = [
         'domain' => null,
         'domains' => null,
+        'domainProvenance' => null,
     ];
 
     /**
@@ -86,6 +93,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static array $openAPINullables = [
         'domain' => true,
         'domains' => true,
+        'domainProvenance' => true,
     ];
 
     /**
@@ -104,6 +112,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static $attributeMap = [
         'domain' => 'domain',
         'domains' => 'domains',
+        'domainProvenance' => 'domainProvenance',
     ];
 
     /**
@@ -114,6 +123,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static $setters = [
         'domain' => 'setDomain',
         'domains' => 'setDomains',
+        'domainProvenance' => 'setDomainProvenance',
     ];
 
     /**
@@ -124,6 +134,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     protected static $getters = [
         'domain' => 'getDomain',
         'domains' => 'getDomains',
+        'domainProvenance' => 'getDomainProvenance',
     ];
 
     /**
@@ -143,6 +154,7 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     {
         $this->setIfExists('domain', $data ?? [], null);
         $this->setIfExists('domains', $data ?? [], null);
+        $this->setIfExists('domainProvenance', $data ?? [], null);
     }
 
     /**
@@ -236,13 +248,39 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
     }
 
     /**
+     * Gets allowable values of the enum.
+     *
+     * @return string[]
+     */
+    public function getDomainProvenanceAllowableValues()
+    {
+        return [
+            self::DOMAIN_PROVENANCE_OPERATOR,
+            self::DOMAIN_PROVENANCE_COMPUTED,
+            self::DOMAIN_PROVENANCE_INHERITED,
+            self::DOMAIN_PROVENANCE_MODEL_INFERRED,
+        ];
+    }
+
+    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
      */
     public function listInvalidProperties()
     {
-        return [];
+        $invalidProperties = [];
+
+        $allowedValues = $this->getDomainProvenanceAllowableValues();
+        if (!is_null($this->container['domainProvenance']) && !in_array($this->container['domainProvenance'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'domainProvenance', must be one of '%s'",
+                $this->container['domainProvenance'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        return $invalidProperties;
     }
 
     /**
@@ -320,6 +358,50 @@ class TaxonomyTermThirdParty implements ModelInterface, \ArrayAccess, \JsonSeria
             }
         }
         $this->container['domains'] = $domains;
+
+        return $this;
+    }
+
+    /**
+     * Gets domainProvenance.
+     *
+     * @return null|string
+     */
+    public function getDomainProvenance()
+    {
+        return $this->container['domainProvenance'];
+    }
+
+    /**
+     * Sets domainProvenance.
+     *
+     * @param null|string $domainProvenance domainProvenance
+     *
+     * @return self
+     */
+    public function setDomainProvenance($domainProvenance)
+    {
+        if (is_null($domainProvenance)) {
+            array_push($this->openAPINullablesSetToNull, 'domainProvenance');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('domainProvenance', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $allowedValues = $this->getDomainProvenanceAllowableValues();
+        if (!is_null($domainProvenance) && !in_array($domainProvenance, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'domainProvenance', must be one of '%s'",
+                    $domainProvenance,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['domainProvenance'] = $domainProvenance;
 
         return $this;
     }

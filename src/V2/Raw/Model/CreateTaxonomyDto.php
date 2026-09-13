@@ -72,7 +72,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => 'bool',
         'allowAddingTerms' => 'bool',
         'autoClassifyContent' => '\EdgeBox\SyncCore\V2\Raw\Model\TaxonomyEntityAutoClassifyContent',
+        'classificationPrompt' => 'string',
+        'extractionPrompt' => 'string',
+        'mergingPrompt' => 'string',
         'allowedCollectionTaxonomies' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'saveEvaluatedTerms' => 'bool',
+        'unboundedEvaluatedTerms' => 'bool',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
     ];
@@ -99,7 +104,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => null,
         'allowAddingTerms' => null,
         'autoClassifyContent' => null,
+        'classificationPrompt' => null,
+        'extractionPrompt' => null,
+        'mergingPrompt' => null,
         'allowedCollectionTaxonomies' => null,
+        'saveEvaluatedTerms' => null,
+        'unboundedEvaluatedTerms' => null,
         'customer' => null,
         'project' => null,
     ];
@@ -122,7 +132,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => false,
         'allowAddingTerms' => false,
         'autoClassifyContent' => false,
+        'classificationPrompt' => true,
+        'extractionPrompt' => true,
+        'mergingPrompt' => true,
         'allowedCollectionTaxonomies' => true,
+        'saveEvaluatedTerms' => true,
+        'unboundedEvaluatedTerms' => true,
         'customer' => true,
         'project' => true,
     ];
@@ -153,7 +168,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => 'isTimeBased',
         'allowAddingTerms' => 'allowAddingTerms',
         'autoClassifyContent' => 'autoClassifyContent',
+        'classificationPrompt' => 'classificationPrompt',
+        'extractionPrompt' => 'extractionPrompt',
+        'mergingPrompt' => 'mergingPrompt',
         'allowedCollectionTaxonomies' => 'allowedCollectionTaxonomies',
+        'saveEvaluatedTerms' => 'saveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'unboundedEvaluatedTerms',
         'customer' => 'customer',
         'project' => 'project',
     ];
@@ -176,7 +196,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => 'setIsTimeBased',
         'allowAddingTerms' => 'setAllowAddingTerms',
         'autoClassifyContent' => 'setAutoClassifyContent',
+        'classificationPrompt' => 'setClassificationPrompt',
+        'extractionPrompt' => 'setExtractionPrompt',
+        'mergingPrompt' => 'setMergingPrompt',
         'allowedCollectionTaxonomies' => 'setAllowedCollectionTaxonomies',
+        'saveEvaluatedTerms' => 'setSaveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'setUnboundedEvaluatedTerms',
         'customer' => 'setCustomer',
         'project' => 'setProject',
     ];
@@ -199,7 +224,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         'isTimeBased' => 'getIsTimeBased',
         'allowAddingTerms' => 'getAllowAddingTerms',
         'autoClassifyContent' => 'getAutoClassifyContent',
+        'classificationPrompt' => 'getClassificationPrompt',
+        'extractionPrompt' => 'getExtractionPrompt',
+        'mergingPrompt' => 'getMergingPrompt',
         'allowedCollectionTaxonomies' => 'getAllowedCollectionTaxonomies',
+        'saveEvaluatedTerms' => 'getSaveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'getUnboundedEvaluatedTerms',
         'customer' => 'getCustomer',
         'project' => 'getProject',
     ];
@@ -231,7 +261,12 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('isTimeBased', $data ?? [], null);
         $this->setIfExists('allowAddingTerms', $data ?? [], null);
         $this->setIfExists('autoClassifyContent', $data ?? [], null);
+        $this->setIfExists('classificationPrompt', $data ?? [], null);
+        $this->setIfExists('extractionPrompt', $data ?? [], null);
+        $this->setIfExists('mergingPrompt', $data ?? [], null);
         $this->setIfExists('allowedCollectionTaxonomies', $data ?? [], null);
+        $this->setIfExists('saveEvaluatedTerms', $data ?? [], null);
+        $this->setIfExists('unboundedEvaluatedTerms', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
     }
@@ -719,6 +754,108 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
     }
 
     /**
+     * Gets classificationPrompt.
+     *
+     * @return null|string
+     */
+    public function getClassificationPrompt()
+    {
+        return $this->container['classificationPrompt'];
+    }
+
+    /**
+     * Sets classificationPrompt.
+     *
+     * @param null|string $classificationPrompt classificationPrompt
+     *
+     * @return self
+     */
+    public function setClassificationPrompt($classificationPrompt)
+    {
+        if (is_null($classificationPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'classificationPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('classificationPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['classificationPrompt'] = $classificationPrompt;
+
+        return $this;
+    }
+
+    /**
+     * Gets extractionPrompt.
+     *
+     * @return null|string
+     */
+    public function getExtractionPrompt()
+    {
+        return $this->container['extractionPrompt'];
+    }
+
+    /**
+     * Sets extractionPrompt.
+     *
+     * @param null|string $extractionPrompt extractionPrompt
+     *
+     * @return self
+     */
+    public function setExtractionPrompt($extractionPrompt)
+    {
+        if (is_null($extractionPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'extractionPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('extractionPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['extractionPrompt'] = $extractionPrompt;
+
+        return $this;
+    }
+
+    /**
+     * Gets mergingPrompt.
+     *
+     * @return null|string
+     */
+    public function getMergingPrompt()
+    {
+        return $this->container['mergingPrompt'];
+    }
+
+    /**
+     * Sets mergingPrompt.
+     *
+     * @param null|string $mergingPrompt mergingPrompt
+     *
+     * @return self
+     */
+    public function setMergingPrompt($mergingPrompt)
+    {
+        if (is_null($mergingPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'mergingPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('mergingPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['mergingPrompt'] = $mergingPrompt;
+
+        return $this;
+    }
+
+    /**
      * Gets allowedCollectionTaxonomies.
      *
      * @return null|DynamicReference[]
@@ -748,6 +885,74 @@ class CreateTaxonomyDto implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['allowedCollectionTaxonomies'] = $allowedCollectionTaxonomies;
+
+        return $this;
+    }
+
+    /**
+     * Gets saveEvaluatedTerms.
+     *
+     * @return null|bool
+     */
+    public function getSaveEvaluatedTerms()
+    {
+        return $this->container['saveEvaluatedTerms'];
+    }
+
+    /**
+     * Sets saveEvaluatedTerms.
+     *
+     * @param null|bool $saveEvaluatedTerms saveEvaluatedTerms
+     *
+     * @return self
+     */
+    public function setSaveEvaluatedTerms($saveEvaluatedTerms)
+    {
+        if (is_null($saveEvaluatedTerms)) {
+            array_push($this->openAPINullablesSetToNull, 'saveEvaluatedTerms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('saveEvaluatedTerms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['saveEvaluatedTerms'] = $saveEvaluatedTerms;
+
+        return $this;
+    }
+
+    /**
+     * Gets unboundedEvaluatedTerms.
+     *
+     * @return null|bool
+     */
+    public function getUnboundedEvaluatedTerms()
+    {
+        return $this->container['unboundedEvaluatedTerms'];
+    }
+
+    /**
+     * Sets unboundedEvaluatedTerms.
+     *
+     * @param null|bool $unboundedEvaluatedTerms unboundedEvaluatedTerms
+     *
+     * @return self
+     */
+    public function setUnboundedEvaluatedTerms($unboundedEvaluatedTerms)
+    {
+        if (is_null($unboundedEvaluatedTerms)) {
+            array_push($this->openAPINullablesSetToNull, 'unboundedEvaluatedTerms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('unboundedEvaluatedTerms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['unboundedEvaluatedTerms'] = $unboundedEvaluatedTerms;
 
         return $this;
     }

@@ -62,6 +62,8 @@ class TaskErrorType
 
     public const SITE_FAILED_TO_POLL = 'site-failed-to-poll';
 
+    public const AWAITING_EXTERNAL_JOB = 'awaiting-external-job';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -79,6 +81,7 @@ class TaskErrorType
             self::BAD_REQUEST_BODY,
             self::SITE_MUST_POLL,
             self::SITE_FAILED_TO_POLL,
+            self::AWAITING_EXTERNAL_JOB,
         ];
     }
 }

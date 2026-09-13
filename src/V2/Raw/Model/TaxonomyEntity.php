@@ -77,6 +77,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => 'string',
         'autoClassifyContent' => '\EdgeBox\SyncCore\V2\Raw\Model\TaxonomyEntityAutoClassifyContent',
         'maxTermsPerContentItem' => 'float',
+        'saveEvaluatedTerms' => 'bool',
+        'unboundedEvaluatedTerms' => 'bool',
         'allowedCollectionTaxonomies' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
@@ -113,6 +115,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => null,
         'autoClassifyContent' => null,
         'maxTermsPerContentItem' => null,
+        'saveEvaluatedTerms' => null,
+        'unboundedEvaluatedTerms' => null,
         'allowedCollectionTaxonomies' => null,
         'customer' => null,
         'project' => null,
@@ -145,6 +149,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => true,
         'autoClassifyContent' => false,
         'maxTermsPerContentItem' => true,
+        'saveEvaluatedTerms' => true,
+        'unboundedEvaluatedTerms' => true,
         'allowedCollectionTaxonomies' => true,
         'customer' => true,
         'project' => true,
@@ -185,6 +191,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => 'mergingPrompt',
         'autoClassifyContent' => 'autoClassifyContent',
         'maxTermsPerContentItem' => 'maxTermsPerContentItem',
+        'saveEvaluatedTerms' => 'saveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'unboundedEvaluatedTerms',
         'allowedCollectionTaxonomies' => 'allowedCollectionTaxonomies',
         'customer' => 'customer',
         'project' => 'project',
@@ -217,6 +225,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => 'setMergingPrompt',
         'autoClassifyContent' => 'setAutoClassifyContent',
         'maxTermsPerContentItem' => 'setMaxTermsPerContentItem',
+        'saveEvaluatedTerms' => 'setSaveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'setUnboundedEvaluatedTerms',
         'allowedCollectionTaxonomies' => 'setAllowedCollectionTaxonomies',
         'customer' => 'setCustomer',
         'project' => 'setProject',
@@ -249,6 +259,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'mergingPrompt' => 'getMergingPrompt',
         'autoClassifyContent' => 'getAutoClassifyContent',
         'maxTermsPerContentItem' => 'getMaxTermsPerContentItem',
+        'saveEvaluatedTerms' => 'getSaveEvaluatedTerms',
+        'unboundedEvaluatedTerms' => 'getUnboundedEvaluatedTerms',
         'allowedCollectionTaxonomies' => 'getAllowedCollectionTaxonomies',
         'customer' => 'getCustomer',
         'project' => 'getProject',
@@ -290,6 +302,8 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('mergingPrompt', $data ?? [], null);
         $this->setIfExists('autoClassifyContent', $data ?? [], null);
         $this->setIfExists('maxTermsPerContentItem', $data ?? [], null);
+        $this->setIfExists('saveEvaluatedTerms', $data ?? [], null);
+        $this->setIfExists('unboundedEvaluatedTerms', $data ?? [], null);
         $this->setIfExists('allowedCollectionTaxonomies', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -944,6 +958,74 @@ class TaxonomyEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['maxTermsPerContentItem'] = $maxTermsPerContentItem;
+
+        return $this;
+    }
+
+    /**
+     * Gets saveEvaluatedTerms.
+     *
+     * @return null|bool
+     */
+    public function getSaveEvaluatedTerms()
+    {
+        return $this->container['saveEvaluatedTerms'];
+    }
+
+    /**
+     * Sets saveEvaluatedTerms.
+     *
+     * @param null|bool $saveEvaluatedTerms saveEvaluatedTerms
+     *
+     * @return self
+     */
+    public function setSaveEvaluatedTerms($saveEvaluatedTerms)
+    {
+        if (is_null($saveEvaluatedTerms)) {
+            array_push($this->openAPINullablesSetToNull, 'saveEvaluatedTerms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('saveEvaluatedTerms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['saveEvaluatedTerms'] = $saveEvaluatedTerms;
+
+        return $this;
+    }
+
+    /**
+     * Gets unboundedEvaluatedTerms.
+     *
+     * @return null|bool
+     */
+    public function getUnboundedEvaluatedTerms()
+    {
+        return $this->container['unboundedEvaluatedTerms'];
+    }
+
+    /**
+     * Sets unboundedEvaluatedTerms.
+     *
+     * @param null|bool $unboundedEvaluatedTerms unboundedEvaluatedTerms
+     *
+     * @return self
+     */
+    public function setUnboundedEvaluatedTerms($unboundedEvaluatedTerms)
+    {
+        if (is_null($unboundedEvaluatedTerms)) {
+            array_push($this->openAPINullablesSetToNull, 'unboundedEvaluatedTerms');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('unboundedEvaluatedTerms', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['unboundedEvaluatedTerms'] = $unboundedEvaluatedTerms;
 
         return $this;
     }

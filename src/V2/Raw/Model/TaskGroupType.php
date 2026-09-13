@@ -76,6 +76,8 @@ class TaskGroupType
 
     public const GOVERNANCE_PROMPT_MONITORING = 'governance.prompt-monitoring';
 
+    public const GOVERNANCE_ANSWER_EXPORT = 'governance.answer-export';
+
     /**
      * Gets allowable values of the enum.
      *
@@ -100,6 +102,7 @@ class TaskGroupType
             self::GOVERNANCE_DISCOVER,
             self::GOVERNANCE_CRAWL,
             self::GOVERNANCE_PROMPT_MONITORING,
+            self::GOVERNANCE_ANSWER_EXPORT,
         ];
     }
 }

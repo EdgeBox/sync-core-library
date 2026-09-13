@@ -79,6 +79,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => 'float',
         'costsMax' => 'float',
         'defaultParameters' => 'mixed',
+        'recommendedModels' => 'mixed',
+        'evaluations' => 'mixed',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
     ];
@@ -112,6 +114,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => null,
         'costsMax' => null,
         'defaultParameters' => null,
+        'recommendedModels' => null,
+        'evaluations' => null,
         'customer' => null,
         'project' => null,
     ];
@@ -141,6 +145,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => true,
         'costsMax' => true,
         'defaultParameters' => true,
+        'recommendedModels' => true,
+        'evaluations' => true,
         'customer' => true,
         'project' => true,
     ];
@@ -178,6 +184,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => 'costsMin',
         'costsMax' => 'costsMax',
         'defaultParameters' => 'defaultParameters',
+        'recommendedModels' => 'recommendedModels',
+        'evaluations' => 'evaluations',
         'customer' => 'customer',
         'project' => 'project',
     ];
@@ -207,6 +215,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => 'setCostsMin',
         'costsMax' => 'setCostsMax',
         'defaultParameters' => 'setDefaultParameters',
+        'recommendedModels' => 'setRecommendedModels',
+        'evaluations' => 'setEvaluations',
         'customer' => 'setCustomer',
         'project' => 'setProject',
     ];
@@ -236,6 +246,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         'costsMin' => 'getCostsMin',
         'costsMax' => 'getCostsMax',
         'defaultParameters' => 'getDefaultParameters',
+        'recommendedModels' => 'getRecommendedModels',
+        'evaluations' => 'getEvaluations',
         'customer' => 'getCustomer',
         'project' => 'getProject',
     ];
@@ -274,6 +286,8 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
         $this->setIfExists('costsMin', $data ?? [], null);
         $this->setIfExists('costsMax', $data ?? [], null);
         $this->setIfExists('defaultParameters', $data ?? [], null);
+        $this->setIfExists('recommendedModels', $data ?? [], null);
+        $this->setIfExists('evaluations', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
     }
@@ -1001,6 +1015,74 @@ class CreateAiPromptTemplateDto implements ModelInterface, \ArrayAccess, \JsonSe
             }
         }
         $this->container['defaultParameters'] = $defaultParameters;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendedModels.
+     *
+     * @return null|mixed
+     */
+    public function getRecommendedModels()
+    {
+        return $this->container['recommendedModels'];
+    }
+
+    /**
+     * Sets recommendedModels.
+     *
+     * @param null|mixed $recommendedModels recommendedModels
+     *
+     * @return self
+     */
+    public function setRecommendedModels($recommendedModels)
+    {
+        if (is_null($recommendedModels)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendedModels');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendedModels', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendedModels'] = $recommendedModels;
+
+        return $this;
+    }
+
+    /**
+     * Gets evaluations.
+     *
+     * @return null|mixed
+     */
+    public function getEvaluations()
+    {
+        return $this->container['evaluations'];
+    }
+
+    /**
+     * Sets evaluations.
+     *
+     * @param null|mixed $evaluations evaluations
+     *
+     * @return self
+     */
+    public function setEvaluations($evaluations)
+    {
+        if (is_null($evaluations)) {
+            array_push($this->openAPINullablesSetToNull, 'evaluations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('evaluations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['evaluations'] = $evaluations;
 
         return $this;
     }

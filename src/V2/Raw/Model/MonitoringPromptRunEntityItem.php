@@ -68,6 +68,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => 'float',
         'shareOfVoice' => 'float',
         'sentiment' => 'float',
+        'recommendation' => 'float',
     ];
 
     /**
@@ -88,6 +89,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => null,
         'shareOfVoice' => null,
         'sentiment' => null,
+        'recommendation' => null,
     ];
 
     /**
@@ -104,6 +106,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => true,
         'shareOfVoice' => false,
         'sentiment' => true,
+        'recommendation' => true,
     ];
 
     /**
@@ -128,6 +131,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => 'order',
         'shareOfVoice' => 'shareOfVoice',
         'sentiment' => 'sentiment',
+        'recommendation' => 'recommendation',
     ];
 
     /**
@@ -144,6 +148,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => 'setOrder',
         'shareOfVoice' => 'setShareOfVoice',
         'sentiment' => 'setSentiment',
+        'recommendation' => 'setRecommendation',
     ];
 
     /**
@@ -160,6 +165,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'order' => 'getOrder',
         'shareOfVoice' => 'getShareOfVoice',
         'sentiment' => 'getSentiment',
+        'recommendation' => 'getRecommendation',
     ];
 
     /**
@@ -185,6 +191,7 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         $this->setIfExists('order', $data ?? [], null);
         $this->setIfExists('shareOfVoice', $data ?? [], null);
         $this->setIfExists('sentiment', $data ?? [], null);
+        $this->setIfExists('recommendation', $data ?? [], null);
     }
 
     /**
@@ -549,6 +556,40 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
             }
         }
         $this->container['sentiment'] = $sentiment;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendation.
+     *
+     * @return null|float
+     */
+    public function getRecommendation()
+    {
+        return $this->container['recommendation'];
+    }
+
+    /**
+     * Sets recommendation.
+     *
+     * @param null|float $recommendation recommendation
+     *
+     * @return self
+     */
+    public function setRecommendation($recommendation)
+    {
+        if (is_null($recommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendation'] = $recommendation;
 
         return $this;
     }

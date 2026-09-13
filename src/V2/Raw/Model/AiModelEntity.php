@@ -76,6 +76,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => 'float',
         'contextWindowTokens' => 'float',
         'costPerInputToken' => 'float',
+        'costPerCachedInputToken' => 'float',
         'costPerOutputToken' => 'float',
         'costPerRequest' => 'float',
         'versionLabel' => 'string',
@@ -113,6 +114,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => null,
         'contextWindowTokens' => null,
         'costPerInputToken' => null,
+        'costPerCachedInputToken' => null,
         'costPerOutputToken' => null,
         'costPerRequest' => null,
         'versionLabel' => null,
@@ -146,6 +148,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => true,
         'contextWindowTokens' => true,
         'costPerInputToken' => false,
+        'costPerCachedInputToken' => true,
         'costPerOutputToken' => false,
         'costPerRequest' => false,
         'versionLabel' => true,
@@ -187,6 +190,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => 'maxOutputTokens',
         'contextWindowTokens' => 'contextWindowTokens',
         'costPerInputToken' => 'costPerInputToken',
+        'costPerCachedInputToken' => 'costPerCachedInputToken',
         'costPerOutputToken' => 'costPerOutputToken',
         'costPerRequest' => 'costPerRequest',
         'versionLabel' => 'versionLabel',
@@ -220,6 +224,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => 'setMaxOutputTokens',
         'contextWindowTokens' => 'setContextWindowTokens',
         'costPerInputToken' => 'setCostPerInputToken',
+        'costPerCachedInputToken' => 'setCostPerCachedInputToken',
         'costPerOutputToken' => 'setCostPerOutputToken',
         'costPerRequest' => 'setCostPerRequest',
         'versionLabel' => 'setVersionLabel',
@@ -253,6 +258,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'maxOutputTokens' => 'getMaxOutputTokens',
         'contextWindowTokens' => 'getContextWindowTokens',
         'costPerInputToken' => 'getCostPerInputToken',
+        'costPerCachedInputToken' => 'getCostPerCachedInputToken',
         'costPerOutputToken' => 'getCostPerOutputToken',
         'costPerRequest' => 'getCostPerRequest',
         'versionLabel' => 'getVersionLabel',
@@ -295,6 +301,7 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('maxOutputTokens', $data ?? [], null);
         $this->setIfExists('contextWindowTokens', $data ?? [], null);
         $this->setIfExists('costPerInputToken', $data ?? [], null);
+        $this->setIfExists('costPerCachedInputToken', $data ?? [], null);
         $this->setIfExists('costPerOutputToken', $data ?? [], null);
         $this->setIfExists('costPerRequest', $data ?? [], null);
         $this->setIfExists('versionLabel', $data ?? [], null);
@@ -923,6 +930,40 @@ class AiModelEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable costPerInputToken cannot be null');
         }
         $this->container['costPerInputToken'] = $costPerInputToken;
+
+        return $this;
+    }
+
+    /**
+     * Gets costPerCachedInputToken.
+     *
+     * @return null|float
+     */
+    public function getCostPerCachedInputToken()
+    {
+        return $this->container['costPerCachedInputToken'];
+    }
+
+    /**
+     * Sets costPerCachedInputToken.
+     *
+     * @param null|float $costPerCachedInputToken costPerCachedInputToken
+     *
+     * @return self
+     */
+    public function setCostPerCachedInputToken($costPerCachedInputToken)
+    {
+        if (is_null($costPerCachedInputToken)) {
+            array_push($this->openAPINullablesSetToNull, 'costPerCachedInputToken');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('costPerCachedInputToken', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['costPerCachedInputToken'] = $costPerCachedInputToken;
 
         return $this;
     }

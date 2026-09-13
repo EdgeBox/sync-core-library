@@ -70,15 +70,21 @@ class TaxonomyFacet
 
     public const PRODUCT_FEATURE = 'product-feature';
 
+    public const ORGANIZATION_ATTRIBUTE = 'organization-attribute';
+
+    public const PRODUCT_ATTRIBUTE = 'product-attribute';
+
     public const MARKET = 'market';
+
+    public const TARGET_INDUSTRY = 'target-industry';
 
     public const LOCALE = 'locale';
 
     public const ACADEMIC_UNIT = 'academic-unit';
 
-    public const CAMPUS = 'campus';
-
     public const PROGRAM = 'program';
+
+    public const COMPETITOR_PROGRAM = 'competitor-program';
 
     public const CREDENTIAL = 'credential';
 
@@ -90,6 +96,10 @@ class TaxonomyFacet
 
     public const CONTENT_TYPE = 'content-type';
 
+    public const PAGE_TYPE = 'page-type';
+
+    public const FAQ_TYPE = 'faq-type';
+
     public const PERSONA = 'persona';
 
     public const FUNNEL_STAGE = 'funnel-stage';
@@ -97,6 +107,8 @@ class TaxonomyFacet
     public const INTENT = 'intent';
 
     public const ENGINE = 'engine';
+
+    public const MONITORING_PROMPT_PURPOSE = 'monitoring-prompt-purpose';
 
     public const ISSUE_TYPE = 'issue-type';
 
@@ -131,20 +143,26 @@ class TaxonomyFacet
             self::BRAND,
             self::PRODUCT,
             self::PRODUCT_FEATURE,
+            self::ORGANIZATION_ATTRIBUTE,
+            self::PRODUCT_ATTRIBUTE,
             self::MARKET,
+            self::TARGET_INDUSTRY,
             self::LOCALE,
             self::ACADEMIC_UNIT,
-            self::CAMPUS,
             self::PROGRAM,
+            self::COMPETITOR_PROGRAM,
             self::CREDENTIAL,
             self::COMPLIANCE_STANDARD,
             self::INCIDENT,
             self::ACADEMIC_LEVEL,
             self::CONTENT_TYPE,
+            self::PAGE_TYPE,
+            self::FAQ_TYPE,
             self::PERSONA,
             self::FUNNEL_STAGE,
             self::INTENT,
             self::ENGINE,
+            self::MONITORING_PROMPT_PURPOSE,
             self::ISSUE_TYPE,
             self::ISSUE_CATEGORY,
             self::ISSUE_DETECTION,

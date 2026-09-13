@@ -62,6 +62,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'assigned' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
         'disallowed' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
+        'evaluated' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
         'summary' => 'mixed',
     ];
 
@@ -77,6 +78,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $openAPIFormats = [
         'assigned' => null,
         'disallowed' => null,
+        'evaluated' => null,
         'summary' => null,
     ];
 
@@ -88,6 +90,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'assigned' => true,
         'disallowed' => true,
+        'evaluated' => true,
         'summary' => true,
     ];
 
@@ -107,6 +110,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $attributeMap = [
         'assigned' => 'assigned',
         'disallowed' => 'disallowed',
+        'evaluated' => 'evaluated',
         'summary' => 'summary',
     ];
 
@@ -118,6 +122,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $setters = [
         'assigned' => 'setAssigned',
         'disallowed' => 'setDisallowed',
+        'evaluated' => 'setEvaluated',
         'summary' => 'setSummary',
     ];
 
@@ -129,6 +134,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     protected static $getters = [
         'assigned' => 'getAssigned',
         'disallowed' => 'getDisallowed',
+        'evaluated' => 'getEvaluated',
         'summary' => 'getSummary',
     ];
 
@@ -149,6 +155,7 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
     {
         $this->setIfExists('assigned', $data ?? [], null);
         $this->setIfExists('disallowed', $data ?? [], null);
+        $this->setIfExists('evaluated', $data ?? [], null);
         $this->setIfExists('summary', $data ?? [], null);
     }
 
@@ -327,6 +334,40 @@ class Terms implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['disallowed'] = $disallowed;
+
+        return $this;
+    }
+
+    /**
+     * Gets evaluated.
+     *
+     * @return null|TermAssignment[]
+     */
+    public function getEvaluated()
+    {
+        return $this->container['evaluated'];
+    }
+
+    /**
+     * Sets evaluated.
+     *
+     * @param null|TermAssignment[] $evaluated evaluated
+     *
+     * @return self
+     */
+    public function setEvaluated($evaluated)
+    {
+        if (is_null($evaluated)) {
+            array_push($this->openAPINullablesSetToNull, 'evaluated');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('evaluated', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['evaluated'] = $evaluated;
 
         return $this;
     }

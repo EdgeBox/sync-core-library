@@ -67,10 +67,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => 'string',
         'country' => 'MonitoringPromptCountry',
         'location' => 'string',
+        'retrieval' => 'MonitoringPromptRunRetrieval',
+        'extraction' => 'MonitoringPromptRunExtraction',
+        'failureKind' => 'MonitoringPromptRunFailureKind',
+        'lastFailureKind' => 'MonitoringPromptRunFailureKind',
+        'providerResubmissions' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunProviderResubmission[]',
         'locale' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignmentTerm',
         'rawResponseFile' => 'DynamicReference',
         'parsedFile' => 'DynamicReference',
         'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunEntityItem[]',
+        'aspectSummaries' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunAspectSummary[]',
+        'aspectScores' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunAspectScore[]',
+        'citationHosts' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunCitationHost[]',
+        'untrackedCoSubjects' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunUntrackedCoSubject[]',
+        'namedSubjects' => 'string[]',
+        'rankingBasis' => 'SubjectPositionRankingBasis',
+        'positionSource' => 'SubjectPositionSource',
+        'positionDisagreement' => 'bool',
+        'faqSignalClusters' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunFaqSignalCluster[]',
+        'qualityMetrics' => 'MonitoringPromptRunQualityMetrics',
+        'promptTranslations' => 'mixed',
+        'explicitRecommendation' => 'MonitoringPromptRunExplicitRecommendation',
         'contentItems' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'terms' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
         'computedAt' => 'float',
@@ -100,10 +117,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => null,
         'country' => null,
         'location' => null,
+        'retrieval' => null,
+        'extraction' => null,
+        'failureKind' => null,
+        'lastFailureKind' => null,
+        'providerResubmissions' => null,
         'locale' => null,
         'rawResponseFile' => null,
         'parsedFile' => null,
         'entities' => null,
+        'aspectSummaries' => null,
+        'aspectScores' => null,
+        'citationHosts' => null,
+        'untrackedCoSubjects' => null,
+        'namedSubjects' => null,
+        'rankingBasis' => null,
+        'positionSource' => null,
+        'positionDisagreement' => null,
+        'faqSignalClusters' => null,
+        'qualityMetrics' => null,
+        'promptTranslations' => null,
+        'explicitRecommendation' => null,
         'contentItems' => null,
         'terms' => null,
         'computedAt' => null,
@@ -129,10 +163,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => true,
         'country' => false,
         'location' => true,
+        'retrieval' => true,
+        'extraction' => true,
+        'failureKind' => true,
+        'lastFailureKind' => true,
+        'providerResubmissions' => true,
         'locale' => false,
         'rawResponseFile' => true,
         'parsedFile' => true,
         'entities' => true,
+        'aspectSummaries' => true,
+        'aspectScores' => true,
+        'citationHosts' => true,
+        'untrackedCoSubjects' => true,
+        'namedSubjects' => true,
+        'rankingBasis' => true,
+        'positionSource' => true,
+        'positionDisagreement' => true,
+        'faqSignalClusters' => true,
+        'qualityMetrics' => true,
+        'promptTranslations' => true,
+        'explicitRecommendation' => true,
         'contentItems' => true,
         'terms' => true,
         'computedAt' => true,
@@ -166,10 +217,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => 'engineModel',
         'country' => 'country',
         'location' => 'location',
+        'retrieval' => 'retrieval',
+        'extraction' => 'extraction',
+        'failureKind' => 'failureKind',
+        'lastFailureKind' => 'lastFailureKind',
+        'providerResubmissions' => 'providerResubmissions',
         'locale' => 'locale',
         'rawResponseFile' => 'rawResponseFile',
         'parsedFile' => 'parsedFile',
         'entities' => 'entities',
+        'aspectSummaries' => 'aspectSummaries',
+        'aspectScores' => 'aspectScores',
+        'citationHosts' => 'citationHosts',
+        'untrackedCoSubjects' => 'untrackedCoSubjects',
+        'namedSubjects' => 'namedSubjects',
+        'rankingBasis' => 'rankingBasis',
+        'positionSource' => 'positionSource',
+        'positionDisagreement' => 'positionDisagreement',
+        'faqSignalClusters' => 'faqSignalClusters',
+        'qualityMetrics' => 'qualityMetrics',
+        'promptTranslations' => 'promptTranslations',
+        'explicitRecommendation' => 'explicitRecommendation',
         'contentItems' => 'contentItems',
         'terms' => 'terms',
         'computedAt' => 'computedAt',
@@ -195,10 +263,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => 'setEngineModel',
         'country' => 'setCountry',
         'location' => 'setLocation',
+        'retrieval' => 'setRetrieval',
+        'extraction' => 'setExtraction',
+        'failureKind' => 'setFailureKind',
+        'lastFailureKind' => 'setLastFailureKind',
+        'providerResubmissions' => 'setProviderResubmissions',
         'locale' => 'setLocale',
         'rawResponseFile' => 'setRawResponseFile',
         'parsedFile' => 'setParsedFile',
         'entities' => 'setEntities',
+        'aspectSummaries' => 'setAspectSummaries',
+        'aspectScores' => 'setAspectScores',
+        'citationHosts' => 'setCitationHosts',
+        'untrackedCoSubjects' => 'setUntrackedCoSubjects',
+        'namedSubjects' => 'setNamedSubjects',
+        'rankingBasis' => 'setRankingBasis',
+        'positionSource' => 'setPositionSource',
+        'positionDisagreement' => 'setPositionDisagreement',
+        'faqSignalClusters' => 'setFaqSignalClusters',
+        'qualityMetrics' => 'setQualityMetrics',
+        'promptTranslations' => 'setPromptTranslations',
+        'explicitRecommendation' => 'setExplicitRecommendation',
         'contentItems' => 'setContentItems',
         'terms' => 'setTerms',
         'computedAt' => 'setComputedAt',
@@ -224,10 +309,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'engineModel' => 'getEngineModel',
         'country' => 'getCountry',
         'location' => 'getLocation',
+        'retrieval' => 'getRetrieval',
+        'extraction' => 'getExtraction',
+        'failureKind' => 'getFailureKind',
+        'lastFailureKind' => 'getLastFailureKind',
+        'providerResubmissions' => 'getProviderResubmissions',
         'locale' => 'getLocale',
         'rawResponseFile' => 'getRawResponseFile',
         'parsedFile' => 'getParsedFile',
         'entities' => 'getEntities',
+        'aspectSummaries' => 'getAspectSummaries',
+        'aspectScores' => 'getAspectScores',
+        'citationHosts' => 'getCitationHosts',
+        'untrackedCoSubjects' => 'getUntrackedCoSubjects',
+        'namedSubjects' => 'getNamedSubjects',
+        'rankingBasis' => 'getRankingBasis',
+        'positionSource' => 'getPositionSource',
+        'positionDisagreement' => 'getPositionDisagreement',
+        'faqSignalClusters' => 'getFaqSignalClusters',
+        'qualityMetrics' => 'getQualityMetrics',
+        'promptTranslations' => 'getPromptTranslations',
+        'explicitRecommendation' => 'getExplicitRecommendation',
         'contentItems' => 'getContentItems',
         'terms' => 'getTerms',
         'computedAt' => 'getComputedAt',
@@ -262,10 +364,27 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         $this->setIfExists('engineModel', $data ?? [], null);
         $this->setIfExists('country', $data ?? [], null);
         $this->setIfExists('location', $data ?? [], null);
+        $this->setIfExists('retrieval', $data ?? [], null);
+        $this->setIfExists('extraction', $data ?? [], null);
+        $this->setIfExists('failureKind', $data ?? [], null);
+        $this->setIfExists('lastFailureKind', $data ?? [], null);
+        $this->setIfExists('providerResubmissions', $data ?? [], null);
         $this->setIfExists('locale', $data ?? [], null);
         $this->setIfExists('rawResponseFile', $data ?? [], null);
         $this->setIfExists('parsedFile', $data ?? [], null);
         $this->setIfExists('entities', $data ?? [], null);
+        $this->setIfExists('aspectSummaries', $data ?? [], null);
+        $this->setIfExists('aspectScores', $data ?? [], null);
+        $this->setIfExists('citationHosts', $data ?? [], null);
+        $this->setIfExists('untrackedCoSubjects', $data ?? [], null);
+        $this->setIfExists('namedSubjects', $data ?? [], null);
+        $this->setIfExists('rankingBasis', $data ?? [], null);
+        $this->setIfExists('positionSource', $data ?? [], null);
+        $this->setIfExists('positionDisagreement', $data ?? [], null);
+        $this->setIfExists('faqSignalClusters', $data ?? [], null);
+        $this->setIfExists('qualityMetrics', $data ?? [], null);
+        $this->setIfExists('promptTranslations', $data ?? [], null);
+        $this->setIfExists('explicitRecommendation', $data ?? [], null);
         $this->setIfExists('contentItems', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('computedAt', $data ?? [], null);
@@ -636,6 +755,176 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
     }
 
     /**
+     * Gets retrieval.
+     *
+     * @return null|MonitoringPromptRunRetrieval
+     */
+    public function getRetrieval()
+    {
+        return $this->container['retrieval'];
+    }
+
+    /**
+     * Sets retrieval.
+     *
+     * @param null|MonitoringPromptRunRetrieval $retrieval retrieval
+     *
+     * @return self
+     */
+    public function setRetrieval($retrieval)
+    {
+        if (is_null($retrieval)) {
+            array_push($this->openAPINullablesSetToNull, 'retrieval');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('retrieval', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['retrieval'] = $retrieval;
+
+        return $this;
+    }
+
+    /**
+     * Gets extraction.
+     *
+     * @return null|MonitoringPromptRunExtraction
+     */
+    public function getExtraction()
+    {
+        return $this->container['extraction'];
+    }
+
+    /**
+     * Sets extraction.
+     *
+     * @param null|MonitoringPromptRunExtraction $extraction extraction
+     *
+     * @return self
+     */
+    public function setExtraction($extraction)
+    {
+        if (is_null($extraction)) {
+            array_push($this->openAPINullablesSetToNull, 'extraction');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('extraction', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['extraction'] = $extraction;
+
+        return $this;
+    }
+
+    /**
+     * Gets failureKind.
+     *
+     * @return null|MonitoringPromptRunFailureKind
+     */
+    public function getFailureKind()
+    {
+        return $this->container['failureKind'];
+    }
+
+    /**
+     * Sets failureKind.
+     *
+     * @param null|MonitoringPromptRunFailureKind $failureKind failureKind
+     *
+     * @return self
+     */
+    public function setFailureKind($failureKind)
+    {
+        if (is_null($failureKind)) {
+            array_push($this->openAPINullablesSetToNull, 'failureKind');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('failureKind', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['failureKind'] = $failureKind;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastFailureKind.
+     *
+     * @return null|MonitoringPromptRunFailureKind
+     */
+    public function getLastFailureKind()
+    {
+        return $this->container['lastFailureKind'];
+    }
+
+    /**
+     * Sets lastFailureKind.
+     *
+     * @param null|MonitoringPromptRunFailureKind $lastFailureKind lastFailureKind
+     *
+     * @return self
+     */
+    public function setLastFailureKind($lastFailureKind)
+    {
+        if (is_null($lastFailureKind)) {
+            array_push($this->openAPINullablesSetToNull, 'lastFailureKind');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('lastFailureKind', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['lastFailureKind'] = $lastFailureKind;
+
+        return $this;
+    }
+
+    /**
+     * Gets providerResubmissions.
+     *
+     * @return null|MonitoringPromptRunProviderResubmission[]
+     */
+    public function getProviderResubmissions()
+    {
+        return $this->container['providerResubmissions'];
+    }
+
+    /**
+     * Sets providerResubmissions.
+     *
+     * @param null|MonitoringPromptRunProviderResubmission[] $providerResubmissions providerResubmissions
+     *
+     * @return self
+     */
+    public function setProviderResubmissions($providerResubmissions)
+    {
+        if (is_null($providerResubmissions)) {
+            array_push($this->openAPINullablesSetToNull, 'providerResubmissions');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('providerResubmissions', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['providerResubmissions'] = $providerResubmissions;
+
+        return $this;
+    }
+
+    /**
      * Gets locale.
      *
      * @return TermAssignmentTerm
@@ -760,6 +1049,414 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
             }
         }
         $this->container['entities'] = $entities;
+
+        return $this;
+    }
+
+    /**
+     * Gets aspectSummaries.
+     *
+     * @return null|MonitoringPromptRunAspectSummary[]
+     */
+    public function getAspectSummaries()
+    {
+        return $this->container['aspectSummaries'];
+    }
+
+    /**
+     * Sets aspectSummaries.
+     *
+     * @param null|MonitoringPromptRunAspectSummary[] $aspectSummaries aspectSummaries
+     *
+     * @return self
+     */
+    public function setAspectSummaries($aspectSummaries)
+    {
+        if (is_null($aspectSummaries)) {
+            array_push($this->openAPINullablesSetToNull, 'aspectSummaries');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aspectSummaries', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aspectSummaries'] = $aspectSummaries;
+
+        return $this;
+    }
+
+    /**
+     * Gets aspectScores.
+     *
+     * @return null|MonitoringPromptRunAspectScore[]
+     */
+    public function getAspectScores()
+    {
+        return $this->container['aspectScores'];
+    }
+
+    /**
+     * Sets aspectScores.
+     *
+     * @param null|MonitoringPromptRunAspectScore[] $aspectScores aspectScores
+     *
+     * @return self
+     */
+    public function setAspectScores($aspectScores)
+    {
+        if (is_null($aspectScores)) {
+            array_push($this->openAPINullablesSetToNull, 'aspectScores');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aspectScores', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aspectScores'] = $aspectScores;
+
+        return $this;
+    }
+
+    /**
+     * Gets citationHosts.
+     *
+     * @return null|MonitoringPromptRunCitationHost[]
+     */
+    public function getCitationHosts()
+    {
+        return $this->container['citationHosts'];
+    }
+
+    /**
+     * Sets citationHosts.
+     *
+     * @param null|MonitoringPromptRunCitationHost[] $citationHosts citationHosts
+     *
+     * @return self
+     */
+    public function setCitationHosts($citationHosts)
+    {
+        if (is_null($citationHosts)) {
+            array_push($this->openAPINullablesSetToNull, 'citationHosts');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('citationHosts', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['citationHosts'] = $citationHosts;
+
+        return $this;
+    }
+
+    /**
+     * Gets untrackedCoSubjects.
+     *
+     * @return null|MonitoringPromptRunUntrackedCoSubject[]
+     */
+    public function getUntrackedCoSubjects()
+    {
+        return $this->container['untrackedCoSubjects'];
+    }
+
+    /**
+     * Sets untrackedCoSubjects.
+     *
+     * @param null|MonitoringPromptRunUntrackedCoSubject[] $untrackedCoSubjects untrackedCoSubjects
+     *
+     * @return self
+     */
+    public function setUntrackedCoSubjects($untrackedCoSubjects)
+    {
+        if (is_null($untrackedCoSubjects)) {
+            array_push($this->openAPINullablesSetToNull, 'untrackedCoSubjects');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('untrackedCoSubjects', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['untrackedCoSubjects'] = $untrackedCoSubjects;
+
+        return $this;
+    }
+
+    /**
+     * Gets namedSubjects.
+     *
+     * @return null|string[]
+     */
+    public function getNamedSubjects()
+    {
+        return $this->container['namedSubjects'];
+    }
+
+    /**
+     * Sets namedSubjects.
+     *
+     * @param null|string[] $namedSubjects namedSubjects
+     *
+     * @return self
+     */
+    public function setNamedSubjects($namedSubjects)
+    {
+        if (is_null($namedSubjects)) {
+            array_push($this->openAPINullablesSetToNull, 'namedSubjects');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('namedSubjects', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['namedSubjects'] = $namedSubjects;
+
+        return $this;
+    }
+
+    /**
+     * Gets rankingBasis.
+     *
+     * @return null|SubjectPositionRankingBasis
+     */
+    public function getRankingBasis()
+    {
+        return $this->container['rankingBasis'];
+    }
+
+    /**
+     * Sets rankingBasis.
+     *
+     * @param null|SubjectPositionRankingBasis $rankingBasis rankingBasis
+     *
+     * @return self
+     */
+    public function setRankingBasis($rankingBasis)
+    {
+        if (is_null($rankingBasis)) {
+            array_push($this->openAPINullablesSetToNull, 'rankingBasis');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rankingBasis', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rankingBasis'] = $rankingBasis;
+
+        return $this;
+    }
+
+    /**
+     * Gets positionSource.
+     *
+     * @return null|SubjectPositionSource
+     */
+    public function getPositionSource()
+    {
+        return $this->container['positionSource'];
+    }
+
+    /**
+     * Sets positionSource.
+     *
+     * @param null|SubjectPositionSource $positionSource positionSource
+     *
+     * @return self
+     */
+    public function setPositionSource($positionSource)
+    {
+        if (is_null($positionSource)) {
+            array_push($this->openAPINullablesSetToNull, 'positionSource');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('positionSource', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['positionSource'] = $positionSource;
+
+        return $this;
+    }
+
+    /**
+     * Gets positionDisagreement.
+     *
+     * @return null|bool
+     */
+    public function getPositionDisagreement()
+    {
+        return $this->container['positionDisagreement'];
+    }
+
+    /**
+     * Sets positionDisagreement.
+     *
+     * @param null|bool $positionDisagreement positionDisagreement
+     *
+     * @return self
+     */
+    public function setPositionDisagreement($positionDisagreement)
+    {
+        if (is_null($positionDisagreement)) {
+            array_push($this->openAPINullablesSetToNull, 'positionDisagreement');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('positionDisagreement', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['positionDisagreement'] = $positionDisagreement;
+
+        return $this;
+    }
+
+    /**
+     * Gets faqSignalClusters.
+     *
+     * @return null|MonitoringPromptRunFaqSignalCluster[]
+     */
+    public function getFaqSignalClusters()
+    {
+        return $this->container['faqSignalClusters'];
+    }
+
+    /**
+     * Sets faqSignalClusters.
+     *
+     * @param null|MonitoringPromptRunFaqSignalCluster[] $faqSignalClusters faqSignalClusters
+     *
+     * @return self
+     */
+    public function setFaqSignalClusters($faqSignalClusters)
+    {
+        if (is_null($faqSignalClusters)) {
+            array_push($this->openAPINullablesSetToNull, 'faqSignalClusters');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('faqSignalClusters', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['faqSignalClusters'] = $faqSignalClusters;
+
+        return $this;
+    }
+
+    /**
+     * Gets qualityMetrics.
+     *
+     * @return null|MonitoringPromptRunQualityMetrics
+     */
+    public function getQualityMetrics()
+    {
+        return $this->container['qualityMetrics'];
+    }
+
+    /**
+     * Sets qualityMetrics.
+     *
+     * @param null|MonitoringPromptRunQualityMetrics $qualityMetrics qualityMetrics
+     *
+     * @return self
+     */
+    public function setQualityMetrics($qualityMetrics)
+    {
+        if (is_null($qualityMetrics)) {
+            array_push($this->openAPINullablesSetToNull, 'qualityMetrics');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('qualityMetrics', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['qualityMetrics'] = $qualityMetrics;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptTranslations.
+     *
+     * @return null|mixed
+     */
+    public function getPromptTranslations()
+    {
+        return $this->container['promptTranslations'];
+    }
+
+    /**
+     * Sets promptTranslations.
+     *
+     * @param null|mixed $promptTranslations promptTranslations
+     *
+     * @return self
+     */
+    public function setPromptTranslations($promptTranslations)
+    {
+        if (is_null($promptTranslations)) {
+            array_push($this->openAPINullablesSetToNull, 'promptTranslations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('promptTranslations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['promptTranslations'] = $promptTranslations;
+
+        return $this;
+    }
+
+    /**
+     * Gets explicitRecommendation.
+     *
+     * @return null|MonitoringPromptRunExplicitRecommendation
+     */
+    public function getExplicitRecommendation()
+    {
+        return $this->container['explicitRecommendation'];
+    }
+
+    /**
+     * Sets explicitRecommendation.
+     *
+     * @param null|MonitoringPromptRunExplicitRecommendation $explicitRecommendation explicitRecommendation
+     *
+     * @return self
+     */
+    public function setExplicitRecommendation($explicitRecommendation)
+    {
+        if (is_null($explicitRecommendation)) {
+            array_push($this->openAPINullablesSetToNull, 'explicitRecommendation');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('explicitRecommendation', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['explicitRecommendation'] = $explicitRecommendation;
 
         return $this;
     }

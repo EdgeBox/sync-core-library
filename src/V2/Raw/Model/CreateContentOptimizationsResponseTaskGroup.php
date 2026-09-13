@@ -87,6 +87,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => 'float',
         'updatedAt' => 'float',
         'deletedAt' => 'float',
+        'answerExport' => 'AnswerExportTaskGroupDetails',
     ];
 
     /**
@@ -126,6 +127,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => null,
         'updatedAt' => null,
         'deletedAt' => null,
+        'answerExport' => null,
     ];
 
     /**
@@ -161,6 +163,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => false,
         'updatedAt' => false,
         'deletedAt' => true,
+        'answerExport' => true,
     ];
 
     /**
@@ -204,6 +207,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
         'deletedAt' => 'deletedAt',
+        'answerExport' => 'answerExport',
     ];
 
     /**
@@ -239,6 +243,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
         'deletedAt' => 'setDeletedAt',
+        'answerExport' => 'setAnswerExport',
     ];
 
     /**
@@ -274,6 +279,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
         'deletedAt' => 'getDeletedAt',
+        'answerExport' => 'getAnswerExport',
     ];
 
     /**
@@ -318,6 +324,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('deletedAt', $data ?? [], null);
+        $this->setIfExists('answerExport', $data ?? [], null);
     }
 
     /**
@@ -1320,6 +1327,40 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
             }
         }
         $this->container['deletedAt'] = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets answerExport.
+     *
+     * @return null|AnswerExportTaskGroupDetails
+     */
+    public function getAnswerExport()
+    {
+        return $this->container['answerExport'];
+    }
+
+    /**
+     * Sets answerExport.
+     *
+     * @param null|AnswerExportTaskGroupDetails $answerExport answerExport
+     *
+     * @return self
+     */
+    public function setAnswerExport($answerExport)
+    {
+        if (is_null($answerExport)) {
+            array_push($this->openAPINullablesSetToNull, 'answerExport');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('answerExport', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['answerExport'] = $answerExport;
 
         return $this;
     }

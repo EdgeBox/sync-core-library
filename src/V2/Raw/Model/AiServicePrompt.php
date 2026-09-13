@@ -72,11 +72,27 @@ class AiServicePrompt
 
     public const MONITORING_PROMPT_EXTRACTION = 'monitoring.prompt-extraction';
 
+    public const GOVERNANCE_ATTRIBUTION_PASS1 = 'governance.attribution.pass1';
+
+    public const GOVERNANCE_ATTRIBUTION_PASS1_ESCALATION = 'governance.attribution.pass1-escalation';
+
+    public const GOVERNANCE_ATTRIBUTION_VERIFY = 'governance.attribution.verify';
+
+    public const GOVERNANCE_ATTRIBUTION_PASS2 = 'governance.attribution.pass2';
+
+    public const GOVERNANCE_ATTRIBUTION_CRITERION_MAPPING = 'governance.attribution.criterion-mapping';
+
+    public const GOVERNANCE_ATTRIBUTION_VERIFY_ARBITER = 'governance.attribution.verify-arbiter';
+
+    public const GOVERNANCE_QA_PAIR_EXTRACTION = 'governance.qa-pair-extraction';
+
     public const MARKDOWN_OPTIMIZE = 'markdown.optimize';
 
     public const MARKDOWN_TO_HTML = 'markdown.to-html';
 
     public const TEXT_TO_STRUCTURED_DATA = 'text.to-structured-data';
+
+    public const TEXT_MAP_CHANGES = 'text.map-changes';
 
     public const FORMULA_GENERATE = 'formula.generate';
 
@@ -104,9 +120,17 @@ class AiServicePrompt
             self::MARKDOWN_TRANSLATE,
             self::PROMPT_INFER_SEARCH_QUERY,
             self::MONITORING_PROMPT_EXTRACTION,
+            self::GOVERNANCE_ATTRIBUTION_PASS1,
+            self::GOVERNANCE_ATTRIBUTION_PASS1_ESCALATION,
+            self::GOVERNANCE_ATTRIBUTION_VERIFY,
+            self::GOVERNANCE_ATTRIBUTION_PASS2,
+            self::GOVERNANCE_ATTRIBUTION_CRITERION_MAPPING,
+            self::GOVERNANCE_ATTRIBUTION_VERIFY_ARBITER,
+            self::GOVERNANCE_QA_PAIR_EXTRACTION,
             self::MARKDOWN_OPTIMIZE,
             self::MARKDOWN_TO_HTML,
             self::TEXT_TO_STRUCTURED_DATA,
+            self::TEXT_MAP_CHANGES,
             self::FORMULA_GENERATE,
             self::JSON_FIX_OUTPUT_SCHEMA,
         ];

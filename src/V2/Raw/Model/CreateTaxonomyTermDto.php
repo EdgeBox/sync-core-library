@@ -67,8 +67,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => 'string',
         'description' => 'string',
         'aliases' => 'string[]',
+        'subjectType' => 'string',
         'classificationFormula' => 'mixed',
         'priority' => 'TaxonomyTermPriority',
+        'purposeType' => 'MonitoringPromptPurposeType',
+        'purposeKpis' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptKpi[]',
+        'thirdParty' => 'TaxonomyTermThirdParty',
+        'color' => 'string',
         'taxonomy' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
@@ -92,8 +97,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => null,
         'description' => null,
         'aliases' => null,
+        'subjectType' => null,
         'classificationFormula' => null,
         'priority' => null,
+        'purposeType' => null,
+        'purposeKpis' => null,
+        'thirdParty' => null,
+        'color' => null,
         'taxonomy' => null,
         'customer' => null,
         'project' => null,
@@ -113,8 +123,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => false,
         'description' => true,
         'aliases' => true,
+        'subjectType' => true,
         'classificationFormula' => true,
         'priority' => true,
+        'purposeType' => true,
+        'purposeKpis' => true,
+        'thirdParty' => true,
+        'color' => true,
         'taxonomy' => false,
         'customer' => true,
         'project' => true,
@@ -142,8 +157,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => 'name',
         'description' => 'description',
         'aliases' => 'aliases',
+        'subjectType' => 'subjectType',
         'classificationFormula' => 'classificationFormula',
         'priority' => 'priority',
+        'purposeType' => 'purposeType',
+        'purposeKpis' => 'purposeKpis',
+        'thirdParty' => 'thirdParty',
+        'color' => 'color',
         'taxonomy' => 'taxonomy',
         'customer' => 'customer',
         'project' => 'project',
@@ -163,8 +183,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => 'setName',
         'description' => 'setDescription',
         'aliases' => 'setAliases',
+        'subjectType' => 'setSubjectType',
         'classificationFormula' => 'setClassificationFormula',
         'priority' => 'setPriority',
+        'purposeType' => 'setPurposeType',
+        'purposeKpis' => 'setPurposeKpis',
+        'thirdParty' => 'setThirdParty',
+        'color' => 'setColor',
         'taxonomy' => 'setTaxonomy',
         'customer' => 'setCustomer',
         'project' => 'setProject',
@@ -184,8 +209,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         'name' => 'getName',
         'description' => 'getDescription',
         'aliases' => 'getAliases',
+        'subjectType' => 'getSubjectType',
         'classificationFormula' => 'getClassificationFormula',
         'priority' => 'getPriority',
+        'purposeType' => 'getPurposeType',
+        'purposeKpis' => 'getPurposeKpis',
+        'thirdParty' => 'getThirdParty',
+        'color' => 'getColor',
         'taxonomy' => 'getTaxonomy',
         'customer' => 'getCustomer',
         'project' => 'getProject',
@@ -214,8 +244,13 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('aliases', $data ?? [], null);
+        $this->setIfExists('subjectType', $data ?? [], null);
         $this->setIfExists('classificationFormula', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
+        $this->setIfExists('purposeType', $data ?? [], null);
+        $this->setIfExists('purposeKpis', $data ?? [], null);
+        $this->setIfExists('thirdParty', $data ?? [], null);
+        $this->setIfExists('color', $data ?? [], null);
         $this->setIfExists('taxonomy', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -330,6 +365,10 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
         if (null === $this->container['name']) {
             $invalidProperties[] = "'name' can't be null";
         }
+        if (!is_null($this->container['color']) && !preg_match('/^#[0-9a-f]{6}$/', $this->container['color'])) {
+            $invalidProperties[] = "invalid value for 'color', must be conform to the pattern /^#[0-9a-f]{6}$/.";
+        }
+
         if (null === $this->container['taxonomy']) {
             $invalidProperties[] = "'taxonomy' can't be null";
         }
@@ -566,6 +605,40 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
     }
 
     /**
+     * Gets subjectType.
+     *
+     * @return null|string
+     */
+    public function getSubjectType()
+    {
+        return $this->container['subjectType'];
+    }
+
+    /**
+     * Sets subjectType.
+     *
+     * @param null|string $subjectType subjectType
+     *
+     * @return self
+     */
+    public function setSubjectType($subjectType)
+    {
+        if (is_null($subjectType)) {
+            array_push($this->openAPINullablesSetToNull, 'subjectType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('subjectType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['subjectType'] = $subjectType;
+
+        return $this;
+    }
+
+    /**
      * Gets classificationFormula.
      *
      * @return null|mixed
@@ -629,6 +702,147 @@ class CreateTaxonomyTermDto implements ModelInterface, \ArrayAccess, \JsonSerial
             }
         }
         $this->container['priority'] = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Gets purposeType.
+     *
+     * @return null|MonitoringPromptPurposeType
+     */
+    public function getPurposeType()
+    {
+        return $this->container['purposeType'];
+    }
+
+    /**
+     * Sets purposeType.
+     *
+     * @param null|MonitoringPromptPurposeType $purposeType purposeType
+     *
+     * @return self
+     */
+    public function setPurposeType($purposeType)
+    {
+        if (is_null($purposeType)) {
+            array_push($this->openAPINullablesSetToNull, 'purposeType');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('purposeType', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['purposeType'] = $purposeType;
+
+        return $this;
+    }
+
+    /**
+     * Gets purposeKpis.
+     *
+     * @return null|MonitoringPromptKpi[]
+     */
+    public function getPurposeKpis()
+    {
+        return $this->container['purposeKpis'];
+    }
+
+    /**
+     * Sets purposeKpis.
+     *
+     * @param null|MonitoringPromptKpi[] $purposeKpis purposeKpis
+     *
+     * @return self
+     */
+    public function setPurposeKpis($purposeKpis)
+    {
+        if (is_null($purposeKpis)) {
+            array_push($this->openAPINullablesSetToNull, 'purposeKpis');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('purposeKpis', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['purposeKpis'] = $purposeKpis;
+
+        return $this;
+    }
+
+    /**
+     * Gets thirdParty.
+     *
+     * @return null|TaxonomyTermThirdParty
+     */
+    public function getThirdParty()
+    {
+        return $this->container['thirdParty'];
+    }
+
+    /**
+     * Sets thirdParty.
+     *
+     * @param null|TaxonomyTermThirdParty $thirdParty thirdParty
+     *
+     * @return self
+     */
+    public function setThirdParty($thirdParty)
+    {
+        if (is_null($thirdParty)) {
+            array_push($this->openAPINullablesSetToNull, 'thirdParty');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('thirdParty', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['thirdParty'] = $thirdParty;
+
+        return $this;
+    }
+
+    /**
+     * Gets color.
+     *
+     * @return null|string
+     */
+    public function getColor()
+    {
+        return $this->container['color'];
+    }
+
+    /**
+     * Sets color.
+     *
+     * @param null|string $color color
+     *
+     * @return self
+     */
+    public function setColor($color)
+    {
+        if (is_null($color)) {
+            array_push($this->openAPINullablesSetToNull, 'color');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('color', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+
+        if (!is_null($color) && (!preg_match('/^#[0-9a-f]{6}$/', $color))) {
+            throw new \InvalidArgumentException('invalid value for $color when calling CreateTaxonomyTermDto., must conform to the pattern /^#[0-9a-f]{6}$/.');
+        }
+
+        $this->container['color'] = $color;
 
         return $this;
     }

@@ -1,7 +1,11 @@
 # caches
 .phplint-cache
 .php-cs-fixer.cache
+.phpunit.cache
 cghooks.lock
+
+# local overrides of the committed test configuration
+phpunit.xml
 
 # packages
 vendor
