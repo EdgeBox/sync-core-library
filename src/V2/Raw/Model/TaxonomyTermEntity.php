@@ -75,11 +75,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => 'string',
         'description' => 'string',
         'classificationPrompt' => 'string',
+        'instruction' => 'string',
         'aliases' => 'string[]',
         'subjectType' => 'string',
         'collectionTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'timeFrame' => 'TimeFrame',
         'priority' => 'TaxonomyTermPriority',
+        'order' => 'float',
         'purposeType' => 'MonitoringPromptPurposeType',
         'purposeKpis' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptKpi[]',
         'thirdParty' => 'TaxonomyTermThirdParty',
@@ -90,6 +92,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => 'TaxonomyTermSuggestionStats',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
+        'aliasRecommendations' => '\EdgeBox\SyncCore\V2\Raw\Model\AliasRecommendation[]',
         'terms' => 'Terms',
         'classificationFormula' => 'Formula',
         'id' => 'string',
@@ -120,11 +123,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => null,
         'description' => null,
         'classificationPrompt' => null,
+        'instruction' => null,
         'aliases' => null,
         'subjectType' => null,
         'collectionTerms' => null,
         'timeFrame' => null,
         'priority' => null,
+        'order' => null,
         'purposeType' => null,
         'purposeKpis' => null,
         'thirdParty' => null,
@@ -135,6 +140,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => null,
         'customer' => null,
         'project' => null,
+        'aliasRecommendations' => null,
         'terms' => null,
         'classificationFormula' => null,
         'id' => null,
@@ -161,11 +167,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => false,
         'description' => true,
         'classificationPrompt' => true,
+        'instruction' => true,
         'aliases' => true,
         'subjectType' => true,
         'collectionTerms' => true,
         'timeFrame' => true,
         'priority' => true,
+        'order' => true,
         'purposeType' => true,
         'purposeKpis' => true,
         'thirdParty' => true,
@@ -176,6 +184,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => true,
         'customer' => true,
         'project' => true,
+        'aliasRecommendations' => true,
         'terms' => true,
         'classificationFormula' => true,
         'id' => false,
@@ -210,11 +219,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => 'name',
         'description' => 'description',
         'classificationPrompt' => 'classificationPrompt',
+        'instruction' => 'instruction',
         'aliases' => 'aliases',
         'subjectType' => 'subjectType',
         'collectionTerms' => 'collectionTerms',
         'timeFrame' => 'timeFrame',
         'priority' => 'priority',
+        'order' => 'order',
         'purposeType' => 'purposeType',
         'purposeKpis' => 'purposeKpis',
         'thirdParty' => 'thirdParty',
@@ -225,6 +236,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => 'suggestionStats',
         'customer' => 'customer',
         'project' => 'project',
+        'aliasRecommendations' => 'aliasRecommendations',
         'terms' => 'terms',
         'classificationFormula' => 'classificationFormula',
         'id' => 'id',
@@ -251,11 +263,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => 'setName',
         'description' => 'setDescription',
         'classificationPrompt' => 'setClassificationPrompt',
+        'instruction' => 'setInstruction',
         'aliases' => 'setAliases',
         'subjectType' => 'setSubjectType',
         'collectionTerms' => 'setCollectionTerms',
         'timeFrame' => 'setTimeFrame',
         'priority' => 'setPriority',
+        'order' => 'setOrder',
         'purposeType' => 'setPurposeType',
         'purposeKpis' => 'setPurposeKpis',
         'thirdParty' => 'setThirdParty',
@@ -266,6 +280,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => 'setSuggestionStats',
         'customer' => 'setCustomer',
         'project' => 'setProject',
+        'aliasRecommendations' => 'setAliasRecommendations',
         'terms' => 'setTerms',
         'classificationFormula' => 'setClassificationFormula',
         'id' => 'setId',
@@ -292,11 +307,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'name' => 'getName',
         'description' => 'getDescription',
         'classificationPrompt' => 'getClassificationPrompt',
+        'instruction' => 'getInstruction',
         'aliases' => 'getAliases',
         'subjectType' => 'getSubjectType',
         'collectionTerms' => 'getCollectionTerms',
         'timeFrame' => 'getTimeFrame',
         'priority' => 'getPriority',
+        'order' => 'getOrder',
         'purposeType' => 'getPurposeType',
         'purposeKpis' => 'getPurposeKpis',
         'thirdParty' => 'getThirdParty',
@@ -307,6 +324,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         'suggestionStats' => 'getSuggestionStats',
         'customer' => 'getCustomer',
         'project' => 'getProject',
+        'aliasRecommendations' => 'getAliasRecommendations',
         'terms' => 'getTerms',
         'classificationFormula' => 'getClassificationFormula',
         'id' => 'getId',
@@ -342,11 +360,13 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('classificationPrompt', $data ?? [], null);
+        $this->setIfExists('instruction', $data ?? [], null);
         $this->setIfExists('aliases', $data ?? [], null);
         $this->setIfExists('subjectType', $data ?? [], null);
         $this->setIfExists('collectionTerms', $data ?? [], null);
         $this->setIfExists('timeFrame', $data ?? [], null);
         $this->setIfExists('priority', $data ?? [], null);
+        $this->setIfExists('order', $data ?? [], null);
         $this->setIfExists('purposeType', $data ?? [], null);
         $this->setIfExists('purposeKpis', $data ?? [], null);
         $this->setIfExists('thirdParty', $data ?? [], null);
@@ -357,6 +377,7 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('suggestionStats', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
+        $this->setIfExists('aliasRecommendations', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('classificationFormula', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -891,6 +912,40 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
     }
 
     /**
+     * Gets instruction.
+     *
+     * @return null|string
+     */
+    public function getInstruction()
+    {
+        return $this->container['instruction'];
+    }
+
+    /**
+     * Sets instruction.
+     *
+     * @param null|string $instruction instruction
+     *
+     * @return self
+     */
+    public function setInstruction($instruction)
+    {
+        if (is_null($instruction)) {
+            array_push($this->openAPINullablesSetToNull, 'instruction');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('instruction', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['instruction'] = $instruction;
+
+        return $this;
+    }
+
+    /**
      * Gets aliases.
      *
      * @return null|string[]
@@ -1056,6 +1111,40 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['priority'] = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Gets order.
+     *
+     * @return null|float
+     */
+    public function getOrder()
+    {
+        return $this->container['order'];
+    }
+
+    /**
+     * Sets order.
+     *
+     * @param null|float $order order
+     *
+     * @return self
+     */
+    public function setOrder($order)
+    {
+        if (is_null($order)) {
+            array_push($this->openAPINullablesSetToNull, 'order');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('order', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['order'] = $order;
 
         return $this;
     }
@@ -1411,6 +1500,40 @@ class TaxonomyTermEntity implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['project'] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Gets aliasRecommendations.
+     *
+     * @return null|AliasRecommendation[]
+     */
+    public function getAliasRecommendations()
+    {
+        return $this->container['aliasRecommendations'];
+    }
+
+    /**
+     * Sets aliasRecommendations.
+     *
+     * @param null|AliasRecommendation[] $aliasRecommendations aliasRecommendations
+     *
+     * @return self
+     */
+    public function setAliasRecommendations($aliasRecommendations)
+    {
+        if (is_null($aliasRecommendations)) {
+            array_push($this->openAPINullablesSetToNull, 'aliasRecommendations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('aliasRecommendations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['aliasRecommendations'] = $aliasRecommendations;
 
         return $this;
     }

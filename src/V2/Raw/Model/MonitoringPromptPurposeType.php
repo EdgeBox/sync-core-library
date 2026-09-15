@@ -46,6 +46,10 @@ class MonitoringPromptPurposeType
      */
     public const DISCOVERY = 'discovery';
 
+    public const NEED_DISCOVERY = 'need-discovery';
+
+    public const SOLUTION_DISCOVERY = 'solution-discovery';
+
     public const COMPARISON = 'comparison';
 
     public const BRAND_PROBE = 'brand-probe';
@@ -63,6 +67,8 @@ class MonitoringPromptPurposeType
     {
         return [
             self::DISCOVERY,
+            self::NEED_DISCOVERY,
+            self::SOLUTION_DISCOVERY,
             self::COMPARISON,
             self::BRAND_PROBE,
             self::COMPETITOR_PROBE,

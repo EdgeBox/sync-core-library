@@ -74,6 +74,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'templateTerm' => 'DynamicRevisionReference',
         'placeholderValue' => 'string',
+        'framing' => 'MonitoringPromptFraming',
         'engines' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'countryLocales' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptCountryLocale[]',
         'frequencyHours' => 'float',
@@ -115,6 +116,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => null,
         'templateTerm' => null,
         'placeholderValue' => null,
+        'framing' => null,
         'engines' => null,
         'countryLocales' => null,
         'frequencyHours' => null,
@@ -152,6 +154,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => true,
         'templateTerm' => true,
         'placeholderValue' => true,
+        'framing' => true,
         'engines' => false,
         'countryLocales' => false,
         'frequencyHours' => false,
@@ -197,6 +200,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'templateTerms',
         'templateTerm' => 'templateTerm',
         'placeholderValue' => 'placeholderValue',
+        'framing' => 'framing',
         'engines' => 'engines',
         'countryLocales' => 'countryLocales',
         'frequencyHours' => 'frequencyHours',
@@ -234,6 +238,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'setTemplateTerms',
         'templateTerm' => 'setTemplateTerm',
         'placeholderValue' => 'setPlaceholderValue',
+        'framing' => 'setFraming',
         'engines' => 'setEngines',
         'countryLocales' => 'setCountryLocales',
         'frequencyHours' => 'setFrequencyHours',
@@ -271,6 +276,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'getTemplateTerms',
         'templateTerm' => 'getTemplateTerm',
         'placeholderValue' => 'getPlaceholderValue',
+        'framing' => 'getFraming',
         'engines' => 'getEngines',
         'countryLocales' => 'getCountryLocales',
         'frequencyHours' => 'getFrequencyHours',
@@ -317,6 +323,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         $this->setIfExists('templateTerms', $data ?? [], null);
         $this->setIfExists('templateTerm', $data ?? [], null);
         $this->setIfExists('placeholderValue', $data ?? [], null);
+        $this->setIfExists('framing', $data ?? [], null);
         $this->setIfExists('engines', $data ?? [], null);
         $this->setIfExists('countryLocales', $data ?? [], null);
         $this->setIfExists('frequencyHours', $data ?? [], null);
@@ -916,6 +923,40 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
             }
         }
         $this->container['placeholderValue'] = $placeholderValue;
+
+        return $this;
+    }
+
+    /**
+     * Gets framing.
+     *
+     * @return null|MonitoringPromptFraming
+     */
+    public function getFraming()
+    {
+        return $this->container['framing'];
+    }
+
+    /**
+     * Sets framing.
+     *
+     * @param null|MonitoringPromptFraming $framing framing
+     *
+     * @return self
+     */
+    public function setFraming($framing)
+    {
+        if (is_null($framing)) {
+            array_push($this->openAPINullablesSetToNull, 'framing');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('framing', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['framing'] = $framing;
 
         return $this;
     }

@@ -73,6 +73,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => 'float',
         'resolvedAt' => 'float',
         'evidence' => '\EdgeBox\SyncCore\V2\Raw\Model\IssueEvidenceItem[]',
+        'note' => 'string',
+        'priority' => 'TaxonomyTermPriority',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'id' => 'string',
@@ -104,6 +106,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => null,
         'resolvedAt' => null,
         'evidence' => null,
+        'note' => null,
+        'priority' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -131,6 +135,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => false,
         'resolvedAt' => true,
         'evidence' => true,
+        'note' => true,
+        'priority' => true,
         'customer' => false,
         'project' => false,
         'id' => false,
@@ -166,6 +172,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => 'lastDetectedAt',
         'resolvedAt' => 'resolvedAt',
         'evidence' => 'evidence',
+        'note' => 'note',
+        'priority' => 'priority',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -193,6 +201,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => 'setLastDetectedAt',
         'resolvedAt' => 'setResolvedAt',
         'evidence' => 'setEvidence',
+        'note' => 'setNote',
+        'priority' => 'setPriority',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -220,6 +230,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'lastDetectedAt' => 'getLastDetectedAt',
         'resolvedAt' => 'getResolvedAt',
         'evidence' => 'getEvidence',
+        'note' => 'getNote',
+        'priority' => 'getPriority',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -256,6 +268,8 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('lastDetectedAt', $data ?? [], null);
         $this->setIfExists('resolvedAt', $data ?? [], null);
         $this->setIfExists('evidence', $data ?? [], null);
+        $this->setIfExists('note', $data ?? [], null);
+        $this->setIfExists('priority', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -799,6 +813,74 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['evidence'] = $evidence;
+
+        return $this;
+    }
+
+    /**
+     * Gets note.
+     *
+     * @return null|string
+     */
+    public function getNote()
+    {
+        return $this->container['note'];
+    }
+
+    /**
+     * Sets note.
+     *
+     * @param null|string $note note
+     *
+     * @return self
+     */
+    public function setNote($note)
+    {
+        if (is_null($note)) {
+            array_push($this->openAPINullablesSetToNull, 'note');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('note', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['note'] = $note;
+
+        return $this;
+    }
+
+    /**
+     * Gets priority.
+     *
+     * @return null|TaxonomyTermPriority
+     */
+    public function getPriority()
+    {
+        return $this->container['priority'];
+    }
+
+    /**
+     * Sets priority.
+     *
+     * @param null|TaxonomyTermPriority $priority priority
+     *
+     * @return self
+     */
+    public function setPriority($priority)
+    {
+        if (is_null($priority)) {
+            array_push($this->openAPINullablesSetToNull, 'priority');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('priority', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['priority'] = $priority;
 
         return $this;
     }

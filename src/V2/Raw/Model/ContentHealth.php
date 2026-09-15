@@ -70,6 +70,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => 'object',
         'confidenceState' => 'HealthConfidenceState',
         'explanation' => 'object',
+        'results' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthRuleResult[]',
+        'items' => '\EdgeBox\SyncCore\V2\Raw\Model\ContentHealthItem[]',
     ];
 
     /**
@@ -92,6 +94,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => null,
         'confidenceState' => null,
         'explanation' => null,
+        'results' => null,
+        'items' => null,
     ];
 
     /**
@@ -110,6 +114,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => true,
         'confidenceState' => true,
         'explanation' => true,
+        'results' => true,
+        'items' => true,
     ];
 
     /**
@@ -136,6 +142,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => 'confidence',
         'confidenceState' => 'confidenceState',
         'explanation' => 'explanation',
+        'results' => 'results',
+        'items' => 'items',
     ];
 
     /**
@@ -154,6 +162,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => 'setConfidence',
         'confidenceState' => 'setConfidenceState',
         'explanation' => 'setExplanation',
+        'results' => 'setResults',
+        'items' => 'setItems',
     ];
 
     /**
@@ -172,6 +182,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'confidence' => 'getConfidence',
         'confidenceState' => 'getConfidenceState',
         'explanation' => 'getExplanation',
+        'results' => 'getResults',
+        'items' => 'getItems',
     ];
 
     /**
@@ -199,6 +211,8 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('confidence', $data ?? [], null);
         $this->setIfExists('confidenceState', $data ?? [], null);
         $this->setIfExists('explanation', $data ?? [], null);
+        $this->setIfExists('results', $data ?? [], null);
+        $this->setIfExists('items', $data ?? [], null);
     }
 
     /**
@@ -643,6 +657,74 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['explanation'] = $explanation;
+
+        return $this;
+    }
+
+    /**
+     * Gets results.
+     *
+     * @return null|HealthRuleResult[]
+     */
+    public function getResults()
+    {
+        return $this->container['results'];
+    }
+
+    /**
+     * Sets results.
+     *
+     * @param null|HealthRuleResult[] $results results
+     *
+     * @return self
+     */
+    public function setResults($results)
+    {
+        if (is_null($results)) {
+            array_push($this->openAPINullablesSetToNull, 'results');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('results', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['results'] = $results;
+
+        return $this;
+    }
+
+    /**
+     * Gets items.
+     *
+     * @return null|ContentHealthItem[]
+     */
+    public function getItems()
+    {
+        return $this->container['items'];
+    }
+
+    /**
+     * Sets items.
+     *
+     * @param null|ContentHealthItem[] $items items
+     *
+     * @return self
+     */
+    public function setItems($items)
+    {
+        if (is_null($items)) {
+            array_push($this->openAPINullablesSetToNull, 'items');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('items', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['items'] = $items;
 
         return $this;
     }

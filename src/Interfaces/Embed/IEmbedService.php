@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Embed;
 
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
+
 interface IEmbedService
 {
     public const REGISTER_SITE = 'register-site';
@@ -14,6 +16,7 @@ interface IEmbedService
     public const MIGRATE = 'migrate';
     public const FLOW_FORM = 'flow-form';
     public const SYNDICATION_DASHBOARD = 'syndication-dashboard';
+    public const BRAND_PRESENCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
 
     /**
      * @return IEmbedFeature
@@ -64,4 +67,9 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function syndicationDashboard(array $params);
+
+    /**
+     * @return IEmbedFeature
+     */
+    public function brandPresenceContentInventory(array $params, ?ActingUser $as = null);
 }

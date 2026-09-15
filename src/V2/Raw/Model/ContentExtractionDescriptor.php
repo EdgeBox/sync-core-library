@@ -65,6 +65,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => 'string',
         'compatibilityDate' => 'string',
         'converterVersion' => 'string',
+        'count' => 'float',
         'file' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'createdAt' => 'float',
     ];
@@ -84,6 +85,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => null,
         'compatibilityDate' => null,
         'converterVersion' => null,
+        'count' => null,
         'file' => null,
         'createdAt' => null,
     ];
@@ -99,6 +101,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => true,
         'compatibilityDate' => false,
         'converterVersion' => true,
+        'count' => true,
         'file' => false,
         'createdAt' => false,
     ];
@@ -122,6 +125,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => 'schemaVersion',
         'compatibilityDate' => 'compatibilityDate',
         'converterVersion' => 'converterVersion',
+        'count' => 'count',
         'file' => 'file',
         'createdAt' => 'createdAt',
     ];
@@ -137,6 +141,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => 'setSchemaVersion',
         'compatibilityDate' => 'setCompatibilityDate',
         'converterVersion' => 'setConverterVersion',
+        'count' => 'setCount',
         'file' => 'setFile',
         'createdAt' => 'setCreatedAt',
     ];
@@ -152,6 +157,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         'schemaVersion' => 'getSchemaVersion',
         'compatibilityDate' => 'getCompatibilityDate',
         'converterVersion' => 'getConverterVersion',
+        'count' => 'getCount',
         'file' => 'getFile',
         'createdAt' => 'getCreatedAt',
     ];
@@ -176,6 +182,7 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
         $this->setIfExists('schemaVersion', $data ?? [], null);
         $this->setIfExists('compatibilityDate', $data ?? [], null);
         $this->setIfExists('converterVersion', $data ?? [], null);
+        $this->setIfExists('count', $data ?? [], null);
         $this->setIfExists('file', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
     }
@@ -454,6 +461,40 @@ class ContentExtractionDescriptor implements ModelInterface, \ArrayAccess, \Json
             }
         }
         $this->container['converterVersion'] = $converterVersion;
+
+        return $this;
+    }
+
+    /**
+     * Gets count.
+     *
+     * @return null|float
+     */
+    public function getCount()
+    {
+        return $this->container['count'];
+    }
+
+    /**
+     * Sets count.
+     *
+     * @param null|float $count count
+     *
+     * @return self
+     */
+    public function setCount($count)
+    {
+        if (is_null($count)) {
+            array_push($this->openAPINullablesSetToNull, 'count');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('count', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['count'] = $count;
 
         return $this;
     }
