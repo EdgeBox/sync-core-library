@@ -29,7 +29,10 @@ class TaxonomyTermSummary implements ITaxonomyTermSummary
 
     public function getPriority()
     {
-        return $this->entity->getPriority();
+        /** @var mixed $priority */
+        $priority = $this->entity->getPriority();
+
+        return null === $priority ? null : (string) $priority;
     }
 
     public function getInstruction()

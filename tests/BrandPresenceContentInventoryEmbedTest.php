@@ -61,7 +61,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
             $service->entityStatus([]),
             $service->optimize([]),
             $service->updateStatusBox([]),
-            $service->migrate([]),
+            $service->migrate(['pools' => [], 'flows' => [], 'settings' => []]),
             $service->flowForm([]),
             $service->syndicationDashboard([]),
         ];

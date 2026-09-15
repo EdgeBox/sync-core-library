@@ -34,7 +34,10 @@ class ContentItemSummary implements IContentItemSummary
 
     public function getContentPriority()
     {
-        return $this->entity->getContentPriority();
+        /** @var mixed $priority */
+        $priority = $this->entity->getContentPriority();
+
+        return null === $priority ? null : (string) $priority;
     }
 
     public function getOpenIssueCount()
@@ -61,6 +64,8 @@ class ContentItemSummary implements IContentItemSummary
 
     public function getLastCrawledAt()
     {
-        return $this->entity->getLastCrawledAt();
+        $crawled = $this->entity->getLastCrawledAt();
+
+        return null === $crawled ? null : (int) $crawled;
     }
 }

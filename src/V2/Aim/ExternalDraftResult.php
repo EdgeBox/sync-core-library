@@ -30,7 +30,10 @@ class ExternalDraftResult implements IExternalDraftResult
 
     public function getStatus()
     {
-        return (string) $this->optimization->getStatus();
+        /** @var mixed $status */
+        $status = $this->optimization->getStatus();
+
+        return (string) $status;
     }
 
     public function wasExisting()
