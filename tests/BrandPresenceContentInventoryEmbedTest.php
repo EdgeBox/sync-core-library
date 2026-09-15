@@ -7,6 +7,7 @@ namespace EdgeBox\SyncCore\Tests;
 use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
 use EdgeBox\SyncCore\V2\Embed\Embed;
+use EdgeBox\SyncCore\V2\Embed\EmbedService;
 use EdgeBox\SyncCore\V2\SyncCore;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
@@ -22,7 +23,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
 {
     public function testTheUrlResolvesToTheContentInventoryPath(): void
     {
-        $embed = $this->core()->getEmbedService()->brandPresenceContentInventory([]);
+        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([]);
         $embed->run();
 
         $this->assertStringEndsWith('/brand-presence/content-inventory', $this->url($embed));
@@ -30,7 +31,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
 
     public function testWithoutAnActingUserItMintsTheSitesOwnToken(): void
     {
-        $embed = $this->core()->getEmbedService()->brandPresenceContentInventory([]);
+        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([]);
         $embed->run();
 
         $payload = $this->jwtOf($embed);
@@ -41,7 +42,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
     public function testWithAnActingUserItMintsThatPersonsToken(): void
     {
         $acting = new ActingUser(['content-optimization:own:read'], 'Lena', 'lena@example.com');
-        $embed = $this->core()->getEmbedService()->brandPresenceContentInventory([], $acting);
+        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([], $acting);
         $embed->run();
 
         $payload = $this->jwtOf($embed);
@@ -51,7 +52,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
 
     public function testTheTenExistingEmbedsCarryNoPersonClaim(): void
     {
-        $service = $this->core()->getEmbedService();
+        $service = (new EmbedService($this->core()));
         $embeds = [
             $service->registerSite([]),
             $service->siteRegistered([]),

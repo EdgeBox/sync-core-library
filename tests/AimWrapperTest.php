@@ -4,20 +4,33 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
+use EdgeBox\SyncCore\Interfaces\Aim\IAimService;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
+use EdgeBox\SyncCore\V2\Aim\AimService;
 use EdgeBox\SyncCore\V2\SyncCore;
 use GuzzleHttp\Psr7\Response;
 
 /**
+ * The wrappers are instantiated directly rather than through getAimService(),
+ * whose method-level static cache would otherwise bind one AimService to the
+ * first test's SyncCore for the rest of the process.
+ *
  * @internal
  */
 final class AimWrapperTest extends SyncCoreTestCase
 {
-    public function testTheInboundTriggerParsesAndAnswers(): void
+    public function testGetAimServiceExposesTheService(): void
     {
         $core = new SyncCore(new TestApplication(), 'https://core.example.com/sync-core');
 
-        $request = $core->getAimService()->parseOptimizeContentRequest(
+        $this->assertInstanceOf(IAimService::class, $core->getAimService());
+    }
+
+    public function testTheInboundTriggerParsesAndAnswers(): void
+    {
+        $aim = new AimService(new SyncCore(new TestApplication(), 'https://core.example.com/sync-core'));
+
+        $request = $aim->parseOptimizeContentRequest(
             ['optimizationId' => 'opt-1'],
             [
                 'optimizationId' => 'opt-1',
@@ -54,7 +67,7 @@ final class AimWrapperTest extends SyncCoreTestCase
     {
         $core = $this->syncCoreWithResponses([new Response(201, [], json_encode(['id' => 'opt-1', 'status' => '300-user-review']))]);
 
-        $result = $core->getAimService()
+        $result = (new AimService($core))
             ->postExternalDraft('https://site.example.com/page', 'rev-1', '<p>hello</p>')
             ->forOptimization('opt-1')
             ->withOptimizationTypeKeys(['seo'])
@@ -83,7 +96,7 @@ final class AimWrapperTest extends SyncCoreTestCase
     {
         $core = $this->syncCoreWithResponses([new Response(200, [], json_encode(['id' => 'opt-1', 'status' => '300-user-review']))]);
 
-        $result = $core->getAimService()
+        $result = (new AimService($core))
             ->postExternalDraft('https://site.example.com/page', 'rev-1', '<p>hello</p>')
             ->forOptimization('opt-1')
             ->execute()
@@ -104,7 +117,7 @@ final class AimWrapperTest extends SyncCoreTestCase
         ]);
         $core = $this->syncCoreWithResponses([new Response(200, [], $json)]);
 
-        $summary = $core->getAimService()->getContentItemByKey('https://site.example.com/page', '300-published');
+        $summary = (new AimService($core))->getContentItemByKey('https://site.example.com/page', '300-published');
 
         $this->assertSame('https://site.example.com/page', $summary->getKey());
         $this->assertSame('Home', $summary->getTitle());
@@ -122,7 +135,7 @@ final class AimWrapperTest extends SyncCoreTestCase
         $json = json_encode(['key' => 'seo', 'name' => 'SEO', 'priority' => '400-critical', 'instruction' => 'Improve SEO']);
         $core = $this->syncCoreWithResponses([new Response(200, [], $json)]);
 
-        $summary = $core->getAimService()->getTaxonomyTermByKey('seo', '300-published');
+        $summary = (new AimService($core))->getTaxonomyTermByKey('seo', '300-published');
 
         $this->assertSame('seo', $summary->getKey());
         $this->assertSame('SEO', $summary->getName());
