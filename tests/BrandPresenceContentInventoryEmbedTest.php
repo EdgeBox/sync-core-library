@@ -71,7 +71,12 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
             $config = $this->protectedValue($embed, 'config');
             if (isset($config['jwt'])) {
                 $payload = json_decode(json_encode(JWT::decode($config['jwt'], 'test-secret', ['HS256'])), true);
-                $this->assertArrayNotHasKey('user', $payload, get_class($embed).' must mint no person claim');
+                $keys = array_keys($payload);
+                sort($keys);
+                $this->assertSame(['exp', 'provider', 'scopes', 'type', 'uuid'], $keys, get_class($embed).' must mint the same claim set it minted on 4.3.0');
+                $this->assertSame('site', $payload['type']);
+                $this->assertSame('jwt-header', $payload['provider']);
+                $this->assertContains('content', $payload['scopes']);
             }
         }
     }
