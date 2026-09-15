@@ -1,15 +1,15 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Aim\IAimService;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\TaxonomyTermEntity;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class AimService implements IAimService
+class GovernanceService implements IGovernanceService
 {
     /**
      * @var SyncCore

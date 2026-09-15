@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
 use EdgeBox\SyncCore\V2\SyncCore;
 use Firebase\JWT\JWT;

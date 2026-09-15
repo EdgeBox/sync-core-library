@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\IIssueContext;
+use EdgeBox\SyncCore\Interfaces\Governance\IIssueContext;
 
 class IssueContext implements IIssueContext
 {

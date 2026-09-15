@@ -1,6 +1,6 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 /**
  * The parsed inbound optimize-content trigger, and the two answers to it.

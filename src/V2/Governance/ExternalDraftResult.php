@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\IExternalDraftResult;
+use EdgeBox\SyncCore\Interfaces\Governance\IExternalDraftResult;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity;
 
 class ExternalDraftResult implements IExternalDraftResult

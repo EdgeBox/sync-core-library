@@ -10,13 +10,13 @@ use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
 use EdgeBox\SyncCore\Exception\UnauthorizedException;
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Aim\IAimService;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
-use EdgeBox\SyncCore\V2\Aim\AimService;
 use EdgeBox\SyncCore\V2\Configuration\ConfigurationService;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
+use EdgeBox\SyncCore\V2\Governance\GovernanceService;
 use EdgeBox\SyncCore\V2\Raw\Api\DefaultApi;
 use EdgeBox\SyncCore\V2\Raw\Configuration;
 use EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType;
@@ -917,16 +917,16 @@ class SyncCore implements ISyncCore
     }
 
     /**
-     * @return IAimService
+     * @return IGovernanceService
      */
-    public function getAimService()
+    public function getGovernanceService()
     {
         static $cache = null;
         if ($cache) {
             return $cache;
         }
 
-        return $cache = new AimService($this);
+        return $cache = new GovernanceService($this);
     }
 
     public function isDirectUserAccessEnabled($set = null)

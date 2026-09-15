@@ -1,9 +1,9 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Aim\IPostExternalDraft;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\IPostExternalDraft;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ExternalContentOptimizationDto;

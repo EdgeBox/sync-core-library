@@ -2,7 +2,7 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Embed;
 
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 
 interface IEmbedService
 {

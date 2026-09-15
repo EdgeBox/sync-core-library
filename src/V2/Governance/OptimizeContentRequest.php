@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\IOptimizeContentRequest;
+use EdgeBox\SyncCore\Interfaces\Governance\IOptimizeContentRequest;
 
 /**
  * An inbound optimize-content trigger, parsed from the request's query and body.

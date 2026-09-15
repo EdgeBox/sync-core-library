@@ -1,6 +1,6 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 /**
  * The subset of a taxonomy term a site reads by key.

@@ -3,8 +3,8 @@
 namespace EdgeBox\SyncCore\V2\Embed;
 
 use EdgeBox\SyncCore\Helpers\EmbedResult;
-use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 

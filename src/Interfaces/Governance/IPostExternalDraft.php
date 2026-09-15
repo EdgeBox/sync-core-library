@@ -1,6 +1,6 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 use EdgeBox\SyncCore\Exception\BadRequestException;
 use EdgeBox\SyncCore\Exception\ConflictException;

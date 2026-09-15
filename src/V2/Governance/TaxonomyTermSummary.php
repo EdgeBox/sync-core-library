@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\ITaxonomyTermSummary;
+use EdgeBox\SyncCore\Interfaces\Governance\ITaxonomyTermSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\TaxonomyTermEntity;
 
 class TaxonomyTermSummary implements ITaxonomyTermSummary

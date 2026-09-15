@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
-interface IAimService
+interface IGovernanceService
 {
     /**
      * @return IOptimizeContentRequest

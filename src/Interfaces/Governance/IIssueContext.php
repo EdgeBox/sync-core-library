@@ -1,6 +1,6 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 /**
  * One issue carried on an optimize-content trigger.

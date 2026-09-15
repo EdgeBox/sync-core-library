@@ -1,6 +1,6 @@
 <?php
 
-namespace EdgeBox\SyncCore\Interfaces\Aim;
+namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 /**
  * The person a site is acting on behalf of when it calls Sync Core.

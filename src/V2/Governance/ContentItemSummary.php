@@ -1,8 +1,8 @@
 <?php
 
-namespace EdgeBox\SyncCore\V2\Aim;
+namespace EdgeBox\SyncCore\V2\Governance;
 
-use EdgeBox\SyncCore\Interfaces\Aim\IContentItemSummary;
+use EdgeBox\SyncCore\Interfaces\Governance\IContentItemSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
 
 class ContentItemSummary implements IContentItemSummary
