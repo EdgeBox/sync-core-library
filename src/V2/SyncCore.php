@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2;
 
 use EdgeBox\SyncCore\Exception\BadRequestException;
+use EdgeBox\SyncCore\Exception\ConflictException;
 use EdgeBox\SyncCore\Exception\ForbiddenException;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\NotFoundException;
@@ -380,6 +381,9 @@ class SyncCore implements ISyncCore
             }
             if (404 === $status) {
                 throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            }
+            if (409 === $status) {
+                throw new ConflictException('The Sync Core responded with 409 Conflict for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
             }
 
             throw new SyncCoreException('The Sync Core responded with a non-OK status code for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
