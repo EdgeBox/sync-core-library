@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2\Embed;
 
+use EdgeBox\SyncCore\Interfaces\Aim\ActingUser;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
 use EdgeBox\SyncCore\V2\SyncCore;
@@ -72,5 +73,10 @@ class EmbedService implements IEmbedService
     public function syndicationDashboard(array $params)
     {
         return new SyndicationDashboardEmbed($this->core, $params);
+    }
+
+    public function brandPresenceContentInventory(array $params, ?ActingUser $as = null)
+    {
+        return new BrandPresenceContentInventoryEmbed($this->core, $params, $as);
     }
 }
