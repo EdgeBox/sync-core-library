@@ -77,6 +77,15 @@ interface IApplicationInterface
     public const REST_ACTION_SITE_CONFIG = 'config';
 
     /**
+     * @var string REST_ACTION_OPTIMIZE_CONTENT
+     *
+     * Receive an optimize-content trigger for one page: the Sync Core posts the
+     * optimization's full context to this route and the site acknowledges or
+     * refuses it.
+     */
+    public const REST_ACTION_OPTIMIZE_CONTENT = 'optimize-content';
+
+    /**
      * @var string FLOW_NONE
      *
      * When requesting entities with the site's REST interfaces, this special
