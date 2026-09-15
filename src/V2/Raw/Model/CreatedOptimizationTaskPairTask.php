@@ -66,6 +66,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => 'RemoteEntityDetails',
         'status' => 'TaskStatus',
         'type' => 'TaskType',
+        'billingCategory' => 'BillingCategory',
         'rootEntity' => 'DynamicReference',
         'rootEntityType' => 'DynamicReference',
         'rootEntityTypeVersion' => 'DynamicReference',
@@ -134,6 +135,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => null,
         'status' => null,
         'type' => null,
+        'billingCategory' => null,
         'rootEntity' => null,
         'rootEntityType' => null,
         'rootEntityTypeVersion' => null,
@@ -198,6 +200,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => true,
         'status' => false,
         'type' => false,
+        'billingCategory' => true,
         'rootEntity' => true,
         'rootEntityType' => true,
         'rootEntityTypeVersion' => true,
@@ -270,6 +273,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => 'rootEntityDetails',
         'status' => 'status',
         'type' => 'type',
+        'billingCategory' => 'billingCategory',
         'rootEntity' => 'rootEntity',
         'rootEntityType' => 'rootEntityType',
         'rootEntityTypeVersion' => 'rootEntityTypeVersion',
@@ -334,6 +338,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => 'setRootEntityDetails',
         'status' => 'setStatus',
         'type' => 'setType',
+        'billingCategory' => 'setBillingCategory',
         'rootEntity' => 'setRootEntity',
         'rootEntityType' => 'setRootEntityType',
         'rootEntityTypeVersion' => 'setRootEntityTypeVersion',
@@ -398,6 +403,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         'rootEntityDetails' => 'getRootEntityDetails',
         'status' => 'getStatus',
         'type' => 'getType',
+        'billingCategory' => 'getBillingCategory',
         'rootEntity' => 'getRootEntity',
         'rootEntityType' => 'getRootEntityType',
         'rootEntityTypeVersion' => 'getRootEntityTypeVersion',
@@ -471,6 +477,7 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
         $this->setIfExists('rootEntityDetails', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('billingCategory', $data ?? [], null);
         $this->setIfExists('rootEntity', $data ?? [], null);
         $this->setIfExists('rootEntityType', $data ?? [], null);
         $this->setIfExists('rootEntityTypeVersion', $data ?? [], null);
@@ -844,6 +851,40 @@ class CreatedOptimizationTaskPairTask implements ModelInterface, \ArrayAccess, \
             throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
         $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets billingCategory.
+     *
+     * @return null|BillingCategory
+     */
+    public function getBillingCategory()
+    {
+        return $this->container['billingCategory'];
+    }
+
+    /**
+     * Sets billingCategory.
+     *
+     * @param null|BillingCategory $billingCategory billingCategory
+     *
+     * @return self
+     */
+    public function setBillingCategory($billingCategory)
+    {
+        if (is_null($billingCategory)) {
+            array_push($this->openAPINullablesSetToNull, 'billingCategory');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('billingCategory', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['billingCategory'] = $billingCategory;
 
         return $this;
     }

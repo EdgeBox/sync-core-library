@@ -54,6 +54,8 @@ class AiServicePrompt
 
     public const MARKDOWN_CLASSIFY_BY_FEATURE_MULTIPLE = 'markdown.classify.by-feature.multiple';
 
+    public const MARKDOWN_EVALUATE_HEALTH_RULES = 'markdown.evaluate-health-rules';
+
     public const MARKDOWN_CLASSIFY_EXTRACT_EXPLICIT = 'markdown.classify.extract.explicit';
 
     public const MARKDOWN_CLASSIFY_EXTRACT_INFERRED_TAXONOMIES = 'markdown.classify.extract.inferred-taxonomies';
@@ -86,6 +88,8 @@ class AiServicePrompt
 
     public const GOVERNANCE_QA_PAIR_EXTRACTION = 'governance.qa-pair-extraction';
 
+    public const GOVERNANCE_FAQ_GENERATE_QUESTION = 'governance.faq.generate-question';
+
     public const MARKDOWN_OPTIMIZE = 'markdown.optimize';
 
     public const MARKDOWN_TO_HTML = 'markdown.to-html';
@@ -111,6 +115,7 @@ class AiServicePrompt
             self::MARKDOWN_CLASSIFY_INFERRED,
             self::MARKDOWN_CLASSIFY_BY_FEATURE,
             self::MARKDOWN_CLASSIFY_BY_FEATURE_MULTIPLE,
+            self::MARKDOWN_EVALUATE_HEALTH_RULES,
             self::MARKDOWN_CLASSIFY_EXTRACT_EXPLICIT,
             self::MARKDOWN_CLASSIFY_EXTRACT_INFERRED_TAXONOMIES,
             self::MARKDOWN_CLASSIFY_EXTRACT_INFERRED,
@@ -127,6 +132,7 @@ class AiServicePrompt
             self::GOVERNANCE_ATTRIBUTION_CRITERION_MAPPING,
             self::GOVERNANCE_ATTRIBUTION_VERIFY_ARBITER,
             self::GOVERNANCE_QA_PAIR_EXTRACTION,
+            self::GOVERNANCE_FAQ_GENERATE_QUESTION,
             self::MARKDOWN_OPTIMIZE,
             self::MARKDOWN_TO_HTML,
             self::TEXT_TO_STRUCTURED_DATA,

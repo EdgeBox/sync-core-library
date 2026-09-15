@@ -47,6 +47,8 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentItemContentAreaHtmlResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationTypeEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationPatchBody;
 use EdgeBox\SyncCore\V2\Raw\Model\ContractConfiguration;
 use EdgeBox\SyncCore\V2\Raw\Model\ContractEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContractRevisionEntity;
@@ -57,6 +59,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\CreateAuthenticationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateContentOptimizationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateContentOptimizationsDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateContentOptimizationsResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\CreateContentRecommendationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateFileDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateFlowDto;
 use EdgeBox\SyncCore\V2\Raw\Model\CreateHealthCheckDto;
@@ -78,6 +81,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\EntityTypeVersionUsage;
 use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ExtendedProjectCrawlingSettings;
+use EdgeBox\SyncCore\V2\Raw\Model\ExternalContentOptimizationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
@@ -132,6 +136,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\PagedContentGroupListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedContentItemListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedContentOptimizationListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedContentOptimizationTypeListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedFlowList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedHealthCheckListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedIssueListResponse;
@@ -171,6 +176,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityUsageEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestResponseDto;
 use EdgeBox\SyncCore\V2\Raw\Model\ServiceSecretEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\SetBasicAuthDto;
+use EdgeBox\SyncCore\V2\Raw\Model\SetContentRecommendationTextDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SetFeatureFlagDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SetThrottlingDto;
 use EdgeBox\SyncCore\V2\Raw\Model\SiteConfigUpdateRequestDto;
@@ -334,6 +340,9 @@ class DefaultApi
         'contentOptimizationControllerCreate' => [
             'application/json',
         ],
+        'contentOptimizationControllerCreateExternalRecord' => [
+            'application/json',
+        ],
         'contentOptimizationControllerCreateMany' => [
             'application/json',
         ],
@@ -353,6 +362,30 @@ class DefaultApi
             'application/json',
         ],
         'contentOptimizationTypeControllerRevisionsByPreviousStatus' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerClearTextContent' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerCreate' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerItem' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerList' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerPatchStatus' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerRemoveTarget' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerRemoveText' => [
+            'application/json',
+        ],
+        'contentRecommendationControllerSetText' => [
             'application/json',
         ],
         'contractControllerItem' => [
@@ -12241,6 +12274,289 @@ class DefaultApi
     }
 
     /**
+     * Operation contentOptimizationControllerCreateExternalRecord.
+     *
+     * @param  ExternalContentOptimizationDto $externalContentOptimizationDto externalContentOptimizationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerCreateExternalRecord'] to see the possible values for this operation
+     *
+     * @return ContentOptimizationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerCreateExternalRecord($externalContentOptimizationDto, string $contentType = self::contentTypes['contentOptimizationControllerCreateExternalRecord'][0])
+    {
+        [$response] = $this->contentOptimizationControllerCreateExternalRecordWithHttpInfo($externalContentOptimizationDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentOptimizationControllerCreateExternalRecordWithHttpInfo.
+     *
+     * @param  ExternalContentOptimizationDto $externalContentOptimizationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerCreateExternalRecord'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerCreateExternalRecordWithHttpInfo($externalContentOptimizationDto, string $contentType = self::contentTypes['contentOptimizationControllerCreateExternalRecord'][0])
+    {
+        $request = $this->contentOptimizationControllerCreateExternalRecordRequest($externalContentOptimizationDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentOptimizationControllerCreateExternalRecordAsync.
+     *
+     * @param  ExternalContentOptimizationDto $externalContentOptimizationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerCreateExternalRecord'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerCreateExternalRecordAsync($externalContentOptimizationDto, string $contentType = self::contentTypes['contentOptimizationControllerCreateExternalRecord'][0])
+    {
+        return $this->contentOptimizationControllerCreateExternalRecordAsyncWithHttpInfo($externalContentOptimizationDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentOptimizationControllerCreateExternalRecordAsyncWithHttpInfo.
+     *
+     * @param  ExternalContentOptimizationDto $externalContentOptimizationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerCreateExternalRecord'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerCreateExternalRecordAsyncWithHttpInfo($externalContentOptimizationDto, string $contentType = self::contentTypes['contentOptimizationControllerCreateExternalRecord'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity';
+        $request = $this->contentOptimizationControllerCreateExternalRecordRequest($externalContentOptimizationDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentOptimizationControllerCreateExternalRecord'.
+     *
+     * @param  ExternalContentOptimizationDto $externalContentOptimizationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerCreateExternalRecord'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentOptimizationControllerCreateExternalRecordRequest($externalContentOptimizationDto, string $contentType = self::contentTypes['contentOptimizationControllerCreateExternalRecord'][0])
+    {
+        // verify the required parameter 'externalContentOptimizationDto' is set
+        if (null === $externalContentOptimizationDto || (is_array($externalContentOptimizationDto) && 0 === count($externalContentOptimizationDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $externalContentOptimizationDto when calling contentOptimizationControllerCreateExternalRecord'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-optimization/external';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($externalContentOptimizationDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($externalContentOptimizationDto));
+            } else {
+                $httpBody = $externalContentOptimizationDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation contentOptimizationControllerCreateMany.
      *
      * @param  CreateContentOptimizationsDto $createContentOptimizationsDto createContentOptimizationsDto (required)
@@ -14382,6 +14698,2448 @@ class DefaultApi
 
         return new Request(
             'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerClearTextContent.
+     *
+     * @param  string $id id (required)
+     * @param  string $localeId localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerClearTextContent'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerClearTextContent($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerClearTextContent'][0])
+    {
+        [$response] = $this->contentRecommendationControllerClearTextContentWithHttpInfo($id, $localeId, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerClearTextContentWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerClearTextContent'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerClearTextContentWithHttpInfo($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerClearTextContent'][0])
+    {
+        $request = $this->contentRecommendationControllerClearTextContentRequest($id, $localeId, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerClearTextContentAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerClearTextContent'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerClearTextContentAsync($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerClearTextContent'][0])
+    {
+        return $this->contentRecommendationControllerClearTextContentAsyncWithHttpInfo($id, $localeId, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerClearTextContentAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerClearTextContent'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerClearTextContentAsyncWithHttpInfo($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerClearTextContent'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerClearTextContentRequest($id, $localeId, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerClearTextContent'.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerClearTextContent'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerClearTextContentRequest($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerClearTextContent'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerClearTextContent'
+            );
+        }
+
+        // verify the required parameter 'localeId' is set
+        if (null === $localeId || (is_array($localeId) && 0 === count($localeId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $localeId when calling contentRecommendationControllerClearTextContent'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}/text/{localeId}/content';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $localeId) {
+            $resourcePath = str_replace(
+                '{localeId}',
+                ObjectSerializer::toPathValue($localeId),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'DELETE',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerCreate.
+     *
+     * @param  CreateContentRecommendationDto $createContentRecommendationDto createContentRecommendationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerCreate'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerCreate($createContentRecommendationDto, string $contentType = self::contentTypes['contentRecommendationControllerCreate'][0])
+    {
+        [$response] = $this->contentRecommendationControllerCreateWithHttpInfo($createContentRecommendationDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerCreateWithHttpInfo.
+     *
+     * @param  CreateContentRecommendationDto $createContentRecommendationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerCreate'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerCreateWithHttpInfo($createContentRecommendationDto, string $contentType = self::contentTypes['contentRecommendationControllerCreate'][0])
+    {
+        $request = $this->contentRecommendationControllerCreateRequest($createContentRecommendationDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerCreateAsync.
+     *
+     * @param  CreateContentRecommendationDto $createContentRecommendationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerCreate'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerCreateAsync($createContentRecommendationDto, string $contentType = self::contentTypes['contentRecommendationControllerCreate'][0])
+    {
+        return $this->contentRecommendationControllerCreateAsyncWithHttpInfo($createContentRecommendationDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerCreateAsyncWithHttpInfo.
+     *
+     * @param  CreateContentRecommendationDto $createContentRecommendationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerCreate'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerCreateAsyncWithHttpInfo($createContentRecommendationDto, string $contentType = self::contentTypes['contentRecommendationControllerCreate'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerCreateRequest($createContentRecommendationDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerCreate'.
+     *
+     * @param  CreateContentRecommendationDto $createContentRecommendationDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerCreate'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerCreateRequest($createContentRecommendationDto, string $contentType = self::contentTypes['contentRecommendationControllerCreate'][0])
+    {
+        // verify the required parameter 'createContentRecommendationDto' is set
+        if (null === $createContentRecommendationDto || (is_array($createContentRecommendationDto) && 0 === count($createContentRecommendationDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $createContentRecommendationDto when calling contentRecommendationControllerCreate'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($createContentRecommendationDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($createContentRecommendationDto));
+            } else {
+                $httpBody = $createContentRecommendationDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerItem.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerItem'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerItem($id, string $contentType = self::contentTypes['contentRecommendationControllerItem'][0])
+    {
+        [$response] = $this->contentRecommendationControllerItemWithHttpInfo($id, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerItemWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerItem'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerItemWithHttpInfo($id, string $contentType = self::contentTypes['contentRecommendationControllerItem'][0])
+    {
+        $request = $this->contentRecommendationControllerItemRequest($id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerItemAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerItemAsync($id, string $contentType = self::contentTypes['contentRecommendationControllerItem'][0])
+    {
+        return $this->contentRecommendationControllerItemAsyncWithHttpInfo($id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerItemAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerItem'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerItemAsyncWithHttpInfo($id, string $contentType = self::contentTypes['contentRecommendationControllerItem'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerItemRequest($id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerItem'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerItem'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerItemRequest($id, string $contentType = self::contentTypes['contentRecommendationControllerItem'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerItem'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerList.
+     *
+     * @param  mixed $targetContentItemKey targetContentItemKey (optional)
+     * @param  mixed $faqTypeKey faqTypeKey (optional)
+     * @param  string $status status (optional)
+     * @param  string $kind kind (optional)
+     * @param  string $page page (optional)
+     * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerList'] to see the possible values for this operation
+     *
+     * @return PagedContentRecommendationListResponse
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerList($targetContentItemKey = null, $faqTypeKey = null, $status = null, $kind = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentRecommendationControllerList'][0])
+    {
+        [$response] = $this->contentRecommendationControllerListWithHttpInfo($targetContentItemKey, $faqTypeKey, $status, $kind, $page, $itemsPerPage, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerListWithHttpInfo.
+     *
+     * @param  mixed $targetContentItemKey (optional)
+     * @param  mixed $faqTypeKey (optional)
+     * @param  string $status (optional)
+     * @param  string $kind (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerList'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerListWithHttpInfo($targetContentItemKey = null, $faqTypeKey = null, $status = null, $kind = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentRecommendationControllerList'][0])
+    {
+        $request = $this->contentRecommendationControllerListRequest($targetContentItemKey, $faqTypeKey, $status, $kind, $page, $itemsPerPage, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerListAsync.
+     *
+     * @param  mixed $targetContentItemKey (optional)
+     * @param  mixed $faqTypeKey (optional)
+     * @param  string $status (optional)
+     * @param  string $kind (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerListAsync($targetContentItemKey = null, $faqTypeKey = null, $status = null, $kind = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentRecommendationControllerList'][0])
+    {
+        return $this->contentRecommendationControllerListAsyncWithHttpInfo($targetContentItemKey, $faqTypeKey, $status, $kind, $page, $itemsPerPage, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerListAsyncWithHttpInfo.
+     *
+     * @param  mixed $targetContentItemKey (optional)
+     * @param  mixed $faqTypeKey (optional)
+     * @param  string $status (optional)
+     * @param  string $kind (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerList'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerListAsyncWithHttpInfo($targetContentItemKey = null, $faqTypeKey = null, $status = null, $kind = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentRecommendationControllerList'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedContentRecommendationListResponse';
+        $request = $this->contentRecommendationControllerListRequest($targetContentItemKey, $faqTypeKey, $status, $kind, $page, $itemsPerPage, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerList'.
+     *
+     * @param  mixed $targetContentItemKey (optional)
+     * @param  mixed $faqTypeKey (optional)
+     * @param  string $status (optional)
+     * @param  string $kind (optional)
+     * @param  string $page (optional)
+     * @param  string $itemsPerPage (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerList'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerListRequest($targetContentItemKey = null, $faqTypeKey = null, $status = null, $kind = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['contentRecommendationControllerList'][0])
+    {
+        $resourcePath = '/sync-core/content-recommendation';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $targetContentItemKey,
+            'targetContentItemKey', // param base name
+            'mixed', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $faqTypeKey,
+            'faqTypeKey', // param base name
+            'mixed', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $status,
+            'status', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $kind,
+            'kind', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $itemsPerPage,
+            'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'GET',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerPatchStatus.
+     *
+     * @param  string $id id (required)
+     * @param  ContentRecommendationPatchBody $contentRecommendationPatchBody contentRecommendationPatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerPatchStatus($id, $contentRecommendationPatchBody, string $contentType = self::contentTypes['contentRecommendationControllerPatchStatus'][0])
+    {
+        [$response] = $this->contentRecommendationControllerPatchStatusWithHttpInfo($id, $contentRecommendationPatchBody, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerPatchStatusWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  ContentRecommendationPatchBody $contentRecommendationPatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerPatchStatusWithHttpInfo($id, $contentRecommendationPatchBody, string $contentType = self::contentTypes['contentRecommendationControllerPatchStatus'][0])
+    {
+        $request = $this->contentRecommendationControllerPatchStatusRequest($id, $contentRecommendationPatchBody, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerPatchStatusAsync.
+     *
+     * @param  string $id (required)
+     * @param  ContentRecommendationPatchBody $contentRecommendationPatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerPatchStatusAsync($id, $contentRecommendationPatchBody, string $contentType = self::contentTypes['contentRecommendationControllerPatchStatus'][0])
+    {
+        return $this->contentRecommendationControllerPatchStatusAsyncWithHttpInfo($id, $contentRecommendationPatchBody, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerPatchStatusAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  ContentRecommendationPatchBody $contentRecommendationPatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerPatchStatusAsyncWithHttpInfo($id, $contentRecommendationPatchBody, string $contentType = self::contentTypes['contentRecommendationControllerPatchStatus'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerPatchStatusRequest($id, $contentRecommendationPatchBody, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerPatchStatus'.
+     *
+     * @param  string $id (required)
+     * @param  ContentRecommendationPatchBody $contentRecommendationPatchBody (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerPatchStatus'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerPatchStatusRequest($id, $contentRecommendationPatchBody, string $contentType = self::contentTypes['contentRecommendationControllerPatchStatus'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerPatchStatus'
+            );
+        }
+
+        // verify the required parameter 'contentRecommendationPatchBody' is set
+        if (null === $contentRecommendationPatchBody || (is_array($contentRecommendationPatchBody) && 0 === count($contentRecommendationPatchBody))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $contentRecommendationPatchBody when calling contentRecommendationControllerPatchStatus'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($contentRecommendationPatchBody)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($contentRecommendationPatchBody));
+            } else {
+                $httpBody = $contentRecommendationPatchBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'PATCH',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTarget.
+     *
+     * @param  string $id id (required)
+     * @param  string $contentItemKey contentItemKey (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveTarget'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTarget($id, $contentItemKey, string $contentType = self::contentTypes['contentRecommendationControllerRemoveTarget'][0])
+    {
+        [$response] = $this->contentRecommendationControllerRemoveTargetWithHttpInfo($id, $contentItemKey, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTargetWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentItemKey (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveTarget'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTargetWithHttpInfo($id, $contentItemKey, string $contentType = self::contentTypes['contentRecommendationControllerRemoveTarget'][0])
+    {
+        $request = $this->contentRecommendationControllerRemoveTargetRequest($id, $contentItemKey, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTargetAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $contentItemKey (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveTarget'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTargetAsync($id, $contentItemKey, string $contentType = self::contentTypes['contentRecommendationControllerRemoveTarget'][0])
+    {
+        return $this->contentRecommendationControllerRemoveTargetAsyncWithHttpInfo($id, $contentItemKey, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTargetAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $contentItemKey (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveTarget'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTargetAsyncWithHttpInfo($id, $contentItemKey, string $contentType = self::contentTypes['contentRecommendationControllerRemoveTarget'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerRemoveTargetRequest($id, $contentItemKey, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerRemoveTarget'.
+     *
+     * @param  string $id (required)
+     * @param  string $contentItemKey (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveTarget'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTargetRequest($id, $contentItemKey, string $contentType = self::contentTypes['contentRecommendationControllerRemoveTarget'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerRemoveTarget'
+            );
+        }
+
+        // verify the required parameter 'contentItemKey' is set
+        if (null === $contentItemKey || (is_array($contentItemKey) && 0 === count($contentItemKey))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $contentItemKey when calling contentRecommendationControllerRemoveTarget'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}/target';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $contentItemKey,
+            'contentItemKey', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            true // required
+        ) ?? []);
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'DELETE',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveText.
+     *
+     * @param  string $id id (required)
+     * @param  string $localeId localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveText'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveText($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerRemoveText'][0])
+    {
+        [$response] = $this->contentRecommendationControllerRemoveTextWithHttpInfo($id, $localeId, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTextWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveText'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTextWithHttpInfo($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerRemoveText'][0])
+    {
+        $request = $this->contentRecommendationControllerRemoveTextRequest($id, $localeId, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTextAsync.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveText'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTextAsync($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerRemoveText'][0])
+    {
+        return $this->contentRecommendationControllerRemoveTextAsyncWithHttpInfo($id, $localeId, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerRemoveTextAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveText'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTextAsyncWithHttpInfo($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerRemoveText'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerRemoveTextRequest($id, $localeId, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerRemoveText'.
+     *
+     * @param  string $id (required)
+     * @param  string $localeId (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerRemoveText'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerRemoveTextRequest($id, $localeId, string $contentType = self::contentTypes['contentRecommendationControllerRemoveText'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerRemoveText'
+            );
+        }
+
+        // verify the required parameter 'localeId' is set
+        if (null === $localeId || (is_array($localeId) && 0 === count($localeId))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $localeId when calling contentRecommendationControllerRemoveText'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}/text/{localeId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+        // path params
+        if (null !== $localeId) {
+            $resourcePath = str_replace(
+                '{localeId}',
+                ObjectSerializer::toPathValue($localeId),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'DELETE',
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation contentRecommendationControllerSetText.
+     *
+     * @param  string $id id (required)
+     * @param  SetContentRecommendationTextDto $setContentRecommendationTextDto setContentRecommendationTextDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerSetText'] to see the possible values for this operation
+     *
+     * @return ContentRecommendationEntity
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerSetText($id, $setContentRecommendationTextDto, string $contentType = self::contentTypes['contentRecommendationControllerSetText'][0])
+    {
+        [$response] = $this->contentRecommendationControllerSetTextWithHttpInfo($id, $setContentRecommendationTextDto, $contentType);
+
+        return $response;
+    }
+
+    /**
+     * Operation contentRecommendationControllerSetTextWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  SetContentRecommendationTextDto $setContentRecommendationTextDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerSetText'] to see the possible values for this operation
+     *
+     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerSetTextWithHttpInfo($id, $setContentRecommendationTextDto, string $contentType = self::contentTypes['contentRecommendationControllerSetText'][0])
+    {
+        $request = $this->contentRecommendationControllerSetTextRequest($id, $setContentRecommendationTextDto, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            switch ($statusCode) {
+                case 200:
+                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' === '\SplFileObject') {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+            }
+
+            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+            if ('\SplFileObject' === $returnType) {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('string' !== $returnType) {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation contentRecommendationControllerSetTextAsync.
+     *
+     * @param  string $id (required)
+     * @param  SetContentRecommendationTextDto $setContentRecommendationTextDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerSetText'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerSetTextAsync($id, $setContentRecommendationTextDto, string $contentType = self::contentTypes['contentRecommendationControllerSetText'][0])
+    {
+        return $this->contentRecommendationControllerSetTextAsyncWithHttpInfo($id, $setContentRecommendationTextDto, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation contentRecommendationControllerSetTextAsyncWithHttpInfo.
+     *
+     * @param  string $id (required)
+     * @param  SetContentRecommendationTextDto $setContentRecommendationTextDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerSetText'] to see the possible values for this operation
+     *
+     * @return PromiseInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerSetTextAsyncWithHttpInfo($id, $setContentRecommendationTextDto, string $contentType = self::contentTypes['contentRecommendationControllerSetText'][0])
+    {
+        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity';
+        $request = $this->contentRecommendationControllerSetTextRequest($id, $setContentRecommendationTextDto, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'contentRecommendationControllerSetText'.
+     *
+     * @param  string $id (required)
+     * @param  SetContentRecommendationTextDto $setContentRecommendationTextDto (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentRecommendationControllerSetText'] to see the possible values for this operation
+     *
+     * @return Request
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function contentRecommendationControllerSetTextRequest($id, $setContentRecommendationTextDto, string $contentType = self::contentTypes['contentRecommendationControllerSetText'][0])
+    {
+        // verify the required parameter 'id' is set
+        if (null === $id || (is_array($id) && 0 === count($id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $id when calling contentRecommendationControllerSetText'
+            );
+        }
+
+        // verify the required parameter 'setContentRecommendationTextDto' is set
+        if (null === $setContentRecommendationTextDto || (is_array($setContentRecommendationTextDto) && 0 === count($setContentRecommendationTextDto))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $setContentRecommendationTextDto when calling contentRecommendationControllerSetText'
+            );
+        }
+
+        $resourcePath = '/sync-core/content-recommendation/{id}/text';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $id) {
+            $resourcePath = str_replace(
+                '{id}',
+                ObjectSerializer::toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($setContentRecommendationTextDto)) {
+            if (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($setContentRecommendationTextDto));
+            } else {
+                $httpBody = $setContentRecommendationTextDto;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (JWT) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+
+        return new Request(
+            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -30044,6 +32802,7 @@ class DefaultApi
      * @param  string $contentItemKey contentItemKey (optional)
      * @param  string $page page (optional)
      * @param  string $itemsPerPage itemsPerPage (optional)
+     * @param  string $order Allowed: priority. Prefix with - or + for direction. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
      *
      * @return PagedIssueListResponse
@@ -30051,9 +32810,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function issueControllerList($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerList($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, $order = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        [$response] = $this->issueControllerListWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
+        [$response] = $this->issueControllerListWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $order, $contentType);
 
         return $response;
     }
@@ -30068,6 +32827,7 @@ class DefaultApi
      * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
+     * @param  string $order Allowed: priority. Prefix with - or + for direction. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedIssueListResponse, HTTP status code, HTTP response headers (array of strings)
@@ -30075,9 +32835,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, $order = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
+        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $order, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -30175,15 +32935,16 @@ class DefaultApi
      * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
+     * @param  string $order Allowed: priority. Prefix with - or + for direction. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListAsync($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListAsync($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, $order = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
-        return $this->issueControllerListAsyncWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType)
+        return $this->issueControllerListAsyncWithHttpInfo($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $order, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -30202,16 +32963,17 @@ class DefaultApi
      * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
+     * @param  string $order Allowed: priority. Prefix with - or + for direction. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListAsyncWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListAsyncWithHttpInfo($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, $order = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedIssueListResponse';
-        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $contentType);
+        $request = $this->issueControllerListRequest($site, $responsibility, $issueType, $status, $contentItemKey, $page, $itemsPerPage, $order, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -30261,13 +33023,14 @@ class DefaultApi
      * @param  string $contentItemKey (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
+     * @param  string $order Allowed: priority. Prefix with - or + for direction. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueControllerList'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function issueControllerListRequest($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['issueControllerList'][0])
+    public function issueControllerListRequest($site = null, $responsibility = null, $issueType = null, $status = null, $contentItemKey = null, $page = null, $itemsPerPage = null, $order = null, string $contentType = self::contentTypes['issueControllerList'][0])
     {
         $resourcePath = '/sync-core/issue';
         $formParams = [];
@@ -30334,6 +33097,15 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $itemsPerPage,
             'itemsPerPage', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $order,
+            'order', // param base name
             'string', // openApiType
             'form', // style
             true, // explode

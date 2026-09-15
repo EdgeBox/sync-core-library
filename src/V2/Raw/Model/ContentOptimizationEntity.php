@@ -71,7 +71,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'fixesIssueTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'fixesIssues' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'fixesRecommendations' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'appliedAt' => 'float',
+        'stale' => 'object',
+        'staleAt' => 'float',
+        'triggeredAt' => 'float',
+        'statusReason' => 'object',
+        'externalRevisionId' => 'string',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'id' => 'string',
@@ -101,7 +107,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => null,
         'fixesIssueTypes' => null,
         'fixesIssues' => null,
+        'fixesRecommendations' => null,
         'appliedAt' => null,
+        'stale' => null,
+        'staleAt' => null,
+        'triggeredAt' => null,
+        'statusReason' => null,
+        'externalRevisionId' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -127,7 +139,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => false,
         'fixesIssueTypes' => false,
         'fixesIssues' => false,
+        'fixesRecommendations' => true,
         'appliedAt' => true,
+        'stale' => true,
+        'staleAt' => true,
+        'triggeredAt' => true,
+        'statusReason' => true,
+        'externalRevisionId' => true,
         'customer' => false,
         'project' => false,
         'id' => false,
@@ -161,7 +179,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => 'types',
         'fixesIssueTypes' => 'fixesIssueTypes',
         'fixesIssues' => 'fixesIssues',
+        'fixesRecommendations' => 'fixesRecommendations',
         'appliedAt' => 'appliedAt',
+        'stale' => 'stale',
+        'staleAt' => 'staleAt',
+        'triggeredAt' => 'triggeredAt',
+        'statusReason' => 'statusReason',
+        'externalRevisionId' => 'externalRevisionId',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -187,7 +211,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => 'setTypes',
         'fixesIssueTypes' => 'setFixesIssueTypes',
         'fixesIssues' => 'setFixesIssues',
+        'fixesRecommendations' => 'setFixesRecommendations',
         'appliedAt' => 'setAppliedAt',
+        'stale' => 'setStale',
+        'staleAt' => 'setStaleAt',
+        'triggeredAt' => 'setTriggeredAt',
+        'statusReason' => 'setStatusReason',
+        'externalRevisionId' => 'setExternalRevisionId',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -213,7 +243,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'types' => 'getTypes',
         'fixesIssueTypes' => 'getFixesIssueTypes',
         'fixesIssues' => 'getFixesIssues',
+        'fixesRecommendations' => 'getFixesRecommendations',
         'appliedAt' => 'getAppliedAt',
+        'stale' => 'getStale',
+        'staleAt' => 'getStaleAt',
+        'triggeredAt' => 'getTriggeredAt',
+        'statusReason' => 'getStatusReason',
+        'externalRevisionId' => 'getExternalRevisionId',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -248,7 +284,13 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
         $this->setIfExists('types', $data ?? [], null);
         $this->setIfExists('fixesIssueTypes', $data ?? [], null);
         $this->setIfExists('fixesIssues', $data ?? [], null);
+        $this->setIfExists('fixesRecommendations', $data ?? [], null);
         $this->setIfExists('appliedAt', $data ?? [], null);
+        $this->setIfExists('stale', $data ?? [], null);
+        $this->setIfExists('staleAt', $data ?? [], null);
+        $this->setIfExists('triggeredAt', $data ?? [], null);
+        $this->setIfExists('statusReason', $data ?? [], null);
+        $this->setIfExists('externalRevisionId', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -737,6 +779,40 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
     }
 
     /**
+     * Gets fixesRecommendations.
+     *
+     * @return null|DynamicReference[]
+     */
+    public function getFixesRecommendations()
+    {
+        return $this->container['fixesRecommendations'];
+    }
+
+    /**
+     * Sets fixesRecommendations.
+     *
+     * @param null|DynamicReference[] $fixesRecommendations fixesRecommendations
+     *
+     * @return self
+     */
+    public function setFixesRecommendations($fixesRecommendations)
+    {
+        if (is_null($fixesRecommendations)) {
+            array_push($this->openAPINullablesSetToNull, 'fixesRecommendations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fixesRecommendations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fixesRecommendations'] = $fixesRecommendations;
+
+        return $this;
+    }
+
+    /**
      * Gets appliedAt.
      *
      * @return null|float
@@ -766,6 +842,176 @@ class ContentOptimizationEntity implements ModelInterface, \ArrayAccess, \JsonSe
             }
         }
         $this->container['appliedAt'] = $appliedAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets stale.
+     *
+     * @return null|object
+     */
+    public function getStale()
+    {
+        return $this->container['stale'];
+    }
+
+    /**
+     * Sets stale.
+     *
+     * @param null|object $stale stale
+     *
+     * @return self
+     */
+    public function setStale($stale)
+    {
+        if (is_null($stale)) {
+            array_push($this->openAPINullablesSetToNull, 'stale');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('stale', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['stale'] = $stale;
+
+        return $this;
+    }
+
+    /**
+     * Gets staleAt.
+     *
+     * @return null|float
+     */
+    public function getStaleAt()
+    {
+        return $this->container['staleAt'];
+    }
+
+    /**
+     * Sets staleAt.
+     *
+     * @param null|float $staleAt staleAt
+     *
+     * @return self
+     */
+    public function setStaleAt($staleAt)
+    {
+        if (is_null($staleAt)) {
+            array_push($this->openAPINullablesSetToNull, 'staleAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('staleAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['staleAt'] = $staleAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets triggeredAt.
+     *
+     * @return null|float
+     */
+    public function getTriggeredAt()
+    {
+        return $this->container['triggeredAt'];
+    }
+
+    /**
+     * Sets triggeredAt.
+     *
+     * @param null|float $triggeredAt triggeredAt
+     *
+     * @return self
+     */
+    public function setTriggeredAt($triggeredAt)
+    {
+        if (is_null($triggeredAt)) {
+            array_push($this->openAPINullablesSetToNull, 'triggeredAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('triggeredAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['triggeredAt'] = $triggeredAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets statusReason.
+     *
+     * @return null|object
+     */
+    public function getStatusReason()
+    {
+        return $this->container['statusReason'];
+    }
+
+    /**
+     * Sets statusReason.
+     *
+     * @param null|object $statusReason statusReason
+     *
+     * @return self
+     */
+    public function setStatusReason($statusReason)
+    {
+        if (is_null($statusReason)) {
+            array_push($this->openAPINullablesSetToNull, 'statusReason');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('statusReason', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['statusReason'] = $statusReason;
+
+        return $this;
+    }
+
+    /**
+     * Gets externalRevisionId.
+     *
+     * @return null|string
+     */
+    public function getExternalRevisionId()
+    {
+        return $this->container['externalRevisionId'];
+    }
+
+    /**
+     * Sets externalRevisionId.
+     *
+     * @param null|string $externalRevisionId externalRevisionId
+     *
+     * @return self
+     */
+    public function setExternalRevisionId($externalRevisionId)
+    {
+        if (is_null($externalRevisionId)) {
+            array_push($this->openAPINullablesSetToNull, 'externalRevisionId');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('externalRevisionId', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['externalRevisionId'] = $externalRevisionId;
 
         return $this;
     }

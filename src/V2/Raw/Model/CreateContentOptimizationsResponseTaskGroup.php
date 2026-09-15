@@ -63,6 +63,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => 'TaskScope',
         'domain' => 'TaskDomain',
         'type' => 'TaskGroupType',
+        'billingCategory' => 'BillingCategory',
         'entityTypeReference' => 'EntityTypeVersionReference',
         'entityReferences' => '\EdgeBox\SyncCore\V2\Raw\Model\RemoteEntitySummary[]',
         'previousMigration' => 'DynamicReference',
@@ -103,6 +104,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => null,
         'domain' => null,
         'type' => null,
+        'billingCategory' => null,
         'entityTypeReference' => null,
         'entityReferences' => null,
         'previousMigration' => null,
@@ -139,6 +141,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => true,
         'domain' => true,
         'type' => false,
+        'billingCategory' => true,
         'entityTypeReference' => true,
         'entityReferences' => true,
         'previousMigration' => true,
@@ -183,6 +186,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => 'scope',
         'domain' => 'domain',
         'type' => 'type',
+        'billingCategory' => 'billingCategory',
         'entityTypeReference' => 'entityTypeReference',
         'entityReferences' => 'entityReferences',
         'previousMigration' => 'previousMigration',
@@ -219,6 +223,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => 'setScope',
         'domain' => 'setDomain',
         'type' => 'setType',
+        'billingCategory' => 'setBillingCategory',
         'entityTypeReference' => 'setEntityTypeReference',
         'entityReferences' => 'setEntityReferences',
         'previousMigration' => 'setPreviousMigration',
@@ -255,6 +260,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         'scope' => 'getScope',
         'domain' => 'getDomain',
         'type' => 'getType',
+        'billingCategory' => 'getBillingCategory',
         'entityTypeReference' => 'getEntityTypeReference',
         'entityReferences' => 'getEntityReferences',
         'previousMigration' => 'getPreviousMigration',
@@ -300,6 +306,7 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
         $this->setIfExists('scope', $data ?? [], null);
         $this->setIfExists('domain', $data ?? [], null);
         $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('billingCategory', $data ?? [], null);
         $this->setIfExists('entityTypeReference', $data ?? [], null);
         $this->setIfExists('entityReferences', $data ?? [], null);
         $this->setIfExists('previousMigration', $data ?? [], null);
@@ -553,6 +560,40 @@ class CreateContentOptimizationsResponseTaskGroup implements ModelInterface, \Ar
             throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
         $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets billingCategory.
+     *
+     * @return null|BillingCategory
+     */
+    public function getBillingCategory()
+    {
+        return $this->container['billingCategory'];
+    }
+
+    /**
+     * Sets billingCategory.
+     *
+     * @param null|BillingCategory $billingCategory billingCategory
+     *
+     * @return self
+     */
+    public function setBillingCategory($billingCategory)
+    {
+        if (is_null($billingCategory)) {
+            array_push($this->openAPINullablesSetToNull, 'billingCategory');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('billingCategory', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['billingCategory'] = $billingCategory;
 
         return $this;
     }

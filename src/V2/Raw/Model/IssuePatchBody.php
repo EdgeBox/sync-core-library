@@ -61,6 +61,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'status' => 'IssueStatus',
+        'note' => 'string',
     ];
 
     /**
@@ -74,6 +75,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'status' => null,
+        'note' => null,
     ];
 
     /**
@@ -83,6 +85,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'status' => false,
+        'note' => true,
     ];
 
     /**
@@ -100,6 +103,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'status' => 'status',
+        'note' => 'note',
     ];
 
     /**
@@ -109,6 +113,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'status' => 'setStatus',
+        'note' => 'setNote',
     ];
 
     /**
@@ -118,6 +123,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'status' => 'getStatus',
+        'note' => 'getNote',
     ];
 
     /**
@@ -136,6 +142,7 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
     public function __construct(?array $data = null)
     {
         $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('note', $data ?? [], null);
     }
 
     /**
@@ -278,6 +285,40 @@ class IssuePatchBody implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable status cannot be null');
         }
         $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets note.
+     *
+     * @return null|string
+     */
+    public function getNote()
+    {
+        return $this->container['note'];
+    }
+
+    /**
+     * Sets note.
+     *
+     * @param null|string $note note
+     *
+     * @return self
+     */
+    public function setNote($note)
+    {
+        if (is_null($note)) {
+            array_push($this->openAPINullablesSetToNull, 'note');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('note', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['note'] = $note;
 
         return $this;
     }

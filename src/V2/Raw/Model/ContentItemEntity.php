@@ -100,6 +100,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => 'Terms',
         'health' => '\EdgeBox\SyncCore\V2\Raw\Model\ContentHealth[]',
         'healthScore' => 'float',
+        'citationCount' => 'float',
+        'citationCountAt' => 'float',
+        'recommendations' => 'ContentRecommendations',
         'previousSnapshot' => 'DynamicRevisionReference',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
@@ -163,6 +166,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => null,
         'health' => null,
         'healthScore' => null,
+        'citationCount' => null,
+        'citationCountAt' => null,
+        'recommendations' => null,
         'previousSnapshot' => null,
         'customer' => null,
         'project' => null,
@@ -222,6 +228,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => true,
         'health' => true,
         'healthScore' => true,
+        'citationCount' => true,
+        'citationCountAt' => true,
+        'recommendations' => true,
         'previousSnapshot' => true,
         'customer' => false,
         'project' => false,
@@ -289,6 +298,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => 'terms',
         'health' => 'health',
         'healthScore' => 'healthScore',
+        'citationCount' => 'citationCount',
+        'citationCountAt' => 'citationCountAt',
+        'recommendations' => 'recommendations',
         'previousSnapshot' => 'previousSnapshot',
         'customer' => 'customer',
         'project' => 'project',
@@ -348,6 +360,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => 'setTerms',
         'health' => 'setHealth',
         'healthScore' => 'setHealthScore',
+        'citationCount' => 'setCitationCount',
+        'citationCountAt' => 'setCitationCountAt',
+        'recommendations' => 'setRecommendations',
         'previousSnapshot' => 'setPreviousSnapshot',
         'customer' => 'setCustomer',
         'project' => 'setProject',
@@ -407,6 +422,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'terms' => 'getTerms',
         'health' => 'getHealth',
         'healthScore' => 'getHealthScore',
+        'citationCount' => 'getCitationCount',
+        'citationCountAt' => 'getCitationCountAt',
+        'recommendations' => 'getRecommendations',
         'previousSnapshot' => 'getPreviousSnapshot',
         'customer' => 'getCustomer',
         'project' => 'getProject',
@@ -475,6 +493,9 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('health', $data ?? [], null);
         $this->setIfExists('healthScore', $data ?? [], null);
+        $this->setIfExists('citationCount', $data ?? [], null);
+        $this->setIfExists('citationCountAt', $data ?? [], null);
+        $this->setIfExists('recommendations', $data ?? [], null);
         $this->setIfExists('previousSnapshot', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
@@ -1941,6 +1962,108 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['healthScore'] = $healthScore;
+
+        return $this;
+    }
+
+    /**
+     * Gets citationCount.
+     *
+     * @return null|float
+     */
+    public function getCitationCount()
+    {
+        return $this->container['citationCount'];
+    }
+
+    /**
+     * Sets citationCount.
+     *
+     * @param null|float $citationCount citationCount
+     *
+     * @return self
+     */
+    public function setCitationCount($citationCount)
+    {
+        if (is_null($citationCount)) {
+            array_push($this->openAPINullablesSetToNull, 'citationCount');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('citationCount', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['citationCount'] = $citationCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets citationCountAt.
+     *
+     * @return null|float
+     */
+    public function getCitationCountAt()
+    {
+        return $this->container['citationCountAt'];
+    }
+
+    /**
+     * Sets citationCountAt.
+     *
+     * @param null|float $citationCountAt citationCountAt
+     *
+     * @return self
+     */
+    public function setCitationCountAt($citationCountAt)
+    {
+        if (is_null($citationCountAt)) {
+            array_push($this->openAPINullablesSetToNull, 'citationCountAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('citationCountAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['citationCountAt'] = $citationCountAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets recommendations.
+     *
+     * @return null|ContentRecommendations
+     */
+    public function getRecommendations()
+    {
+        return $this->container['recommendations'];
+    }
+
+    /**
+     * Sets recommendations.
+     *
+     * @param null|ContentRecommendations $recommendations recommendations
+     *
+     * @return self
+     */
+    public function setRecommendations($recommendations)
+    {
+        if (is_null($recommendations)) {
+            array_push($this->openAPINullablesSetToNull, 'recommendations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('recommendations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['recommendations'] = $recommendations;
 
         return $this;
     }
