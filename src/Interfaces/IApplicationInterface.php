@@ -81,7 +81,7 @@ interface IApplicationInterface
      *
      * Receive an optimize-content trigger for one page: the Sync Core posts the
      * optimization's full context to this route and the site acknowledges or
-     * refuses it.
+     * refuses it
      */
     public const REST_ACTION_OPTIMIZE_CONTENT = 'optimize-content';
 

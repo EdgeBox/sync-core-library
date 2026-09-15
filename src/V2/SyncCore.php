@@ -361,8 +361,6 @@ class SyncCore implements ISyncCore
      * @param Request $request the request to send through Guzzle
      * @param int $retry_count how often to retry the request if it fails
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     *
      * @throws BadRequestException
      * @throws ConflictException
      * @throws ForbiddenException
@@ -523,8 +521,6 @@ class SyncCore implements ISyncCore
      * @param string          $class       the expected response when deserialized; use Class::class
      * @param null|ActingUser $as          the person to act on behalf of, or null for the site's own token
      * @param string          $permissions "configuration" or "content"
-     * @param bool            $quick
-     * @param int             $retry_count
      *
      * @return object|Raw\Model\ModelInterface
      *
@@ -554,9 +550,6 @@ class SyncCore implements ISyncCore
      * @param Request         $request     the request to send through Guzzle
      * @param null|ActingUser $as          the person to act on behalf of, or null for the site's own token
      * @param string          $permissions "configuration" or "content"
-     * @param int             $retry_count
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      *
      * @throws BadRequestException
      * @throws ConflictException
@@ -583,6 +576,8 @@ class SyncCore implements ISyncCore
     /**
      * @param array       $user_scopes members of SITE_AUTHORIZABLE_USER_SCOPES, added beside $permissions
      * @param null|array  $user        ['name' => ?string, 'email' => ?string], sent as the token's user claim
+     * @param mixed $permissions
+     * @param mixed $provider
      *
      * @throws \InvalidArgumentException a scope outside SITE_AUTHORIZABLE_USER_SCOPES
      */
