@@ -24,11 +24,11 @@ final class OptimizeContentRestUrlTest extends TestCase
     public function testAReferenceIsRegisteredWhenTheApplicationSuppliesOne(): void
     {
         $application = new TestApplication();
-        $application->siteRestReferences[IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT] = '/aim/optimize-content?_format=json';
+        $application->siteRestReferences[IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT] = '/governance/optimize-content?_format=json';
 
         $urls = $this->buildRestUrls($application);
 
-        $this->assertSame('[site.baseUrl]/aim/optimize-content?_format=json', $urls->getOptimizeContent());
+        $this->assertSame('[site.baseUrl]/governance/optimize-content?_format=json', $urls->getOptimizeContent());
     }
 
     public function testNothingIsRegisteredWhenTheApplicationReturnsNull(): void
@@ -44,7 +44,7 @@ final class OptimizeContentRestUrlTest extends TestCase
     public function testAMalformedReferenceRaisesAnError(): void
     {
         $application = new TestApplication();
-        $application->siteRestReferences[IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT] = 'aim/optimize-content';
+        $application->siteRestReferences[IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT] = 'governance/optimize-content';
 
         $this->expectException(InternalContentSyncError::class);
 

@@ -28,9 +28,9 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
 
     public function testTheInboundTriggerParsesAndAnswers(): void
     {
-        $aim = new GovernanceService(new SyncCore(new TestApplication(), 'https://core.example.com/sync-core'));
+        $governance = new GovernanceService(new SyncCore(new TestApplication(), 'https://core.example.com/sync-core'));
 
-        $request = $aim->parseOptimizeContentRequest(
+        $request = $governance->parseOptimizeContentRequest(
             ['optimizationId' => 'opt-1'],
             [
                 'optimizationId' => 'opt-1',
