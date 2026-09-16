@@ -67,6 +67,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => 'string',
         'siteStatus' => 'string',
         'siteConfig' => 'string',
+        'optimizeContent' => 'string',
     ];
 
     /**
@@ -86,6 +87,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => null,
         'siteStatus' => null,
         'siteConfig' => null,
+        'optimizeContent' => null,
     ];
 
     /**
@@ -101,6 +103,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => false,
         'siteStatus' => true,
         'siteConfig' => true,
+        'optimizeContent' => true,
     ];
 
     /**
@@ -124,6 +127,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => 'deleteEntity',
         'siteStatus' => 'siteStatus',
         'siteConfig' => 'siteConfig',
+        'optimizeContent' => 'optimizeContent',
     ];
 
     /**
@@ -139,6 +143,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => 'setDeleteEntity',
         'siteStatus' => 'setSiteStatus',
         'siteConfig' => 'setSiteConfig',
+        'optimizeContent' => 'setOptimizeContent',
     ];
 
     /**
@@ -154,6 +159,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         'deleteEntity' => 'getDeleteEntity',
         'siteStatus' => 'getSiteStatus',
         'siteConfig' => 'getSiteConfig',
+        'optimizeContent' => 'getOptimizeContent',
     ];
 
     /**
@@ -178,6 +184,7 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('deleteEntity', $data ?? [], null);
         $this->setIfExists('siteStatus', $data ?? [], null);
         $this->setIfExists('siteConfig', $data ?? [], null);
+        $this->setIfExists('optimizeContent', $data ?? [], null);
     }
 
     /**
@@ -512,6 +519,40 @@ class SiteRestUrls implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['siteConfig'] = $siteConfig;
+
+        return $this;
+    }
+
+    /**
+     * Gets optimizeContent.
+     *
+     * @return null|string
+     */
+    public function getOptimizeContent()
+    {
+        return $this->container['optimizeContent'];
+    }
+
+    /**
+     * Sets optimizeContent.
+     *
+     * @param null|string $optimizeContent optimizeContent
+     *
+     * @return self
+     */
+    public function setOptimizeContent($optimizeContent)
+    {
+        if (is_null($optimizeContent)) {
+            array_push($this->openAPINullablesSetToNull, 'optimizeContent');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('optimizeContent', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['optimizeContent'] = $optimizeContent;
 
         return $this;
     }

@@ -6,6 +6,7 @@ use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\Exception\SiteVerificationFailedException;
 use EdgeBox\SyncCore\Interfaces\Configuration\IConfigurationService;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\Syndication\ISyndicationService;
 use EdgeBox\SyncCore\V2\Raw\Model\RequestPollDto;
 
@@ -79,6 +80,11 @@ interface ISyncCore
      * @return null|IEmbedService
      */
     public function getEmbedService();
+
+    /**
+     * @return IGovernanceService
+     */
+    public function getGovernanceService();
 
     /**
      * @return IBatch

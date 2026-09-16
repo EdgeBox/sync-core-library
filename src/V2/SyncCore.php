@@ -3,16 +3,20 @@
 namespace EdgeBox\SyncCore\V2;
 
 use EdgeBox\SyncCore\Exception\BadRequestException;
+use EdgeBox\SyncCore\Exception\ConflictException;
 use EdgeBox\SyncCore\Exception\ForbiddenException;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
 use EdgeBox\SyncCore\Exception\UnauthorizedException;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
+use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
 use EdgeBox\SyncCore\V2\Configuration\ConfigurationService;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
+use EdgeBox\SyncCore\V2\Governance\GovernanceService;
 use EdgeBox\SyncCore\V2\Raw\Api\DefaultApi;
 use EdgeBox\SyncCore\V2\Raw\Configuration;
 use EdgeBox\SyncCore\V2\Raw\Model\AuthenticationType;
@@ -58,6 +62,20 @@ use GuzzleHttp\RequestOptions;
 
 class SyncCore implements ISyncCore
 {
+    /**
+     * The scopes a site is allowed to authorize for a person. Anything else is refused
+     * by Sync Core with 401, so createJwt() refuses it here rather than minting a token
+     * that cannot be used.
+     */
+    public const SITE_AUTHORIZABLE_USER_SCOPES = [
+        'issue:own:read',
+        'issue:own:write',
+        'content-optimization:own:read',
+        'content-optimization:own:write',
+        'taxonomy-term:own:read',
+        'taxonomy-term:public:read',
+    ];
+
     // Keep tokens alive for 4 hours.
     public const JWT_LIFETIME = 60 * 60 * 4;
     public const SITE_REGISTER_RETRY_COUNT = 2;
@@ -331,6 +349,27 @@ class SyncCore implements ISyncCore
      */
     public function sendRaw(Request $request, array $options, int $retry_count)
     {
+        return (string) $this->sendRawResponse($request, $options, $retry_count)->getBody();
+    }
+
+    /**
+     * Send the raw request and return the response itself, mapping every non-OK
+     * status to its exception exactly as sendRaw() does. A caller that must tell
+     * a 200 from a 201 — an idempotent repeat from a fresh create — reads the
+     * status code from the returned response.
+     *
+     * @param Request $request the request to send through Guzzle
+     * @param int $retry_count how often to retry the request if it fails
+     *
+     * @throws BadRequestException
+     * @throws ConflictException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws SyncCoreException
+     * @throws TimeoutException
+     */
+    public function sendRawResponse(Request $request, array $options, int $retry_count)
+    {
         try {
             $options = [
                 RequestOptions::HTTP_ERRORS => false,
@@ -345,7 +384,7 @@ class SyncCore implements ISyncCore
             $response = $this->application->getHttpClient()->send($request, $options);
         } catch (ConnectException $e) {
             if ($retry_count > 1) {
-                return $this->sendRaw($request, $options, $retry_count - 1);
+                return $this->sendRawResponse($request, $options, $retry_count - 1);
             }
 
             throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
@@ -361,7 +400,7 @@ class SyncCore implements ISyncCore
 
         if (200 !== $status && 201 !== $status) {
             if ($retry_count > 1 && in_array($status, self::RETRYABLE_STATUS_CODES)) {
-                return $this->sendRaw($request, $options, $retry_count - 1);
+                return $this->sendRawResponse($request, $options, $retry_count - 1);
             }
 
             $data = json_decode($response_body, true);
@@ -381,11 +420,14 @@ class SyncCore implements ISyncCore
             if (404 === $status) {
                 throw new NotFoundException('The Sync Core responded with 404 Not Found for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
             }
+            if (409 === $status) {
+                throw new ConflictException('The Sync Core responded with 409 Conflict for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
+            }
 
             throw new SyncCoreException('The Sync Core responded with a non-OK status code for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
         }
 
-        return (string) $response_body;
+        return $response;
     }
 
     /**
@@ -470,31 +512,106 @@ class SyncCore implements ISyncCore
         return @ObjectSerializer::deserialize($response, $class, []);
     }
 
+    /**
+     * Send a request on behalf of a person, minting a user-scoped token when one
+     * is given; with no ActingUser the site's own token is used exactly as
+     * sendToSyncCoreAndExpect() would.
+     *
+     * @param Request         $request     the request to send through Guzzle
+     * @param string          $class       the expected response when deserialized; use Class::class
+     * @param null|ActingUser $as          the person to act on behalf of, or null for the site's own token
+     * @param string          $permissions "configuration" or "content"
+     *
+     * @return object|Raw\Model\ModelInterface
+     *
+     * @throws BadRequestException
+     * @throws ConflictException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws SyncCoreException
+     * @throws TimeoutException
+     */
+    public function sendToSyncCoreAsUserAndExpect(Request $request, string $class, ?ActingUser $as, string $permissions, bool $quick, int $retry_count)
+    {
+        if (!$as) {
+            return $this->sendToSyncCoreAndExpect($request, $class, $permissions, $quick, $retry_count);
+        }
+
+        $jwt = $this->createJwt($permissions, 'jwt-header', $as->getScopes(), $as->toUserClaim());
+
+        return $this->sendToSyncCoreWithJwtAndExpect($request, $class, $jwt, $quick, $retry_count);
+    }
+
+    /**
+     * Send a request on behalf of a person and return the response itself, so a
+     * caller that must distinguish a fresh create from an idempotent repeat can
+     * read the status code. With no ActingUser the site's own token is used.
+     *
+     * @param Request         $request     the request to send through Guzzle
+     * @param null|ActingUser $as          the person to act on behalf of, or null for the site's own token
+     * @param string          $permissions "configuration" or "content"
+     *
+     * @throws BadRequestException
+     * @throws ConflictException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws SyncCoreException
+     * @throws TimeoutException
+     */
+    public function sendToSyncCoreAsUserForResponse(Request $request, ?ActingUser $as, string $permissions, int $retry_count)
+    {
+        $jwt = $as
+            ? $this->createJwt($permissions, 'jwt-header', $as->getScopes(), $as->toUserClaim())
+            : $this->createJwt($permissions);
+        $options = [RequestOptions::HEADERS => ['Authorization' => 'Bearer '.$jwt]];
+
+        return $this->sendRawResponse($request, $options, $retry_count);
+    }
+
     public function isSiteRegistered()
     {
         return $this->hasValidV2SiteId();
     }
 
-    public function createJwt($permissions, $provider = 'jwt-header')
+    /**
+     * @param array       $user_scopes members of SITE_AUTHORIZABLE_USER_SCOPES, added beside $permissions
+     * @param null|array  $user        ['name' => ?string, 'email' => ?string], sent as the token's user claim
+     * @param mixed $permissions
+     * @param mixed $provider
+     *
+     * @throws \InvalidArgumentException a scope outside SITE_AUTHORIZABLE_USER_SCOPES
+     */
+    public function createJwt($permissions, $provider = 'jwt-header', array $user_scopes = [], ?array $user = null)
     {
+        foreach ($user_scopes as $scope) {
+            if (!in_array($scope, self::SITE_AUTHORIZABLE_USER_SCOPES, true)) {
+                throw new \InvalidArgumentException(sprintf('The scope "%s" is not one a site may authorize for a person.', $scope));
+            }
+        }
+
         $uuid = $this->application->getSiteUuid();
         if (!$uuid) {
             throw new InternalContentSyncError("This site is not registered yet; can't execute a signed request.");
         }
 
         $secret = $this->getSiteSecret();
+        $scopes = IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
+            ? [
+                IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION,
+                IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT,
+            ]
+            : [$permissions];
         $payload = [
             'type' => 'site',
-            'scopes' => IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION === $permissions
-                ? [
-                    IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION,
-                    IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT,
-                ]
-                : [$permissions],
+            'scopes' => array_merge($scopes, $user_scopes),
             'provider' => $provider,
             'uuid' => $uuid,
             'exp' => time() + self::JWT_LIFETIME,
         ];
+
+        if ($user) {
+            $payload['user'] = $user;
+        }
 
         return JWT::encode($payload, $secret, 'HS256');
     }
@@ -799,6 +916,19 @@ class SyncCore implements ISyncCore
         return $cache = new EmbedService($this);
     }
 
+    /**
+     * @return IGovernanceService
+     */
+    public function getGovernanceService()
+    {
+        static $cache = null;
+        if ($cache) {
+            return $cache;
+        }
+
+        return $cache = new GovernanceService($this);
+    }
+
     public function isDirectUserAccessEnabled($set = null)
     {
         // Sync Core 2.0 has it always enabled.
@@ -1089,6 +1219,10 @@ class SyncCore implements ISyncCore
         if ($site_config_route) {
             $urls->setSiteConfig(self::PLACEHOLDER_SITE_BASE_URL.$site_config_route);
         }
+        $optimize_content_route = $this->getRelativeReference(IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT);
+        if ($optimize_content_route) {
+            $urls->setOptimizeContent(self::PLACEHOLDER_SITE_BASE_URL.$optimize_content_route);
+        }
 
         return $urls;
     }
@@ -1169,7 +1303,7 @@ class SyncCore implements ISyncCore
 
     protected function getRelativeReference(string $action)
     {
-        if (IApplicationInterface::REST_ACTION_SITE_STATUS === $action || IApplicationInterface::REST_ACTION_SITE_CONFIG === $action) {
+        if (IApplicationInterface::REST_ACTION_SITE_STATUS === $action || IApplicationInterface::REST_ACTION_SITE_CONFIG === $action || IApplicationInterface::REST_ACTION_OPTIMIZE_CONTENT === $action) {
             $relative = $this->application->getRelativeReferenceForSiteRestCall($action);
         } else {
             $relative = $this->application->getRelativeReferenceForRestCall(

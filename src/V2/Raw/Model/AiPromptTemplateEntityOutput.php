@@ -61,7 +61,7 @@ class AiPromptTemplateEntityOutput implements ModelInterface, \ArrayAccess, \Jso
      */
     protected static $openAPITypes = [
         'format' => 'AiPromptOutputFormat',
-        'textFormat' => 'AiPromptOutputTextFormat',
+        'textFormat' => 'TextFormat',
         'jsonSchema' => 'mixed',
     ];
 
@@ -299,7 +299,7 @@ class AiPromptTemplateEntityOutput implements ModelInterface, \ArrayAccess, \Jso
     /**
      * Gets textFormat.
      *
-     * @return null|AiPromptOutputTextFormat
+     * @return null|TextFormat
      */
     public function getTextFormat()
     {
@@ -309,7 +309,7 @@ class AiPromptTemplateEntityOutput implements ModelInterface, \ArrayAccess, \Jso
     /**
      * Sets textFormat.
      *
-     * @param null|AiPromptOutputTextFormat $textFormat textFormat
+     * @param null|TextFormat $textFormat textFormat
      *
      * @return self
      */

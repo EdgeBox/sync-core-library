@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2\Embed;
 
 use EdgeBox\SyncCore\Helpers\EmbedResult;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -33,13 +34,19 @@ abstract class Embed
     protected $permissions;
 
     /**
+     * @var null|ActingUser
+     */
+    protected $actingUser;
+
+    /**
      * Embed constructor.
      */
-    public function __construct(SyncCore $core, string $embed_id, string $permissions)
+    public function __construct(SyncCore $core, string $embed_id, string $permissions, ?ActingUser $as = null)
     {
         $this->core = $core;
         $this->url = $this->core->getCloudEmbedUrl().'/'.str_replace('.', '/', $embed_id);
         $this->permissions = $permissions;
+        $this->actingUser = $as;
 
         $this->config = [
             'syncCoreDomain' => $this->core->getSyncCoreDomain(),
@@ -55,12 +62,15 @@ abstract class Embed
         return [];
     }
 
-    protected function render()
+    protected function render(?ActingUser $as = null)
     {
         $options = $this->getOptions();
 
         if ($this->permissions) {
-            $this->config['jwt'] = $this->core->createJwt($this->permissions);
+            $acting = $as ?? $this->actingUser;
+            $this->config['jwt'] = $acting
+                ? $this->core->createJwt($this->permissions, 'jwt-header', $acting->getScopes(), $acting->toUserClaim())
+                : $this->core->createJwt($this->permissions);
         }
 
         $application = $this->core->getApplication();

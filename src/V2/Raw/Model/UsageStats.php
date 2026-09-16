@@ -61,6 +61,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'updates' => 'float',
+        'categories' => 'mixed',
     ];
 
     /**
@@ -74,6 +75,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'updates' => null,
+        'categories' => null,
     ];
 
     /**
@@ -83,6 +85,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'updates' => false,
+        'categories' => true,
     ];
 
     /**
@@ -100,6 +103,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'updates' => 'updates',
+        'categories' => 'categories',
     ];
 
     /**
@@ -109,6 +113,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'updates' => 'setUpdates',
+        'categories' => 'setCategories',
     ];
 
     /**
@@ -118,6 +123,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'updates' => 'getUpdates',
+        'categories' => 'getCategories',
     ];
 
     /**
@@ -136,6 +142,7 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
     public function __construct(?array $data = null)
     {
         $this->setIfExists('updates', $data ?? [], null);
+        $this->setIfExists('categories', $data ?? [], null);
     }
 
     /**
@@ -278,6 +285,40 @@ class UsageStats implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable updates cannot be null');
         }
         $this->container['updates'] = $updates;
+
+        return $this;
+    }
+
+    /**
+     * Gets categories.
+     *
+     * @return null|mixed
+     */
+    public function getCategories()
+    {
+        return $this->container['categories'];
+    }
+
+    /**
+     * Sets categories.
+     *
+     * @param null|mixed $categories categories
+     *
+     * @return self
+     */
+    public function setCategories($categories)
+    {
+        if (is_null($categories)) {
+            array_push($this->openAPINullablesSetToNull, 'categories');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('categories', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['categories'] = $categories;
 
         return $this;
     }

@@ -100,6 +100,8 @@ class TaxonomyFacet
 
     public const FAQ_TYPE = 'faq-type';
 
+    public const CONTENT_ANGLE = 'content-angle';
+
     public const PERSONA = 'persona';
 
     public const FUNNEL_STAGE = 'funnel-stage';
@@ -158,6 +160,7 @@ class TaxonomyFacet
             self::CONTENT_TYPE,
             self::PAGE_TYPE,
             self::FAQ_TYPE,
+            self::CONTENT_ANGLE,
             self::PERSONA,
             self::FUNNEL_STAGE,
             self::INTENT,

@@ -75,6 +75,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthCheckEntityFormula',
         'defaultScore' => 'float',
         'defaultScoreWeight' => 'float',
+        'rules' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthCheckRule[]',
+        'issueThreshold' => 'float',
+        'itemAxisFacet' => 'TaxonomyFacet',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
         'id' => 'string',
@@ -108,6 +111,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => null,
         'defaultScore' => null,
         'defaultScoreWeight' => null,
+        'rules' => null,
+        'issueThreshold' => null,
+        'itemAxisFacet' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -137,6 +143,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => false,
         'defaultScore' => true,
         'defaultScoreWeight' => true,
+        'rules' => true,
+        'issueThreshold' => true,
+        'itemAxisFacet' => true,
         'customer' => true,
         'project' => true,
         'id' => false,
@@ -174,6 +183,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => 'formula',
         'defaultScore' => 'defaultScore',
         'defaultScoreWeight' => 'defaultScoreWeight',
+        'rules' => 'rules',
+        'issueThreshold' => 'issueThreshold',
+        'itemAxisFacet' => 'itemAxisFacet',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -203,6 +215,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => 'setFormula',
         'defaultScore' => 'setDefaultScore',
         'defaultScoreWeight' => 'setDefaultScoreWeight',
+        'rules' => 'setRules',
+        'issueThreshold' => 'setIssueThreshold',
+        'itemAxisFacet' => 'setItemAxisFacet',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -232,6 +247,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'formula' => 'getFormula',
         'defaultScore' => 'getDefaultScore',
         'defaultScoreWeight' => 'getDefaultScoreWeight',
+        'rules' => 'getRules',
+        'issueThreshold' => 'getIssueThreshold',
+        'itemAxisFacet' => 'getItemAxisFacet',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -270,6 +288,9 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('formula', $data ?? [], null);
         $this->setIfExists('defaultScore', $data ?? [], null);
         $this->setIfExists('defaultScoreWeight', $data ?? [], null);
+        $this->setIfExists('rules', $data ?? [], null);
+        $this->setIfExists('issueThreshold', $data ?? [], null);
+        $this->setIfExists('itemAxisFacet', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -867,6 +888,108 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['defaultScoreWeight'] = $defaultScoreWeight;
+
+        return $this;
+    }
+
+    /**
+     * Gets rules.
+     *
+     * @return null|HealthCheckRule[]
+     */
+    public function getRules()
+    {
+        return $this->container['rules'];
+    }
+
+    /**
+     * Sets rules.
+     *
+     * @param null|HealthCheckRule[] $rules rules
+     *
+     * @return self
+     */
+    public function setRules($rules)
+    {
+        if (is_null($rules)) {
+            array_push($this->openAPINullablesSetToNull, 'rules');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('rules', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['rules'] = $rules;
+
+        return $this;
+    }
+
+    /**
+     * Gets issueThreshold.
+     *
+     * @return null|float
+     */
+    public function getIssueThreshold()
+    {
+        return $this->container['issueThreshold'];
+    }
+
+    /**
+     * Sets issueThreshold.
+     *
+     * @param null|float $issueThreshold issueThreshold
+     *
+     * @return self
+     */
+    public function setIssueThreshold($issueThreshold)
+    {
+        if (is_null($issueThreshold)) {
+            array_push($this->openAPINullablesSetToNull, 'issueThreshold');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('issueThreshold', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['issueThreshold'] = $issueThreshold;
+
+        return $this;
+    }
+
+    /**
+     * Gets itemAxisFacet.
+     *
+     * @return null|TaxonomyFacet
+     */
+    public function getItemAxisFacet()
+    {
+        return $this->container['itemAxisFacet'];
+    }
+
+    /**
+     * Sets itemAxisFacet.
+     *
+     * @param null|TaxonomyFacet $itemAxisFacet itemAxisFacet
+     *
+     * @return self
+     */
+    public function setItemAxisFacet($itemAxisFacet)
+    {
+        if (is_null($itemAxisFacet)) {
+            array_push($this->openAPINullablesSetToNull, 'itemAxisFacet');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('itemAxisFacet', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['itemAxisFacet'] = $itemAxisFacet;
 
         return $this;
     }
