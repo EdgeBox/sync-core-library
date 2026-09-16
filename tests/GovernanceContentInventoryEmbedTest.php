@@ -19,11 +19,11 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-final class BrandPresenceContentInventoryEmbedTest extends TestCase
+final class GovernanceContentInventoryEmbedTest extends TestCase
 {
     public function testTheUrlResolvesToTheContentInventoryPath(): void
     {
-        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([]);
+        $embed = (new EmbedService($this->core()))->governanceContentInventory([]);
         $embed->run();
 
         $this->assertStringEndsWith('/brand-presence/content-inventory', $this->url($embed));
@@ -31,7 +31,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
 
     public function testWithoutAnActingUserItMintsTheSitesOwnToken(): void
     {
-        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([]);
+        $embed = (new EmbedService($this->core()))->governanceContentInventory([]);
         $embed->run();
 
         $payload = $this->jwtOf($embed);
@@ -42,7 +42,7 @@ final class BrandPresenceContentInventoryEmbedTest extends TestCase
     public function testWithAnActingUserItMintsThatPersonsToken(): void
     {
         $acting = new ActingUser(['content-optimization:own:read'], 'Lena', 'lena@example.com');
-        $embed = (new EmbedService($this->core()))->brandPresenceContentInventory([], $acting);
+        $embed = (new EmbedService($this->core()))->governanceContentInventory([], $acting);
         $embed->run();
 
         $payload = $this->jwtOf($embed);

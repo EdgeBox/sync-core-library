@@ -16,7 +16,11 @@ interface IEmbedService
     public const MIGRATE = 'migrate';
     public const FLOW_FORM = 'flow-form';
     public const SYNDICATION_DASHBOARD = 'syndication-dashboard';
-    public const BRAND_PRESENCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
+
+    // The value is the embed's id on the wire and, with the dot read as a
+    // slash, the route people land on. Both carry the name the product shows
+    // its users, which is not the name this code gives the topic.
+    public const GOVERNANCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
 
     /**
      * @return IEmbedFeature
@@ -71,5 +75,5 @@ interface IEmbedService
     /**
      * @return IEmbedFeature
      */
-    public function brandPresenceContentInventory(array $params, ?ActingUser $as = null);
+    public function governanceContentInventory(array $params, ?ActingUser $as = null);
 }

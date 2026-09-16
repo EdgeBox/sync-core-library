@@ -8,7 +8,7 @@ use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\SyncCore;
 
-class BrandPresenceContentInventoryEmbed extends Embed implements IEmbedFeature
+class GovernanceContentInventoryEmbed extends Embed implements IEmbedFeature
 {
     protected $params;
 
@@ -16,7 +16,7 @@ class BrandPresenceContentInventoryEmbed extends Embed implements IEmbedFeature
     {
         parent::__construct(
             $core,
-            IEmbedService::BRAND_PRESENCE_CONTENT_INVENTORY,
+            IEmbedService::GOVERNANCE_CONTENT_INVENTORY,
             !empty($params['configurationAccess'])
                 ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION
                 : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT,

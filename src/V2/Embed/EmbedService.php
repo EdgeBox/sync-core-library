@@ -75,8 +75,8 @@ class EmbedService implements IEmbedService
         return new SyndicationDashboardEmbed($this->core, $params);
     }
 
-    public function brandPresenceContentInventory(array $params, ?ActingUser $as = null)
+    public function governanceContentInventory(array $params, ?ActingUser $as = null)
     {
-        return new BrandPresenceContentInventoryEmbed($this->core, $params, $as);
+        return new GovernanceContentInventoryEmbed($this->core, $params, $as);
     }
 }
