@@ -75,7 +75,7 @@ final class PageFiguresEmbedTest extends TestCase
         ], $this->messages($html)['options']);
     }
 
-    public function testACallerCannotSizeTheFrame(): void
+    public function testTheSizeACallerAsksForNeverReachesTheFrame(): void
     {
         $figures = self::everyFigure();
         $figures['embedSize'] = 'line';
@@ -84,6 +84,7 @@ final class PageFiguresEmbedTest extends TestCase
 
         $this->assertSame('box', $this->messages($html)['options']['embedSize']);
         $this->assertStringContainsString('class="content-sync-embed size-box"', $html);
+        $this->assertStringNotContainsString('width: 470px', $html);
     }
 
     public function testTheFrameTakesItsContainersWidthAndItsDocumentsHeight(): void

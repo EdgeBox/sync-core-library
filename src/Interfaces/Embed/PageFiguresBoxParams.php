@@ -8,16 +8,18 @@ namespace EdgeBox\SyncCore\Interfaces\Embed;
  * One named array carries both the page's identity and its figures: the
  * identity is three strings and the figures are five numbers, so no signature
  * takes them in a row. The page is named the way any content management system
- * names one — an entity type, an entity uuid and a language — and this class
- * knows no system of its own.
+ * names one — an entity type, an entity uuid and a language, each a string of
+ * the site's own choosing — and this class knows no system of its own.
  *
- * An optional figure whose value is outside the range the box accepts is left
- * out of the rendered options rather than sent, so the box shows the figures it
- * did receive instead of refusing the page. A key this class does not name is
- * ignored, which is what keeps the frame's own options out of a caller's reach.
+ * The box holds every value it is sent to its type and its range, and **one
+ * value it refuses replaces every figure with an alert**. So an optional figure
+ * this class cannot vouch for is left out rather than sent, and the box shows
+ * the figures that did arrive. A key this class does not name is ignored, which
+ * is what keeps the frame's own options — its size among them — out of a
+ * caller's reach.
  *
  * It is the one place in this library that knows the names the box reads the
- * figures under.
+ * figures under and the limits it holds them to.
  */
 final class PageFiguresBoxParams
 {
@@ -51,6 +53,41 @@ final class PageFiguresBoxParams
      * @var int
      */
     public const PRIORITY_CRITICAL = 400;
+
+    /**
+     * The longest each part of a page's identity may be.
+     *
+     * @var int
+     */
+    public const MAX_IDENTITY_LENGTH = 255;
+
+    /**
+     * The longest a health summary may be.
+     *
+     * It is one sentence the site composes, so the limit is far above any
+     * sentence and is there to stop a whole document arriving in a box.
+     *
+     * @var int
+     */
+    public const MAX_SUMMARY_LENGTH = 2000;
+
+    /**
+     * The longest a tag's key or its name may be.
+     *
+     * @var int
+     */
+    public const MAX_TAG_LENGTH = 255;
+
+    /**
+     * How far ahead of now the moment the figures were written may be.
+     *
+     * Room for a clock that runs fast, not for another unit: the stamp is in
+     * whole seconds since the epoch, never milliseconds, and a stamp in
+     * milliseconds lands tens of thousands of years out.
+     *
+     * @var int
+     */
+    public const MAX_SECONDS_AHEAD_OF_NOW = 365 * 24 * 60 * 60;
 
     private const ENTITY_TYPE = 'entity_type';
     private const ENTITY_UUID = 'entity_uuid';
@@ -97,38 +134,52 @@ final class PageFiguresBoxParams
     /**
      * One named array; never a run of scalars.
      *
-     * Required, each a non-empty string:
+     * Required, each a non-empty string of at most MAX_IDENTITY_LENGTH
+     * characters, surrounding whitespace trimmed:
      *   entity_type  the site's entity type machine name — any content entity type
-     *   entity_uuid  the entity's uuid on the site
+     *   entity_uuid  the entity's id on the site, in whatever form the site has;
+     *                a site whose system has no uuids passes its own id
      *   langcode     the language these figures describe
      *
      * Optional; a value outside its documented range is omitted from the
-     * rendered options rather than sent, so the box degrades to showing the
-     * figures it did receive. A whole number is read whether the site's storage
-     * hands it back as an int or as the digits of one, and the number is what
-     * travels:
+     * rendered options rather than sent, because one value the box refuses
+     * costs the page every figure. A whole number is read whether the site's
+     * storage hands it back as an int or as the digits of one, and the number
+     * is what travels:
      *   content_health_percent_0_to_100  int 0..100
-     *   content_health_summary           string
+     *   content_health_summary           string of at most MAX_SUMMARY_LENGTH characters
      *   open_issue_count                 int >= 0   (0 is a value, never an absence)
      *   content_priority                 int, one of the PRIORITY_ constants
      *   cited_in_answers_last_30_days    int >= 0   (0 is a value, never an absence)
-     *   summary_updated                  int, epoch seconds
+     *   summary_updated                  int, whole EPOCH SECONDS — never milliseconds —
+     *                                    from the epoch to at most a year ahead of now
      *   tags                             list of ['key' => string, 'name' => string],
-     *                                    both halves required on an entry; [] means none
+     *                                    both halves required on an entry and each at most
+     *                                    MAX_TAG_LENGTH characters; [] means none
+     *
+     * Every tag is passed on. The box decides how many of them it shows and
+     * says how many it left out, so cutting the list here would hide from a
+     * reader that the page carries more.
      *
      * A key this list does not name is ignored, so a caller cannot reach the
      * frame's own options — embedSize among them.
      *
-     * @throws \InvalidArgumentException a required key missing, empty, or not a string
+     * @throws \InvalidArgumentException a required key missing, empty, not a string, or too long
      */
     public function __construct(array $figures)
     {
         foreach (array_keys(self::IDENTITY) as $key) {
-            $value = $figures[$key] ?? null;
+            $value = self::text($figures[$key] ?? null, self::MAX_IDENTITY_LENGTH);
 
-            if (!is_string($value) || '' === $value) {
-                throw new \InvalidArgumentException(sprintf('The figures of a page need a non-empty %s.', $key));
+            if (null === $value) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The figures of a page need a %s: a string of 1 to %d characters.',
+                    $key,
+                    self::MAX_IDENTITY_LENGTH
+                ));
             }
+
+            $figures[$key] = $value;
         }
 
         $this->figures = $figures;
@@ -178,8 +229,8 @@ final class PageFiguresBoxParams
             $options['contentHealthPercent'] = $percent;
         }
 
-        $summary = $this->figures[self::CONTENT_HEALTH_SUMMARY] ?? null;
-        if (is_string($summary) && '' !== $summary) {
+        $summary = self::text($this->figures[self::CONTENT_HEALTH_SUMMARY] ?? null, self::MAX_SUMMARY_LENGTH);
+        if (null !== $summary) {
             $options['contentHealthSummary'] = $summary;
         }
 
@@ -199,7 +250,7 @@ final class PageFiguresBoxParams
         }
 
         $updated = self::wholeNumber($this->figures[self::SUMMARY_UPDATED] ?? null);
-        if (null !== $updated) {
+        if (null !== $updated && $updated >= 0 && $updated <= time() + self::MAX_SECONDS_AHEAD_OF_NOW) {
             $options['summaryUpdated'] = $updated;
         }
 
@@ -211,8 +262,9 @@ final class PageFiguresBoxParams
     /**
      * The tags the page carries, each one that names itself whole.
      *
-     * An entry missing either half names no tag a reader could act on, so it is
-     * dropped while every other entry survives.
+     * An entry missing either half, or carrying a half longer than the box
+     * holds one to, names no tag a reader could act on, so it is dropped while
+     * every other entry survives.
      *
      * @return array[]
      */
@@ -231,10 +283,10 @@ final class PageFiguresBoxParams
                 continue;
             }
 
-            $key = $tag[self::TAG_KEY] ?? null;
-            $name = $tag[self::TAG_NAME] ?? null;
+            $key = self::text($tag[self::TAG_KEY] ?? null, self::MAX_TAG_LENGTH);
+            $name = self::text($tag[self::TAG_NAME] ?? null, self::MAX_TAG_LENGTH);
 
-            if (!is_string($key) || '' === $key || !is_string($name) || '' === $name) {
+            if (null === $key || null === $name) {
                 continue;
             }
 
@@ -245,13 +297,40 @@ final class PageFiguresBoxParams
     }
 
     /**
+     * A value as the text it is, or null when it is no text the box would take.
+     *
+     * The box trims what it is sent and refuses what it holds to be too long,
+     * so the trimmed value is what travels and a longer one travels not at all.
+     * Length is counted in bytes, which for text that is not plain ASCII is
+     * more than the box counts and therefore never lets through what it would
+     * refuse.
+     *
+     * @param mixed $value
+     */
+    private static function text($value, int $max): ?string
+    {
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $text = trim($value);
+
+        if ('' === $text || strlen($text) > $max) {
+            return null;
+        }
+
+        return $text;
+    }
+
+    /**
      * A figure as the whole number it is, or null when it is not one.
      *
      * The storage a site keeps its figures in decides the type they come back
      * as: a column of whole numbers reaches this library as an int from one
      * system and as the digits of that int from another, and both are the same
-     * figure. Both are therefore read, and the number is what travels; a value
-     * that is neither is no figure this library can send.
+     * figure. Digits count as that number only when the number writes them back
+     * exactly, which is what keeps a value too large for an int from arriving as
+     * a number nobody stored.
      *
      * @param mixed $value
      */
@@ -261,7 +340,7 @@ final class PageFiguresBoxParams
             return $value;
         }
 
-        if (is_string($value) && 1 === preg_match('@^-?\d+$@', $value)) {
+        if (is_string($value) && (string) (int) $value === $value) {
             return (int) $value;
         }
 

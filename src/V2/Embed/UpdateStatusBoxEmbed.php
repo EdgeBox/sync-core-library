@@ -21,7 +21,7 @@ class UpdateStatusBoxEmbed extends Embed implements IEmbedFeature
                 : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
         );
 
-        $this->params = $params + ['embedSize' => 'line'];
+        $this->params = $params + [self::OPTION_SIZE => self::SIZE_LINE];
     }
 
     public function run()
