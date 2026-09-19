@@ -10,6 +10,35 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class Embed
 {
+    /**
+     * The option a frame's size travels under.
+     *
+     * @var string
+     */
+    public const OPTION_SIZE = 'embedSize';
+
+    /**
+     * A frame that fills the page it is on and states a minimum height.
+     *
+     * @var string
+     */
+    public const SIZE_PAGE = 'page';
+
+    /**
+     * A frame of one fixed line, loaded when it is scrolled to.
+     *
+     * @var string
+     */
+    public const SIZE_LINE = 'line';
+
+    /**
+     * A frame that fills the region it is placed in and is as tall as the
+     * document it loads.
+     *
+     * @var string
+     */
+    public const SIZE_BOX = 'box';
+
     public static $iframeResizerAdded = '';
     public static $embed_count = 0;
 
@@ -83,10 +112,10 @@ abstract class Embed
         // is as tall as the document it loads reports and the resizer keeps it
         // there. Every other value is a fixed line that loads when it is
         // scrolled to.
-        $size = empty($options['embedSize']) ? 'page' : $options['embedSize'];
-        $is_page = 'page' === $size;
-        $is_line = 'line' === $size;
-        $is_box = 'box' === $size;
+        $size = empty($options[self::OPTION_SIZE]) ? self::SIZE_PAGE : $options[self::OPTION_SIZE];
+        $is_page = self::SIZE_PAGE === $size;
+        $is_line = self::SIZE_LINE === $size;
+        $is_box = self::SIZE_BOX === $size;
 
         $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.preg_replace('@[^a-z0-9-]@', '-', uniqid('', true));
 

@@ -22,9 +22,9 @@ class PageFiguresEmbed extends Embed implements IEmbedFeature
             IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT
         );
 
-        // The size is the library's to decide: the value object emits no
-        // embedSize, whatever the caller put in its named array.
-        $this->params = $figures->toOptions() + ['embedSize' => 'box'];
+        // The size is the library's to decide, and it is stated first so it
+        // holds whatever an option carries.
+        $this->params = [self::OPTION_SIZE => self::SIZE_BOX] + $figures->toOptions();
     }
 
     public function run()

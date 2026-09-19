@@ -75,40 +75,81 @@ final class PageFiguresBoxParamsTest extends TestCase
         return $cases;
     }
 
-    /**
-     * @param mixed $value
-     */
     #[DataProvider('unusableFigures')]
-    public function testAFigureTheBoxCouldNotUseIsLeftOutWhileTheRestArrive(string $key, $value, string $option): void
+    public function testAFigureTheBoxCouldNotUseIsLeftOutWhileTheRestArrive(array $case): void
     {
         $figures = self::everyFigure();
-        $figures[$key] = $value;
+        $figures[$case['key']] = $case['value'];
 
         $everythingElse = (new PageFiguresBoxParams(self::everyFigure()))->toOptions();
-        unset($everythingElse[$option]);
+        unset($everythingElse[$case['option']]);
 
         $options = (new PageFiguresBoxParams($figures))->toOptions();
 
-        $this->assertArrayNotHasKey($option, $options);
+        $this->assertArrayNotHasKey($case['option'], $options);
         $this->assertSame($everythingElse, $options, 'every other figure still arrives');
     }
 
     /**
-     * @return array<string, array{0: string, 1: mixed, 2: string}>
+     * @return array<string, array{0: array{key: string, value: mixed, option: string}}>
      */
     public static function unusableFigures(): array
     {
-        return [
+        $cases = [
             'a health above the scale' => ['content_health_percent_0_to_100', 150, 'contentHealthPercent'],
             'a health below the scale' => ['content_health_percent_0_to_100', -1, 'contentHealthPercent'],
-            'a health that is not a number' => ['content_health_percent_0_to_100', '84', 'contentHealthPercent'],
+            'a health that is no number at all' => ['content_health_percent_0_to_100', 'eighty-four', 'contentHealthPercent'],
+            'a health that is not a whole number' => ['content_health_percent_0_to_100', '84.5', 'contentHealthPercent'],
+            'a health given as nothing' => ['content_health_percent_0_to_100', null, 'contentHealthPercent'],
             'an empty summary' => ['content_health_summary', '', 'contentHealthSummary'],
+            'a summary that is no sentence' => ['content_health_summary', 42, 'contentHealthSummary'],
             'a negative issue count' => ['open_issue_count', -1, 'openIssueCount'],
+            'an issue count that is no number' => ['open_issue_count', true, 'openIssueCount'],
             'a negative citation count' => ['cited_in_answers_last_30_days', -4, 'citedInAnswersLast30Days'],
             'a priority between the ones there are' => ['content_priority', 250, 'contentPriority'],
             'a priority written as a word' => ['content_priority', 'high', 'contentPriority'],
-            'a stamp that is not a number' => ['summary_updated', '1758240000', 'summaryUpdated'],
+            'a stamp that is no number' => ['summary_updated', 'yesterday', 'summaryUpdated'],
         ];
+
+        $named = [];
+        foreach ($cases as $what => [$key, $value, $option]) {
+            $named[$what] = [['key' => $key, 'value' => $value, 'option' => $option]];
+        }
+
+        return $named;
+    }
+
+    #[DataProvider('figuresStoredAsDigits')]
+    public function testAFigureItsStorageHandsBackAsDigitsTravelsAsItsNumber(array $case): void
+    {
+        $figures = self::everyFigure();
+        $figures[$case['key']] = $case['value'];
+
+        $options = (new PageFiguresBoxParams($figures))->toOptions();
+
+        $this->assertSame($case['number'], $options[$case['option']]);
+    }
+
+    /**
+     * @return array<string, array{0: array{key: string, value: string, option: string, number: int}}>
+     */
+    public static function figuresStoredAsDigits(): array
+    {
+        $cases = [
+            'a health' => ['content_health_percent_0_to_100', '84', 'contentHealthPercent', 84],
+            'an issue count' => ['open_issue_count', '3', 'openIssueCount', 3],
+            'nothing counted' => ['open_issue_count', '0', 'openIssueCount', 0],
+            'a priority' => ['content_priority', '400', 'contentPriority', 400],
+            'a citation count' => ['cited_in_answers_last_30_days', '12', 'citedInAnswersLast30Days', 12],
+            'a stamp' => ['summary_updated', '1758240000', 'summaryUpdated', 1758240000],
+        ];
+
+        $named = [];
+        foreach ($cases as $what => [$key, $value, $option, $number]) {
+            $named[$what] = [['key' => $key, 'value' => $value, 'option' => $option, 'number' => $number]];
+        }
+
+        return $named;
     }
 
     public function testAHealthAtEitherEndOfTheScaleIsAValue(): void
@@ -183,18 +224,15 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame([['key' => 'pricing', 'name' => 'Pricing']], $options['tags']);
     }
 
-    /**
-     * @param mixed $given
-     */
     #[DataProvider('noTags')]
-    public function testAPageWithoutTagsSaysSoRatherThanSayingNothing(string $how, $given): void
+    public function testAPageWithoutTagsSaysSoRatherThanSayingNothing(array $case): void
     {
         $figures = self::everyFigure();
 
-        if ('absent' === $how) {
+        if ($case['absent']) {
             unset($figures['tags']);
         } else {
-            $figures['tags'] = $given;
+            $figures['tags'] = $case['given'];
         }
 
         $options = (new PageFiguresBoxParams($figures))->toOptions();
@@ -203,14 +241,14 @@ final class PageFiguresBoxParamsTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: mixed}>
+     * @return array<string, array{0: array{absent: bool, given: mixed}}>
      */
     public static function noTags(): array
     {
         return [
-            'absent' => ['absent', null],
-            'empty' => ['given', []],
-            'not a list' => ['given', 'pricing'],
+            'absent' => [['absent' => true, 'given' => null]],
+            'empty' => [['absent' => false, 'given' => []]],
+            'not a list' => [['absent' => false, 'given' => 'pricing']],
         ];
     }
 
@@ -238,8 +276,8 @@ final class PageFiguresBoxParamsTest extends TestCase
         foreach ($added as $file) {
             $source = (string) file_get_contents($file);
 
-            foreach (['node', 'nid', 'Drupal', 'WordPress'] as $foreign) {
-                $this->assertStringNotContainsString($foreign, $source, basename($file).' names a content management system of its own');
+            foreach (['node', 'nid', 'drupal', 'wordpress'] as $foreign) {
+                $this->assertStringNotContainsStringIgnoringCase($foreign, $source, basename($file).' names a content management system of its own');
             }
         }
     }

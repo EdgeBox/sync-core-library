@@ -104,7 +104,9 @@ final class PageFiguresBoxParams
      *
      * Optional; a value outside its documented range is omitted from the
      * rendered options rather than sent, so the box degrades to showing the
-     * figures it did receive:
+     * figures it did receive. A whole number is read whether the site's storage
+     * hands it back as an int or as the digits of one, and the number is what
+     * travels:
      *   content_health_percent_0_to_100  int 0..100
      *   content_health_summary           string
      *   open_issue_count                 int >= 0   (0 is a value, never an absence)
@@ -171,8 +173,8 @@ final class PageFiguresBoxParams
             $options[$option] = $this->figures[$key];
         }
 
-        $percent = $this->figures[self::CONTENT_HEALTH_PERCENT] ?? null;
-        if (is_int($percent) && $percent >= self::PERCENT_MIN && $percent <= self::PERCENT_MAX) {
+        $percent = self::wholeNumber($this->figures[self::CONTENT_HEALTH_PERCENT] ?? null);
+        if (null !== $percent && $percent >= self::PERCENT_MIN && $percent <= self::PERCENT_MAX) {
             $options['contentHealthPercent'] = $percent;
         }
 
@@ -181,23 +183,23 @@ final class PageFiguresBoxParams
             $options['contentHealthSummary'] = $summary;
         }
 
-        $open = $this->figures[self::OPEN_ISSUE_COUNT] ?? null;
-        if (self::isCount($open)) {
+        $open = self::wholeNumber($this->figures[self::OPEN_ISSUE_COUNT] ?? null);
+        if (null !== $open && $open >= 0) {
             $options['openIssueCount'] = $open;
         }
 
-        $priority = $this->figures[self::CONTENT_PRIORITY] ?? null;
+        $priority = self::wholeNumber($this->figures[self::CONTENT_PRIORITY] ?? null);
         if (in_array($priority, self::PRIORITIES, true)) {
             $options['contentPriority'] = $priority;
         }
 
-        $cited = $this->figures[self::CITED_IN_ANSWERS] ?? null;
-        if (self::isCount($cited)) {
+        $cited = self::wholeNumber($this->figures[self::CITED_IN_ANSWERS] ?? null);
+        if (null !== $cited && $cited >= 0) {
             $options['citedInAnswersLast30Days'] = $cited;
         }
 
-        $updated = $this->figures[self::SUMMARY_UPDATED] ?? null;
-        if (is_int($updated)) {
+        $updated = self::wholeNumber($this->figures[self::SUMMARY_UPDATED] ?? null);
+        if (null !== $updated) {
             $options['summaryUpdated'] = $updated;
         }
 
@@ -243,12 +245,26 @@ final class PageFiguresBoxParams
     }
 
     /**
-     * A figure that counts something: a whole number, zero among them.
+     * A figure as the whole number it is, or null when it is not one.
+     *
+     * The storage a site keeps its figures in decides the type they come back
+     * as: a column of whole numbers reaches this library as an int from one
+     * system and as the digits of that int from another, and both are the same
+     * figure. Both are therefore read, and the number is what travels; a value
+     * that is neither is no figure this library can send.
      *
      * @param mixed $value
      */
-    private static function isCount($value): bool
+    private static function wholeNumber($value): ?int
     {
-        return is_int($value) && $value >= 0;
+        if (is_int($value)) {
+            return $value;
+        }
+
+        if (is_string($value) && 1 === preg_match('@^-?\d+$@', $value)) {
+            return (int) $value;
+        }
+
+        return null;
     }
 }
