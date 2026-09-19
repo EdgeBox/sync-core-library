@@ -77,17 +77,24 @@ abstract class Embed
         $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_LIST_ENTITIES);
         $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
+        // A frame is sized in one of three ways. `page` and `box` both take the
+        // width of the element they are placed in; `page` claims a minimum
+        // height of its own, while `box` states no height at all so the frame
+        // is as tall as the document it loads reports and the resizer keeps it
+        // there. Every other value is a fixed line that loads when it is
+        // scrolled to.
         $size = empty($options['embedSize']) ? 'page' : $options['embedSize'];
         $is_page = 'page' === $size;
         $is_line = 'line' === $size;
+        $is_box = 'box' === $size;
 
         $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.preg_replace('@[^a-z0-9-]@', '-', uniqid('', true));
 
         $html = '<style>
   #'.$id.' {
     min-height: 32px;
-    '.($is_page ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
-    '.($is_page ? 'min-height: 200px;' : 'height: 32px; max-height: 40px;').'
+    '.($is_page || $is_box ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
+    '.($is_page ? 'min-height: 200px;' : ($is_box ? '' : 'height: 32px; max-height: 40px;')).'
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
   #'.$id.'.iframe-modal {
@@ -121,7 +128,7 @@ abstract class Embed
     iFrameResize({
       //log: true,
       checkOrigin: false,
-      autoResize: '.($is_page ? 'true' : 'false').',
+      autoResize: '.($is_page || $is_box ? 'true' : 'false').',
       onInit: function(newIframe) {
         iframe = newIframe;
         iframeParent = iframe.parentNode;
