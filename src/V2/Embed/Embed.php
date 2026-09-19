@@ -107,10 +107,11 @@ abstract class Embed
      * of them costs nothing and leaves nothing to argue about at the next
      * place this value is written to.
      *
-     * A byte sequence that is no text stands in for itself rather than making
-     * the encoding fail: a failure would write nothing where the value goes
-     * and leave a script the browser cannot parse, which would stop every
-     * embed on the page instead of spoiling one character of one value.
+     * A byte that is no text is replaced by the replacement character, U+FFFD,
+     * rather than making the encoding fail: a failure would write nothing
+     * where the value goes and leave a script the browser cannot parse, which
+     * would stop every embed on the page instead of spoiling one character of
+     * one value.
      *
      * @param mixed $value
      *

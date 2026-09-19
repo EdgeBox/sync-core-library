@@ -185,6 +185,11 @@ final class PageFiguresBoxParams
      * A member whose value opens with no digits names no number and is left
      * out, exactly as the box leaves it out.
      *
+     * @internal public so that the skipping of a member naming no number can be
+     *           covered directly; the enum ships none today, and covering it
+     *           through priorities() would mean writing this loop a second time
+     *           in the test. Call priorities() instead.
+     *
      * @param string[] $members
      *
      * @return int[]
