@@ -75,16 +75,43 @@ final class PageFiguresEmbedTest extends TestCase
         ], $this->messages($html)['options']);
     }
 
-    public function testTheSizeACallerAsksForNeverReachesTheFrame(): void
+    public function testTheFrameIsABoxAndNoCallerCanAskForAnotherSize(): void
     {
-        $figures = self::everyFigure();
-        $figures['embedSize'] = 'line';
-
-        $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+        $html = EmbedMarkup::of($this->pageFigures());
 
         $this->assertSame('box', $this->messages($html)['options']['embedSize']);
         $this->assertStringContainsString('class="content-sync-embed size-box"', $html);
         $this->assertStringNotContainsString('width: 470px', $html);
+
+        // The size is not a figure of a page, so asking for one is refused
+        // before anything is rendered.
+        $figures = self::everyFigure();
+        $figures['embedSize'] = 'line';
+
+        $this->expectException(\InvalidArgumentException::class);
+        new PageFiguresBoxParams($figures);
+    }
+
+    public function testProseAPersonWroteCannotCloseTheScriptItTravelsIn(): void
+    {
+        $figures = self::everyFigure();
+        $figures['content_health_summary'] = 'Watch out: <!--<script> and </script> and <b>bold</b>.';
+        $figures['tags'] = [['key' => 'pricing', 'name' => '</script><img src=x>']];
+
+        $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+
+        $this->assertSame(1, preg_match('@^\s*options: (\{.*\}),$@m', $html, $matches));
+
+        // Not one markup character of what a person wrote reaches the script
+        // element, so nothing they write can take the browser out of it.
+        $this->assertStringNotContainsString('<', $matches[1]);
+        $this->assertStringContainsString('\\u003C', $matches[1]);
+        $this->assertStringNotContainsString('<!--<script>', $html);
+
+        // And the box still receives exactly what the site wrote.
+        $options = $this->messages($html)['options'];
+        $this->assertSame($figures['content_health_summary'], $options['contentHealthSummary']);
+        $this->assertSame('</script><img src=x>', $options['tags'][0]['name']);
     }
 
     public function testTheFrameTakesItsContainersWidthAndItsDocumentsHeight(): void
@@ -202,7 +229,7 @@ final class PageFiguresEmbedTest extends TestCase
             'content_health_percent_0_to_100' => 84,
             'content_health_summary' => 'The page answers the question it ranks for.',
             'open_issue_count' => 3,
-            'content_priority' => PageFiguresBoxParams::PRIORITY_HIGH,
+            'content_priority' => 300,
             'cited_in_answers_last_30_days' => 12,
             'summary_updated' => 1758240000,
             'tags' => [

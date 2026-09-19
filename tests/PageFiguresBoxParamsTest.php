@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Interfaces\Embed\PageFiguresBoxParams;
+use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -15,23 +16,7 @@ final class PageFiguresBoxParamsTest extends TestCase
 {
     public function testEveryFigureReachesTheBoxUnderTheNameItReadsItBy(): void
     {
-        $options = (new PageFiguresBoxParams(self::everyFigure()))->toOptions();
-
-        $this->assertSame([
-            'entityType' => 'node',
-            'entityUuid' => 'f1b0c0de-0000-4000-8000-000000000001',
-            'langcode' => 'de',
-            'contentHealthPercent' => 84,
-            'contentHealthSummary' => 'The page answers the question it ranks for.',
-            'openIssueCount' => 3,
-            'contentPriority' => PageFiguresBoxParams::PRIORITY_HIGH,
-            'citedInAnswersLast30Days' => 12,
-            'summaryUpdated' => 1758240000,
-            'tags' => [
-                ['key' => 'pricing', 'name' => 'Pricing'],
-                ['key' => 'onboarding', 'name' => 'Onboarding'],
-            ],
-        ], $options);
+        $this->assertSame(self::everyOption(), (new PageFiguresBoxParams(self::everyFigure()))->toOptions());
     }
 
     public function testThePageIsNamedByItsOwnParts(): void
@@ -186,14 +171,9 @@ final class PageFiguresBoxParamsTest extends TestCase
 
     public function testEveryPriorityThereIsTravelsAsItsNumber(): void
     {
-        $priorities = [
-            PageFiguresBoxParams::PRIORITY_LOW,
-            PageFiguresBoxParams::PRIORITY_MEDIUM,
-            PageFiguresBoxParams::PRIORITY_HIGH,
-            PageFiguresBoxParams::PRIORITY_CRITICAL,
-        ];
+        $this->assertNotEmpty(PageFiguresBoxParams::priorities());
 
-        foreach ($priorities as $priority) {
+        foreach (PageFiguresBoxParams::priorities() as $priority) {
             $figures = self::everyFigure();
             $figures['content_priority'] = $priority;
 
@@ -201,6 +181,21 @@ final class PageFiguresBoxParamsTest extends TestCase
 
             $this->assertSame($priority, $options['contentPriority']);
         }
+    }
+
+    public function testThePrioritiesAreTheOnesTheSharedEnumDeclares(): void
+    {
+        $declared = [];
+        foreach (ContentPriority::getAllowableEnumValues() as $member) {
+            $declared[] = (int) $member;
+        }
+
+        sort($declared);
+        $accepted = PageFiguresBoxParams::priorities();
+        sort($accepted);
+
+        $this->assertSame($declared, $accepted, 'the accepted priorities are read off the shared enum, never written down again');
+        $this->assertSame([100, 200, 300, 400], $accepted);
     }
 
     public function testATagThatDoesNotNameItselfWholeIsLeftOut(): void
@@ -220,6 +215,70 @@ final class PageFiguresBoxParamsTest extends TestCase
         $options = (new PageFiguresBoxParams($figures))->toOptions();
 
         $this->assertSame([['key' => 'security', 'name' => 'Security']], $options['tags']);
+    }
+
+    /**
+     * A limit is in characters, not in the bytes a character takes.
+     *
+     * A page in a script whose characters take three bytes each would lose its
+     * summary, its tags and even its name to a limit counted in bytes, while
+     * the box that reads them counts characters and would have shown them.
+     */
+    #[DataProvider('scripts')]
+    public function testALimitCountsCharactersRatherThanBytes(array $case): void
+    {
+        $letter = $case['character'];
+
+        $atTheLimit = self::everyFigure();
+        $atTheLimit['content_health_summary'] = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH, $letter);
+        $atTheLimit['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH, $letter)]];
+        $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH, $letter);
+
+        $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
+
+        $this->assertSame($atTheLimit['content_health_summary'], $options['contentHealthSummary']);
+        $this->assertSame($atTheLimit['tags'][0]['name'], $options['tags'][0]['name']);
+        $this->assertSame($atTheLimit['entity_uuid'], $options['entityUuid']);
+
+        $past = self::everyFigure();
+        $past['content_health_summary'] = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH + 1, $letter);
+        $past['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH + 1, $letter)]];
+
+        $options = (new PageFiguresBoxParams($past))->toOptions();
+
+        $this->assertArrayNotHasKey('contentHealthSummary', $options);
+        $this->assertSame([], $options['tags']);
+
+        $named = self::everyFigure();
+        $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH + 1, $letter);
+
+        $this->expectException(\InvalidArgumentException::class);
+        new PageFiguresBoxParams($named);
+    }
+
+    /**
+     * @return array<string, array{0: array{character: string}}>
+     */
+    public static function scripts(): array
+    {
+        return [
+            'latin, one byte a character' => [['character' => 'a']],
+            'japanese, three bytes a character' => [['character' => '本']],
+            'greek, two bytes a character' => [['character' => 'λ']],
+            'an emoji, four bytes a character' => [['character' => '🙂']],
+        ];
+    }
+
+    public function testTextThatIsNoTextAtAllIsLeftOutRatherThanBreakingThePayload(): void
+    {
+        $figures = self::everyFigure();
+        // Not valid UTF-8, so the options it would sit in could not be encoded.
+        $figures['content_health_summary'] = "a summary \xC3\x28 of sorts";
+
+        $options = (new PageFiguresBoxParams($figures))->toOptions();
+
+        $this->assertArrayNotHasKey('contentHealthSummary', $options);
+        $this->assertSame(84, $options['contentHealthPercent']);
     }
 
     public function testATagIsSentTrimmedAndAtItsFullAllowedLength(): void
@@ -291,20 +350,56 @@ final class PageFiguresBoxParamsTest extends TestCase
         ];
     }
 
-    public function testACallerCannotReachTheFramesOwnOptions(): void
+    #[DataProvider('namesTheFiguresDoNotCarry')]
+    public function testANameTheFiguresDoNotCarryIsRefused(array $case): void
     {
         $figures = self::everyFigure();
-        $figures['embedSize'] = 'line';
-        $figures['jwt'] = 'caller-supplied';
-        $figures['configurationAccess'] = true;
-        $figures['debug'] = 'yes';
+        $figures[$case['name']] = $case['value'];
+
+        try {
+            new PageFiguresBoxParams($figures);
+            $this->fail($case['name'].' is no figure of a page and has to be refused');
+        } catch (\InvalidArgumentException $expected) {
+            $this->assertStringContainsString($case['name'], $expected->getMessage());
+            $this->assertStringContainsString('content_health_summary', $expected->getMessage(), 'the message names what the figures do carry');
+        }
+    }
+
+    /**
+     * The frame's own options and a plain typo: neither is a figure of a page.
+     *
+     * @return array<string, array{0: array{name: string, value: mixed}}>
+     */
+    public static function namesTheFiguresDoNotCarry(): array
+    {
+        $cases = [
+            'the frame size' => ['embedSize', 'line'],
+            'a token of the caller' => ['jwt', 'caller-supplied'],
+            'configuration access' => ['configurationAccess', true],
+            'the debug switch' => ['debug', 'yes'],
+            'a typo' => ['open_issue_counts', 3],
+        ];
+
+        $named = [];
+        foreach ($cases as $what => [$name, $value]) {
+            $named[$what] = [['name' => $name, 'value' => $value]];
+        }
+
+        return $named;
+    }
+
+    public function testTheRecordsOwnNamesTheBoxShowsNothingForAreAccepted(): void
+    {
+        $figures = self::everyFigure();
+        $figures['terms'] = [['remoteUniqueId' => 'pricing', 'name' => 'Pricing']];
+        $figures['content_recommendations'] = [['key' => 'alt-text', 'name' => 'Add alt text']];
+        $figures['cs__origin_key'] = 'the-origin';
 
         $options = (new PageFiguresBoxParams($figures))->toOptions();
 
-        $this->assertArrayNotHasKey('embedSize', $options);
-        $this->assertArrayNotHasKey('jwt', $options);
-        $this->assertArrayNotHasKey('configurationAccess', $options);
-        $this->assertArrayNotHasKey('debug', $options);
+        // A site hands the record over as it holds it; what the box shows
+        // nothing for simply does not travel.
+        $this->assertSame(self::everyOption(), $options);
     }
 
     public function testAStampIsWholeEpochSecondsFromTheEpochToAYearAhead(): void
@@ -359,28 +454,38 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame('417', $params->toOptions()['entityUuid']);
     }
 
-    public function testThePageIsNamedTheWayAnyContentManagementSystemNamesOne(): void
+    /**
+     * A text of exactly that many characters, in the alphabet asked for.
+     *
+     * The box counts characters, so a script whose characters take more than
+     * one byte each is what tells a count of characters from a count of bytes:
+     * one of these is three bytes long.
+     */
+    private static function ofLength(int $characters, string $character = 'a'): string
     {
-        $added = [
-            __DIR__.'/../src/Interfaces/Embed/PageFiguresBoxParams.php',
-            __DIR__.'/../src/V2/Embed/PageFiguresEmbed.php',
-        ];
-
-        foreach ($added as $file) {
-            $source = (string) file_get_contents($file);
-
-            foreach (['node', 'nid', 'drupal', 'wordpress'] as $foreign) {
-                $this->assertStringNotContainsStringIgnoringCase($foreign, $source, basename($file).' names a content management system of its own');
-            }
-        }
+        return str_repeat($character, $characters);
     }
 
     /**
-     * A text of exactly that many characters.
+     * The options every figure of `everyFigure()` becomes.
      */
-    private static function ofLength(int $characters): string
+    private static function everyOption(): array
     {
-        return str_repeat('a', $characters);
+        return [
+            'entityType' => 'node',
+            'entityUuid' => 'f1b0c0de-0000-4000-8000-000000000001',
+            'langcode' => 'de',
+            'contentHealthPercent' => 84,
+            'contentHealthSummary' => 'The page answers the question it ranks for.',
+            'openIssueCount' => 3,
+            'contentPriority' => 300,
+            'citedInAnswersLast30Days' => 12,
+            'summaryUpdated' => 1758240000,
+            'tags' => [
+                ['key' => 'pricing', 'name' => 'Pricing'],
+                ['key' => 'onboarding', 'name' => 'Onboarding'],
+            ],
+        ];
     }
 
     /**
@@ -395,7 +500,7 @@ final class PageFiguresBoxParamsTest extends TestCase
             'content_health_percent_0_to_100' => 84,
             'content_health_summary' => 'The page answers the question it ranks for.',
             'open_issue_count' => 3,
-            'content_priority' => PageFiguresBoxParams::PRIORITY_HIGH,
+            'content_priority' => 300,
             'cited_in_answers_last_30_days' => 12,
             'summary_updated' => 1758240000,
             'tags' => [

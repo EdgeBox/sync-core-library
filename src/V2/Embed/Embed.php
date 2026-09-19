@@ -91,6 +91,31 @@ abstract class Embed
         return [];
     }
 
+    /**
+     * A value as JSON that is safe to sit inside a script element.
+     *
+     * An option may carry prose a person on the site wrote — a page's health
+     * summary, the name of a tag — and this JSON is written into the page
+     * between a script element's tags, where the browser reads text, not JSON.
+     * A `<` there can take the parser out of the element: `<!--<script>` opens
+     * the escaped state, after which the closing tag closes nothing and the
+     * rest of the site's page is swallowed as script text.
+     *
+     * The escapes are the set a content management system of this ecosystem
+     * uses for exactly this place, rather than the angle brackets alone: the
+     * markup characters have no meaning inside a JSON string, so escaping all
+     * of them costs nothing and leaves nothing to argue about at the next
+     * place this value is written to.
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    protected static function encodeForScript($value)
+    {
+        return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
     protected function render(?ActingUser $as = null)
     {
         $options = $this->getOptions();
@@ -110,8 +135,9 @@ abstract class Embed
         // width of the element they are placed in; `page` claims a minimum
         // height of its own, while `box` states no height at all so the frame
         // is as tall as the document it loads reports and the resizer keeps it
-        // there. Every other value is a fixed line that loads when it is
-        // scrolled to.
+        // there. Every other value takes the geometry of a fixed line; the
+        // empty source and the loader that fills it once the reader scrolls to
+        // it belong to `line` itself, so any other value loads with the page.
         $size = empty($options[self::OPTION_SIZE]) ? self::SIZE_PAGE : $options[self::OPTION_SIZE];
         $is_page = self::SIZE_PAGE === $size;
         $is_line = self::SIZE_LINE === $size;
@@ -163,11 +189,11 @@ abstract class Embed
         iframeParent = iframe.parentNode;
         iframe.iFrameResizer.sendMessage({
           type: "config",
-          config: '.json_encode($this->config).',
+          config: '.self::encodeForScript($this->config).',
         });
         iframe.iFrameResizer.sendMessage({
           type: "options",
-          options: '.json_encode($options).',
+          options: '.self::encodeForScript($options).',
         });
       },
       onMessage: function onMessage({message}) {

@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\Interfaces\Embed;
 
+use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
+
 /**
  * The figures of one page, as the box that renders them takes them.
  *
@@ -11,49 +13,23 @@ namespace EdgeBox\SyncCore\Interfaces\Embed;
  * names one — an entity type, an entity uuid and a language, each a string of
  * the site's own choosing — and this class knows no system of its own.
  *
+ * **Two vocabularies, and which is which.** The named array carries the names
+ * the page-figures record itself carries, in the record's own snake_case, so a
+ * site hands the record over rather than copying it figure by figure. The
+ * options this class emits carry the names the box reads them under, in the
+ * box's own camelCase. This class is the one place in the library that knows
+ * either set, and the one place that knows the limits the box holds them to.
+ *
  * The box holds every value it is sent to its type and its range, and **one
  * value it refuses replaces every figure with an alert**. So an optional figure
  * this class cannot vouch for is left out rather than sent, and the box shows
- * the figures that did arrive. A key this class does not name is ignored, which
- * is what keeps the frame's own options — its size among them — out of a
- * caller's reach.
- *
- * It is the one place in this library that knows the names the box reads the
- * figures under and the limits it holds them to.
+ * the figures that did arrive. A name the record does not carry is refused
+ * outright: it is a typo, and a typo that was ignored would cost a figure and
+ * say nothing. That refusal is also what keeps the frame's own options — its
+ * size among them — out of a caller's reach.
  */
 final class PageFiguresBoxParams
 {
-    /**
-     * The lowest content priority.
-     *
-     * A priority travels as its number so it sorts and compares; the words are
-     * made from the number where a person reads them, which is the box.
-     *
-     * @var int
-     */
-    public const PRIORITY_LOW = 100;
-
-    /**
-     * A medium content priority.
-     *
-     * @var int
-     */
-    public const PRIORITY_MEDIUM = 200;
-
-    /**
-     * A high content priority.
-     *
-     * @var int
-     */
-    public const PRIORITY_HIGH = 300;
-
-    /**
-     * The highest content priority.
-     *
-     * @var int
-     */
-    public const PRIORITY_CRITICAL = 400;
-
     /**
      * The longest each part of a page's identity may be.
      *
@@ -105,7 +81,7 @@ final class PageFiguresBoxParams
     private const TAG_NAME = 'name';
 
     /**
-     * The page's identity: the key it is given under, and the option it becomes.
+     * The page's identity: the name it is given under, and the option it becomes.
      */
     private const IDENTITY = [
         self::ENTITY_TYPE => 'entityType',
@@ -114,13 +90,28 @@ final class PageFiguresBoxParams
     ];
 
     /**
-     * The whole numbers a content priority is one of.
+     * The names a figure the box shows is given under.
      */
-    private const PRIORITIES = [
-        self::PRIORITY_LOW,
-        self::PRIORITY_MEDIUM,
-        self::PRIORITY_HIGH,
-        self::PRIORITY_CRITICAL,
+    private const FIGURES = [
+        self::CONTENT_HEALTH_PERCENT,
+        self::CONTENT_HEALTH_SUMMARY,
+        self::OPEN_ISSUE_COUNT,
+        self::CONTENT_PRIORITY,
+        self::CITED_IN_ANSWERS,
+        self::SUMMARY_UPDATED,
+        self::TAGS,
+    ];
+
+    /**
+     * The record's own names the box shows nothing for.
+     *
+     * They are named so that handing the whole record over stays possible,
+     * while a name neither list carries is refused as the typo it is.
+     */
+    private const NOT_SHOWN = [
+        'terms',
+        'content_recommendations',
+        'cs__origin_key',
     ];
 
     private const PERCENT_MIN = 0;
@@ -149,7 +140,7 @@ final class PageFiguresBoxParams
      *   content_health_percent_0_to_100  int 0..100
      *   content_health_summary           string of at most MAX_SUMMARY_LENGTH characters
      *   open_issue_count                 int >= 0   (0 is a value, never an absence)
-     *   content_priority                 int, one of the PRIORITY_ constants
+     *   content_priority                 int, one of self::priorities()
      *   cited_in_answers_last_30_days    int >= 0   (0 is a value, never an absence)
      *   summary_updated                  int, whole EPOCH SECONDS — never milliseconds —
      *                                    from the epoch to at most a year ahead of now
@@ -161,19 +152,29 @@ final class PageFiguresBoxParams
      * says how many it left out, so cutting the list here would hide from a
      * reader that the page carries more.
      *
-     * A key this list does not name is ignored, so a caller cannot reach the
-     * frame's own options — embedSize among them.
-     *
-     * @throws \InvalidArgumentException a required key missing, empty, not a string, or too long
+     * @throws \InvalidArgumentException a required name missing, empty, not a string or too
+     *                                   long; or a name neither the figures nor the record
+     *                                   carry
      */
     public function __construct(array $figures)
     {
+        $carried = array_merge(array_keys(self::IDENTITY), self::FIGURES);
+        $unknown = array_diff(array_keys($figures), $carried, self::NOT_SHOWN);
+
+        if ($unknown) {
+            throw new \InvalidArgumentException(sprintf(
+                'The figures of a page carry no %s. They carry: %s.',
+                implode(', ', $unknown),
+                implode(', ', $carried)
+            ));
+        }
+
         foreach (array_keys(self::IDENTITY) as $key) {
             $value = self::text($figures[$key] ?? null, self::MAX_IDENTITY_LENGTH);
 
             if (null === $value) {
                 throw new \InvalidArgumentException(sprintf(
-                    'The figures of a page need a %s: a string of 1 to %d characters.',
+                    'The figures of a page need a %s: text of 1 to %d characters.',
                     $key,
                     self::MAX_IDENTITY_LENGTH
                 ));
@@ -183,6 +184,30 @@ final class PageFiguresBoxParams
         }
 
         $this->figures = $figures;
+    }
+
+    /**
+     * The whole numbers a content priority is one of.
+     *
+     * Read off the enum the library already ships rather than written down a
+     * second time: a priority Sync Core adds or drops travels here with the
+     * generated model, and the box derives its own accepted numbers from that
+     * same enum. A member whose value opens with no number names no number and
+     * is left out.
+     *
+     * @return int[]
+     */
+    public static function priorities()
+    {
+        $numbers = [];
+
+        foreach (ContentPriority::getAllowableEnumValues() as $member) {
+            if (1 === preg_match('@^(\d+)@', (string) $member, $matches)) {
+                $numbers[] = (int) $matches[1];
+            }
+        }
+
+        return $numbers;
     }
 
     /**
@@ -240,7 +265,7 @@ final class PageFiguresBoxParams
         }
 
         $priority = self::wholeNumber($this->figures[self::CONTENT_PRIORITY] ?? null);
-        if (in_array($priority, self::PRIORITIES, true)) {
+        if (null !== $priority && in_array($priority, self::priorities(), true)) {
             $options['contentPriority'] = $priority;
         }
 
@@ -301,9 +326,6 @@ final class PageFiguresBoxParams
      *
      * The box trims what it is sent and refuses what it holds to be too long,
      * so the trimmed value is what travels and a longer one travels not at all.
-     * Length is counted in bytes, which for text that is not plain ASCII is
-     * more than the box counts and therefore never lets through what it would
-     * refuse.
      *
      * @param mixed $value
      */
@@ -315,11 +337,37 @@ final class PageFiguresBoxParams
 
         $text = trim($value);
 
-        if ('' === $text || strlen($text) > $max) {
+        if ('' === $text) {
+            return null;
+        }
+
+        $characters = self::characters($text);
+
+        if (null === $characters || $characters > $max) {
             return null;
         }
 
         return $text;
+    }
+
+    /**
+     * How many characters a text is, or null when it is no text at all.
+     *
+     * The box counts characters, a pair standing for one character counted
+     * once, so that is what is counted here: the pattern's `u` modifier makes
+     * PCRE walk the same characters, and PCRE is what this library already has
+     * without asking a site for anything its build may not carry.
+     *
+     * Text that is not valid UTF-8 counts as no text: PCRE cannot walk it, and
+     * the options it would sit in are JSON, which cannot carry it either.
+     *
+     * @return null|int
+     */
+    private static function characters(string $text)
+    {
+        $count = preg_match_all('/./us', $text);
+
+        return false === $count ? null : $count;
     }
 
     /**

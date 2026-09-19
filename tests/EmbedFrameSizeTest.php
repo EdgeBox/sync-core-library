@@ -72,13 +72,19 @@ final class EmbedFrameSizeTest extends TestCase
         $this->assertStringNotContainsString('border-radius: 5px;', $html);
     }
 
-    public function testASizeNobodyKnowsStillRendersTheLineGeometry(): void
+    public function testASizeNobodyKnowsTakesTheLineGeometryAndLoadsWithThePage(): void
     {
         $html = $this->markupForSize('something-else');
 
         $this->assertStringContainsString('width: 470px;', $html);
         $this->assertStringContainsString('height: 32px; max-height: 40px;', $html);
         $this->assertStringContainsString('autoResize: false', $html);
+
+        // The empty source and the loader that fills it once the reader
+        // scrolls to it belong to the line itself.
+        $this->assertStringContainsString('src="https://embed.content-sync.io/box/update-status"', $html);
+        $this->assertStringNotContainsString('jQuery(window).scroll(checkIfVisible);', $html);
+        $this->assertStringNotContainsString('border-radius: 5px;', $html);
     }
 
     /**
