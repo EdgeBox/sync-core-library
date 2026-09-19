@@ -183,19 +183,44 @@ final class PageFiguresBoxParamsTest extends TestCase
         }
     }
 
-    public function testThePrioritiesAreTheOnesTheSharedEnumDeclares(): void
+    public function testEveryMemberOfTheSharedEnumThatNamesANumberIsAccepted(): void
     {
-        $declared = [];
+        $named = 0;
+
         foreach (ContentPriority::getAllowableEnumValues() as $member) {
-            $declared[] = (int) $member;
+            if (1 !== preg_match('@^(\d+)@', (string) $member, $matches)) {
+                continue;
+            }
+
+            ++$named;
+            $figures = self::everyFigure();
+            $figures['content_priority'] = (int) $matches[1];
+
+            $options = (new PageFiguresBoxParams($figures))->toOptions();
+
+            $this->assertSame((int) $matches[1], $options['contentPriority'], $member.' is a priority this product has');
         }
 
-        sort($declared);
-        $accepted = PageFiguresBoxParams::priorities();
-        sort($accepted);
+        $this->assertGreaterThan(0, $named, 'the shared enum names at least one priority');
+    }
 
-        $this->assertSame($declared, $accepted, 'the accepted priorities are read off the shared enum, never written down again');
-        $this->assertSame([100, 200, 300, 400], $accepted);
+    public function testANumberNoMemberOfTheSharedEnumNamesIsLeftOut(): void
+    {
+        $accepted = PageFiguresBoxParams::priorities();
+        $unnamed = max($accepted) + 1;
+
+        $figures = self::everyFigure();
+        $figures['content_priority'] = $unnamed;
+
+        $this->assertArrayNotHasKey('contentPriority', (new PageFiguresBoxParams($figures))->toOptions());
+    }
+
+    public function testAMemberThatNamesNoNumberNamesNoPriority(): void
+    {
+        $this->assertSame(
+            [400, 100],
+            PageFiguresBoxParams::numbersOf(['400-critical', 'unset', '100-low', '', 'none'])
+        );
     }
 
     public function testATagThatDoesNotNameItselfWholeIsLeftOut(): void
@@ -293,6 +318,25 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame([['key' => 'pricing', 'name' => $longest]], $options['tags']);
     }
 
+    /**
+     * The blanks stripped are the ones the box strips, not the ASCII ones only.
+     */
+    public function testTextPaddedWithABlankThatIsNoSpaceIsTrimmedAsTheBoxTrimsIt(): void
+    {
+        $longest = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH);
+        $padding = "\u{00A0}\u{2028}\u{3000}\u{FEFF}";
+
+        $figures = self::everyFigure();
+        $figures['content_health_summary'] = $padding.$longest.$padding;
+        $figures['tags'] = [['key' => "\u{202F}pricing\u{205F}", 'name' => "\u{2029}Pricing\u{1680}"]];
+
+        $options = (new PageFiguresBoxParams($figures))->toOptions();
+
+        // Trimmed it is exactly at the limit, which is what the box accepts.
+        $this->assertSame($longest, $options['contentHealthSummary']);
+        $this->assertSame([['key' => 'pricing', 'name' => 'Pricing']], $options['tags']);
+    }
+
     public function testEveryTagThePageCarriesIsPassedOn(): void
     {
         $many = [];
@@ -351,18 +395,15 @@ final class PageFiguresBoxParamsTest extends TestCase
     }
 
     #[DataProvider('namesTheFiguresDoNotCarry')]
-    public function testANameTheFiguresDoNotCarryIsRefused(array $case): void
+    public function testANameTheFiguresDoNotCarryIsPassedOverRatherThanObjectedTo(array $case): void
     {
         $figures = self::everyFigure();
         $figures[$case['name']] = $case['value'];
 
-        try {
-            new PageFiguresBoxParams($figures);
-            $this->fail($case['name'].' is no figure of a page and has to be refused');
-        } catch (\InvalidArgumentException $expected) {
-            $this->assertStringContainsString($case['name'], $expected->getMessage());
-            $this->assertStringContainsString('content_health_summary', $expected->getMessage(), 'the message names what the figures do carry');
-        }
+        $options = (new PageFiguresBoxParams($figures))->toOptions();
+
+        $this->assertArrayNotHasKey($case['name'], $options);
+        $this->assertSame(self::everyOption(), $options, 'what the box shows is unchanged by it');
     }
 
     /**
@@ -388,18 +429,18 @@ final class PageFiguresBoxParamsTest extends TestCase
         return $named;
     }
 
-    public function testTheRecordsOwnNamesTheBoxShowsNothingForAreAccepted(): void
+    public function testAWholeRecordCanBeHandedOverAsTheSiteHoldsIt(): void
     {
         $figures = self::everyFigure();
+
+        // The record belongs to the site that sends it and carries more than
+        // the box shows, a release of it later carrying more still.
         $figures['terms'] = [['remoteUniqueId' => 'pricing', 'name' => 'Pricing']];
         $figures['content_recommendations'] = [['key' => 'alt-text', 'name' => 'Add alt text']];
         $figures['cs__origin_key'] = 'the-origin';
+        $figures['a_name_a_later_release_carries'] = ['whatever it holds'];
 
-        $options = (new PageFiguresBoxParams($figures))->toOptions();
-
-        // A site hands the record over as it holds it; what the box shows
-        // nothing for simply does not travel.
-        $this->assertSame(self::everyOption(), $options);
+        $this->assertSame(self::everyOption(), (new PageFiguresBoxParams($figures))->toOptions());
     }
 
     public function testAStampIsWholeEpochSecondsFromTheEpochToAYearAhead(): void

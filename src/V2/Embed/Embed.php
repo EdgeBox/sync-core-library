@@ -107,13 +107,21 @@ abstract class Embed
      * of them costs nothing and leaves nothing to argue about at the next
      * place this value is written to.
      *
+     * A byte sequence that is no text stands in for itself rather than making
+     * the encoding fail: a failure would write nothing where the value goes
+     * and leave a script the browser cannot parse, which would stop every
+     * embed on the page instead of spoiling one character of one value.
+     *
      * @param mixed $value
      *
      * @return string
      */
     protected static function encodeForScript($value)
     {
-        return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        return json_encode(
+            $value,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE
+        );
     }
 
     protected function render(?ActingUser $as = null)

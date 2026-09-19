@@ -23,10 +23,14 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
  * The box holds every value it is sent to its type and its range, and **one
  * value it refuses replaces every figure with an alert**. So an optional figure
  * this class cannot vouch for is left out rather than sent, and the box shows
- * the figures that did arrive. A name the record does not carry is refused
- * outright: it is a typo, and a typo that was ignored would cost a figure and
- * say nothing. That refusal is also what keeps the frame's own options — its
- * size among them — out of a caller's reach.
+ * the figures that did arrive.
+ *
+ * Only the names below travel. The record belongs to the site that sends it and
+ * carries more than the box shows, so a name this class does not know is passed
+ * over rather than objected to: the figures are rendered inside a page a reader
+ * is waiting for, where raising would cost that reader the page, while the box
+ * is at worst one figure short. Passing a name over is also what keeps the
+ * frame's own options — its size among them — out of a caller's reach.
  */
 final class PageFiguresBoxParams
 {
@@ -90,29 +94,12 @@ final class PageFiguresBoxParams
     ];
 
     /**
-     * The names a figure the box shows is given under.
-     */
-    private const FIGURES = [
-        self::CONTENT_HEALTH_PERCENT,
-        self::CONTENT_HEALTH_SUMMARY,
-        self::OPEN_ISSUE_COUNT,
-        self::CONTENT_PRIORITY,
-        self::CITED_IN_ANSWERS,
-        self::SUMMARY_UPDATED,
-        self::TAGS,
-    ];
-
-    /**
-     * The record's own names the box shows nothing for.
+     * The characters the box strips from either end before it reads a value.
      *
-     * They are named so that handing the whole record over stays possible,
-     * while a name neither list carries is refused as the typo it is.
+     * The set its own runtime strips: the ASCII blanks, the line terminators,
+     * every space separator, and the two no-break spaces that are none.
      */
-    private const NOT_SHOWN = [
-        'terms',
-        'content_recommendations',
-        'cs__origin_key',
-    ];
+    private const TRIMMED = '\x{0009}-\x{000D}\x{0020}\x{00A0}\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}';
 
     private const PERCENT_MIN = 0;
     private const PERCENT_MAX = 100;
@@ -152,23 +139,13 @@ final class PageFiguresBoxParams
      * says how many it left out, so cutting the list here would hide from a
      * reader that the page carries more.
      *
-     * @throws \InvalidArgumentException a required name missing, empty, not a string or too
-     *                                   long; or a name neither the figures nor the record
-     *                                   carry
+     * A name this list does not carry is passed over, so a site hands its whole
+     * record here and only what the box shows travels.
+     *
+     * @throws \InvalidArgumentException a required name missing, empty, not a string or too long
      */
     public function __construct(array $figures)
     {
-        $carried = array_merge(array_keys(self::IDENTITY), self::FIGURES);
-        $unknown = array_diff(array_keys($figures), $carried, self::NOT_SHOWN);
-
-        if ($unknown) {
-            throw new \InvalidArgumentException(sprintf(
-                'The figures of a page carry no %s. They carry: %s.',
-                implode(', ', $unknown),
-                implode(', ', $carried)
-            ));
-        }
-
         foreach (array_keys(self::IDENTITY) as $key) {
             $value = self::text($figures[$key] ?? null, self::MAX_IDENTITY_LENGTH);
 
@@ -199,9 +176,24 @@ final class PageFiguresBoxParams
      */
     public static function priorities()
     {
+        return self::numbersOf(ContentPriority::getAllowableEnumValues());
+    }
+
+    /**
+     * The number each member opens with, in the order the members come.
+     *
+     * A member whose value opens with no digits names no number and is left
+     * out, exactly as the box leaves it out.
+     *
+     * @param string[] $members
+     *
+     * @return int[]
+     */
+    public static function numbersOf(array $members)
+    {
         $numbers = [];
 
-        foreach (ContentPriority::getAllowableEnumValues() as $member) {
+        foreach ($members as $member) {
             if (1 === preg_match('@^(\d+)@', (string) $member, $matches)) {
                 $numbers[] = (int) $matches[1];
             }
@@ -324,8 +316,9 @@ final class PageFiguresBoxParams
     /**
      * A value as the text it is, or null when it is no text the box would take.
      *
-     * The box trims what it is sent and refuses what it holds to be too long,
-     * so the trimmed value is what travels and a longer one travels not at all.
+     * The box strips the same characters from either end that its own runtime
+     * strips, then refuses what it holds to be too long, so the value trimmed
+     * that way is what travels and a longer one travels not at all.
      *
      * @param mixed $value
      */
@@ -335,9 +328,9 @@ final class PageFiguresBoxParams
             return null;
         }
 
-        $text = trim($value);
+        $text = preg_replace('/^['.self::TRIMMED.']+|['.self::TRIMMED.']+$/u', '', $value);
 
-        if ('' === $text) {
+        if (null === $text || '' === $text) {
             return null;
         }
 

@@ -83,13 +83,34 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringContainsString('class="content-sync-embed size-box"', $html);
         $this->assertStringNotContainsString('width: 470px', $html);
 
-        // The size is not a figure of a page, so asking for one is refused
-        // before anything is rendered.
+        // The size is no figure of a page, so a caller naming it is passed
+        // over and the frame is a box all the same.
         $figures = self::everyFigure();
         $figures['embedSize'] = 'line';
 
-        $this->expectException(\InvalidArgumentException::class);
-        new PageFiguresBoxParams($figures);
+        $asked = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+
+        $this->assertSame('box', $this->messages($asked)['options']['embedSize']);
+        $this->assertStringContainsString('class="content-sync-embed size-box"', $asked);
+        $this->assertStringNotContainsString('width: 470px', $asked);
+    }
+
+    public function testAByteThatIsNoTextLeavesTheScriptParsable(): void
+    {
+        // Any option of any embed could carry one, and an encoding that failed
+        // would write nothing where the payload goes and stop every embed on
+        // the page.
+        $embed = (new EmbedService(EmbedMarkup::core()))->updateStatusBox([
+            'embedSize' => 'box',
+            'note' => "a value with \xC3\x28 in it",
+        ]);
+
+        $html = EmbedMarkup::of($embed);
+        $options = $this->messages($html)['options'];
+
+        $this->assertIsArray($options, 'the payload is JSON a parser reads');
+        $this->assertArrayHasKey('note', $options);
+        $this->assertStringNotContainsString('options: ,', $html);
     }
 
     public function testProseAPersonWroteCannotCloseTheScriptItTravelsIn(): void
