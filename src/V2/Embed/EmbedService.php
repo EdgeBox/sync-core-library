@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2\Embed;
 
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedService;
+use EdgeBox\SyncCore\Interfaces\Embed\PageFiguresBoxParams;
 use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\V2\SyncCore;
 
@@ -78,5 +79,10 @@ class EmbedService implements IEmbedService
     public function governanceContentInventory(array $params, ?ActingUser $as = null)
     {
         return new GovernanceContentInventoryEmbed($this->core, $params, $as);
+    }
+
+    public function pageFigures(PageFiguresBoxParams $figures)
+    {
+        return new PageFiguresEmbed($this->core, $figures);
     }
 }

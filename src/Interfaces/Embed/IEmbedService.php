@@ -22,6 +22,8 @@ interface IEmbedService
     // its users, which is not the name this code gives the topic.
     public const GOVERNANCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
 
+    public const BOX_PAGE_FIGURES = 'box.page-figures';
+
     /**
      * @return IEmbedFeature
      */
@@ -76,4 +78,13 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function governanceContentInventory(array $params, ?ActingUser $as = null);
+
+    /**
+     * The box that renders one page's figures, sized to fill the region it is
+     * placed in. The figures travel from the site's own storage into the frame
+     * markup the site renders; this makes no request of its own.
+     *
+     * @return IEmbedFeature
+     */
+    public function pageFigures(PageFiguresBoxParams $figures);
 }
