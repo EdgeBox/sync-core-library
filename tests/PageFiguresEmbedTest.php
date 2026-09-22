@@ -64,7 +64,6 @@ final class PageFiguresEmbedTest extends TestCase
             'entityUuid' => 'f1b0c0de-0000-4000-8000-000000000001',
             'langcode' => 'en',
             'contentHealthPercent' => 84,
-            'contentHealthSummary' => 'The page answers the question it ranks for.',
             'openIssueCount' => 3,
             'contentPriority' => 300,
             'citedInAnswersLast30Days' => 12,
@@ -116,8 +115,10 @@ final class PageFiguresEmbedTest extends TestCase
     public function testProseAPersonWroteCannotCloseTheScriptItTravelsIn(): void
     {
         $figures = self::everyFigure();
-        $figures['content_health_summary'] = 'Watch out: <!--<script> and </script> and <b>bold</b>.';
-        $figures['tags'] = [['key' => 'pricing', 'name' => '</script><img src=x>']];
+        $figures['tags'] = [
+            ['key' => 'pricing', 'name' => 'Watch out: <!--<script> and </script> and <b>bold</b>.'],
+            ['key' => 'onboarding', 'name' => '</script><img src=x>'],
+        ];
 
         $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
 
@@ -131,8 +132,8 @@ final class PageFiguresEmbedTest extends TestCase
 
         // And the box still receives exactly what the site wrote.
         $options = $this->messages($html)['options'];
-        $this->assertSame($figures['content_health_summary'], $options['contentHealthSummary']);
-        $this->assertSame('</script><img src=x>', $options['tags'][0]['name']);
+        $this->assertSame($figures['tags'][0]['name'], $options['tags'][0]['name']);
+        $this->assertSame('</script><img src=x>', $options['tags'][1]['name']);
     }
 
     public function testTheFrameTakesItsContainersWidthAndItsDocumentsHeight(): void
@@ -280,7 +281,6 @@ final class PageFiguresEmbedTest extends TestCase
             'entity_uuid' => 'f1b0c0de-0000-4000-8000-000000000001',
             'langcode' => 'en',
             'content_health_percent_0_to_100' => 84,
-            'content_health_summary' => 'The page answers the question it ranks for.',
             'open_issue_count' => 3,
             'content_priority' => 300,
             'cited_in_answers_last_30_days' => 12,

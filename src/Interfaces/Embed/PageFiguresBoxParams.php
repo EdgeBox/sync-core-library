@@ -42,16 +42,6 @@ final class PageFiguresBoxParams
     public const MAX_IDENTITY_LENGTH = 255;
 
     /**
-     * The longest a health summary may be.
-     *
-     * It is one sentence the site composes, so the limit is far above any
-     * sentence and is there to stop a whole document arriving in a box.
-     *
-     * @var int
-     */
-    public const MAX_SUMMARY_LENGTH = 2000;
-
-    /**
      * The longest a tag's key or its name may be.
      *
      * @var int
@@ -74,7 +64,6 @@ final class PageFiguresBoxParams
     private const LANGCODE = 'langcode';
 
     private const CONTENT_HEALTH_PERCENT = 'content_health_percent_0_to_100';
-    private const CONTENT_HEALTH_SUMMARY = 'content_health_summary';
     private const OPEN_ISSUE_COUNT = 'open_issue_count';
     private const CONTENT_PRIORITY = 'content_priority';
     private const CITED_IN_ANSWERS = 'cited_in_answers_last_30_days';
@@ -125,7 +114,6 @@ final class PageFiguresBoxParams
      * storage hands it back as an int or as the digits of one, and the number
      * is what travels:
      *   content_health_percent_0_to_100  int 0..100
-     *   content_health_summary           string of at most MAX_SUMMARY_LENGTH characters
      *   open_issue_count                 int >= 0   (0 is a value, never an absence)
      *   content_priority                 int, one of self::priorities()
      *   cited_in_answers_last_30_days    int >= 0   (0 is a value, never an absence)
@@ -233,8 +221,8 @@ final class PageFiguresBoxParams
 
     /**
      * The embed options, camelCased, with every unusable optional value left out:
-     * entityType, entityUuid, langcode, contentHealthPercent, contentHealthSummary,
-     * openIssueCount, contentPriority, citedInAnswersLast30Days, summaryUpdated, tags.
+     * entityType, entityUuid, langcode, contentHealthPercent, openIssueCount,
+     * contentPriority, citedInAnswersLast30Days, summaryUpdated, tags.
      *
      * @return array
      */
@@ -249,11 +237,6 @@ final class PageFiguresBoxParams
         $percent = self::wholeNumber($this->figures[self::CONTENT_HEALTH_PERCENT] ?? null);
         if (null !== $percent && $percent >= self::PERCENT_MIN && $percent <= self::PERCENT_MAX) {
             $options['contentHealthPercent'] = $percent;
-        }
-
-        $summary = self::text($this->figures[self::CONTENT_HEALTH_SUMMARY] ?? null, self::MAX_SUMMARY_LENGTH);
-        if (null !== $summary) {
-            $options['contentHealthSummary'] = $summary;
         }
 
         $open = self::wholeNumber($this->figures[self::OPEN_ISSUE_COUNT] ?? null);

@@ -117,9 +117,9 @@ abstract class Embed
     /**
      * A value as JSON that is safe to sit inside a script element.
      *
-     * An option may carry prose a person on the site wrote — a page's health
-     * summary, the name of a tag — and this JSON is written into the page
-     * between a script element's tags, where the browser reads text, not JSON.
+     * An option may carry prose a person on the site wrote — the name of a
+     * tag among them — and this JSON is written into the page between a
+     * script element's tags, where the browser reads text, not JSON.
      * A `<` there can take the parser out of the element: `<!--<script>` opens
      * the escaped state, after which the closing tag closes nothing and the
      * rest of the site's page is swallowed as script text.

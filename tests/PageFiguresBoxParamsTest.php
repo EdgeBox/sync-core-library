@@ -86,10 +86,6 @@ final class PageFiguresBoxParamsTest extends TestCase
             'a health that is no number at all' => ['content_health_percent_0_to_100', 'eighty-four', 'contentHealthPercent'],
             'a health that is not a whole number' => ['content_health_percent_0_to_100', '84.5', 'contentHealthPercent'],
             'a health given as nothing' => ['content_health_percent_0_to_100', null, 'contentHealthPercent'],
-            'an empty summary' => ['content_health_summary', '', 'contentHealthSummary'],
-            'a summary of whitespace' => ['content_health_summary', "  \n ", 'contentHealthSummary'],
-            'a summary that is no sentence' => ['content_health_summary', 42, 'contentHealthSummary'],
-            'a summary longer than the box holds one to' => ['content_health_summary', self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH + 1), 'contentHealthSummary'],
             'a negative issue count' => ['open_issue_count', -1, 'openIssueCount'],
             'an issue count that is no number' => ['open_issue_count', true, 'openIssueCount'],
             'a count larger than a whole number holds' => ['open_issue_count', '9223372036854775808', 'openIssueCount'],
@@ -246,8 +242,8 @@ final class PageFiguresBoxParamsTest extends TestCase
      * A limit is in characters, not in the bytes a character takes.
      *
      * A page in a script whose characters take three bytes each would lose its
-     * summary, its tags and even its name to a limit counted in bytes, while
-     * the box that reads them counts characters and would have shown them.
+     * tags and even its name to a limit counted in bytes, while the box that
+     * reads them counts characters and would have shown them.
      */
     #[DataProvider('scripts')]
     public function testALimitCountsCharactersRatherThanBytes(array $case): void
@@ -255,23 +251,19 @@ final class PageFiguresBoxParamsTest extends TestCase
         $letter = $case['character'];
 
         $atTheLimit = self::everyFigure();
-        $atTheLimit['content_health_summary'] = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH, $letter);
         $atTheLimit['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH, $letter)]];
         $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH, $letter);
 
         $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
 
-        $this->assertSame($atTheLimit['content_health_summary'], $options['contentHealthSummary']);
         $this->assertSame($atTheLimit['tags'][0]['name'], $options['tags'][0]['name']);
         $this->assertSame($atTheLimit['entity_uuid'], $options['entityUuid']);
 
         $past = self::everyFigure();
-        $past['content_health_summary'] = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH + 1, $letter);
         $past['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH + 1, $letter)]];
 
         $options = (new PageFiguresBoxParams($past))->toOptions();
 
-        $this->assertArrayNotHasKey('contentHealthSummary', $options);
         $this->assertSame([], $options['tags']);
 
         $named = self::everyFigure();
@@ -298,11 +290,14 @@ final class PageFiguresBoxParamsTest extends TestCase
     {
         $figures = self::everyFigure();
         // Not valid UTF-8, so the options it would sit in could not be encoded.
-        $figures['content_health_summary'] = "a summary \xC3\x28 of sorts";
+        $figures['tags'] = [
+            ['key' => 'pricing', 'name' => "a name \xC3\x28 of sorts"],
+            ['key' => 'onboarding', 'name' => 'Onboarding'],
+        ];
 
         $options = (new PageFiguresBoxParams($figures))->toOptions();
 
-        $this->assertArrayNotHasKey('contentHealthSummary', $options);
+        $this->assertSame([['key' => 'onboarding', 'name' => 'Onboarding']], $options['tags']);
         $this->assertSame(84, $options['contentHealthPercent']);
     }
 
@@ -323,18 +318,25 @@ final class PageFiguresBoxParamsTest extends TestCase
      */
     public function testTextPaddedWithABlankThatIsNoSpaceIsTrimmedAsTheBoxTrimsIt(): void
     {
-        $longest = self::ofLength(PageFiguresBoxParams::MAX_SUMMARY_LENGTH);
+        $longest = self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH);
         $padding = "\u{00A0}\u{2028}\u{3000}\u{FEFF}";
 
         $figures = self::everyFigure();
-        $figures['content_health_summary'] = $padding.$longest.$padding;
-        $figures['tags'] = [['key' => "\u{202F}pricing\u{205F}", 'name' => "\u{2029}Pricing\u{1680}"]];
+        $figures['entity_uuid'] = $padding.'f1b0c0de-0000-4000-8000-000000000001'.$padding;
+        $figures['tags'] = [
+            ['key' => "\u{202F}pricing\u{205F}", 'name' => "\u{2029}Pricing\u{1680}"],
+            ['key' => 'onboarding', 'name' => $padding.$longest.$padding],
+        ];
 
         $options = (new PageFiguresBoxParams($figures))->toOptions();
 
-        // Trimmed it is exactly at the limit, which is what the box accepts.
-        $this->assertSame($longest, $options['contentHealthSummary']);
-        $this->assertSame([['key' => 'pricing', 'name' => 'Pricing']], $options['tags']);
+        $this->assertSame('f1b0c0de-0000-4000-8000-000000000001', $options['entityUuid']);
+
+        // Trimmed the name is exactly at the limit, which is what the box accepts.
+        $this->assertSame([
+            ['key' => 'pricing', 'name' => 'Pricing'],
+            ['key' => 'onboarding', 'name' => $longest],
+        ], $options['tags']);
     }
 
     public function testEveryTagThePageCarriesIsPassedOn(): void
@@ -407,7 +409,8 @@ final class PageFiguresBoxParamsTest extends TestCase
     }
 
     /**
-     * The frame's own options and a plain typo: neither is a figure of a page.
+     * The frame's own options, a sentence the box does not show, and a plain
+     * typo: none of them is a figure of a page.
      *
      * @return array<string, array{0: array{name: string, value: mixed}}>
      */
@@ -418,6 +421,7 @@ final class PageFiguresBoxParamsTest extends TestCase
             'a token of the caller' => ['jwt', 'caller-supplied'],
             'configuration access' => ['configurationAccess', true],
             'the debug switch' => ['debug', 'yes'],
+            'a sentence the box does not show' => ['content_health_summary', 'The page answers the question it ranks for.'],
             'a typo' => ['open_issue_counts', 3],
         ];
 
@@ -517,7 +521,6 @@ final class PageFiguresBoxParamsTest extends TestCase
             'entityUuid' => 'f1b0c0de-0000-4000-8000-000000000001',
             'langcode' => 'de',
             'contentHealthPercent' => 84,
-            'contentHealthSummary' => 'The page answers the question it ranks for.',
             'openIssueCount' => 3,
             'contentPriority' => 300,
             'citedInAnswersLast30Days' => 12,
@@ -539,7 +542,6 @@ final class PageFiguresBoxParamsTest extends TestCase
             'entity_uuid' => 'f1b0c0de-0000-4000-8000-000000000001',
             'langcode' => 'de',
             'content_health_percent_0_to_100' => 84,
-            'content_health_summary' => 'The page answers the question it ranks for.',
             'open_issue_count' => 3,
             'content_priority' => 300,
             'cited_in_answers_last_30_days' => 12,
