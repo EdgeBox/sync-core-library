@@ -82,9 +82,13 @@ abstract class Embed
      * it was last measured at. The disclosures it listens to are the ones the
      * frame sat inside when the watch was built, so on that engine a frame
      * moved into another disclosure without ever leaving the document is
-     * still heard from the ones it left; it is heard from the ones it sits
-     * inside now once it does leave and come back, which builds the watch
-     * again where the frame then is.
+     * still heard from the ones it left. Once it does leave and come back the
+     * walk runs again and takes the disclosures it sits inside then — but
+     * only on an engine that hears the change to the page at all. An engine
+     * carrying neither observer hears neither the frame going nor the frame
+     * coming back, so there the take-down at its next wait or disclosure is
+     * the end of it and a frame that leaves and comes back is measured by
+     * nothing again.
      *
      * Until the resizer has attached, the script asks again every 200
      * milliseconds; the frame is asked 25 times in all, however often it is
@@ -121,14 +125,18 @@ abstract class Embed
      * that finds the frame gone with the window still standing, so it inherits
      * what is left of those 30 seconds rather than opening one of its own.
      *
-     * Two frames fall outside the window. One the page puts back after those
-     * 30 seconds, and one that is not the same element at all: a rebuilt
-     * region that renders a fresh frame carrying the same id replaces the
-     * element rather than moving it, and this watch neither finds nor adopts
-     * the stranger, inside the window or after it. What measures either is the
-     * resizer as it attaches, and for a frame that is hidden at that moment
-     * that measurement is the strip of a few pixels described above, which the
-     * frame then keeps until something else measures it. Both are residues of
+     * Where the window stands, two frames fall outside it. One the page puts
+     * back after those 30 seconds, and one that is not the same element at
+     * all: a rebuilt region that renders a fresh frame carrying the same id
+     * replaces the element rather than moving it, and this watch neither finds
+     * nor adopts the stranger, inside the window or after it. The two end up
+     * differently. The stranger is measured by the resizer as it attaches to
+     * it, and for a frame that is hidden at that moment that measurement is
+     * the strip of a few pixels described above, which the frame then keeps
+     * until something else measures it. The element put back is the one the
+     * resizer attached to already: initIframe() is not run for it a second
+     * time and nothing here measures it again, so it keeps the size it was
+     * last measured at. Both are residues of
      * two bounds: the window, rather than an observer of every change to the
      * page held for every box for as long as the reader stays; and one element
      * rather than an id the page may hand to another. Markup rendered afresh
