@@ -86,9 +86,12 @@ abstract class Embed
      * walk runs again and takes the disclosures it sits inside then — but
      * only on an engine that hears the change to the page at all. An engine
      * carrying neither observer hears neither the frame going nor the frame
-     * coming back, so there the take-down at its next wait or disclosure is
-     * the end of it and a frame that leaves and comes back is measured by
-     * nothing again.
+     * coming back, so what happens to such a frame turns on whether anything
+     * asked while it was gone: with nothing asking, the listeners it already
+     * had are still there and still measure it, wherever it now sits; and once
+     * a wait or a disclosure does ask and finds it gone, they come down, and
+     * nothing is left that could hear it come back or take the disclosures it
+     * came back into.
      *
      * Until the resizer has attached, the script asks again every 200
      * milliseconds; the frame is asked 25 times in all, however often it is

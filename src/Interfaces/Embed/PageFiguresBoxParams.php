@@ -114,9 +114,9 @@ final class PageFiguresBoxParams
      * own validation alert in place of every figure, because an id the store
      * cannot hold has no record under it to find. What this class checks of it
      * is only that something was passed and how long it is, and that is what
-     * keeps the answer an alert on the box: a Drupal or a WordPress site hands
-     * over its entity's UUID, and a stricter check here would raise on the
-     * site's own page instead.
+     * keeps that answer an alert on the box: the figures are rendered inside a
+     * page a reader is waiting for, where raising would cost that reader the
+     * page and tell nobody which id was refused.
      *
      * Optional; a value outside its documented range is omitted from the
      * rendered options rather than sent, because one value the box refuses
