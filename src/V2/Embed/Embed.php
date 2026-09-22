@@ -378,7 +378,9 @@ abstract class Embed
         observer.disconnect();
         return;
       }
-      if(element.iFrameResizer) {
+      // A frame whose resizer is not the one this asks of falls through to
+      // the wait, rather than throwing out of the callback that got here.
+      if(element.iFrameResizer && typeof element.iFrameResizer.resize==="function") {
         element.iFrameResizer.resize();
         return;
       }

@@ -158,7 +158,11 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringContainsString('var element = document.getElementById("contentSyncEmbed-ID");', $html);
         $this->assertStringContainsString('new IntersectionObserver(', $html);
         $this->assertStringContainsString('observer.observe(element);', $html);
+        // It asks a resizer that has the method it is about to call, so a
+        // frame that carries anything else waits instead of raising.
+        $this->assertStringContainsString('if(element.iFrameResizer && typeof element.iFrameResizer.resize==="function") {', $html);
         $this->assertStringContainsString('element.iFrameResizer.resize();', $html);
+        $this->assertStringNotContainsString('if(element.iFrameResizer) {', $html);
 
         // It asks again every 200 milliseconds, 25 times at most, until the
         // resizer has attached, and it stops once the frame has left the page.
