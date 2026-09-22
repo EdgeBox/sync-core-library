@@ -165,57 +165,97 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringNotContainsString('if(element.iFrameResizer) {', $html);
 
         // It asks again every 200 milliseconds, 25 times at most, until the
-        // resizer has attached, and that chain stops, and drops the watch
-        // with it, as soon as the frame has left the document.
+        // resizer has attached.
         $this->assertStringContainsString('if(attempt<25) {', $html);
         $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
         // Whether the document still holds the frame is asked with the
         // membership test every engine that runs this code has.
-        $this->assertStringContainsString("if(!document.contains(element)) {\n        if(observer) {\n          observer.disconnect();", $html);
+        $this->assertStringContainsString('if(!document.contains(element)) {', $html);
         $this->assertStringNotContainsString('isConnected', $html);
     }
 
-    public function testTheChainThatCountsTheAttemptsIsWhatDropsTheWatch(): void
+    public function testOneWaitForTheResizerRunsHoweverOftenTheFrameIsUncovered(): void
     {
-        $html = EmbedMarkup::of($this->pageFigures());
+        $watch = $this->watch();
 
-        // What stops when the frame leaves the document is the chain, which
-        // drops the watch as it goes; nothing else disconnects. A frame that
-        // leaves while no chain runs needs nothing dropped, because the watch
-        // only ever hears from a frame the document still holds.
-        $this->assertSame(1, preg_match_all('@observer\\.disconnect\\(\\)@', $html));
+        // Every way in comes through the one function, and it starts no
+        // second wait while one is running, so the bound of 25 belongs to the
+        // frame rather than to each uncovering of it.
+        $this->assertSame(1, preg_match_all('@remeasure\\(0\\);@', $watch));
+        $this->assertStringContainsString("      if(waiting) {\n        return;\n      }\n      remeasure(0);", $watch);
+        $this->assertSame(2, preg_match_all('@uncovered\\(\\);@', $watch));
 
-        $chain = strpos($html, 'function remeasure(attempt) {');
-        $drop = strpos($html, 'observer.disconnect()');
-        $afterwards = strpos($html, 'function onOpen(details) {');
+        // The flag is set at the one place a wait is scheduled, and it starts
+        // unset and is cleared at each of the three places a wait ends: the
+        // resizer answering, the bound running out, and the watch coming down.
+        $this->assertStringContainsString("        waiting = true;\n        setTimeout(function() {", $watch);
+        $this->assertSame(1, preg_match_all('@waiting = true;@', $watch));
+        $this->assertSame(1, preg_match_all('@var waiting = false;@', $watch));
+        $this->assertSame(4, preg_match_all('@waiting = false;@', $watch));
+    }
 
-        $this->assertIsInt($chain);
+    public function testEveryWayInTakesTheWatchDownOnceTheFrameHasLeftTheDocument(): void
+    {
+        $watch = $this->watch();
+
+        // The wait, a disclosure and the watch itself each ask whether the
+        // document still holds the frame, and each answer of no takes the
+        // whole watch down; a frame nothing reports for needs nothing taken
+        // down, because it has nothing running on it.
+        $this->assertSame(3, preg_match_all('@if\\(!document\\.contains\\(element\\)\\) \\{@', $watch));
+        $this->assertSame(3, preg_match_all('@stopWatching\\(\\);@', $watch));
+
+        // Taking it down is one thing: the observer is dropped and every
+        // listener the fallback added is removed with it.
+        $this->assertSame(1, preg_match_all('@observer\\.disconnect\\(\\);@', $watch));
+        $this->assertStringContainsString('listeners[i].on.removeEventListener("toggle", listeners[i].run);', $watch);
+        $this->assertStringContainsString('listeners.push({on: details, run: run});', $watch);
+
+        $stop = strpos($watch, 'function stopWatching() {');
+        $drop = strpos($watch, 'observer.disconnect();');
+        $afterwards = strpos($watch, 'function remeasure(attempt) {');
+
+        $this->assertIsInt($stop);
         $this->assertIsInt($drop);
         $this->assertIsInt($afterwards);
-        $this->assertGreaterThan($chain, $drop);
+        $this->assertGreaterThan($stop, $drop);
         $this->assertLessThan($afterwards, $drop);
     }
 
     public function testAnEngineWithoutTheObserverStillMeasuresAnUncoveredFrame(): void
     {
-        $html = EmbedMarkup::of($this->pageFigures());
+        $watch = $this->watch();
 
         // Where there is no observer, the disclosures the frame sits inside
         // are what is left to hear from, and each of them is heard from.
-        $this->assertStringContainsString('if(typeof IntersectionObserver==="undefined") {', $html);
-        $this->assertStringContainsString('if(parent.tagName.toUpperCase()==="DETAILS") {', $html);
-        $this->assertStringContainsString("details.addEventListener(\"toggle\", function() {\n        if(details.open) {\n          remeasure(0);", $html);
-        $this->assertStringContainsString('parent = parent.parentNode;', $html);
+        $this->assertStringContainsString('if(typeof IntersectionObserver==="undefined") {', $watch);
+        $this->assertStringContainsString('if(parent.tagName.toUpperCase()==="DETAILS") {', $watch);
+        $this->assertStringContainsString("details.addEventListener(\"toggle\", run);", $watch);
+        $this->assertStringContainsString("      function run() {\n        if(details.open) {\n          uncovered();", $watch);
+        $this->assertStringContainsString('parent = parent.parentNode;', $watch);
 
-        // The retry is bounded there as it is everywhere else: the frame is
-        // reached through the one function that counts the attempts.
-        $this->assertSame(1, preg_match_all('@remeasure\\(attempt\\+1\\)@', $html));
-
-        // Any system embeds this library, so nothing the script carries is
-        // one system's own markup or its own script interface.
-        foreach (['Drupal', 'vertical-tabs', 'js-vertical-tabs', 'behaviors'] as $named) {
-            $this->assertStringNotContainsString($named, $html, $named);
+        // Any system embeds this library, so the watch names none of one
+        // system's markup and reaches for none of its script interface — not
+        // even the one the handlers around it are written against.
+        foreach (['Drupal', 'vertical-tabs', 'js-vertical-tabs', 'behaviors', 'jQuery', 'edit-'] as $named) {
+            $this->assertStringNotContainsString($named, $watch, $named);
         }
+    }
+
+    /**
+     * The emitted watch, on its own.
+     *
+     * The script around it is the one every embed has emitted for years and
+     * is written against one system's script interface; what this delivery
+     * adds is this function, and it is what the assertions are about.
+     */
+    private function watch(): string
+    {
+        $html = EmbedMarkup::of($this->pageFigures());
+
+        $this->assertSame(1, preg_match('@\\n  function remeasureOnUncover\\(\\) \\{\\n(.*?)\\n  \\}\\n@s', $html, $matches));
+
+        return $matches[1];
     }
 
     public function testNoCallerCanTurnTheMeasuringOff(): void

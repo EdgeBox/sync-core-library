@@ -76,12 +76,16 @@ abstract class Embed
      * set, the script watches the frame and has the resizer measure it again
      * whenever it becomes visible: an element that goes from `display: none`
      * to shown is uncovered, so opening a `details` element and selecting a tab
-     * are covered as well as scrolling it into view. Until the resizer has
-     * attached, the script asks again every 200 milliseconds, 25 times at
-     * most; that chain stops as soon as the frame has left the document, and
-     * drops the watch as it goes. A frame that leaves while no chain runs
-     * needs nothing dropped: the watch only ever hears from a frame the
-     * document still holds.
+     * are covered as well as scrolling it into view. An engine that carries no
+     * observer of its own hears one thing instead, a disclosure the frame sits
+     * inside opening, and there a frame uncovered any other way keeps the size
+     * it was last measured at.
+     *
+     * Until the resizer has attached, the script asks again every 200
+     * milliseconds, 25 times at most, and one such wait runs at a time however
+     * often the frame is uncovered. Whatever reports next for a frame the
+     * document no longer holds — the wait, a disclosure, or the watch itself —
+     * takes the watch and its listeners down with it.
      *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
@@ -369,34 +373,67 @@ abstract class Embed
       return;
     }
     var observer = null;
+    var listeners = [];
+    var waiting = false;
+    // Everything the watch set up comes down together, so a frame the
+    // document has let go of leaves nothing of itself behind on a page a
+    // reader stays on.
+    function stopWatching() {
+      waiting = false;
+      if(observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      for(var i=0; i<listeners.length; i++) {
+        listeners[i].on.removeEventListener("toggle", listeners[i].run);
+      }
+      listeners = [];
+    }
     function remeasure(attempt) {
-      // A frame the document no longer holds is one a rebuilt form replaced,
-      // and the chain that would keep measuring it stops with it. The
-      // membership test is the one every engine that gets here has.
+      // A frame the document no longer holds is one a rebuilt form replaced.
+      // The membership test is the one every engine that gets here has, and
+      // for a frame found by its id it asks what the element would answer.
       if(!document.contains(element)) {
-        if(observer) {
-          observer.disconnect();
-        }
+        stopWatching();
         return;
       }
       // A frame whose resizer is not the one this asks of falls through to
       // the wait, rather than throwing out of the callback that got here.
       if(element.iFrameResizer && typeof element.iFrameResizer.resize==="function") {
+        waiting = false;
         element.iFrameResizer.resize();
         return;
       }
       if(attempt<25) {
+        waiting = true;
         setTimeout(function() {
           remeasure(attempt+1);
         }, 200);
+        return;
       }
+      waiting = false;
+    }
+    // Every way in comes through here, so one wait for the resizer runs at a
+    // time however often the frame is uncovered, and the wait that is already
+    // running is the one that measures it.
+    function uncovered() {
+      if(!document.contains(element)) {
+        stopWatching();
+        return;
+      }
+      if(waiting) {
+        return;
+      }
+      remeasure(0);
     }
     function onOpen(details) {
-      details.addEventListener("toggle", function() {
+      function run() {
         if(details.open) {
-          remeasure(0);
+          uncovered();
         }
-      });
+      }
+      details.addEventListener("toggle", run);
+      listeners.push({on: details, run: run});
     }
     // An engine with no observer still fires a disclosure\'s own toggle, and
     // a disclosure that opens is what uncovers a frame placed inside it.
@@ -413,9 +450,15 @@ abstract class Embed
     observer = new IntersectionObserver(function(entries) {
       for(var i=0; i<entries.length; i++) {
         if(entries[i].isIntersecting) {
-          remeasure(0);
+          uncovered();
           return;
         }
+      }
+      // Nothing it reports is intersecting, which is what a frame the
+      // document has let go of reports, so this is where the watch hears of
+      // it and takes itself down.
+      if(!document.contains(element)) {
+        stopWatching();
       }
     });
     observer.observe(element);
