@@ -98,21 +98,35 @@ final class EmbedScriptParsesTest extends TestCase
      */
     private function parse(string $script): array
     {
-        $file = tempnam(sys_get_temp_dir(), 'embed-script-');
-        $this->assertIsString($file);
-
-        // The name it is given only makes node's own report legible.
-        $path = $file.'.js';
-        $this->assertTrue(rename($file, $path));
-        $this->assertNotFalse(file_put_contents($path, $script));
+        // tempnam reserves a name; the script is written beside it under that
+        // name with a .js suffix, which decides no grammar - the engine is
+        // handed the source and told to compile it as a script - and is kept
+        // only because it makes a report of node's own name a JavaScript
+        // file. Both the reservation and the file go below, whatever happens
+        // in between.
+        $reserved = tempnam(sys_get_temp_dir(), 'embed-script-');
+        $this->assertIsString($reserved);
+        $path = $reserved.'.js';
 
         $program = 'const fs = require("fs"), vm = require("vm");'
             .' new vm.Script(fs.readFileSync(process.argv[1], "utf8"), {filename: process.argv[1]});';
 
         $output = [];
         $status = 1;
-        exec('node -e '.escapeshellarg($program).' '.escapeshellarg($path).' 2>&1', $output, $status);
-        unlink($path);
+
+        try {
+            $this->assertNotFalse(file_put_contents($path, $script));
+
+            exec('node -e '.escapeshellarg($program).' '.escapeshellarg($path).' 2>&1', $output, $status);
+        } finally {
+            if (is_file($path)) {
+                unlink($path);
+            }
+
+            if (is_file($reserved)) {
+                unlink($reserved);
+            }
+        }
 
         return [$status, implode("\n", $output)];
     }
