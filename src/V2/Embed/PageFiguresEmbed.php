@@ -12,6 +12,15 @@ class PageFiguresEmbed extends Embed implements IEmbedFeature
 {
     protected $params;
 
+    /**
+     * The box sits in a site's edit form, where a collapsed `details` element
+     * or a tab that is not selected often hides it when the page loads, so it
+     * is measured again each time it is uncovered.
+     *
+     * @var bool
+     */
+    protected $remeasureOnUncover = true;
+
     public function __construct(SyncCore $core, PageFiguresBoxParams $figures)
     {
         // The figures are the site's own and nothing in the box is attributable

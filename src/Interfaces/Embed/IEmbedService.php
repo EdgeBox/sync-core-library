@@ -84,6 +84,10 @@ interface IEmbedService
      * placed in. The figures travel from the site's own storage into the frame
      * markup the site renders; this makes no request of its own.
      *
+     * The frame is measured again each time it is uncovered, so a site may
+     * place it in a collapsed `details` element or a tab that is not selected
+     * and needs no script of its own to size it once it is shown.
+     *
      * @return IEmbedFeature
      */
     public function pageFigures(PageFiguresBoxParams $figures);

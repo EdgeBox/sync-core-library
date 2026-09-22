@@ -68,6 +68,29 @@ abstract class Embed
     protected $actingUser;
 
     /**
+     * Whether the frame is measured again each time it is uncovered.
+     *
+     * The resizer measures a frame once, when it attaches, and a frame that is
+     * hidden then — inside a collapsed `details` element, on a tab that is not
+     * selected — measures as a strip of a few pixels and stays one. With this
+     * set, the script watches the frame and has the resizer measure it again
+     * whenever it becomes visible: an element that goes from `display: none`
+     * to shown is uncovered, so opening a `details` element and selecting a tab
+     * are covered as well as scrolling it into view. Until the resizer has
+     * attached, the script asks again every 200 milliseconds, 25 times at
+     * most, and it stops once the frame has left the document.
+     *
+     * The embed class decides this, never an option a caller passes: the
+     * options travel to the frame, and a frame's behaviour on the site's page
+     * is the library's to decide. PageFiguresEmbed sets it, because the box is
+     * placed in a site's edit form where it is often hidden when the page
+     * loads; every other embed renders the markup it always rendered.
+     *
+     * @var bool
+     */
+    protected $remeasureOnUncover = false;
+
+    /**
      * Embed constructor.
      */
     public function __construct(SyncCore $core, string $embed_id, string $permissions, ?ActingUser $as = null)
@@ -331,9 +354,43 @@ abstract class Embed
           throw new Error("Unknown message "+JSON.stringify(message));
         }
       },
-    }, "#'.$id.'");
+    }, "#'.$id.'");'.($this->remeasureOnUncover ? '
+    remeasureOnUncover();' : '').'
   }
-
+'.($this->remeasureOnUncover ? '
+  // The resizer measures the frame once, so a frame hidden at that moment is
+  // measured again each time it is uncovered.
+  function remeasureOnUncover() {
+    var element = document.getElementById("'.$id.'");
+    if(!element || typeof IntersectionObserver==="undefined") {
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries) {
+      for(var i=0; i<entries.length; i++) {
+        if(entries[i].isIntersecting) {
+          remeasure(0);
+          return;
+        }
+      }
+    });
+    function remeasure(attempt) {
+      if(!element.isConnected) {
+        observer.disconnect();
+        return;
+      }
+      if(element.iFrameResizer) {
+        element.iFrameResizer.resize();
+        return;
+      }
+      if(attempt<25) {
+        setTimeout(function() {
+          remeasure(attempt+1);
+        }, 200);
+      }
+    }
+    observer.observe(element);
+  }
+' : '').'
   function onDocumentReady(clb) {
     if (document.readyState === "complete" || document.readyState === "interactive") {
         setTimeout(clb, 1);

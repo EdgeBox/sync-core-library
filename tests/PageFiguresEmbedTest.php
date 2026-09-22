@@ -147,6 +147,38 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringContainsString('class="content-sync-embed size-box"', $html);
     }
 
+    public function testTheFrameIsMeasuredAgainEachTimeItIsUncovered(): void
+    {
+        $html = EmbedMarkup::of($this->pageFigures());
+
+        // The watch starts once the resizer has been asked to attach, and it
+        // watches this frame and no other.
+        $this->assertStringContainsString("    }, \"#contentSyncEmbed-ID\");\n    remeasureOnUncover();\n  }", $html);
+        $this->assertStringContainsString('var element = document.getElementById("contentSyncEmbed-ID");', $html);
+        $this->assertStringContainsString('new IntersectionObserver(', $html);
+        $this->assertStringContainsString('observer.observe(element);', $html);
+        $this->assertStringContainsString('element.iFrameResizer.resize();', $html);
+
+        // It asks again every 200 milliseconds, 25 times at most, until the
+        // resizer has attached, and it stops once the frame has left the page.
+        $this->assertStringContainsString('if(attempt<25) {', $html);
+        $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
+        $this->assertStringContainsString("if(!element.isConnected) {\n        observer.disconnect();", $html);
+    }
+
+    public function testNoCallerCanTurnTheMeasuringOff(): void
+    {
+        $figures = self::everyFigure();
+        $figures['remeasureOnUncover'] = false;
+        $figures['remeasure_on_uncover'] = false;
+
+        $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+
+        $this->assertStringContainsString('remeasureOnUncover();', $html);
+        $this->assertArrayNotHasKey('remeasureOnUncover', $this->messages($html)['options']);
+        $this->assertArrayNotHasKey('remeasure_on_uncover', $this->messages($html)['options']);
+    }
+
     public function testTheFrameCarriesTheSitesOwnTokenAndNoPersonsIdentity(): void
     {
         $rendered = (string) $this->pageFigures()->run()->getRenderedHtml();

@@ -25,6 +25,36 @@ final class EmbedFrameSizeTest extends TestCase
         }
     }
 
+    public function testNoReleasedEmbedIsMeasuredAgainWhenUncovered(): void
+    {
+        foreach (EmbedMarkup::releasedMarkup(EmbedMarkup::core()) as $class => $html) {
+            $this->assertStringNotContainsString('remeasureOnUncover', $html, $class);
+            $this->assertStringNotContainsString('IntersectionObserver', $html, $class);
+        }
+    }
+
+    public function testAPageIsNotMeasuredAgainWhenUncovered(): void
+    {
+        $html = $this->markupForSize('page');
+
+        $this->assertStringNotContainsString('remeasureOnUncover', $html);
+        $this->assertStringNotContainsString('IntersectionObserver', $html);
+    }
+
+    public function testNoOptionOfASiteTurnsTheMeasuringOn(): void
+    {
+        // The measuring is the embed class's to decide; an option of that
+        // name only travels to the frame.
+        foreach (['box', 'page'] as $size) {
+            $embed = (new EmbedService(EmbedMarkup::core()))->updateStatusBox([
+                'embedSize' => $size,
+                'remeasureOnUncover' => true,
+            ]);
+
+            $this->assertStringNotContainsString('IntersectionObserver', EmbedMarkup::of($embed), $size);
+        }
+    }
+
     public function testAPageStatesItsOwnMinimumHeightAndResizes(): void
     {
         $html = $this->markupForSize('page');
