@@ -6,9 +6,11 @@
 #   composer analyze
 #   composer test-cs
 #
-# The suite parses the JavaScript the embeds emit rather than matching it
-# piece by piece, so it needs node on the PATH; the ubuntu image these jobs
-# run on carries it, and a run without it reports the test as failed.
+# The suite parses the JavaScript the embeds emit and runs the watch it emits
+# against stubbed engines rather than matching either piece by piece, so it
+# needs node on the PATH. The phpunit job installs it rather than taking it
+# from whatever the runner image happens to carry, and a run without it
+# reports the test as failed.
 name: CI
 
 on:
@@ -109,6 +111,13 @@ jobs:
         with:
           php-version: '8.3'
           coverage: none
+
+      # The suite hands the JavaScript the embeds emit to node, so the version
+      # it runs under is pinned here rather than left to the runner image.
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install the library
         run: composer install --no-interaction --no-progress
