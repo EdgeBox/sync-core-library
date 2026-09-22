@@ -5,6 +5,10 @@
 #   composer lint
 #   composer analyze
 #   composer test-cs
+#
+# The suite parses the JavaScript the embeds emit rather than matching it
+# piece by piece, so it needs node on the PATH; the ubuntu image these jobs
+# run on carries it, and a run without it reports the test as failed.
 name: CI
 
 on:
