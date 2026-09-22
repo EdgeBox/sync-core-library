@@ -282,14 +282,43 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame([], $run['dueOnceItIsBack']);
         $this->assertTrue($run['removalsStillWatching']);
 
-        // And the next uncovering measures the frame on the count it had
-        // already spent rather than on a fresh 25.
+        // And the next uncovering answers as it answered before the frame
+        // left: on the count it had already spent rather than on a fresh 25,
+        // which is what leaves it able to measure at all - a frame that comes
+        // back with the 25 spent is measured when the resizer has attached
+        // and waited for no longer, exactly as it would have been.
         $this->assertSame(19, $run['spentAfterItIsBack']);
         $this->assertSame(
             25,
             $run['spentBeforeItWent'] + $run['spentAfterItIsBack'],
             'the 25 belong to the frame, and coming back does not start them over'
         );
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+    }
+
+    public function testAFrameReplacedByAFreshElementWithTheSameIdIsNotAdopted(): void
+    {
+        $run = $this->perform('theFrameIsReplacedByAFreshOneWithTheSameId');
+
+        // The frame goes and the window opens, as it does for any removal.
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
+
+        // What comes back is a different element carrying the same id, which
+        // the document finds and this watch does not: the watch holds the
+        // element it started on and looks the id up no second time.
+        $this->assertTrue($run['theDocumentFindsTheFreshFrame']);
+        $this->assertSame(1, $run['builtForTheFreshFrame'], 'nothing is built for a stranger');
+        $this->assertSame(
+            [30000],
+            $run['dueOnceTheFreshFrameIsThere'],
+            'the window is neither cleared nor lengthened by an element that is not the frame'
+        );
+
+        // So the window runs out unused and the fresh frame, resizer attached
+        // and uncovered, is measured by nothing here. Markup rendered afresh
+        // carries this script afresh, and that is what watches it.
+        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(0, $run['resizeCalls']);
         $this->assertSame(0, $run['pendingAtTheEnd']);
     }
 

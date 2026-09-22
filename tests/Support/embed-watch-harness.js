@@ -355,6 +355,7 @@ function createWorld(engine) {
     documentElement: () => documentElement,
     fired: () => fired,
     flushMutations: flushMutations,
+    findById: (id) => documentStub.getElementById(id),
     holds: (node) => documentStub.contains(node),
     intersection: () => (intersectionObservers.length > 0 ? intersectionObservers[0] : null),
     intersections: () => intersectionObservers.length,
@@ -878,6 +879,49 @@ const scenarios = {
       frameInTheDocument: world.holds(page.frame),
       spentAfterItIsBack: world.scheduled() - scheduledWithTheWindowOpen,
       removalsStillWatching: !removals.disconnected,
+      pendingAtTheEnd: world.pending(),
+    };
+  },
+
+  /**
+   * A rebuilt region renders a fresh frame carrying the same id: the watch
+   * holds the element it started on, looks the id up no second time and does
+   * not adopt the stranger, so its window runs out unused.
+   */
+  theFrameIsReplacedByAFreshOneWithTheSameId: function (source) {
+    const id = frameId(source);
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    // The region comes back carrying a frame of its own under the same id,
+    // with a resizer on it, and is uncovered.
+    const fresh = world.makeNode('IFRAME', id);
+
+    world.append(page.inner, fresh);
+    world.attachResizer(fresh);
+    world.flushMutations();
+
+    const theDocumentFindsTheFreshFrame = world.findById(id) === fresh;
+    const builtForTheFreshFrame = world.intersections();
+    const dueOnceTheFreshFrameIsThere = world.pendingDueIn();
+
+    world.report(true);
+    world.advance(40000);
+
+    return {
+      dueAfterTheRemoval: dueAfterTheRemoval,
+      theDocumentFindsTheFreshFrame: theDocumentFindsTheFreshFrame,
+      builtForTheFreshFrame: builtForTheFreshFrame,
+      dueOnceTheFreshFrameIsThere: dueOnceTheFreshFrameIsThere,
+      removalsDisconnected: removals.disconnected,
+      resizeCalls: world.resizeCalls(),
       pendingAtTheEnd: world.pending(),
     };
   },

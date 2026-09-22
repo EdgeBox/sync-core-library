@@ -95,21 +95,33 @@ abstract class Embed
      * wait or disclosure instead.
      *
      * One thing outlives that take-down, and for 30 seconds: what the change
-     * to the page's own tree is heard through. A frame the page puts back
-     * inside those 30 seconds is watched again exactly as at the start, with
-     * the count of 25 carrying on where it stopped rather than starting over,
-     * so the next time the frame is uncovered it is measured. When the window
-     * closes with the frame still gone, that last observer goes too and
-     * nothing of the watch is left on the page.
+     * to the page's own tree is heard through. It holds the element the watch
+     * started on and looks the id up no second time, so what it can hear come
+     * back is that same element put back — which is what a widget re-parenting
+     * across a task does, and what a re-render that takes the frame out now
+     * and appends it again on a later one does. Put back inside those 30
+     * seconds, the element is watched again exactly as at the start, with the
+     * count of 25 carrying on where it stopped rather than starting over, so
+     * an uncovering answers as it answered before the element left: it
+     * measures the frame straight away once the resizer has attached, and
+     * spends what is left of the 25 while it has not. When the window closes
+     * with the frame still gone, that last observer goes too and nothing of
+     * the watch is left on the page.
      *
-     * A frame the page puts back after those 30 seconds starts no watch of
-     * its own. What measures it is the resizer as it attaches, and for a frame
-     * that is hidden at that moment that measurement is the strip of a few
-     * pixels described above, which the frame then keeps until something else
-     * measures it. That is the residue of bounding the window rather than
-     * holding an observer of every change to the page, for every box, for as
-     * long as the reader stays: the bound is where this library stops paying
-     * for a frame the page has let go of.
+     * Two frames fall outside the window. One the page puts back after those
+     * 30 seconds, and one that is not the same element at all: a rebuilt
+     * region that renders a fresh frame carrying the same id replaces the
+     * element rather than moving it, and this watch neither finds nor adopts
+     * the stranger, inside the window or after it. What measures either is the
+     * resizer as it attaches, and for a frame that is hidden at that moment
+     * that measurement is the strip of a few pixels described above, which the
+     * frame then keeps until something else measures it. Both are residues of
+     * two bounds: the window, rather than an observer of every change to the
+     * page held for every box for as long as the reader stays; and one element
+     * rather than an id the page may hand to another. Markup rendered afresh
+     * carries this script afresh, and a watch that adopted a strange element
+     * would spend the frame's remaining attempts asking a resizer that belongs
+     * to a watch of its own.
      *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
@@ -559,7 +571,9 @@ abstract class Embed
     // when the question is asked, so what an uncovering is heard through comes
     // down - and this observer is then the only thing left that could hear the
     // frame come back, which is why it is kept for the window and builds the
-    // watch again there.
+    // watch again there. It is this element that is watched for, not the id:
+    // the element is looked up once, so a fresh element carrying the same id
+    // is a stranger here and markup rendered afresh brings a watch of its own.
     if(typeof MutationObserver!=="undefined") {
       removals = new MutationObserver(function() {
         if(!document.contains(element)) {
