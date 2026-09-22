@@ -68,6 +68,37 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['resizeCalls']);
     }
 
+    public function testAFrameThatLeavesBecauseItsContainerDidTakesTheWatchDown(): void
+    {
+        $run = $this->perform('removedWithItsContainer');
+
+        // What a rebuilt form takes out is the region, not the frame: the
+        // frame still has a parent the whole time, and what decides is
+        // whether the document holds it rather than whether it has one.
+        $this->assertTrue($run['frameStillHasAParent']);
+        $this->assertFalse($run['frameStillInTheDocument']);
+
+        $this->assertTrue($run['intersectionDisconnected']);
+        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(0, $run['toggleListeners']);
+        $this->assertSame(0, $run['pendingTimers']);
+        $this->assertSame(0, $run['resizeCalls']);
+    }
+
+    public function testAFrameMovedWithinOneChangeKeepsItsWatch(): void
+    {
+        $run = $this->perform('movedWithinOneChange');
+
+        // Taken out of one parent and put into another inside one change:
+        // the document holds it when the watch is asked, so nothing comes
+        // down and the frame is still measured when it is uncovered.
+        $this->assertSame(1, $run['removalsHeardOf']);
+        $this->assertTrue($run['frameInTheDocument']);
+        $this->assertFalse($run['intersectionDisconnected']);
+        $this->assertFalse($run['removalsDisconnected']);
+        $this->assertSame(1, $run['pendingAfterItIsUncovered']);
+    }
+
     public function testAFrameTakenOutWhileAWaitRunsStopsIt(): void
     {
         $run = $this->perform('removedWhileAWaitRuns');
@@ -102,6 +133,66 @@ final class EmbedWatchBehaviourTest extends TestCase
         // outlive it, without anything having to report first.
         $this->assertSame(0, $run['listenersAfterRemoval']);
         $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+    }
+
+    public function testAnEngineWatchingNothingHearsTheRemovalFromItsOwnWait(): void
+    {
+        $run = $this->perform('neitherObserverStillStopsWhenTheFrameGoes');
+
+        $this->assertFalse($run['treeIsWatched'], 'the engine carries nothing that could watch it');
+        $this->assertSame(2, $run['listenedAtTheStart']);
+        $this->assertSame(1, $run['pendingAfterAnOpening']);
+
+        // Nothing here can hear the removal when it happens, so the wait is
+        // still pending and the listeners are still on.
+        $this->assertSame(1, $run['pendingAfterRemoval']);
+        $this->assertSame(2, $run['listenersAfterRemoval']);
+
+        // The wait asks on its next attempt and takes everything down there,
+        // so one attempt runs and the chain stops.
+        $this->assertSame(1, $run['firedInAll']);
+        $this->assertSame(0, $run['listenersOnceTheWaitRan']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+        $this->assertSame(0, $run['resizeCalls']);
+    }
+
+    public function testADisclosureFiringForAFrameThatWentTakesTheWatchDown(): void
+    {
+        $run = $this->perform('aDisclosureThatFiresForAFrameThatWent');
+
+        $this->assertSame(1, $run['pendingWhileWaiting']);
+
+        // The disclosure fires while a wait is pending, and the watch comes
+        // down there rather than at the wait's next attempt.
+        $this->assertSame(0, $run['listenersAfterTheDisclosureFired']);
+        $this->assertSame(0, $run['pendingAfterTheDisclosureFired']);
+    }
+
+    public function testAReportIsStillAWayInWhereNothingWatchesTheTree(): void
+    {
+        $run = $this->perform('theReportIsStillAWayInWhereNothingWatchesTheTree');
+
+        $this->assertFalse($run['treeIsWatched']);
+        $this->assertFalse($run['disconnectedBeforeAnyReport']);
+
+        // A frame that was on screen reports once more that nothing is
+        // intersecting, and that report is heard.
+        $this->assertTrue($run['disconnectedAfterTheReport']);
+    }
+
+    public function testAMeasurementFromAWaitLeavesTheWatchReadyForTheNext(): void
+    {
+        $run = $this->perform('aMeasurementFromAWaitLeavesTheWatchReady');
+
+        // The measurement comes from the wait rather than from the
+        // uncovering, so this is where the flag could be left standing.
+        $this->assertSame(1, $run['pendingWhileWaiting']);
+        $this->assertSame(1, $run['resizeFromTheWait']);
+
+        // The next uncovering is measured rather than swallowed.
+        $this->assertSame(2, $run['resizeAfterTheNextUncovering']);
+        $this->assertSame(1, $run['scheduledInAll']);
         $this->assertSame(0, $run['pendingAtTheEnd']);
     }
 

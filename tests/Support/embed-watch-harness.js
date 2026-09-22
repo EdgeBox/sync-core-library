@@ -291,6 +291,7 @@ function createWorld(engine) {
     documentElement: () => documentElement,
     fired: () => fired,
     flushMutations: flushMutations,
+    holds: (node) => documentStub.contains(node),
     intersection: () => (intersectionObservers.length > 0 ? intersectionObservers[0] : null),
     listenerCount: listenerCount,
     makeNode: makeNode,
@@ -395,6 +396,63 @@ const scenarios = {
   },
 
   /**
+   * A frame that leaves the document because an ancestor did, which is what a
+   * rebuilt form does to it: the frame itself still has a parent throughout.
+   */
+  removedWithItsContainer: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.detach(page.outer);
+    world.flushMutations();
+    world.advance(10000);
+
+    return {
+      frameStillHasAParent: page.frame.parentNode !== null,
+      frameStillInTheDocument: world.holds(page.frame),
+      intersectionDisconnected: world.intersection().disconnected,
+      removalsDisconnected: removals !== null && removals.disconnected,
+      toggleListeners: world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
+      pendingTimers: world.pending(),
+      resizeCalls: world.resizeCalls(),
+    };
+  },
+
+  /**
+   * A frame taken out and put back inside one change to the page, which is
+   * what moving it from one parent to another is.
+   */
+  movedWithinOneChange: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+    const elsewhere = world.makeNode('DIV');
+
+    world.append(page.body, elsewhere);
+    world.detach(page.frame);
+    world.append(elsewhere, page.frame);
+    world.flushMutations();
+
+    const frameInTheDocument = world.holds(page.frame);
+    const intersectionDisconnected = world.intersection().disconnected;
+    const removalsDisconnected = removals !== null && removals.disconnected;
+    const removalsHeardOf = removals === null ? 0 : removals.deliveries;
+
+    world.report(true);
+
+    return {
+      frameInTheDocument: frameInTheDocument,
+      intersectionDisconnected: intersectionDisconnected,
+      removalsDisconnected: removalsDisconnected,
+      removalsHeardOf: removalsHeardOf,
+      pendingAfterItIsUncovered: world.pending(),
+    };
+  },
+
+  /**
    * A frame taken out of the document while a wait for its resizer is running.
    */
   removedWhileAWaitRuns: function (source) {
@@ -459,6 +517,123 @@ const scenarios = {
       resizeAfterAnOpening: resizeAfterAnOpening,
       listenersAfterRemoval: world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
       removalsDisconnected: removals !== null && removals.disconnected,
+      pendingAtTheEnd: world.pending(),
+    };
+  },
+
+  /**
+   * An engine carrying neither observer hears a removal from the wait it has
+   * running, and a disclosure that fires hears it too.
+   */
+  neitherObserverStillStopsWhenTheFrameGoes: function (source) {
+    const ready = setUp(source, {intersectionObserver: false, mutationObserver: false});
+    const world = ready.world;
+    const page = ready.page;
+
+    const listenedAtTheStart = world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    page.inner.open = true;
+    world.dispatch(page.inner, 'toggle');
+
+    const pendingAfterAnOpening = world.pending();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    // Nothing watches the tree here, so the removal is still unheard.
+    const pendingAfterRemoval = world.pending();
+    const listenersAfterRemoval = world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    world.advance(10000);
+
+    return {
+      treeIsWatched: world.mutation() !== null,
+      listenedAtTheStart: listenedAtTheStart,
+      pendingAfterAnOpening: pendingAfterAnOpening,
+      pendingAfterRemoval: pendingAfterRemoval,
+      listenersAfterRemoval: listenersAfterRemoval,
+      firedInAll: world.fired(),
+      listenersOnceTheWaitRan: world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
+      pendingAtTheEnd: world.pending(),
+      resizeCalls: world.resizeCalls(),
+    };
+  },
+
+  /**
+   * A disclosure that fires for a frame that has gone takes the watch down
+   * there and then, rather than leaving it to the wait that is pending.
+   */
+  aDisclosureThatFiresForAFrameThatWent: function (source) {
+    const ready = setUp(source, {intersectionObserver: false, mutationObserver: false});
+    const world = ready.world;
+    const page = ready.page;
+
+    page.inner.open = true;
+    world.dispatch(page.inner, 'toggle');
+
+    const pendingWhileWaiting = world.pending();
+
+    world.detach(page.frame);
+
+    page.outer.open = true;
+    world.dispatch(page.outer, 'toggle');
+
+    return {
+      pendingWhileWaiting: pendingWhileWaiting,
+      listenersAfterTheDisclosureFired:
+        world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
+      pendingAfterTheDisclosureFired: world.pending(),
+    };
+  },
+
+  /**
+   * Where nothing watches the tree, a report that nothing is intersecting is
+   * still a way to hear that the frame has gone.
+   */
+  theReportIsStillAWayInWhereNothingWatchesTheTree: function (source) {
+    const ready = setUp(source, {intersectionObserver: true, mutationObserver: false});
+    const world = ready.world;
+    const page = ready.page;
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const disconnectedBeforeAnyReport = world.intersection().disconnected;
+
+    world.report(false);
+
+    return {
+      treeIsWatched: world.mutation() !== null,
+      disconnectedBeforeAnyReport: disconnectedBeforeAnyReport,
+      disconnectedAfterTheReport: world.intersection().disconnected,
+    };
+  },
+
+  /**
+   * A measurement the wait made leaves the watch ready for the next
+   * uncovering rather than holding the flag that swallows it.
+   */
+  aMeasurementFromAWaitLeavesTheWatchReady: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+
+    world.report(true);
+
+    const pendingWhileWaiting = world.pending();
+
+    world.attachResizer(page.frame);
+    world.advance(200);
+
+    const resizeFromTheWait = world.resizeCalls();
+
+    world.report(true);
+
+    return {
+      pendingWhileWaiting: pendingWhileWaiting,
+      resizeFromTheWait: resizeFromTheWait,
+      resizeAfterTheNextUncovering: world.resizeCalls(),
+      scheduledInAll: world.scheduled(),
       pendingAtTheEnd: world.pending(),
     };
   },
