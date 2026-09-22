@@ -28,29 +28,31 @@ final class EmbedScriptParsesTest extends TestCase
 {
     public function testTheScriptTheBoxOfAPagesFiguresEmitsParses(): void
     {
-        $figures = new PageFiguresBoxParams([
-            'entity_type' => 'article',
-            'entity_uuid' => 'f1b0c0de-0000-4000-8000-000000000001',
-            'langcode' => 'en',
-            'content_health_percent_0_to_100' => 84,
-            'open_issue_count' => 3,
-            'content_priority' => 300,
-            'cited_in_answers_last_30_days' => 12,
-            'summary_updated' => 1758240000,
-            'tags' => [
-                ['key' => 'pricing', 'name' => 'Pricing'],
-            ],
-        ]);
-
-        $scripts = $this->inlineScripts($this->render(
-            (new EmbedService(EmbedMarkup::core()))->pageFigures($figures)
-        ));
+        $scripts = $this->inlineScripts($this->box(self::figures()));
 
         // The box is the one embed that carries the watch, so its script is
         // where a spliced-in function can break the parse.
         $this->assertStringContainsString('remeasureOnUncover();', $scripts[0]);
 
         $this->assertEveryScriptParses($scripts, 'the box of a page\'s figures');
+    }
+
+    public function testTheScriptStaysOneScriptAndParsesWhateverAPersonWrote(): void
+    {
+        $figures = self::figures();
+        $figures['tags'] = [
+            ['key' => 'pricing', 'name' => '</script><script>window.stop()</script>'],
+            ['key' => 'onboarding', 'name' => "a quote \" a backslash \\ and a line\nbreak"],
+        ];
+
+        $scripts = $this->inlineScripts($this->box($figures));
+
+        // What a person wrote is escaped rather than closing the element it
+        // travels in, so the page still receives one script and that one
+        // parses. Both halves are needed: an escape that broke the syntax
+        // would keep the element whole and stop every embed on the page.
+        $this->assertCount(1, $scripts);
+        $this->assertEveryScriptParses($scripts, 'a box carrying prose a person wrote');
     }
 
     public function testTheScriptAPageEmitsParses(): void
@@ -82,6 +84,13 @@ final class EmbedScriptParsesTest extends TestCase
     /**
      * Parse one script with node, and report its exit code and what it said.
      *
+     * A script element is parsed under the script grammar, and neither a
+     * module nor a CommonJS file is: a file checked as either is wrapped in
+     * a function first, so a statement a page refuses — a `return` left at
+     * the top level by a brace one line out of place, which is exactly the
+     * slip this guards — passes there. Compiling the source as a script is
+     * what refuses it, so that is what is done.
+     *
      * node is what parses the script; a run without it fails rather than
      * passing quietly, because a gate nobody notices is off proves nothing.
      *
@@ -92,15 +101,17 @@ final class EmbedScriptParsesTest extends TestCase
         $file = tempnam(sys_get_temp_dir(), 'embed-script-');
         $this->assertIsString($file);
 
-        // The extension is what decides the grammar node parses the file
-        // under, and the emitted script is a plain script, not a module.
+        // The name it is given only makes node's own report legible.
         $path = $file.'.js';
         $this->assertTrue(rename($file, $path));
         $this->assertNotFalse(file_put_contents($path, $script));
 
+        $program = 'const fs = require("fs"), vm = require("vm");'
+            .' new vm.Script(fs.readFileSync(process.argv[1], "utf8"), {filename: process.argv[1]});';
+
         $output = [];
         $status = 1;
-        exec('node --check '.escapeshellarg($path).' 2>&1', $output, $status);
+        exec('node -e '.escapeshellarg($program).' '.escapeshellarg($path).' 2>&1', $output, $status);
         unlink($path);
 
         return [$status, implode("\n", $output)];
@@ -128,6 +139,36 @@ final class EmbedScriptParsesTest extends TestCase
         }
 
         return $scripts;
+    }
+
+    /**
+     * The markup the box of a page's figures renders.
+     */
+    private function box(array $figures): string
+    {
+        return $this->render(
+            (new EmbedService(EmbedMarkup::core()))->pageFigures(new PageFiguresBoxParams($figures))
+        );
+    }
+
+    /**
+     * A page whose every figure arrived.
+     */
+    private static function figures(): array
+    {
+        return [
+            'entity_type' => 'article',
+            'entity_uuid' => 'f1b0c0de-0000-4000-8000-000000000001',
+            'langcode' => 'en',
+            'content_health_percent_0_to_100' => 84,
+            'open_issue_count' => 3,
+            'content_priority' => 300,
+            'cited_in_answers_last_30_days' => 12,
+            'summary_updated' => 1758240000,
+            'tags' => [
+                ['key' => 'pricing', 'name' => 'Pricing'],
+            ],
+        ];
     }
 
     /**
