@@ -79,7 +79,12 @@ abstract class Embed
      * are covered as well as scrolling it into view. An engine that carries no
      * observer of its own hears one thing instead, a disclosure the frame sits
      * inside opening, and there a frame uncovered any other way keeps the size
-     * it was last measured at.
+     * it was last measured at. The disclosures it listens to are the ones the
+     * frame sat inside when the watch was built, so on that engine a frame
+     * moved into another disclosure without ever leaving the document is
+     * still heard from the ones it left; it is heard from the ones it sits
+     * inside now once it does leave and come back, which builds the watch
+     * again where the frame then is.
      *
      * Until the resizer has attached, the script asks again every 200
      * milliseconds; the frame is asked 25 times in all, however often it is
