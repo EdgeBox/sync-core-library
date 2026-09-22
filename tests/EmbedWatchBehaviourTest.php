@@ -343,6 +343,34 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['resizeCalls']);
     }
 
+    public function testARoundTripInsideOneChangeInheritsTheWindowThatStands(): void
+    {
+        $run = $this->perform('backAndOutWithinOneChange');
+
+        // The removal opens the window, and twenty seconds in, ten are left.
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
+        $this->assertSame([10000], $run['dueTwoThirdsIn']);
+
+        // The page then puts the frame back and takes it out again before the
+        // change is delivered. One change is one callback and the question is
+        // asked once, at delivery, so what the callback finds is a frame the
+        // document no longer holds with a window already standing: the round
+        // trip inherits the ten seconds left of it rather than being given
+        // thirty of its own.
+        $this->assertSame([10000], $run['dueAfterTheRoundTrip']);
+        $this->assertFalse($run['frameInTheDocument']);
+        $this->assertSame(1, $run['builtAfterTheRoundTrip'], 'a frame the document does not hold is watched by nothing');
+
+        // So the window runs out on the first removal's clock: standing nine
+        // seconds after the round trip and gone two seconds later, where a
+        // window of its own would have had twenty seconds still to run. A
+        // removal after a return the page made in a change of its own does
+        // get one, which is what the case above walks.
+        $this->assertTrue($run['removalsNineSecondsLater']);
+        $this->assertFalse($run['removalsElevenSecondsLater']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+    }
+
     public function testAFrameReplacedByAFreshElementWithTheSameIdIsNotAdopted(): void
     {
         $run = $this->perform('theFrameIsReplacedByAFreshOneWithTheSameId');

@@ -113,6 +113,14 @@ abstract class Embed
      * with the frame still gone, that last observer goes too and nothing of
      * the watch is left on the page.
      *
+     * One window stands at a time, and it belongs to the removal that opened
+     * it. A frame taken out again after a return this observer was called for
+     * gets a fresh 30 seconds, because that call cleared the window the return
+     * ended. A round trip the page makes inside one change — the frame put
+     * back and taken out again before the change is delivered — is one call
+     * that finds the frame gone with the window still standing, so it inherits
+     * what is left of those 30 seconds rather than opening one of its own.
+     *
      * Two frames fall outside the window. One the page puts back after those
      * 30 seconds, and one that is not the same element at all: a rebuilt
      * region that renders a fresh frame carrying the same id replaces the
@@ -498,12 +506,17 @@ abstract class Embed
     // The frame has left the document. Everything an uncovering is heard
     // through comes down at once, and what the changes to the tree are heard
     // through is kept on its own for the window, so that a frame the page puts
-    // back inside it is watched again. One window per removal: a page that
-    // keeps changing while the frame is gone does not lengthen it. When it
-    // closes with the frame still gone, that last observer goes too and
-    // nothing of the watch is left. An engine watching no change at all has
-    // nothing that could hear a frame come back, so there the take-down is the
-    // end of it.
+    // back inside it is watched again. One window stands at a time, and it
+    // belongs to the removal that opened it: a page that keeps changing while
+    // the frame is gone does not lengthen it, a removal after a return this
+    // callback was called for opens a fresh one because that call cleared the
+    // window the return ended, and a round trip made inside one change - the
+    // frame put back and taken out again before the change is delivered - is
+    // one call that finds the frame gone with the window still standing, so
+    // it inherits what is left of it. When a window closes with the frame
+    // still gone, that last observer goes too and nothing of the watch is
+    // left. An engine watching no change at all has nothing that could hear a
+    // frame come back, so there the take-down is the end of it.
     function frameHasGone() {
       stopWatching();
       if(!removals || grace!==null) {

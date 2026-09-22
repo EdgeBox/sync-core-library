@@ -981,6 +981,58 @@ const scenarios = {
   },
 
   /**
+   * The page puts the frame back and takes it out again inside one change.
+   * One change is one callback, and the question it asks is asked once, at
+   * delivery, so the round trip reads as a removal with the window already
+   * standing: it inherits what is left of that window rather than being given
+   * 30 seconds of its own.
+   */
+  backAndOutWithinOneChange: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    // Two thirds of the way through the window.
+    world.advance(20000);
+
+    const dueTwoThirdsIn = world.pendingDueIn();
+
+    // Back and out again before anything is delivered, so the callback runs
+    // once and finds the frame outside the document.
+    world.append(page.inner, page.frame);
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const dueAfterTheRoundTrip = world.pendingDueIn();
+    const builtAfterTheRoundTrip = world.intersections();
+
+    // Nine seconds later the window the first removal opened still stands,
+    // and two seconds after that it has closed.
+    world.advance(9000);
+
+    const removalsNineSecondsLater = !removals.disconnected;
+
+    world.advance(2000);
+
+    return {
+      dueAfterTheRemoval: dueAfterTheRemoval,
+      dueTwoThirdsIn: dueTwoThirdsIn,
+      dueAfterTheRoundTrip: dueAfterTheRoundTrip,
+      builtAfterTheRoundTrip: builtAfterTheRoundTrip,
+      removalsNineSecondsLater: removalsNineSecondsLater,
+      removalsElevenSecondsLater: !removals.disconnected,
+      frameInTheDocument: world.holds(page.frame),
+      pendingAtTheEnd: world.pending(),
+    };
+  },
+
+  /**
    * A rebuilt region renders a fresh frame carrying the same id: the watch
    * holds the element it started on, looks the id up no second time and does
    * not adopt the stranger, so its window runs out unused.
