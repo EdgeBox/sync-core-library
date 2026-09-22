@@ -141,7 +141,29 @@ function createWorld(engine) {
 
   documentElement.parentNode = documentStub;
 
+  // Where a node lay, from itself up to the document, read at the moment it
+  // changed: a browser's registration reaches a node then, and a later change
+  // in the same batch does not unsay a record already made.
+  function ancestry(node) {
+    const chain = [];
+    let at = node;
+
+    while (at) {
+      chain.push(at);
+      at = at.parentNode;
+    }
+
+    return chain;
+  }
+
   function append(parent, child) {
+    // Putting a node somewhere takes it out of wherever it was, which changes
+    // the child list it leaves as well as the one it joins, as appendChild
+    // does.
+    if (child.parentNode) {
+      detach(child);
+    }
+
     child.parentNode = parent;
     parent.childNodes.push(child);
 
@@ -151,7 +173,7 @@ function createWorld(engine) {
 
     // The child list that changed is the parent's, so that is the node the
     // record names, which is the node a browser names in it.
-    mutationRecords.push({type: 'childList', target: parent});
+    mutationRecords.push({type: 'childList', target: parent, within: ancestry(parent)});
   }
 
   function detach(child) {
@@ -171,7 +193,7 @@ function createWorld(engine) {
 
     child.parentNode = null;
 
-    mutationRecords.push({type: 'childList', target: parent});
+    mutationRecords.push({type: 'childList', target: parent, within: ancestry(parent)});
   }
 
   // Whether a record reaches an observer, which is the whole of what
@@ -181,8 +203,10 @@ function createWorld(engine) {
   // watching the wrong node, or asking for the wrong kind of change, hears
   // nothing here, exactly as it hears nothing in a browser.
   //
-  // Where a node lies is asked when the records are delivered, which is after
-  // the page has finished the change that produced them.
+  // Where the node lay is read at the moment it changed and carried in the
+  // record, not asked again at delivery: a later change in the same batch that
+  // takes that node out of the document leaves the record it already made
+  // standing, which is what a browser does.
   function reaches(observer, record) {
     if (record.type === 'childList' && observer.options.childList !== true) {
       return false;
@@ -196,17 +220,9 @@ function createWorld(engine) {
       return false;
     }
 
-    let at = record.target.parentNode;
-
-    while (at) {
-      if (at === observer.target) {
-        return true;
-      }
-
-      at = at.parentNode;
-    }
-
-    return false;
+    // The node itself is the head of its own chain, and it was answered for
+    // above, so only a proper ancestor counts here.
+    return record.within.indexOf(observer.target) > 0;
   }
 
   // Records reach an observer once the change the page made has finished, so
@@ -527,6 +543,33 @@ const scenarios = {
       removalsDisconnected: removalsDisconnected,
       removalsHeardOf: removalsHeardOf,
       pendingAfterItIsUncovered: world.pending(),
+    };
+  },
+
+  /**
+   * One change takes the frame out of its parent and then moves that parent
+   * out of the document, so the record for the frame's own removal names a
+   * node that is itself out of the document by the time the records are
+   * delivered.
+   */
+  theFrameAndItsParentBothLeaveInOneChange: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+    const elsewhere = world.makeNode('DIV');
+
+    world.detach(page.frame);
+    world.append(elsewhere, page.inner);
+    world.flushMutations();
+
+    return {
+      stillListedUnderTheOldParent: page.outer.childNodes.indexOf(page.inner) !== -1,
+      frameInTheDocument: world.holds(page.frame),
+      theParentIsOutOfTheDocumentToo: !world.holds(page.inner),
+      removalsHeardOf: removals.deliveries,
+      intersectionDisconnected: world.intersection().disconnected,
+      dueAfterTheChange: world.pendingDueIn(),
     };
   },
 

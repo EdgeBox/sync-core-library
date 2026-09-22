@@ -111,6 +111,26 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(1, $run['pendingAfterItIsUncovered']);
     }
 
+    public function testAFrameAndItsParentLeavingInOneChangeIsStillHeardOf(): void
+    {
+        $run = $this->perform('theFrameAndItsParentBothLeaveInOneChange');
+
+        // One change takes the frame out of its parent and then moves that
+        // parent out of the document. Putting a node somewhere takes it out
+        // of where it was, so nothing stays listed under a parent it left.
+        $this->assertFalse($run['stillListedUnderTheOldParent']);
+        $this->assertFalse($run['frameInTheDocument']);
+        $this->assertTrue($run['theParentIsOutOfTheDocumentToo']);
+
+        // The record for the frame's own removal names a node that is itself
+        // out of the document by the time the records are delivered, and the
+        // observer is told of it all the same, because where a node lay is
+        // read at the moment it changed.
+        $this->assertSame(1, $run['removalsHeardOf']);
+        $this->assertTrue($run['intersectionDisconnected']);
+        $this->assertSame([30000], $run['dueAfterTheChange']);
+    }
+
     public function testAFrameTakenOutWhileAWaitRunsStopsIt(): void
     {
         $run = $this->perform('removedWhileAWaitRuns');
