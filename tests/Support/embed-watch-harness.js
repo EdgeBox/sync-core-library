@@ -53,6 +53,12 @@ function createWorld(engine) {
     timers = timers.filter((timer) => timer.id !== id);
   }
 
+  // A browser hands an observer the records of a change at the end of the
+  // task that made it, so they are delivered before any timer due after that
+  // task - including one the delivery itself cleared. Every step of the clock
+  // here does the same before it fires anything, so a scenario that makes a
+  // change and then lets the clock move gets a browser's order without having
+  // to deliver by hand, and advance(0) is the end of the turn alone.
   function advance(ms) {
     const until = now + ms;
     let guard = 0;
@@ -62,6 +68,8 @@ function createWorld(engine) {
       if (guard > 10000) {
         throw new Error('the watch keeps scheduling without end');
       }
+
+      flushMutations();
 
       timers.sort((one, other) => one.at - other.at || one.id - other.id);
 
@@ -202,9 +210,10 @@ function createWorld(engine) {
   }
 
   // Records reach an observer once the change the page made has finished, so
-  // a scenario makes its changes and then lets this tick. One observer is
-  // handed the records of that batch that reach it and is left alone when
-  // none of them does.
+  // a scenario makes its changes and then lets this tick, either by hand or
+  // by moving the clock, which does it first. One observer is handed the
+  // records of that batch that reach it and is left alone when none of them
+  // does.
   function flushMutations() {
     if (mutationRecords.length === 0) {
       return 0;
@@ -534,7 +543,11 @@ const scenarios = {
     const dueWhileWaiting = world.pendingDueIn();
 
     world.detach(page.frame);
-    world.flushMutations();
+
+    // Nothing delivers the record by hand here: the turn the removal was made
+    // in ends, which is what puts the record in front of the observer before
+    // the wait's own timer is due.
+    world.advance(0);
 
     const dueAfterRemoval = world.pendingDueIn();
 
