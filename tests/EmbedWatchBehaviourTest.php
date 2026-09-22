@@ -223,6 +223,26 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(1, $run['resizeCallsAtTheEnd']);
     }
 
+    public function testAWatchThatStartsWithTheResizerAttachedWaitsForNothing(): void
+    {
+        $run = $this->perform('theResizerIsAlreadyAttachedWhenTheWatchStarts');
+
+        // The watch is started where the resizer has already attached, which
+        // is the state the page is in when the resizer attaches as it is
+        // asked to rather than some time afterwards. Starting the watch
+        // schedules nothing by itself.
+        $this->assertSame(0, $run['scheduledBeforeAnyUncovering']);
+
+        // And every uncovering measures the frame there and then, so the 25
+        // are never touched however often it is uncovered.
+        $this->assertSame(1, $run['resizeAfterOneUncovering']);
+        $this->assertSame(0, $run['scheduledAfterOneUncovering'], 'an attached resizer is asked, not waited for');
+        $this->assertSame(2, $run['resizeAfterTwoUncoverings']);
+        $this->assertSame(0, $run['scheduledInAll']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+        $this->assertTrue($run['watchStillOn']);
+    }
+
     public function testTheTwentyFiveAttemptsBelongToTheFrame(): void
     {
         $run = $this->perform('theBoundHoldsAcrossManyUncoverings');

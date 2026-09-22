@@ -751,6 +751,44 @@ const scenarios = {
   },
 
   /**
+   * The watch starts where the resizer has already attached, which is the
+   * state the page is in when the resizer attaches as it is asked to rather
+   * than some time afterwards: every uncovering measures the frame there and
+   * then and the 25 are never touched.
+   */
+  theResizerIsAlreadyAttachedWhenTheWatchStarts: function (source) {
+    const world = createWorld(bothObservers);
+    const page = world.buildPage(frameId(source));
+
+    world.attachResizer(page.frame);
+
+    // The page was built and the resizer attached before the watch started,
+    // so none of it is a change the watch could hear about.
+    world.settle();
+    world.start(source);
+
+    const scheduledBeforeAnyUncovering = world.scheduled();
+
+    world.report(true);
+
+    const resizeAfterOneUncovering = world.resizeCalls();
+    const scheduledAfterOneUncovering = world.scheduled();
+
+    world.report(true);
+    world.advance(10000);
+
+    return {
+      scheduledBeforeAnyUncovering: scheduledBeforeAnyUncovering,
+      resizeAfterOneUncovering: resizeAfterOneUncovering,
+      scheduledAfterOneUncovering: scheduledAfterOneUncovering,
+      resizeAfterTwoUncoverings: world.resizeCalls(),
+      scheduledInAll: world.scheduled(),
+      pendingAtTheEnd: world.pending(),
+      watchStillOn: !world.intersection().disconnected,
+    };
+  },
+
+  /**
    * The 25 attempts are the frame's: ten uncoverings, each given all the time
    * the chain could want, spend 25 between them and not 25 each.
    */
