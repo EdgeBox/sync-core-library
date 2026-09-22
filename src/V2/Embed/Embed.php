@@ -90,7 +90,9 @@ abstract class Embed
      * Every way a frame leaves the document takes the watch and its listeners
      * down with it, because the watch is told of the change to the page's own
      * tree and asks there whether the document still holds the frame; a wait,
-     * a disclosure or a report that runs first only gets there sooner.
+     * a disclosure or a report that runs first only gets there sooner. An
+     * engine so old that it watches no change at all hears it from the next
+     * wait or disclosure instead.
      *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
@@ -464,10 +466,16 @@ abstract class Embed
     // changed, and a frame hidden since it was first seen is not intersecting
     // before it is taken out and not intersecting afterwards. So the change to
     // the page\'s own tree is what the removal is heard from, on every engine
-    // that runs this code; the one thing asked of each change is whether the
-    // document still holds the frame, and it is asked once the change the page
-    // made has finished, so a frame moved from one parent to another is still
-    // held and keeps its watch.
+    // carrying an observer of changes - which is every engine carrying the
+    // intersection observer, and the older ones besides. One thing is asked of
+    // each change: whether the document still holds the frame. It is asked
+    // after the change that raised the question rather than inside it, so a
+    // frame taken out of one parent and put into another within one change is
+    // still held and keeps its watch, which is what the handler above does
+    // when it moves the frame. A frame put back only in a later change is not
+    // held when the question is asked, so its watch comes down; an element put
+    // back is a fresh load of the document it holds, which the resizer
+    // measures as it measures any frame it attaches to.
     if(typeof MutationObserver!=="undefined") {
       removals = new MutationObserver(function() {
         if(!document.contains(element)) {
