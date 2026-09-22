@@ -316,6 +316,33 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['pendingAtTheEnd']);
     }
 
+    public function testAFrameRemovedASecondTimeGetsAWindowOfItsOwn(): void
+    {
+        $run = $this->perform('removedPutBackAndRemovedAgain');
+
+        // The first removal opens the window, and the frame coming back
+        // inside it closes that window rather than leaving it to fire.
+        $this->assertSame([30000], $run['dueAfterTheFirstRemoval']);
+        $this->assertSame([], $run['dueOnceItIsBack']);
+        $this->assertSame(2, $run['builtOnceItIsBack'], 'the watch the frame started with, and the one it came back to');
+
+        // Taken out again, the frame is given a window of its own: a full 30
+        // seconds counted from this removal rather than what was left of the
+        // first, because the return cleared the first instead of spending it.
+        $this->assertSame([30000], $run['dueAfterTheSecondRemoval']);
+        $this->assertTrue($run['removalsHeldForTheSecondWindow']);
+        $this->assertSame(2, $run['builtAfterTheSecondRemoval'], 'the frame is gone, so nothing is built for it');
+
+        // Left alone, that window closes exactly as the first one would have:
+        // the observer kept across the take-down goes with it and nothing of
+        // the watch is left on the page, however many times the frame came and
+        // went before.
+        $this->assertFalse($run['frameInTheDocument']);
+        $this->assertTrue($run['removalsDisconnectedTenMinutesLater']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+        $this->assertSame(0, $run['resizeCalls']);
+    }
+
     public function testAFrameReplacedByAFreshElementWithTheSameIdIsNotAdopted(): void
     {
         $run = $this->perform('theFrameIsReplacedByAFreshOneWithTheSameId');

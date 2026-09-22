@@ -927,6 +927,60 @@ const scenarios = {
   },
 
   /**
+   * A frame the page takes out, puts back inside the window, and takes out
+   * again: the second removal is a removal like the first and opens a window
+   * of its own, a full 30 seconds rather than what was left of the one the
+   * return closed. Left alone this time, that window closes and the last
+   * thing the watch held on the page goes with it.
+   */
+  removedPutBackAndRemovedAgain: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const dueAfterTheFirstRemoval = world.pendingDueIn();
+
+    // Back a third of the way into the window, which closes it.
+    world.advance(10000);
+    world.append(page.inner, page.frame);
+    world.flushMutations();
+
+    const dueOnceItIsBack = world.pendingDueIn();
+    const builtOnceItIsBack = world.intersections();
+
+    // And out again, in a change of its own, well before the first window
+    // would have run out had it been left standing.
+    world.advance(5000);
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const dueAfterTheSecondRemoval = world.pendingDueIn();
+    const removalsHeldForTheSecondWindow = !removals.disconnected;
+    const builtAfterTheSecondRemoval = world.intersections();
+
+    // Nothing puts it back this time. Long after the second window's own 30
+    // seconds, what the changes to the tree were heard through is gone.
+    world.advance(600000);
+
+    return {
+      dueAfterTheFirstRemoval: dueAfterTheFirstRemoval,
+      dueOnceItIsBack: dueOnceItIsBack,
+      builtOnceItIsBack: builtOnceItIsBack,
+      dueAfterTheSecondRemoval: dueAfterTheSecondRemoval,
+      removalsHeldForTheSecondWindow: removalsHeldForTheSecondWindow,
+      builtAfterTheSecondRemoval: builtAfterTheSecondRemoval,
+      removalsDisconnectedTenMinutesLater: removals.disconnected,
+      frameInTheDocument: world.holds(page.frame),
+      pendingAtTheEnd: world.pending(),
+      resizeCalls: world.resizeCalls(),
+    };
+  },
+
+  /**
    * A rebuilt region renders a fresh frame carrying the same id: the watch
    * holds the element it started on, looks the id up no second time and does
    * not adopt the stranger, so its window runs out unused.
