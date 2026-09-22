@@ -402,6 +402,7 @@ abstract class Embed
     var waiting = false;
     var timer = null;
     var attempts = 0;
+    var built = false;
     var grace = null;
     // The third of this watch\'s three numbers, beside the 25 attempts and the
     // 200 milliseconds between them below: how long a frame the page has taken
@@ -420,12 +421,13 @@ abstract class Embed
     // an engine carrying an intersection observer is told when the frame
     // becomes visible, and an older one hears a disclosure the frame sits
     // inside opening instead. Building it twice would observe the frame twice
-    // and give each disclosure a second listener, so a watch already standing
-    // is left as it is.
+    // and give each disclosure a second listener, and every change to the page
+    // asks for it below, so a watch already standing is left as it is.
     function startWatching() {
-      if(observer || listeners.length>0) {
+      if(built) {
         return;
       }
+      built = true;
       // An engine with no observer still fires a disclosure\'s own toggle, and
       // a disclosure that opens is what uncovers a frame placed inside it.
       if(typeof IntersectionObserver==="undefined") {
@@ -461,6 +463,7 @@ abstract class Embed
     // the page\'s own tree are heard through is not taken down here, because
     // that is what a frame coming back is heard through too.
     function stopWatching() {
+      built = false;
       waiting = false;
       if(timer!==null) {
         clearTimeout(timer);
@@ -566,8 +569,11 @@ abstract class Embed
         if(grace!==null) {
           clearTimeout(grace);
           grace = null;
-          startWatching();
         }
+        // A frame the document holds is a frame that should be watched,
+        // whether it never left or has just come back, and the call is a
+        // no-op for the watch that is already standing.
+        startWatching();
       });
       removals.observe(document.documentElement, {childList: true, subtree: true});
     }
