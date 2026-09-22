@@ -1052,11 +1052,14 @@ const scenarios = {
   },
 
   /**
-   * The frame comes back in a batch that changed the page in more than one
-   * place, and the page keeps changing afterwards: the watch is built once,
-   * and each disclosure the frame sits inside is listened to once.
+   * Every change to the page asks for the watch again while the document
+   * holds the frame, so what keeps it from being built a second time is the
+   * flag and nothing else. The frame comes back, with another change beside
+   * it in the same batch, and the page then changes twice more with the frame
+   * where it belongs: each disclosure the frame sits inside is listened to
+   * once throughout.
    */
-  theRebuildIsIdempotentUnderTwoChangesInOneBatch: function (source) {
+  theWatchIsBuiltOnceHoweverOftenThePageChanges: function (source) {
     const ready = setUp(source, {intersectionObserver: false, mutationObserver: true});
     const world = ready.world;
     const page = ready.page;
@@ -1071,8 +1074,8 @@ const scenarios = {
     const listenedWhileItIsGone =
       world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
 
-    // One batch, two changes: the frame is put back and something else is
-    // added beside it.
+    // The frame is put back with another change beside it in the same batch,
+    // which is one callback here as it is one in a browser.
     world.append(page.inner, page.frame);
     world.append(page.body, world.makeNode('DIV'));
     world.flushMutations();
@@ -1080,7 +1083,9 @@ const scenarios = {
     const listenedOnceItIsBack =
       world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
 
-    // And the page keeps changing with the frame where it belongs.
+    // And the page keeps changing with the frame where it belongs: each of
+    // these asks for the watch again, and the flag is the whole of what makes
+    // each a no-op rather than a second listener on every disclosure.
     world.append(page.body, world.makeNode('DIV'));
     world.flushMutations();
     world.append(page.body, world.makeNode('DIV'));

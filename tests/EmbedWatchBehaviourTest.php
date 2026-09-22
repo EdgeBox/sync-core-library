@@ -387,19 +387,24 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['resizeCalls']);
     }
 
-    public function testTheRebuildIsIdempotentUnderTwoChangesInOneBatch(): void
+    public function testTheWatchIsBuiltOnceHoweverOftenThePageChanges(): void
     {
-        $run = $this->perform('theRebuildIsIdempotentUnderTwoChangesInOneBatch');
+        $run = $this->perform('theWatchIsBuiltOnceHoweverOftenThePageChanges');
 
         // Both disclosures the frame sits inside are listened to, and the
         // removal takes both listeners off.
         $this->assertSame(2, $run['listenedAtTheStart']);
         $this->assertSame(0, $run['listenedWhileItIsGone']);
 
-        // The frame comes back in a batch that changed the page in two places
-        // and the page keeps changing afterwards: each disclosure is listened
-        // to once, not twice.
+        // The frame comes back, with another change beside it in the same
+        // batch, and the watch is built for it. One batch is one callback
+        // here as it is one in a browser, so this much no rebuild could get
+        // wrong.
         $this->assertSame(2, $run['listenedOnceItIsBack']);
+
+        // What could is what follows: every later change asks for the watch
+        // again while the document holds the frame, and each of those asks
+        // has to be a no-op rather than a second listener on every disclosure.
         $this->assertSame(2, $run['listenedAfterMoreChanges']);
         $this->assertTrue($run['removalsStillWatching']);
 
