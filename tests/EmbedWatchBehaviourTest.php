@@ -60,13 +60,21 @@ final class EmbedWatchBehaviourTest extends TestCase
         // the wrong options hears nothing and the take-down below never runs.
         $this->assertTrue($run['removalsAreWatchedFor'], 'the watch listens for changes to the tree');
 
-        // And everything the watch set up is down before anything else runs.
+        // And everything an uncovering is heard through is down before
+        // anything else runs, while the one observer that could hear the
+        // frame come back stands for the window, which is all that is left
+        // pending.
         $this->assertTrue($run['intersectionDisconnected']);
-        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertTrue($run['removalsHeldForTheWindow']);
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
         $this->assertSame(0, $run['toggleListeners']);
-        $this->assertSame(0, $run['pendingTimers']);
-        $this->assertSame(0, $run['firedInAll']);
         $this->assertSame(0, $run['resizeCalls']);
+
+        // And when the window closes with the frame still gone, that observer
+        // goes too: one timer fired in the frame's whole life, the window's.
+        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(0, $run['pendingTimers']);
+        $this->assertSame(1, $run['firedInAll']);
     }
 
     public function testAFrameThatLeavesBecauseItsContainerDidTakesTheWatchDown(): void
@@ -80,6 +88,9 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertFalse($run['frameStillInTheDocument']);
 
         $this->assertTrue($run['intersectionDisconnected']);
+        $this->assertSame([30000], $run['dueAfterTheRemoval'], 'a region taken out opens the window too');
+
+        // And the window closes with the frame still gone.
         $this->assertTrue($run['removalsDisconnected']);
         $this->assertSame(0, $run['toggleListeners']);
         $this->assertSame(0, $run['pendingTimers']);
@@ -104,12 +115,15 @@ final class EmbedWatchBehaviourTest extends TestCase
     {
         $run = $this->perform('removedWhileAWaitRuns');
 
-        $this->assertSame(1, $run['pendingWhileWaiting']);
+        // One wait pending, due in the 200 milliseconds the watch waits.
+        $this->assertSame([200], $run['dueWhileWaiting']);
 
-        // The wait that was pending is cleared with the rest, so nothing
-        // fires after the take-down.
-        $this->assertSame(0, $run['pendingAfterRemoval']);
-        $this->assertSame(0, $run['firedInAll']);
+        // The wait that was pending is cleared with the rest, so what is left
+        // pending is the window and nothing else, and the one timer that ever
+        // fires is the window's own: the wait never measures anything.
+        $this->assertSame([30000], $run['dueAfterRemoval']);
+        $this->assertSame(1, $run['firedInAll']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
         $this->assertTrue($run['intersectionDisconnected']);
         $this->assertTrue($run['removalsDisconnected']);
         $this->assertSame(0, $run['resizeCalls']);
@@ -131,8 +145,10 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(1, $run['resizeAfterAnOpening']);
 
         // And the frame going takes every listener off the disclosures that
-        // outlive it, without anything having to report first.
+        // outlive it, without anything having to report first, leaving the
+        // window and nothing else.
         $this->assertSame(0, $run['listenersAfterRemoval']);
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
         $this->assertTrue($run['removalsDisconnected']);
         $this->assertSame(0, $run['pendingAtTheEnd']);
     }
@@ -223,6 +239,104 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['scheduledOnceTheResizerAttached']);
         $this->assertSame(1, $run['resizeCallsOnceTheResizerAttached']);
         $this->assertTrue($run['watchStillOn']);
+    }
+
+    public function testAFramePutBackInsideTheWindowIsWatchedAgain(): void
+    {
+        $run = $this->perform('putBackInsideTheWindow');
+
+        // Six of the 25 are spent, then the page takes the frame out: what an
+        // uncovering is heard through comes down, and the one observer that
+        // could hear the frame come back stands for the window.
+        $this->assertSame(6, $run['spentBeforeItWent'], 'one uncovering and a second of waiting');
+        $this->assertTrue($run['theWatchIsDown']);
+        $this->assertTrue($run['removalsHeldForTheWindow']);
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
+
+        // Put back inside it, the watch is built again - once, and once only
+        // however much the page keeps changing afterwards - and the window is
+        // cleared rather than left to fire.
+        $this->assertTrue($run['frameInTheDocument']);
+        $this->assertSame(2, $run['builtAgain'], 'the watch the frame started with, and the one it came back to');
+        $this->assertSame(2, $run['builtAfterAFurtherChange']);
+        $this->assertSame([], $run['dueOnceItIsBack']);
+        $this->assertTrue($run['removalsStillWatching']);
+
+        // And the next uncovering measures the frame on the count it had
+        // already spent rather than on a fresh 25.
+        $this->assertSame(19, $run['spentAfterItIsBack']);
+        $this->assertSame(
+            25,
+            $run['spentBeforeItWent'] + $run['spentAfterItIsBack'],
+            'the 25 belong to the frame, and coming back does not start them over'
+        );
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+    }
+
+    public function testAFramePutBackOnceTheWindowClosedStartsNoWatch(): void
+    {
+        $run = $this->perform('putBackAfterTheWindow');
+
+        // The window closed with the frame still gone, so nothing of the
+        // watch is left on the page.
+        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(1, $run['builtBeforeItIsBack']);
+        $this->assertSame(1, $run['heardBeforeItIsBack'], 'the removal, and nothing since');
+
+        // The page puts the frame back and nothing hears it: no observer is
+        // told, nothing is built, no wait starts, and the only timer of the
+        // frame's whole life was the window's own. What measures this frame
+        // is the resizer as it attaches, which for a hidden frame is the
+        // wrong size and stays it.
+        $this->assertTrue($run['frameInTheDocument']);
+        $this->assertSame(1, $run['heardOnceItIsBack']);
+        $this->assertSame(1, $run['builtOnceItIsBack']);
+        $this->assertSame(1, $run['scheduledInAll']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+        $this->assertSame(0, $run['resizeCalls']);
+    }
+
+    public function testAFrameNeverPutBackLeavesNothingWhenTheWindowCloses(): void
+    {
+        $run = $this->perform('removedAndNeverPutBack');
+
+        // Through the window one observer stands and nothing else: no
+        // intersection observer, no listener, and one timer, the window's.
+        $this->assertTrue($run['removalsWatchingInTheWindow']);
+        $this->assertTrue($run['intersectionDisconnected']);
+        $this->assertSame(0, $run['listenersInTheWindow']);
+        $this->assertSame([30000], $run['dueAfterTheRemoval']);
+
+        // The page changing while the frame is gone does not lengthen it: two
+        // thirds of the way through, ten seconds of the same window are left.
+        $this->assertSame([10000], $run['dueAfterAChangeWhileItIsGone']);
+
+        // And at its end nothing of the watch is left.
+        $this->assertTrue($run['removalsDisconnected']);
+        $this->assertSame(1, $run['intersectionsBuilt']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
+        $this->assertSame(0, $run['resizeCalls']);
+    }
+
+    public function testTheRebuildIsIdempotentUnderTwoChangesInOneBatch(): void
+    {
+        $run = $this->perform('theRebuildIsIdempotentUnderTwoChangesInOneBatch');
+
+        // Both disclosures the frame sits inside are listened to, and the
+        // removal takes both listeners off.
+        $this->assertSame(2, $run['listenedAtTheStart']);
+        $this->assertSame(0, $run['listenedWhileItIsGone']);
+
+        // The frame comes back in a batch that changed the page in two places
+        // and the page keeps changing afterwards: each disclosure is listened
+        // to once, not twice.
+        $this->assertSame(2, $run['listenedOnceItIsBack']);
+        $this->assertSame(2, $run['listenedAfterMoreChanges']);
+        $this->assertTrue($run['removalsStillWatching']);
+
+        // So one opening measures the frame once.
+        $this->assertSame(1, $run['resizeOnOneOpening']);
+        $this->assertSame(0, $run['pendingAtTheEnd']);
     }
 
     public function testAHiddenFrameTheDocumentStillHoldsKeepsItsWatch(): void

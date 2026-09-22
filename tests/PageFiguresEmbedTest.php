@@ -168,6 +168,10 @@ final class PageFiguresEmbedTest extends TestCase
         // the resizer has attached.
         $this->assertStringContainsString('if(attempts<25) {', $html);
         $this->assertStringContainsString("remeasure();\n        }, 200);", $html);
+        // And a frame the page takes out of the document is given 30 seconds
+        // to come back before the watch forgets it.
+        $this->assertStringContainsString('var graceMilliseconds = 30000;', $html);
+        $this->assertStringContainsString('}, graceMilliseconds);', $html);
         // The frame is watched for its removal as well as for its uncovering,
         // and the removal is heard from the change to the page's own tree.
         $this->assertStringContainsString('removals.observe(document.documentElement, {childList: true, subtree: true});', $html);

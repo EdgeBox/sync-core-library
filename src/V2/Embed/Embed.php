@@ -94,6 +94,23 @@ abstract class Embed
      * engine so old that it watches no change at all hears it from the next
      * wait or disclosure instead.
      *
+     * One thing outlives that take-down, and for 30 seconds: what the change
+     * to the page's own tree is heard through. A frame the page puts back
+     * inside those 30 seconds is watched again exactly as at the start, with
+     * the count of 25 carrying on where it stopped rather than starting over,
+     * so the next time the frame is uncovered it is measured. When the window
+     * closes with the frame still gone, that last observer goes too and
+     * nothing of the watch is left on the page.
+     *
+     * A frame the page puts back after those 30 seconds starts no watch of
+     * its own. What measures it is the resizer as it attaches, and for a frame
+     * that is hidden at that moment that measurement is the strip of a few
+     * pixels described above, which the frame then keeps until something else
+     * measures it. That is the residue of bounding the window rather than
+     * holding an observer of every change to the page, for every box, for as
+     * long as the reader stays: the bound is where this library stops paying
+     * for a frame the page has let go of.
+     *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
      * is the library's to decide. PageFiguresEmbed sets it, because the box is
@@ -385,10 +402,64 @@ abstract class Embed
     var waiting = false;
     var timer = null;
     var attempts = 0;
-    // Everything the watch set up comes down together, so a frame the
-    // document has let go of leaves nothing of itself behind on a page a
-    // reader stays on: the wait that is pending, both observers and every
-    // listener a disclosure was given.
+    var grace = null;
+    // The third of this watch\'s three numbers, beside the 25 attempts and the
+    // 200 milliseconds between them below: how long a frame the page has taken
+    // out of the document is given to come back before the watch forgets it.
+    var graceMilliseconds = 30000;
+    function onOpen(details) {
+      function run() {
+        if(details.open) {
+          uncovered();
+        }
+      }
+      details.addEventListener("toggle", run);
+      listeners.push({on: details, run: run});
+    }
+    // What an uncovering is heard through, and the one call that builds it:
+    // an engine carrying an intersection observer is told when the frame
+    // becomes visible, and an older one hears a disclosure the frame sits
+    // inside opening instead. Building it twice would observe the frame twice
+    // and give each disclosure a second listener, so a watch already standing
+    // is left as it is.
+    function startWatching() {
+      if(observer || listeners.length>0) {
+        return;
+      }
+      // An engine with no observer still fires a disclosure\'s own toggle, and
+      // a disclosure that opens is what uncovers a frame placed inside it.
+      if(typeof IntersectionObserver==="undefined") {
+        var parent = element.parentNode;
+        while(parent && parent.nodeType===1) {
+          if(parent.tagName.toUpperCase()==="DETAILS") {
+            onOpen(parent);
+          }
+          parent = parent.parentNode;
+        }
+        return;
+      }
+      observer = new IntersectionObserver(function(entries) {
+        for(var i=0; i<entries.length; i++) {
+          if(entries[i].isIntersecting) {
+            uncovered();
+            return;
+          }
+        }
+        // A report where nothing is intersecting is one more way to hear that
+        // the frame has gone, and the earliest one for a frame that was on
+        // screen when the page let go of it.
+        if(!document.contains(element)) {
+          frameHasGone();
+        }
+      });
+      observer.observe(element);
+    }
+    // Everything an uncovering is heard through comes down together, so a
+    // frame the document has let go of leaves nothing of itself behind on a
+    // page a reader stays on: the wait that is pending, the intersection
+    // observer and every listener a disclosure was given. What the changes to
+    // the page\'s own tree are heard through is not taken down here, because
+    // that is what a frame coming back is heard through too.
     function stopWatching() {
       waiting = false;
       if(timer!==null) {
@@ -399,21 +470,39 @@ abstract class Embed
         observer.disconnect();
         observer = null;
       }
-      if(removals) {
-        removals.disconnect();
-        removals = null;
-      }
       for(var i=0; i<listeners.length; i++) {
         listeners[i].on.removeEventListener("toggle", listeners[i].run);
       }
       listeners = [];
+    }
+    // The frame has left the document. Everything an uncovering is heard
+    // through comes down at once, and what the changes to the tree are heard
+    // through is kept on its own for the window, so that a frame the page puts
+    // back inside it is watched again. One window per removal: a page that
+    // keeps changing while the frame is gone does not lengthen it. When it
+    // closes with the frame still gone, that last observer goes too and
+    // nothing of the watch is left. An engine watching no change at all has
+    // nothing that could hear a frame come back, so there the take-down is the
+    // end of it.
+    function frameHasGone() {
+      stopWatching();
+      if(!removals || grace!==null) {
+        return;
+      }
+      grace = setTimeout(function() {
+        grace = null;
+        if(removals) {
+          removals.disconnect();
+          removals = null;
+        }
+      }, graceMilliseconds);
     }
     function remeasure() {
       // A frame the document no longer holds is one a rebuilt form replaced.
       // The membership test is the one every engine that gets here has, and
       // for a frame found by its id it asks what the element would answer.
       if(!document.contains(element)) {
-        stopWatching();
+        frameHasGone();
         return;
       }
       // A frame whose resizer is not the one this asks of falls through to
@@ -444,22 +533,13 @@ abstract class Embed
     // running is the one that measures it.
     function uncovered() {
       if(!document.contains(element)) {
-        stopWatching();
+        frameHasGone();
         return;
       }
       if(waiting) {
         return;
       }
       remeasure();
-    }
-    function onOpen(details) {
-      function run() {
-        if(details.open) {
-          uncovered();
-        }
-      }
-      details.addEventListener("toggle", run);
-      listeners.push({on: details, run: run});
     }
     // A frame can leave the document without anything reporting for it: an
     // intersection observer queues an entry only where the intersection
@@ -472,45 +552,26 @@ abstract class Embed
     // after the change that raised the question rather than inside it, so a
     // frame taken out of one parent and put into another within one change is
     // still held and keeps its watch, which is what the handler above does
-    // when it moves the frame. A frame put back only in a later change is not
-    // held when the question is asked, so its watch comes down; an element put
-    // back is a fresh load of the document it holds, which the resizer
-    // measures as it measures any frame it attaches to.
+    // when it moves the frame. A frame put back in a later change is not held
+    // when the question is asked, so what an uncovering is heard through comes
+    // down - and this observer is then the only thing left that could hear the
+    // frame come back, which is why it is kept for the window and builds the
+    // watch again there.
     if(typeof MutationObserver!=="undefined") {
       removals = new MutationObserver(function() {
         if(!document.contains(element)) {
-          stopWatching();
+          frameHasGone();
+          return;
+        }
+        if(grace!==null) {
+          clearTimeout(grace);
+          grace = null;
+          startWatching();
         }
       });
       removals.observe(document.documentElement, {childList: true, subtree: true});
     }
-    // An engine with no observer still fires a disclosure\'s own toggle, and
-    // a disclosure that opens is what uncovers a frame placed inside it.
-    if(typeof IntersectionObserver==="undefined") {
-      var parent = element.parentNode;
-      while(parent && parent.nodeType===1) {
-        if(parent.tagName.toUpperCase()==="DETAILS") {
-          onOpen(parent);
-        }
-        parent = parent.parentNode;
-      }
-      return;
-    }
-    observer = new IntersectionObserver(function(entries) {
-      for(var i=0; i<entries.length; i++) {
-        if(entries[i].isIntersecting) {
-          uncovered();
-          return;
-        }
-      }
-      // A report where nothing is intersecting is one more way to hear that
-      // the frame has gone, and the earliest one for a frame that was on
-      // screen when the page let go of it.
-      if(!document.contains(element)) {
-        stopWatching();
-      }
-    });
-    observer.observe(element);
+    startWatching();
   }
 ' : '').'
   function onDocumentReady(clb) {

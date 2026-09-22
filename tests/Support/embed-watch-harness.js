@@ -348,10 +348,15 @@ function createWorld(engine) {
     flushMutations: flushMutations,
     holds: (node) => documentStub.contains(node),
     intersection: () => (intersectionObservers.length > 0 ? intersectionObservers[0] : null),
+    intersections: () => intersectionObservers.length,
     listenerCount: listenerCount,
     makeNode: makeNode,
     mutation: () => (mutationObservers.length > 0 ? mutationObservers[0] : null),
     pending: () => timers.length,
+    // What is pending, said as the milliseconds each timer is still due in,
+    // so that a scenario names which timer it is looking at rather than
+    // counting them.
+    pendingDueIn: () => timers.map((timer) => timer.at - now).sort((one, other) => one - other),
     report: report,
     resizeCalls: () => resizeCalls,
     scheduled: () => scheduled,
@@ -433,12 +438,19 @@ const scenarios = {
 
     world.detach(page.frame);
     world.flushMutations();
-    world.advance(10000);
+
+    const intersectionDisconnected = world.intersection() !== null && world.intersection().disconnected;
+    const removalsHeldForTheWindow = removals !== null && !removals.disconnected;
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    world.advance(40000);
 
     return {
       removalsAreWatchedFor: removals !== null,
       intersectionReports: world.intersection() === null ? 0 : world.intersection().reports,
-      intersectionDisconnected: world.intersection() !== null && world.intersection().disconnected,
+      intersectionDisconnected: intersectionDisconnected,
+      removalsHeldForTheWindow: removalsHeldForTheWindow,
+      dueAfterTheRemoval: dueAfterTheRemoval,
       removalsDisconnected: removals !== null && removals.disconnected,
       pendingTimers: world.pending(),
       firedInAll: world.fired(),
@@ -459,11 +471,15 @@ const scenarios = {
 
     world.detach(page.outer);
     world.flushMutations();
-    world.advance(10000);
+
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    world.advance(40000);
 
     return {
       frameStillHasAParent: page.frame.parentNode !== null,
       frameStillInTheDocument: world.holds(page.frame),
+      dueAfterTheRemoval: dueAfterTheRemoval,
       intersectionDisconnected: world.intersection().disconnected,
       removalsDisconnected: removals !== null && removals.disconnected,
       toggleListeners: world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
@@ -515,19 +531,20 @@ const scenarios = {
 
     world.report(true);
 
-    const pendingWhileWaiting = world.pending();
+    const dueWhileWaiting = world.pendingDueIn();
 
     world.detach(page.frame);
     world.flushMutations();
 
-    const pendingAfterRemoval = world.pending();
+    const dueAfterRemoval = world.pendingDueIn();
 
-    world.advance(10000);
+    world.advance(40000);
 
     return {
-      pendingWhileWaiting: pendingWhileWaiting,
-      pendingAfterRemoval: pendingAfterRemoval,
+      dueWhileWaiting: dueWhileWaiting,
+      dueAfterRemoval: dueAfterRemoval,
       firedInAll: world.fired(),
+      pendingAtTheEnd: world.pending(),
       intersectionDisconnected: world.intersection().disconnected,
       removalsDisconnected: removals !== null && removals.disconnected,
       resizeCalls: world.resizeCalls(),
@@ -559,10 +576,14 @@ const scenarios = {
 
     world.detach(page.frame);
     world.flushMutations();
-    world.advance(10000);
+
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    world.advance(40000);
 
     return {
       intersectionObserverUsed: world.intersection() !== null,
+      dueAfterTheRemoval: dueAfterTheRemoval,
       listenedAtTheStart: listenedAtTheStart,
       listenedOnTheBody: world.listenerCount(page.body, 'toggle'),
       pendingAfterAnOpening: pendingAfterAnOpening,
@@ -746,6 +767,202 @@ const scenarios = {
       scheduledOnceTheResizerAttached: world.scheduled() - scheduledAcrossThem,
       resizeCallsOnceTheResizerAttached: world.resizeCalls(),
       watchStillOn: !world.intersection().disconnected,
+    };
+  },
+
+  /**
+   * A frame the page takes out and puts back in a later change, inside the
+   * window: the watch is built again exactly as at the start, and the count
+   * of 25 carries on where it stopped rather than starting over.
+   */
+  putBackInsideTheWindow: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    // Some of the 25 are spent before the frame goes.
+    world.report(true);
+    world.advance(1000);
+
+    const spentBeforeItWent = world.scheduled();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const theWatchIsDown = world.intersection().disconnected;
+    const removalsHeldForTheWindow = !removals.disconnected;
+    const dueAfterTheRemoval = world.pendingDueIn();
+
+    // The window's own timer is a timer like any other, so what the frame
+    // spends once it is back is counted from here.
+    const scheduledWithTheWindowOpen = world.scheduled();
+
+    // Put back well inside the window, in a change of its own.
+    world.advance(10000);
+    world.append(page.inner, page.frame);
+    world.flushMutations();
+
+    const builtAgain = world.intersections();
+    const dueOnceItIsBack = world.pendingDueIn();
+
+    // And the page keeps changing with the frame back where it belongs,
+    // which builds nothing further.
+    world.append(page.body, world.makeNode('DIV'));
+    world.flushMutations();
+
+    // Uncovered again with no resizer to answer: the chain carries on from
+    // the count the frame already spent.
+    world.report(true);
+    world.advance(40000);
+
+    return {
+      spentBeforeItWent: spentBeforeItWent,
+      theWatchIsDown: theWatchIsDown,
+      removalsHeldForTheWindow: removalsHeldForTheWindow,
+      dueAfterTheRemoval: dueAfterTheRemoval,
+      builtAgain: builtAgain,
+      builtAfterAFurtherChange: world.intersections(),
+      dueOnceItIsBack: dueOnceItIsBack,
+      frameInTheDocument: world.holds(page.frame),
+      spentAfterItIsBack: world.scheduled() - scheduledWithTheWindowOpen,
+      removalsStillWatching: !removals.disconnected,
+      pendingAtTheEnd: world.pending(),
+    };
+  },
+
+  /**
+   * A frame put back once the window has closed: nothing hears it, nothing
+   * is built, and the watch left nothing of itself behind.
+   */
+  putBackAfterTheWindow: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    // The window closes with the frame still gone.
+    world.advance(40000);
+
+    const removalsDisconnected = removals.disconnected;
+    const builtBeforeItIsBack = world.intersections();
+    const heardBeforeItIsBack = removals.deliveries;
+
+    world.append(page.inner, page.frame);
+    world.flushMutations();
+
+    world.report(true);
+    world.advance(40000);
+
+    return {
+      removalsDisconnected: removalsDisconnected,
+      builtBeforeItIsBack: builtBeforeItIsBack,
+      heardBeforeItIsBack: heardBeforeItIsBack,
+      frameInTheDocument: world.holds(page.frame),
+      builtOnceItIsBack: world.intersections(),
+      heardOnceItIsBack: removals.deliveries,
+      scheduledInAll: world.scheduled(),
+      pendingAtTheEnd: world.pending(),
+      resizeCalls: world.resizeCalls(),
+    };
+  },
+
+  /**
+   * A frame taken out and never put back: through the window one observer
+   * stands and nothing else, the page changing meanwhile does not lengthen
+   * it, and at its end nothing of the watch is left.
+   */
+  removedAndNeverPutBack: function (source) {
+    const ready = setUp(source, bothObservers);
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    world.report(true);
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const removalsWatchingInTheWindow = !removals.disconnected;
+    const intersectionDisconnected = world.intersection().disconnected;
+    const dueAfterTheRemoval = world.pendingDueIn();
+    const listenersInTheWindow =
+      world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    // Two thirds of the way through it, the page changes again.
+    world.advance(20000);
+    world.append(page.body, world.makeNode('DIV'));
+    world.flushMutations();
+
+    const dueAfterAChangeWhileItIsGone = world.pendingDueIn();
+
+    world.advance(40000);
+
+    return {
+      removalsWatchingInTheWindow: removalsWatchingInTheWindow,
+      intersectionDisconnected: intersectionDisconnected,
+      dueAfterTheRemoval: dueAfterTheRemoval,
+      listenersInTheWindow: listenersInTheWindow,
+      dueAfterAChangeWhileItIsGone: dueAfterAChangeWhileItIsGone,
+      removalsDisconnected: removals.disconnected,
+      intersectionsBuilt: world.intersections(),
+      pendingAtTheEnd: world.pending(),
+      resizeCalls: world.resizeCalls(),
+    };
+  },
+
+  /**
+   * The frame comes back in a batch that changed the page in more than one
+   * place, and the page keeps changing afterwards: the watch is built once,
+   * and each disclosure the frame sits inside is listened to once.
+   */
+  theRebuildIsIdempotentUnderTwoChangesInOneBatch: function (source) {
+    const ready = setUp(source, {intersectionObserver: false, mutationObserver: true});
+    const world = ready.world;
+    const page = ready.page;
+    const removals = world.mutation();
+
+    const listenedAtTheStart =
+      world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    world.detach(page.frame);
+    world.flushMutations();
+
+    const listenedWhileItIsGone =
+      world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    // One batch, two changes: the frame is put back and something else is
+    // added beside it.
+    world.append(page.inner, page.frame);
+    world.append(page.body, world.makeNode('DIV'));
+    world.flushMutations();
+
+    const listenedOnceItIsBack =
+      world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
+
+    // And the page keeps changing with the frame where it belongs.
+    world.append(page.body, world.makeNode('DIV'));
+    world.flushMutations();
+    world.append(page.body, world.makeNode('DIV'));
+    world.flushMutations();
+
+    // One opening, one measurement: a disclosure listened to twice would
+    // measure twice.
+    world.attachResizer(page.frame);
+    page.inner.open = true;
+    world.dispatch(page.inner, 'toggle');
+
+    return {
+      listenedAtTheStart: listenedAtTheStart,
+      listenedWhileItIsGone: listenedWhileItIsGone,
+      listenedOnceItIsBack: listenedOnceItIsBack,
+      listenedAfterMoreChanges:
+        world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle'),
+      removalsStillWatching: !removals.disconnected,
+      resizeOnOneOpening: world.resizeCalls(),
+      pendingAtTheEnd: world.pending(),
     };
   },
 
