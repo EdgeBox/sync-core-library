@@ -10,8 +10,8 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
  * One named array carries both the page's identity and its figures: the
  * identity is three strings and the figures are five numbers, so no signature
  * takes them in a row. The page is named the way any content management system
- * names one — an entity type, an entity uuid and a language, each a string of
- * the site's own choosing — and this class knows no system of its own.
+ * names one — an entity type, an entity uuid and a language — and this class
+ * knows no system of its own.
  *
  * **Two vocabularies, and which is which.** The named array carries the names
  * the page-figures record itself carries, in the record's own snake_case, so a
@@ -104,9 +104,19 @@ final class PageFiguresBoxParams
      * Required, each a non-empty string of at most MAX_IDENTITY_LENGTH
      * characters, surrounding whitespace trimmed:
      *   entity_type  the site's entity type machine name — any content entity type
-     *   entity_uuid  the entity's id on the site, in whatever form the site has;
-     *                a site whose system has no uuids passes its own id
+     *   entity_uuid  the entity's UUID, the one Sync Core holds for that
+     *                content item
      *   langcode     the language these figures describe
+     *
+     * The figures of a page are keyed on that UUID on both sides: the record
+     * Sync Core holds for the content item is keyed on it, and the box asks for
+     * it in that shape. A value of any other shape is answered with the box's
+     * own validation alert in place of every figure, because an id the store
+     * cannot hold has no record under it to find. What this class checks of it
+     * is only that something was passed and how long it is, and that is what
+     * keeps the answer an alert on the box: a Drupal or a WordPress site hands
+     * over its entity's UUID, and a stricter check here would raise on the
+     * site's own page instead.
      *
      * Optional; a value outside its documented range is omitted from the
      * rendered options rather than sent, because one value the box refuses
