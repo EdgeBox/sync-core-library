@@ -164,10 +164,10 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringContainsString('element.iFrameResizer.resize();', $html);
         $this->assertStringNotContainsString('if(element.iFrameResizer) {', $html);
 
-        // It asks again every 200 milliseconds, 25 times at most, until the
-        // resizer has attached.
-        $this->assertStringContainsString('if(attempt<25) {', $html);
-        $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
+        // It asks again every 200 milliseconds, 25 times for the frame, until
+        // the resizer has attached.
+        $this->assertStringContainsString('if(attempts<25) {', $html);
+        $this->assertStringContainsString("remeasure();\n        }, 200);", $html);
         // The frame is watched for its removal as well as for its uncovering,
         // and the removal is heard from the change to the page's own tree.
         $this->assertStringContainsString('removals.observe(document.documentElement, {childList: true, subtree: true});', $html);
@@ -181,11 +181,12 @@ final class PageFiguresEmbedTest extends TestCase
     {
         $watch = $this->watch();
 
-        // Every way in comes through the one function, and it starts no
-        // second wait while one is running, so the bound of 25 belongs to the
-        // frame rather than to each uncovering of it.
-        $this->assertSame(1, preg_match_all('@remeasure\\(0\\);@', $watch));
-        $this->assertStringContainsString("      if(waiting) {\n        return;\n      }\n      remeasure(0);", $watch);
+        // Every way in comes through the one function, it starts no second
+        // wait while one is running, and the count it spends is the frame's
+        // and not one uncovering's.
+        $this->assertStringContainsString("      if(waiting) {\n        return;\n      }\n      remeasure();", $watch);
+        $this->assertSame(1, preg_match_all('@var attempts = 0;@', $watch));
+        $this->assertSame(1, preg_match_all('@attempts\\+\\+;@', $watch));
         $this->assertSame(2, preg_match_all('@uncovered\\(\\);@', $watch));
 
         // The flag is set at the one place a wait is scheduled, and it starts
@@ -215,7 +216,7 @@ final class PageFiguresEmbedTest extends TestCase
 
         $stop = strpos($watch, 'function stopWatching() {');
         $drop = strpos($watch, 'observer.disconnect();');
-        $afterwards = strpos($watch, 'function remeasure(attempt) {');
+        $afterwards = strpos($watch, 'function remeasure() {');
 
         $this->assertIsInt($stop);
         $this->assertIsInt($drop);

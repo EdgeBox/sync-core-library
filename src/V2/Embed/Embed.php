@@ -82,8 +82,10 @@ abstract class Embed
      * it was last measured at.
      *
      * Until the resizer has attached, the script asks again every 200
-     * milliseconds, 25 times at most, and one such wait runs at a time however
-     * often the frame is uncovered.
+     * milliseconds; the frame is asked 25 times in all, however often it is
+     * uncovered, and one such wait runs at a time. Once those are spent the
+     * frame is never waited for again, and once the resizer has attached an
+     * uncovering measures the frame straight away.
      *
      * Every way a frame leaves the document takes the watch and its listeners
      * down with it, because the watch is told of the change to the page's own
@@ -380,6 +382,7 @@ abstract class Embed
     var listeners = [];
     var waiting = false;
     var timer = null;
+    var attempts = 0;
     // Everything the watch set up comes down together, so a frame the
     // document has let go of leaves nothing of itself behind on a page a
     // reader stays on: the wait that is pending, both observers and every
@@ -403,7 +406,7 @@ abstract class Embed
       }
       listeners = [];
     }
-    function remeasure(attempt) {
+    function remeasure() {
       // A frame the document no longer holds is one a rebuilt form replaced.
       // The membership test is the one every engine that gets here has, and
       // for a frame found by its id it asks what the element would answer.
@@ -418,11 +421,17 @@ abstract class Embed
         element.iFrameResizer.resize();
         return;
       }
-      if(attempt<25) {
+      // The 25 belongs to the frame and not to one uncovering of it: the
+      // count is kept across every wait, and once it is spent no wait starts
+      // again however often the frame is uncovered afterwards. An uncovering
+      // after that still measures the frame straight away once the resizer
+      // has attached, which is the case above.
+      if(attempts<25) {
+        attempts++;
         waiting = true;
         timer = setTimeout(function() {
           timer = null;
-          remeasure(attempt+1);
+          remeasure();
         }, 200);
         return;
       }
@@ -439,7 +448,7 @@ abstract class Embed
       if(waiting) {
         return;
       }
-      remeasure(0);
+      remeasure();
     }
     function onOpen(details) {
       function run() {
