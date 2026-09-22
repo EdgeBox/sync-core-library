@@ -33,7 +33,7 @@ function createWorld(engine) {
   let scheduled = 0;
   let fired = 0;
   let resizeCalls = 0;
-  let mutationsPending = 0;
+  let mutationRecords = [];
 
   const byId = Object.create(null);
   const mutationObservers = [];
@@ -141,42 +141,97 @@ function createWorld(engine) {
       byId[child.id] = child;
     }
 
-    mutationsPending += 1;
+    // The child list that changed is the parent's, so that is the node the
+    // record names, which is the node a browser names in it.
+    mutationRecords.push({type: 'childList', target: parent});
   }
 
   function detach(child) {
     const parent = child.parentNode;
 
-    if (parent) {
-      const at = parent.childNodes.indexOf(child);
-
-      if (at !== -1) {
-        parent.childNodes.splice(at, 1);
-      }
-
-      child.parentNode = null;
+    // A node no parent holds is a node nothing can be taken out of, and a
+    // browser records nothing for it.
+    if (!parent) {
+      return;
     }
 
-    mutationsPending += 1;
+    const at = parent.childNodes.indexOf(child);
+
+    if (at !== -1) {
+      parent.childNodes.splice(at, 1);
+    }
+
+    child.parentNode = null;
+
+    mutationRecords.push({type: 'childList', target: parent});
+  }
+
+  // Whether a record reaches an observer, which is the whole of what
+  // observe(target, options) was asked for: the node whose child list changed
+  // is the observed node itself, or lies inside it and the subtree was asked
+  // for, and the kind of change is one that was asked for. So an observer
+  // watching the wrong node, or asking for the wrong kind of change, hears
+  // nothing here, exactly as it hears nothing in a browser.
+  //
+  // Where a node lies is asked when the records are delivered, which is after
+  // the page has finished the change that produced them.
+  function reaches(observer, record) {
+    if (record.type === 'childList' && observer.options.childList !== true) {
+      return false;
+    }
+
+    if (record.target === observer.target) {
+      return true;
+    }
+
+    if (observer.options.subtree !== true) {
+      return false;
+    }
+
+    let at = record.target.parentNode;
+
+    while (at) {
+      if (at === observer.target) {
+        return true;
+      }
+
+      at = at.parentNode;
+    }
+
+    return false;
   }
 
   // Records reach an observer once the change the page made has finished, so
-  // a scenario makes its changes and then lets this tick.
+  // a scenario makes its changes and then lets this tick. One observer is
+  // handed the records of that batch that reach it and is left alone when
+  // none of them does.
   function flushMutations() {
-    if (mutationsPending === 0) {
+    if (mutationRecords.length === 0) {
       return 0;
     }
 
-    mutationsPending = 0;
+    const batch = mutationRecords;
+    let delivered = 0;
+
+    mutationRecords = [];
 
     mutationObservers.slice().forEach((observer) => {
-      if (observer.watching) {
-        observer.deliveries += 1;
-        observer.callback([{type: 'childList'}], observer);
+      if (!observer.watching) {
+        return;
       }
+
+      const heard = batch.filter((record) => reaches(observer, record));
+
+      if (heard.length === 0) {
+        return;
+      }
+
+      observer.deliveries += 1;
+      delivered += 1;
+      observer.callback(heard, observer);
     });
 
-    return 1;
+    return delivered;
   }
 
   // ---- the observers -----------------------------------------------------
@@ -301,7 +356,7 @@ function createWorld(engine) {
     resizeCalls: () => resizeCalls,
     scheduled: () => scheduled,
     settle: () => {
-      mutationsPending = 0;
+      mutationRecords = [];
     },
     start: start,
   };
@@ -382,9 +437,6 @@ const scenarios = {
 
     return {
       removalsAreWatchedFor: removals !== null,
-      observesTheDocumentElement: removals !== null && removals.target === world.documentElement(),
-      watchesChildLists: removals !== null && true === removals.options.childList,
-      watchesTheWholeSubtree: removals !== null && true === removals.options.subtree,
       intersectionReports: world.intersection() === null ? 0 : world.intersection().reports,
       intersectionDisconnected: world.intersection() !== null && world.intersection().disconnected,
       removalsDisconnected: removals !== null && removals.disconnected,

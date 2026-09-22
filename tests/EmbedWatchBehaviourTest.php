@@ -54,10 +54,11 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertSame(0, $run['intersectionReports']);
 
         // What hears of the removal is the change to the page's own tree.
+        // Which node the watch asked to hear about, and which kind of change,
+        // is not read off the observer here: the stub hands an observer only
+        // the records it asked for, so an observer on the wrong node or with
+        // the wrong options hears nothing and the take-down below never runs.
         $this->assertTrue($run['removalsAreWatchedFor'], 'the watch listens for changes to the tree');
-        $this->assertTrue($run['observesTheDocumentElement']);
-        $this->assertTrue($run['watchesChildLists']);
-        $this->assertTrue($run['watchesTheWholeSubtree']);
 
         // And everything the watch set up is down before anything else runs.
         $this->assertTrue($run['intersectionDisconnected']);
