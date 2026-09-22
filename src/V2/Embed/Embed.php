@@ -362,20 +362,18 @@ abstract class Embed
   // measured again each time it is uncovered.
   function remeasureOnUncover() {
     var element = document.getElementById("'.$id.'");
-    if(!element || typeof IntersectionObserver==="undefined") {
+    if(!element) {
       return;
     }
-    var observer = new IntersectionObserver(function(entries) {
-      for(var i=0; i<entries.length; i++) {
-        if(entries[i].isIntersecting) {
-          remeasure(0);
-          return;
-        }
-      }
-    });
+    var observer = null;
     function remeasure(attempt) {
-      if(!element.isConnected) {
-        observer.disconnect();
+      // A frame the document no longer holds is one a rebuilt form replaced,
+      // and the chain that would keep measuring it stops with it. The
+      // membership test is the one every engine that gets here has.
+      if(!document.contains(element)) {
+        if(observer) {
+          observer.disconnect();
+        }
         return;
       }
       // A frame whose resizer is not the one this asks of falls through to
@@ -390,6 +388,33 @@ abstract class Embed
         }, 200);
       }
     }
+    function onOpen(details) {
+      details.addEventListener("toggle", function() {
+        if(details.open) {
+          remeasure(0);
+        }
+      });
+    }
+    // An engine with no observer still fires a disclosure\'s own toggle, and
+    // a disclosure that opens is what uncovers a frame placed inside it.
+    if(typeof IntersectionObserver==="undefined") {
+      var parent = element.parentNode;
+      while(parent && parent.nodeType===1) {
+        if(parent.tagName.toUpperCase()==="DETAILS") {
+          onOpen(parent);
+        }
+        parent = parent.parentNode;
+      }
+      return;
+    }
+    observer = new IntersectionObserver(function(entries) {
+      for(var i=0; i<entries.length; i++) {
+        if(entries[i].isIntersecting) {
+          remeasure(0);
+          return;
+        }
+      }
+    });
     observer.observe(element);
   }
 ' : '').'

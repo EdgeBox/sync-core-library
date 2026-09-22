@@ -168,7 +168,32 @@ final class PageFiguresEmbedTest extends TestCase
         // resizer has attached, and it stops once the frame has left the page.
         $this->assertStringContainsString('if(attempt<25) {', $html);
         $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
-        $this->assertStringContainsString("if(!element.isConnected) {\n        observer.disconnect();", $html);
+        // Whether the document still holds the frame is asked with the
+        // membership test every engine that runs this code has.
+        $this->assertStringContainsString("if(!document.contains(element)) {\n        if(observer) {\n          observer.disconnect();", $html);
+        $this->assertStringNotContainsString('isConnected', $html);
+    }
+
+    public function testAnEngineWithoutTheObserverStillMeasuresAnUncoveredFrame(): void
+    {
+        $html = EmbedMarkup::of($this->pageFigures());
+
+        // Where there is no observer, the disclosures the frame sits inside
+        // are what is left to hear from, and each of them is heard from.
+        $this->assertStringContainsString('if(typeof IntersectionObserver==="undefined") {', $html);
+        $this->assertStringContainsString('if(parent.tagName.toUpperCase()==="DETAILS") {', $html);
+        $this->assertStringContainsString("details.addEventListener(\"toggle\", function() {\n        if(details.open) {\n          remeasure(0);", $html);
+        $this->assertStringContainsString('parent = parent.parentNode;', $html);
+
+        // The retry is bounded there as it is everywhere else: the frame is
+        // reached through the one function that counts the attempts.
+        $this->assertSame(1, preg_match_all('@remeasure\\(attempt\\+1\\)@', $html));
+
+        // Any system embeds this library, so nothing the script carries is
+        // one system's own markup or its own script interface.
+        foreach (['Drupal', 'vertical-tabs', 'js-vertical-tabs', 'behaviors'] as $named) {
+            $this->assertStringNotContainsString($named, $html, $named);
+        }
     }
 
     public function testNoCallerCanTurnTheMeasuringOff(): void
