@@ -112,8 +112,10 @@ jobs:
           php-version: '8.3'
           coverage: none
 
-      # The suite hands the JavaScript the embeds emit to node, so the version
-      # it runs under is pinned here rather than left to the runner image.
+      # The suite hands the JavaScript the embeds emit to node, so the major
+      # line it runs under is named here rather than left to the runner image,
+      # as the PHP version above is: which 22.x answers is the runner's own to
+      # resolve, and nothing in the suite asks for more than the line.
       - name: Set up node
         uses: actions/setup-node@v4
         with:
