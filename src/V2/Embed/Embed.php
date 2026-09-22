@@ -83,9 +83,12 @@ abstract class Embed
      *
      * Until the resizer has attached, the script asks again every 200
      * milliseconds, 25 times at most, and one such wait runs at a time however
-     * often the frame is uncovered. Whatever reports next for a frame the
-     * document no longer holds — the wait, a disclosure, or the watch itself —
-     * takes the watch and its listeners down with it.
+     * often the frame is uncovered.
+     *
+     * Every way a frame leaves the document takes the watch and its listeners
+     * down with it, because the watch is told of the change to the page's own
+     * tree and asks there whether the document still holds the frame; a wait,
+     * a disclosure or a report that runs first only gets there sooner.
      *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
@@ -373,16 +376,27 @@ abstract class Embed
       return;
     }
     var observer = null;
+    var removals = null;
     var listeners = [];
     var waiting = false;
+    var timer = null;
     // Everything the watch set up comes down together, so a frame the
     // document has let go of leaves nothing of itself behind on a page a
-    // reader stays on.
+    // reader stays on: the wait that is pending, both observers and every
+    // listener a disclosure was given.
     function stopWatching() {
       waiting = false;
+      if(timer!==null) {
+        clearTimeout(timer);
+        timer = null;
+      }
       if(observer) {
         observer.disconnect();
         observer = null;
+      }
+      if(removals) {
+        removals.disconnect();
+        removals = null;
       }
       for(var i=0; i<listeners.length; i++) {
         listeners[i].on.removeEventListener("toggle", listeners[i].run);
@@ -406,7 +420,8 @@ abstract class Embed
       }
       if(attempt<25) {
         waiting = true;
-        setTimeout(function() {
+        timer = setTimeout(function() {
+          timer = null;
           remeasure(attempt+1);
         }, 200);
         return;
@@ -435,6 +450,23 @@ abstract class Embed
       details.addEventListener("toggle", run);
       listeners.push({on: details, run: run});
     }
+    // A frame can leave the document without anything reporting for it: an
+    // intersection observer queues an entry only where the intersection
+    // changed, and a frame hidden since it was first seen is not intersecting
+    // before it is taken out and not intersecting afterwards. So the change to
+    // the page\'s own tree is what the removal is heard from, on every engine
+    // that runs this code; the one thing asked of each change is whether the
+    // document still holds the frame, and it is asked once the change the page
+    // made has finished, so a frame moved from one parent to another is still
+    // held and keeps its watch.
+    if(typeof MutationObserver!=="undefined") {
+      removals = new MutationObserver(function() {
+        if(!document.contains(element)) {
+          stopWatching();
+        }
+      });
+      removals.observe(document.documentElement, {childList: true, subtree: true});
+    }
     // An engine with no observer still fires a disclosure\'s own toggle, and
     // a disclosure that opens is what uncovers a frame placed inside it.
     if(typeof IntersectionObserver==="undefined") {
@@ -454,9 +486,9 @@ abstract class Embed
           return;
         }
       }
-      // Nothing it reports is intersecting, which is what a frame the
-      // document has let go of reports, so this is where the watch hears of
-      // it and takes itself down.
+      // A report where nothing is intersecting is one more way to hear that
+      // the frame has gone, and the earliest one for a frame that was on
+      // screen when the page let go of it.
       if(!document.contains(element)) {
         stopWatching();
       }

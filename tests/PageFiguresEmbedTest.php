@@ -168,6 +168,9 @@ final class PageFiguresEmbedTest extends TestCase
         // resizer has attached.
         $this->assertStringContainsString('if(attempt<25) {', $html);
         $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
+        // The frame is watched for its removal as well as for its uncovering,
+        // and the removal is heard from the change to the page's own tree.
+        $this->assertStringContainsString('removals.observe(document.documentElement, {childList: true, subtree: true});', $html);
         // Whether the document still holds the frame is asked with the
         // membership test every engine that runs this code has.
         $this->assertStringContainsString('if(!document.contains(element)) {', $html);
@@ -188,7 +191,7 @@ final class PageFiguresEmbedTest extends TestCase
         // The flag is set at the one place a wait is scheduled, and it starts
         // unset and is cleared at each of the three places a wait ends: the
         // resizer answering, the bound running out, and the watch coming down.
-        $this->assertStringContainsString("        waiting = true;\n        setTimeout(function() {", $watch);
+        $this->assertStringContainsString("        waiting = true;\n        timer = setTimeout(function() {", $watch);
         $this->assertSame(1, preg_match_all('@waiting = true;@', $watch));
         $this->assertSame(1, preg_match_all('@var waiting = false;@', $watch));
         $this->assertSame(4, preg_match_all('@waiting = false;@', $watch));
@@ -198,12 +201,11 @@ final class PageFiguresEmbedTest extends TestCase
     {
         $watch = $this->watch();
 
-        // The wait, a disclosure and the watch itself each ask whether the
-        // document still holds the frame, and each answer of no takes the
-        // whole watch down; a frame nothing reports for needs nothing taken
-        // down, because it has nothing running on it.
-        $this->assertSame(3, preg_match_all('@if\\(!document\\.contains\\(element\\)\\) \\{@', $watch));
-        $this->assertSame(3, preg_match_all('@stopWatching\\(\\);@', $watch));
+        // The wait, a disclosure, the watch itself and the change to the
+        // page's own tree each ask whether the document still holds the frame,
+        // and each answer of no takes the whole watch down.
+        $this->assertSame(4, preg_match_all('@if\\(!document\\.contains\\(element\\)\\) \\{@', $watch));
+        $this->assertSame(4, preg_match_all('@stopWatching\\(\\);@', $watch));
 
         // Taking it down is one thing: the observer is dropped and every
         // listener the fallback added is removed with it.
