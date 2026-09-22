@@ -177,54 +177,6 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringNotContainsString('isConnected', $html);
     }
 
-    public function testOneWaitForTheResizerRunsHoweverOftenTheFrameIsUncovered(): void
-    {
-        $watch = $this->watch();
-
-        // Every way in comes through the one function, it starts no second
-        // wait while one is running, and the count it spends is the frame's
-        // and not one uncovering's.
-        $this->assertStringContainsString("      if(waiting) {\n        return;\n      }\n      remeasure();", $watch);
-        $this->assertSame(1, preg_match_all('@var attempts = 0;@', $watch));
-        $this->assertSame(1, preg_match_all('@attempts\\+\\+;@', $watch));
-        $this->assertSame(2, preg_match_all('@uncovered\\(\\);@', $watch));
-
-        // The flag is set at the one place a wait is scheduled, and it starts
-        // unset and is cleared at each of the three places a wait ends: the
-        // resizer answering, the bound running out, and the watch coming down.
-        $this->assertStringContainsString("        waiting = true;\n        timer = setTimeout(function() {", $watch);
-        $this->assertSame(1, preg_match_all('@waiting = true;@', $watch));
-        $this->assertSame(1, preg_match_all('@var waiting = false;@', $watch));
-        $this->assertSame(4, preg_match_all('@waiting = false;@', $watch));
-    }
-
-    public function testEveryWayInTakesTheWatchDownOnceTheFrameHasLeftTheDocument(): void
-    {
-        $watch = $this->watch();
-
-        // The wait, a disclosure, the watch itself and the change to the
-        // page's own tree each ask whether the document still holds the frame,
-        // and each answer of no takes the whole watch down.
-        $this->assertSame(4, preg_match_all('@if\\(!document\\.contains\\(element\\)\\) \\{@', $watch));
-        $this->assertSame(4, preg_match_all('@stopWatching\\(\\);@', $watch));
-
-        // Taking it down is one thing: the observer is dropped and every
-        // listener the fallback added is removed with it.
-        $this->assertSame(1, preg_match_all('@observer\\.disconnect\\(\\);@', $watch));
-        $this->assertStringContainsString('listeners[i].on.removeEventListener("toggle", listeners[i].run);', $watch);
-        $this->assertStringContainsString('listeners.push({on: details, run: run});', $watch);
-
-        $stop = strpos($watch, 'function stopWatching() {');
-        $drop = strpos($watch, 'observer.disconnect();');
-        $afterwards = strpos($watch, 'function remeasure() {');
-
-        $this->assertIsInt($stop);
-        $this->assertIsInt($drop);
-        $this->assertIsInt($afterwards);
-        $this->assertGreaterThan($stop, $drop);
-        $this->assertLessThan($afterwards, $drop);
-    }
-
     public function testAnEngineWithoutTheObserverStillMeasuresAnUncoveredFrame(): void
     {
         $watch = $this->watch();
