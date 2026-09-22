@@ -165,13 +165,35 @@ final class PageFiguresEmbedTest extends TestCase
         $this->assertStringNotContainsString('if(element.iFrameResizer) {', $html);
 
         // It asks again every 200 milliseconds, 25 times at most, until the
-        // resizer has attached, and it stops once the frame has left the page.
+        // resizer has attached, and that chain stops, and drops the watch
+        // with it, as soon as the frame has left the document.
         $this->assertStringContainsString('if(attempt<25) {', $html);
         $this->assertStringContainsString("remeasure(attempt+1);\n        }, 200);", $html);
         // Whether the document still holds the frame is asked with the
         // membership test every engine that runs this code has.
         $this->assertStringContainsString("if(!document.contains(element)) {\n        if(observer) {\n          observer.disconnect();", $html);
         $this->assertStringNotContainsString('isConnected', $html);
+    }
+
+    public function testTheChainThatCountsTheAttemptsIsWhatDropsTheWatch(): void
+    {
+        $html = EmbedMarkup::of($this->pageFigures());
+
+        // What stops when the frame leaves the document is the chain, which
+        // drops the watch as it goes; nothing else disconnects. A frame that
+        // leaves while no chain runs needs nothing dropped, because the watch
+        // only ever hears from a frame the document still holds.
+        $this->assertSame(1, preg_match_all('@observer\\.disconnect\\(\\)@', $html));
+
+        $chain = strpos($html, 'function remeasure(attempt) {');
+        $drop = strpos($html, 'observer.disconnect()');
+        $afterwards = strpos($html, 'function onOpen(details) {');
+
+        $this->assertIsInt($chain);
+        $this->assertIsInt($drop);
+        $this->assertIsInt($afterwards);
+        $this->assertGreaterThan($chain, $drop);
+        $this->assertLessThan($afterwards, $drop);
     }
 
     public function testAnEngineWithoutTheObserverStillMeasuresAnUncoveredFrame(): void

@@ -78,7 +78,10 @@ abstract class Embed
      * to shown is uncovered, so opening a `details` element and selecting a tab
      * are covered as well as scrolling it into view. Until the resizer has
      * attached, the script asks again every 200 milliseconds, 25 times at
-     * most, and it stops once the frame has left the document.
+     * most; that chain stops as soon as the frame has left the document, and
+     * drops the watch as it goes. A frame that leaves while no chain runs
+     * needs nothing dropped: the watch only ever hears from a frame the
+     * document still holds.
      *
      * The embed class decides this, never an option a caller passes: the
      * options travel to the frame, and a frame's behaviour on the site's page
