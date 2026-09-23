@@ -178,34 +178,6 @@ final class PageFiguresBoxParams
     }
 
     /**
-     * The number each member opens with, in the order the members come.
-     *
-     * A member whose value opens with no digits names no number and is left
-     * out, exactly as the box leaves it out.
-     *
-     * @internal public so that the skipping of a member naming no number can be
-     *           covered directly; the enum ships none today, and covering it
-     *           through priorities() would mean writing this loop a second time
-     *           in the test. Call priorities() instead.
-     *
-     * @param string[] $members
-     *
-     * @return int[]
-     */
-    public static function numbersOf(array $members)
-    {
-        $numbers = [];
-
-        foreach ($members as $member) {
-            if (1 === preg_match('@^(\d+)@', (string) $member, $matches)) {
-                $numbers[] = (int) $matches[1];
-            }
-        }
-
-        return $numbers;
-    }
-
-    /**
      * @return string
      */
     public function getEntityType()
@@ -272,6 +244,29 @@ final class PageFiguresBoxParams
         $options['tags'] = $this->tags();
 
         return $options;
+    }
+
+    /**
+     * The number each member opens with, in the order the members come.
+     *
+     * A member whose value opens with no digits names no number and is left
+     * out, exactly as the box leaves it out.
+     *
+     * @param string[] $members
+     *
+     * @return int[]
+     */
+    private static function numbersOf(array $members)
+    {
+        $numbers = [];
+
+        foreach ($members as $member) {
+            if (1 === preg_match('@^(\d+)@', (string) $member, $matches)) {
+                $numbers[] = (int) $matches[1];
+            }
+        }
+
+        return $numbers;
     }
 
     /**

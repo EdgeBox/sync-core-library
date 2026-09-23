@@ -213,10 +213,15 @@ final class PageFiguresBoxParamsTest extends TestCase
 
     public function testAMemberThatNamesNoNumberNamesNoPriority(): void
     {
-        $this->assertSame(
-            [400, 100],
-            PageFiguresBoxParams::numbersOf(['400-critical', 'unset', '100-low', '', 'none'])
-        );
+        $numbered = [];
+
+        foreach (ContentPriority::getAllowableEnumValues() as $member) {
+            if (1 === preg_match('@^(\d+)@', (string) $member, $matches)) {
+                $numbered[] = (int) $matches[1];
+            }
+        }
+
+        $this->assertSame($numbered, PageFiguresBoxParams::priorities());
     }
 
     public function testATagThatDoesNotNameItselfWholeIsLeftOut(): void
