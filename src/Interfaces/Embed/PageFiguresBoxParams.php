@@ -51,8 +51,8 @@ final class PageFiguresBoxParams
      * part is held to the one bound every part of an identity is held to. What
      * a usable id looks like is the box's own to answer, and it refuses one
      * with an alert that names the property it reads the id under,
-     * `entityUuid`, and the constraint that id failed, never the value it was
-     * given.
+     * `entityUuid`, and every constraint that id failed, never the value it
+     * was given.
      *
      * @var int
      */
