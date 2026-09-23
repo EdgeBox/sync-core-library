@@ -140,11 +140,13 @@ final class PageFiguresBoxParams
      * Sync Core holds for the content item is keyed on it, and the box asks for
      * it in that shape. A value of any other shape is answered with the box's
      * own validation alert in place of every figure, because an id the store
-     * cannot hold has no record under it to find. What this class checks of it
-     * is only that something was passed and how long it is, and that is what
-     * keeps that answer an alert on the box: the figures are rendered inside a
-     * page a reader is waiting for, where raising would cost that reader the
-     * page and tell nobody which id was refused.
+     * cannot hold has no record under it to find.
+     *
+     * A part the site names unusably — missing, no text at all, or longer
+     * than the box holds it to — travels as an empty text and is answered
+     * the same way, by the box's alert. Nothing here raises: the figures are
+     * rendered inside a page a reader is waiting for, where raising would cost
+     * that reader the page and tell nobody which value was refused.
      *
      * Optional; a value outside its documented range is omitted from the
      * rendered options rather than sent, because one value the box refuses
@@ -167,23 +169,11 @@ final class PageFiguresBoxParams
      *
      * A name this list does not carry is passed over, so a site hands its whole
      * record here and only what the box shows travels.
-     *
-     * @throws \InvalidArgumentException a required name missing, empty, not a string or too long
      */
     public function __construct(array $figures)
     {
         foreach (self::IDENTITY as $key => $part) {
-            $value = self::text($figures[$key] ?? null, $part['length']);
-
-            if (null === $value) {
-                throw new \InvalidArgumentException(sprintf(
-                    'The figures of a page need a %s: text of 1 to %d characters.',
-                    $key,
-                    $part['length']
-                ));
-            }
-
-            $figures[$key] = $value;
+            $figures[$key] = self::text($figures[$key] ?? null, $part['length']) ?? '';
         }
 
         $this->figures = $figures;

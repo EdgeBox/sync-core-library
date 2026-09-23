@@ -28,23 +28,45 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame('de', $params->getLangcode());
     }
 
+    /**
+     * A page this class cannot name is left to the box's alert, never raised.
+     *
+     * The figures are rendered inside a page a reader is waiting for, where
+     * raising would cost that reader the page and tell nobody which value was
+     * refused. The part travels as an empty text instead, which the box
+     * answers with its own alert in place of every figure, the way it answers
+     * a uuid of any other shape.
+     */
     #[DataProvider('unusableIdentities')]
-    public function testAPageThatNamesItselfIncompletelyIsRefused(array $figures): void
+    public function testAPageThatNamesItselfUnusablyIsLeftToTheBoxAlert(array $figures, string $option): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $options = (new PageFiguresBoxParams($figures))->toOptions();
 
-        new PageFiguresBoxParams($figures);
+        $this->assertSame('', $options[$option]);
+
+        $everythingElse = self::everyOption();
+        unset($everythingElse[$option], $options[$option]);
+
+        $this->assertSame($everythingElse, $options, 'every other figure still arrives');
     }
 
     /**
-     * @return array<string, array{0: array}>
+     * @return array<string, array{0: array, 1: string}>
      */
     public static function unusableIdentities(): array
     {
         $cases = [];
 
-        foreach (['entity_type', 'entity_uuid', 'langcode'] as $key) {
-            foreach (['missing' => null, 'empty' => '', 'not a string' => 42] as $how => $value) {
+        foreach (self::identityParts() as $key => $part) {
+            $shapes = [
+                'missing' => null,
+                'empty' => '',
+                'blank' => "  \u{00A0}\u{2028} ",
+                'not a string' => 42,
+                'past its length' => self::ofLength($part['length'] + 1),
+            ];
+
+            foreach ($shapes as $how => $value) {
                 $figures = self::everyFigure();
 
                 if (null === $value) {
@@ -53,7 +75,7 @@ final class PageFiguresBoxParamsTest extends TestCase
                     $figures[$key] = $value;
                 }
 
-                $cases[$key.' '.$how] = [$figures];
+                $cases[$key.' '.$how] = [$figures, $part['option']];
             }
         }
 
@@ -274,8 +296,9 @@ final class PageFiguresBoxParamsTest extends TestCase
         $named = self::everyFigure();
         $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH + 1, $letter);
 
-        $this->expectException(\InvalidArgumentException::class);
-        new PageFiguresBoxParams($named);
+        // A character past the limit is a character whatever its bytes, so the
+        // name travels as the empty text the box answers with its alert.
+        $this->assertSame('', (new PageFiguresBoxParams($named))->toOptions()['entityUuid']);
     }
 
     /**
@@ -494,21 +517,6 @@ final class PageFiguresBoxParamsTest extends TestCase
             $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
 
             $this->assertSame($atTheLimit[$key], $options[$part['option']], 'a '.$key.' at its full length arrives');
-        }
-    }
-
-    public function testAPageNamedAtLengthIsRefusedRatherThanCostingEveryFigure(): void
-    {
-        foreach (self::identityParts() as $key => $part) {
-            $figures = self::everyFigure();
-            $figures[$key] = self::ofLength($part['length'] + 1);
-
-            try {
-                new PageFiguresBoxParams($figures);
-                $this->fail('a '.$key.' the box would refuse has to raise');
-            } catch (\InvalidArgumentException $expected) {
-                $this->assertStringContainsString($key, $expected->getMessage());
-            }
         }
     }
 
