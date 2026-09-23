@@ -47,10 +47,11 @@ final class PageFiguresBoxParams
      * The longest the id naming the page may be.
      *
      * The part the record names `entity_uuid` carries the id the site has for
-     * the page, in whatever form it has it, so it is held to the length Sync
-     * Core holds an id to and no shape is read here: what a usable id looks
-     * like is the box's own to answer, with the alert it answers any unusable
-     * one with.
+     * the page, in whatever form it has it, so no shape is read here and the
+     * part is held to the one bound every part of an identity is held to. What
+     * a usable id looks like is the box's own to answer, with the alert it
+     * answers any unusable one with, where a site owner can read which id was
+     * refused.
      *
      * @var int
      */
@@ -110,7 +111,7 @@ final class PageFiguresBoxParams
     /**
      * The page's identity: the name each part is given under, the option it
      * becomes, and the longest it may be. Each part names its own bound, and
-     * the three bounds are the one length an id is held to.
+     * the three bounds are the one length this library passes an id on at.
      */
     private const IDENTITY = [
         self::ENTITY_TYPE => ['option' => 'entityType', 'length' => self::MAX_ENTITY_TYPE_LENGTH],
