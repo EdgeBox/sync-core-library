@@ -282,8 +282,8 @@ final class PageFiguresBoxParamsTest extends TestCase
      * A limit is in characters, not in the bytes a character takes.
      *
      * A page in a script whose characters take three bytes each would lose its
-     * tags and even its name to a limit counted in bytes, while the box that
-     * reads them counts characters and would have shown them.
+     * tags to a limit counted in bytes, and the id naming it with them, while
+     * this class counts the characters the box counts and passes both on.
      */
     #[DataProvider('scripts')]
     public function testALimitCountsCharactersRatherThanBytes(array $case): void

@@ -18,7 +18,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
  * site hands the record over rather than copying it figure by figure. The
  * options this class emits carry the names the box reads them under, in the
  * box's own camelCase. This class is the one place in the library that knows
- * either set, and the one place that knows the limits the box holds them to.
+ * either set, and the one place that says how long a value it passes on may be.
  *
  * The box holds every value it is sent to its type and its range, and **one
  * value it refuses replaces every figure with an alert**. So an optional figure
@@ -46,10 +46,11 @@ final class PageFiguresBoxParams
     /**
      * The longest the id naming the page may be.
      *
-     * The site sends the id it has for the page, in whatever form it has it,
-     * so this class holds it to the length its siblings are held to and reads
-     * no shape: what a usable id looks like is the box's own to answer, with
-     * the alert it answers any unusable one with.
+     * The part the record names `entity_uuid` carries the id the site has for
+     * the page, in whatever form it has it, so it is held to the length Sync
+     * Core holds an id to and no shape is read here: what a usable id looks
+     * like is the box's own to answer, with the alert it answers any unusable
+     * one with.
      *
      * @var int
      */
@@ -151,7 +152,7 @@ final class PageFiguresBoxParams
      * under it to find.
      *
      * A part the site names unusably — missing, no text at all, or longer
-     * than the box holds it to — travels as an empty text and is answered
+     * than this class holds it to — travels as an empty text and is answered
      * the same way, by the box's alert. Nothing here raises: the figures are
      * rendered inside a page a reader is waiting for, where raising would cost
      * that reader the page and tell nobody which value was refused.
