@@ -49,9 +49,9 @@ final class PageFiguresBoxParams
      * The part the record names `entity_uuid` carries the id the site has for
      * the page, in whatever form it has it, so no shape is read here and the
      * part is held to the one bound every part of an identity is held to. What
-     * a usable id looks like is the box's own to answer, with the alert it
-     * answers any unusable one with, where a site owner can read which id was
-     * refused.
+     * a usable id looks like is the box's own to answer, and it refuses one
+     * with an alert that names the property and the constraint it failed,
+     * never the value it was given.
      *
      * @var int
      */
