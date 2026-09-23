@@ -32,10 +32,9 @@ final class PageFiguresBoxParamsTest extends TestCase
      * A page this class cannot name is left to the box's alert, never raised.
      *
      * The figures are rendered inside a page a reader is waiting for, where
-     * raising would cost that reader the page and tell nobody which value was
-     * refused. The part travels as an empty text instead, which the box
-     * answers with its own alert in place of every figure, the way it answers
-     * an id it cannot use.
+     * raising would cost that reader the page. The part travels as an empty
+     * text instead, which the box answers with its own alert in place of every
+     * figure, the way it answers an id it cannot use.
      */
     #[DataProvider('unusableIdentities')]
     public function testAPageThatNamesItselfUnusablyIsLeftToTheBoxAlert(array $figures, string $option): void

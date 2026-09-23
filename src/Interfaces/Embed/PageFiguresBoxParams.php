@@ -50,8 +50,9 @@ final class PageFiguresBoxParams
      * the page, in whatever form it has it, so no shape is read here and the
      * part is held to the one bound every part of an identity is held to. What
      * a usable id looks like is the box's own to answer, and it refuses one
-     * with an alert that names the property and the constraint it failed,
-     * never the value it was given.
+     * with an alert that names the property it reads the id under,
+     * `entityUuid`, and the constraint that id failed, never the value it was
+     * given.
      *
      * @var int
      */
@@ -156,7 +157,7 @@ final class PageFiguresBoxParams
      * than this class holds it to — travels as an empty text and is answered
      * the same way, by the box's alert. Nothing here raises: the figures are
      * rendered inside a page a reader is waiting for, where raising would cost
-     * that reader the page and tell nobody which value was refused.
+     * that reader the page.
      *
      * Optional; a value outside its documented range is omitted from the
      * rendered options rather than sent, because one value the box refuses
