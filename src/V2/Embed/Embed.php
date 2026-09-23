@@ -70,88 +70,19 @@ abstract class Embed
     /**
      * Whether the frame is measured again each time it is uncovered.
      *
-     * The resizer measures a frame once, when it attaches, and a frame that is
-     * hidden then — inside a collapsed `details` element, on a tab that is not
-     * selected — measures as a strip of a few pixels and stays one. With this
-     * set, the script watches the frame and has the resizer measure it again
-     * whenever it becomes visible: an element that goes from `display: none`
-     * to shown is uncovered, so opening a `details` element and selecting a tab
-     * are covered as well as scrolling it into view. An engine that carries no
-     * observer of its own hears one thing instead, a disclosure the frame sits
-     * inside opening, and there a frame uncovered any other way keeps the size
-     * it was last measured at. The disclosures it listens to are the ones the
-     * frame sat inside when the watch was built, so on that engine a frame
-     * moved into another disclosure without ever leaving the document is
-     * still heard from the ones it left. Once it does leave and come back the
-     * walk runs again and takes the disclosures it sits inside then — but
-     * only on an engine that hears the change to the page at all. An engine
-     * carrying neither observer hears neither the frame going nor the frame
-     * coming back, so what happens to such a frame turns on whether anything
-     * asked while it was gone: with nothing asking, the listeners it already
-     * had are still there and still measure it, wherever it now sits; and once
-     * a wait or a disclosure does ask and finds it gone, they come down, and
-     * nothing is left that could hear it come back or take the disclosures it
-     * came back into.
+     * The resizer measures a frame once, as it attaches, so a frame hidden
+     * then — inside a collapsed `details` element, on a tab that is not
+     * selected — measures as a strip of a few pixels and keeps that size.
+     * With this set, the script watches the frame and has the resizer measure
+     * it again whenever it becomes visible.
      *
-     * Until the resizer has attached, the script asks again every 200
-     * milliseconds; the frame is asked 25 times in all, however often it is
-     * uncovered, and one such wait runs at a time. Once those are spent the
-     * frame is never waited for again, and once the resizer has attached an
-     * uncovering measures the frame straight away.
+     * The watch costs every box that carries it two observers for as long as
+     * the reader stays: one on the frame, and one on every change to the
+     * document's own tree, which is how a frame the page takes out and puts
+     * back is heard. An engine carrying neither hears a disclosure the frame
+     * sits inside opening instead. The script's own comments carry the rest.
      *
-     * Every way a frame leaves the document takes the watch and its listeners
-     * down with it, because the watch is told of the change to the page's own
-     * tree and asks there whether the document still holds the frame; a wait,
-     * a disclosure or a report that runs first only gets there sooner. An
-     * engine so old that it watches no change at all hears it from the next
-     * wait or disclosure instead.
-     *
-     * One thing outlives that take-down, and for 30 seconds: what the change
-     * to the page's own tree is heard through. It holds the element the watch
-     * started on and looks the id up no second time, so what it can hear come
-     * back is that same element put back — which is what a widget re-parenting
-     * across a task does, and what a re-render that takes the frame out now
-     * and appends it again on a later one does. Put back inside those 30
-     * seconds, the element is watched again exactly as at the start, with the
-     * count of 25 carrying on where it stopped rather than starting over, so
-     * an uncovering answers as it answered before the element left: it
-     * measures the frame straight away once the resizer has attached, and
-     * spends what is left of the 25 while it has not. When the window closes
-     * with the frame still gone, that last observer goes too and nothing of
-     * the watch is left on the page.
-     *
-     * One window stands at a time, and it belongs to the removal that opened
-     * it. A frame taken out again after a return this observer was called for
-     * gets a fresh 30 seconds, because that call cleared the window the return
-     * ended. A round trip the page makes inside one change — the frame put
-     * back and taken out again before the change is delivered — is one call
-     * that finds the frame gone with the window still standing, so it inherits
-     * what is left of those 30 seconds rather than opening one of its own.
-     *
-     * Where the window stands, two frames fall outside it. One the page puts
-     * back after those 30 seconds, and one that is not the same element at
-     * all: a rebuilt region that renders a fresh frame carrying the same id
-     * replaces the element rather than moving it, and this watch neither finds
-     * nor adopts the stranger, inside the window or after it. The two end up
-     * differently. The stranger is measured by the resizer as it attaches to
-     * it, and for a frame that is hidden at that moment that measurement is
-     * the strip of a few pixels described above, which the frame then keeps
-     * until something else measures it. The element put back is the one the
-     * resizer attached to already: initIframe() is not run for it a second
-     * time and nothing here measures it again, so it keeps the size it was
-     * last measured at. Both are residues of
-     * two bounds: the window, rather than an observer of every change to the
-     * page held for every box for as long as the reader stays; and one element
-     * rather than an id the page may hand to another. Markup rendered afresh
-     * carries this script afresh, and a watch that adopted a strange element
-     * would spend the frame's remaining attempts asking a resizer that belongs
-     * to a watch of its own.
-     *
-     * The embed class decides this, never an option a caller passes: the
-     * options travel to the frame, and a frame's behaviour on the site's page
-     * is the library's to decide. PageFiguresEmbed sets it, because the box is
-     * placed in a site's edit form where it is often hidden when the page
-     * loads; every other embed renders the markup it always rendered.
+     * The embed class decides this, never an option a caller passes.
      *
      * @var bool
      */
