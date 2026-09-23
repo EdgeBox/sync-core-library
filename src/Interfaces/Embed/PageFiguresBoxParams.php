@@ -10,7 +10,7 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
  * One named array carries both the page's identity and its figures: the
  * identity is three strings and the figures are five numbers, so no signature
  * takes them in a row. The page is named the way any content management system
- * names one — an entity type, an entity uuid and a language — and this class
+ * names one — an entity type, an entity id and a language — and this class
  * knows no system of its own.
  *
  * **Two vocabularies, and which is which.** The named array carries the names
@@ -44,16 +44,16 @@ final class PageFiguresBoxParams
     public const MAX_ENTITY_TYPE_LENGTH = self::MAX_EXTERNAL_SERVICE_ID_LENGTH;
 
     /**
-     * The longest an entity uuid may be.
+     * The longest the id naming the page may be.
      *
-     * The box asks for the uuid Sync Core keys the content item's record on,
-     * and a uuid is 36 characters, so nothing longer names a record there.
-     * What shape a value of that length has is the box's own to answer, with
-     * the alert it answers any unusable id with; this class reads no shape.
+     * The site sends the id it has for the page, in whatever form it has it,
+     * so this class holds it to the length its siblings are held to and reads
+     * no shape: what a usable id looks like is the box's own to answer, with
+     * the alert it answers any unusable one with.
      *
      * @var int
      */
-    public const MAX_ENTITY_UUID_LENGTH = 36;
+    public const MAX_ENTITY_ID_LENGTH = self::MAX_EXTERNAL_SERVICE_ID_LENGTH;
 
     /**
      * The longest a langcode may be.
@@ -85,8 +85,8 @@ final class PageFiguresBoxParams
 
     /**
      * The longest an external service id may be, which is what Sync Core
-     * holds one to. The two parts of a page's identity that are named by one
-     * are held to it here rather than to a number of their own.
+     * holds one to. Every part of a page's identity is held to it here rather
+     * than to a number of its own.
      *
      * @var int
      */
@@ -108,12 +108,12 @@ final class PageFiguresBoxParams
 
     /**
      * The page's identity: the name each part is given under, the option it
-     * becomes, and the longest it may be. The three are different kinds of
-     * value, so each is held to the length its own kind has.
+     * becomes, and the longest it may be. Each part names its own bound, and
+     * the three bounds are the one length an id is held to.
      */
     private const IDENTITY = [
         self::ENTITY_TYPE => ['option' => 'entityType', 'length' => self::MAX_ENTITY_TYPE_LENGTH],
-        self::ENTITY_UUID => ['option' => 'entityUuid', 'length' => self::MAX_ENTITY_UUID_LENGTH],
+        self::ENTITY_UUID => ['option' => 'entityUuid', 'length' => self::MAX_ENTITY_ID_LENGTH],
         self::LANGCODE => ['option' => 'langcode', 'length' => self::MAX_LANGCODE_LENGTH],
     ];
 
@@ -137,19 +137,18 @@ final class PageFiguresBoxParams
      * One named array; never a run of scalars.
      *
      * Required, each a non-empty string with its surrounding whitespace
-     * trimmed, held to the length its own kind of value has:
+     * trimmed, held to the length an id is held to:
      *   entity_type  the site's entity type machine name — any content entity
      *                type — at most MAX_ENTITY_TYPE_LENGTH characters
-     *   entity_uuid  the entity's UUID, the one Sync Core holds for that
-     *                content item, at most MAX_ENTITY_UUID_LENGTH characters
+     *   entity_uuid  the id the site has for the page, in whatever form it
+     *                has it, at most MAX_ENTITY_ID_LENGTH characters
      *   langcode     the language these figures describe, at most
      *                MAX_LANGCODE_LENGTH characters
      *
-     * The figures of a page are keyed on that UUID on both sides: the record
-     * Sync Core holds for the content item is keyed on it, and the box asks for
-     * it in that shape. A value of any other shape is answered with the box's
-     * own validation alert in place of every figure, because an id the store
-     * cannot hold has no record under it to find.
+     * What a usable id looks like is the box's own to answer: it holds the
+     * shape, and an id it cannot use is answered with its validation alert in
+     * place of every figure, because an id the store cannot hold has no record
+     * under it to find.
      *
      * A part the site names unusably — missing, no text at all, or longer
      * than the box holds it to — travels as an empty text and is answered

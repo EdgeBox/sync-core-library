@@ -35,7 +35,7 @@ final class PageFiguresBoxParamsTest extends TestCase
      * raising would cost that reader the page and tell nobody which value was
      * refused. The part travels as an empty text instead, which the box
      * answers with its own alert in place of every figure, the way it answers
-     * a uuid of any other shape.
+     * an id it cannot use.
      */
     #[DataProvider('unusableIdentities')]
     public function testAPageThatNamesItselfUnusablyIsLeftToTheBoxAlert(array $figures, string $option): void
@@ -292,7 +292,7 @@ final class PageFiguresBoxParamsTest extends TestCase
 
         $atTheLimit = self::everyFigure();
         $atTheLimit['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH, $letter)]];
-        $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH, $letter);
+        $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_ID_LENGTH, $letter);
 
         $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
 
@@ -307,7 +307,7 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame([], $options['tags']);
 
         $named = self::everyFigure();
-        $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH + 1, $letter);
+        $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_ID_LENGTH + 1, $letter);
 
         // A character past the limit is a character whatever its bytes, so the
         // name travels as the empty text the box answers with its alert.
@@ -515,14 +515,14 @@ final class PageFiguresBoxParamsTest extends TestCase
     }
 
     /**
-     * Each part of a page's identity is held to the length its own kind of
-     * value has: a uuid is 36 characters, while an entity type and a langcode
-     * are external service ids, which Sync Core holds to 255.
+     * Every part of a page's identity is held to the length Sync Core holds an
+     * id to: the entity type and the langcode are external service ids, and the
+     * page is named by whatever id its system has, whose shape the box holds.
      */
-    public function testEachPartOfAnIdentityIsHeldToItsOwnLength(): void
+    public function testEveryPartOfAnIdentityIsHeldToTheLengthAnIdIsHeldTo(): void
     {
         foreach (self::identityParts() as $key => $part) {
-            $this->assertSame($part['is'], $part['length'], $key.' is held to the length its own kind of value has');
+            $this->assertSame($part['is'], $part['length'], $key.' is held to the length an id is held to');
 
             $atTheLimit = self::everyFigure();
             $atTheLimit[$key] = self::ofLength($part['length']);
@@ -543,7 +543,7 @@ final class PageFiguresBoxParamsTest extends TestCase
     {
         return [
             'entity_type' => ['option' => 'entityType', 'length' => PageFiguresBoxParams::MAX_ENTITY_TYPE_LENGTH, 'is' => 255],
-            'entity_uuid' => ['option' => 'entityUuid', 'length' => PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH, 'is' => 36],
+            'entity_uuid' => ['option' => 'entityUuid', 'length' => PageFiguresBoxParams::MAX_ENTITY_ID_LENGTH, 'is' => 255],
             'langcode' => ['option' => 'langcode', 'length' => PageFiguresBoxParams::MAX_LANGCODE_LENGTH, 'is' => 255],
         ];
     }
