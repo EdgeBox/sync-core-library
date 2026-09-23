@@ -35,11 +35,35 @@ use EdgeBox\SyncCore\V2\Raw\Model\ContentPriority;
 final class PageFiguresBoxParams
 {
     /**
-     * The longest each part of a page's identity may be.
+     * The longest an entity type machine name may be.
+     *
+     * A machine name is an external service id, and Sync Core holds an
+     * external service id to 255 characters.
      *
      * @var int
      */
-    public const MAX_IDENTITY_LENGTH = 255;
+    public const MAX_ENTITY_TYPE_LENGTH = 255;
+
+    /**
+     * The longest an entity uuid may be.
+     *
+     * The box asks for the uuid Sync Core keys the content item's record on,
+     * and a uuid is 36 characters. A longer value is no uuid, so there is no
+     * record under it to find.
+     *
+     * @var int
+     */
+    public const MAX_ENTITY_UUID_LENGTH = 36;
+
+    /**
+     * The longest a langcode may be.
+     *
+     * A language is named by an external service id, the way the entity type
+     * is, and Sync Core holds one to 255 characters.
+     *
+     * @var int
+     */
+    public const MAX_LANGCODE_LENGTH = 255;
 
     /**
      * The longest a tag's key or its name may be.
@@ -74,12 +98,14 @@ final class PageFiguresBoxParams
     private const TAG_NAME = 'name';
 
     /**
-     * The page's identity: the name it is given under, and the option it becomes.
+     * The page's identity: the name each part is given under, the option it
+     * becomes, and the longest it may be. The three are different kinds of
+     * value, so each is held to the length its own kind has.
      */
     private const IDENTITY = [
-        self::ENTITY_TYPE => 'entityType',
-        self::ENTITY_UUID => 'entityUuid',
-        self::LANGCODE => 'langcode',
+        self::ENTITY_TYPE => ['option' => 'entityType', 'length' => self::MAX_ENTITY_TYPE_LENGTH],
+        self::ENTITY_UUID => ['option' => 'entityUuid', 'length' => self::MAX_ENTITY_UUID_LENGTH],
+        self::LANGCODE => ['option' => 'langcode', 'length' => self::MAX_LANGCODE_LENGTH],
     ];
 
     /**
@@ -101,12 +127,14 @@ final class PageFiguresBoxParams
     /**
      * One named array; never a run of scalars.
      *
-     * Required, each a non-empty string of at most MAX_IDENTITY_LENGTH
-     * characters, surrounding whitespace trimmed:
-     *   entity_type  the site's entity type machine name — any content entity type
+     * Required, each a non-empty string with its surrounding whitespace
+     * trimmed, held to the length its own kind of value has:
+     *   entity_type  the site's entity type machine name — any content entity
+     *                type — at most MAX_ENTITY_TYPE_LENGTH characters
      *   entity_uuid  the entity's UUID, the one Sync Core holds for that
-     *                content item
-     *   langcode     the language these figures describe
+     *                content item, at most MAX_ENTITY_UUID_LENGTH characters
+     *   langcode     the language these figures describe, at most
+     *                MAX_LANGCODE_LENGTH characters
      *
      * The figures of a page are keyed on that UUID on both sides: the record
      * Sync Core holds for the content item is keyed on it, and the box asks for
@@ -144,14 +172,14 @@ final class PageFiguresBoxParams
      */
     public function __construct(array $figures)
     {
-        foreach (array_keys(self::IDENTITY) as $key) {
-            $value = self::text($figures[$key] ?? null, self::MAX_IDENTITY_LENGTH);
+        foreach (self::IDENTITY as $key => $part) {
+            $value = self::text($figures[$key] ?? null, $part['length']);
 
             if (null === $value) {
                 throw new \InvalidArgumentException(sprintf(
                     'The figures of a page need a %s: text of 1 to %d characters.',
                     $key,
-                    self::MAX_IDENTITY_LENGTH
+                    $part['length']
                 ));
             }
 
@@ -212,8 +240,8 @@ final class PageFiguresBoxParams
     {
         $options = [];
 
-        foreach (self::IDENTITY as $key => $option) {
-            $options[$option] = $this->figures[$key];
+        foreach (self::IDENTITY as $key => $part) {
+            $options[$part['option']] = $this->figures[$key];
         }
 
         $percent = self::wholeNumber($this->figures[self::CONTENT_HEALTH_PERCENT] ?? null);

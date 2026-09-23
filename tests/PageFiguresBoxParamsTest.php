@@ -257,7 +257,7 @@ final class PageFiguresBoxParamsTest extends TestCase
 
         $atTheLimit = self::everyFigure();
         $atTheLimit['tags'] = [['key' => 'pricing', 'name' => self::ofLength(PageFiguresBoxParams::MAX_TAG_LENGTH, $letter)]];
-        $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH, $letter);
+        $atTheLimit['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH, $letter);
 
         $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
 
@@ -272,7 +272,7 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertSame([], $options['tags']);
 
         $named = self::everyFigure();
-        $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH + 1, $letter);
+        $named['entity_uuid'] = self::ofLength(PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH + 1, $letter);
 
         $this->expectException(\InvalidArgumentException::class);
         new PageFiguresBoxParams($named);
@@ -478,11 +478,30 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertArrayNotHasKey('summaryUpdated', (new PageFiguresBoxParams($figures))->toOptions());
     }
 
+    /**
+     * Each part of a page's identity is held to the length its own kind of
+     * value has: a uuid is 36 characters, while an entity type and a langcode
+     * are external service ids, which Sync Core holds to 255.
+     */
+    public function testEachPartOfAnIdentityIsHeldToItsOwnLength(): void
+    {
+        foreach (self::identityParts() as $key => $part) {
+            $this->assertSame($part['is'], $part['length'], $key.' is held to the length its own kind of value has');
+
+            $atTheLimit = self::everyFigure();
+            $atTheLimit[$key] = self::ofLength($part['length']);
+
+            $options = (new PageFiguresBoxParams($atTheLimit))->toOptions();
+
+            $this->assertSame($atTheLimit[$key], $options[$part['option']], 'a '.$key.' at its full length arrives');
+        }
+    }
+
     public function testAPageNamedAtLengthIsRefusedRatherThanCostingEveryFigure(): void
     {
-        foreach (['entity_type', 'entity_uuid', 'langcode'] as $key) {
+        foreach (self::identityParts() as $key => $part) {
             $figures = self::everyFigure();
-            $figures[$key] = self::ofLength(PageFiguresBoxParams::MAX_IDENTITY_LENGTH + 1);
+            $figures[$key] = self::ofLength($part['length'] + 1);
 
             try {
                 new PageFiguresBoxParams($figures);
@@ -491,6 +510,21 @@ final class PageFiguresBoxParamsTest extends TestCase
                 $this->assertStringContainsString($key, $expected->getMessage());
             }
         }
+    }
+
+    /**
+     * The three parts of a page's identity, each with the option it becomes
+     * and the length it is held to.
+     *
+     * @return array<string, array{option: string, length: int, is: int}>
+     */
+    private static function identityParts(): array
+    {
+        return [
+            'entity_type' => ['option' => 'entityType', 'length' => PageFiguresBoxParams::MAX_ENTITY_TYPE_LENGTH, 'is' => 255],
+            'entity_uuid' => ['option' => 'entityUuid', 'length' => PageFiguresBoxParams::MAX_ENTITY_UUID_LENGTH, 'is' => 36],
+            'langcode' => ['option' => 'langcode', 'length' => PageFiguresBoxParams::MAX_LANGCODE_LENGTH, 'is' => 255],
+        ];
     }
 
     public function testThePageIsNamedByWhateverIdItsSystemHasForIt(): void
