@@ -58,7 +58,6 @@ final class PageFiguresEmbedTest extends TestCase
         $html = EmbedMarkup::of($this->pageFigures());
 
         $this->assertSame([
-            'embedSize' => 'box',
             'entityType' => 'article',
             'entityUuid' => 'f1b0c0de-0000-4000-8000-000000000001',
             'langcode' => 'en',
@@ -70,6 +69,7 @@ final class PageFiguresEmbedTest extends TestCase
             'tags' => [
                 ['key' => 'pricing', 'name' => 'Pricing'],
             ],
+            'embedSize' => 'box',
         ], $this->messages($html)['options']);
     }
 

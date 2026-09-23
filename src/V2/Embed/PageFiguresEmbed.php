@@ -33,9 +33,7 @@ class PageFiguresEmbed extends Embed implements IEmbedFeature
 
         $figures = new PageFiguresBoxParams($params);
 
-        // The size is the library's to decide, and it is stated first so it
-        // holds whatever an option carries.
-        $this->params = [self::OPTION_SIZE => self::SIZE_BOX] + $figures->toOptions();
+        $this->params = $figures->toOptions() + [self::OPTION_SIZE => self::SIZE_BOX];
     }
 
     public function run()
