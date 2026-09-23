@@ -22,6 +22,8 @@ interface IEmbedService
     // its users, which is not the name this code gives the topic.
     public const GOVERNANCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
 
+    public const BOX_PAGE_FIGURES = 'box.page-figures';
+
     /**
      * @return IEmbedFeature
      */
@@ -76,4 +78,24 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function governanceContentInventory(array $params, ?ActingUser $as = null);
+
+    /**
+     * The box that renders one page's figures, sized to fill the region it is
+     * placed in. The figures travel from the site's own storage into the frame
+     * markup the site renders; this makes no request of its own.
+     *
+     * The frame is measured again each time it is uncovered, so a site may
+     * place it in a collapsed `details` element or a tab that is not selected
+     * and needs no script of its own to size it once it is shown.
+     *
+     * The named array carries the page-figures record in the record's own
+     * snake_case, so a site hands the record over rather than copying it
+     * figure by figure: entity_type, entity_uuid and langcode name the page,
+     * and content_health_percent_0_to_100, open_issue_count, content_priority,
+     * cited_in_answers_last_30_days, summary_updated and tags are its figures.
+     * PageFiguresBoxParams states what each name is held to.
+     *
+     * @return IEmbedFeature
+     */
+    public function pageFigures(array $params, ?ActingUser $as = null);
 }

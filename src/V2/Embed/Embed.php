@@ -10,6 +10,35 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 abstract class Embed
 {
+    /**
+     * The option a frame's size travels under.
+     *
+     * @var string
+     */
+    public const OPTION_SIZE = 'embedSize';
+
+    /**
+     * A frame that fills the page it is on and states a minimum height.
+     *
+     * @var string
+     */
+    public const SIZE_PAGE = 'page';
+
+    /**
+     * A frame of one fixed line, loaded when it is scrolled to.
+     *
+     * @var string
+     */
+    public const SIZE_LINE = 'line';
+
+    /**
+     * A frame that fills the region it is placed in and is as tall as the
+     * document it loads.
+     *
+     * @var string
+     */
+    public const SIZE_BOX = 'box';
+
     public static $iframeResizerAdded = '';
     public static $embed_count = 0;
 
@@ -39,6 +68,27 @@ abstract class Embed
     protected $actingUser;
 
     /**
+     * Whether the frame is measured again each time it is uncovered.
+     *
+     * The resizer measures a frame once, as it attaches, so a frame hidden
+     * then — inside a collapsed `details` element, on a tab that is not
+     * selected — measures as a strip of a few pixels and keeps that size.
+     * With this set, the script watches the frame and has the resizer measure
+     * it again whenever it becomes visible.
+     *
+     * The watch costs every box that carries it two observers for as long as
+     * the reader stays: one on the frame, and one on every change to the
+     * document's own tree, which is how a frame the page takes out and puts
+     * back is heard. An engine carrying neither hears a disclosure the frame
+     * sits inside opening instead. The script's own comments carry the rest.
+     *
+     * The embed class decides this, never an option a caller passes.
+     *
+     * @var bool
+     */
+    protected $remeasureOnUncover = false;
+
+    /**
      * Embed constructor.
      */
     public function __construct(SyncCore $core, string $embed_id, string $permissions, ?ActingUser $as = null)
@@ -62,6 +112,40 @@ abstract class Embed
         return [];
     }
 
+    /**
+     * A value as JSON that is safe to sit inside a script element.
+     *
+     * An option may carry prose a person on the site wrote — the name of a
+     * tag among them — and this JSON is written into the page between a
+     * script element's tags, where the browser reads text, not JSON.
+     * A `<` there can take the parser out of the element: `<!--<script>` opens
+     * the escaped state, after which the closing tag closes nothing and the
+     * rest of the site's page is swallowed as script text.
+     *
+     * The escapes are the set a content management system of this ecosystem
+     * uses for exactly this place, rather than the angle brackets alone: the
+     * markup characters have no meaning inside a JSON string, so escaping all
+     * of them costs nothing and leaves nothing to argue about at the next
+     * place this value is written to.
+     *
+     * A byte that is no text is replaced by the replacement character, U+FFFD,
+     * rather than making the encoding fail: a failure would write nothing
+     * where the value goes and leave a script the browser cannot parse, which
+     * would stop every embed on the page instead of spoiling one character of
+     * one value.
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    protected static function encodeForScript($value)
+    {
+        return json_encode(
+            $value,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE
+        );
+    }
+
     protected function render(?ActingUser $as = null)
     {
         $options = $this->getOptions();
@@ -77,17 +161,25 @@ abstract class Embed
         $list_entities_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_LIST_ENTITIES);
         $retrieve_entity_url = $application->getSiteBaseUrl().$application->getRelativeReferenceForRestCall('[flow.machineName]', IApplicationInterface::REST_ACTION_RETRIEVE_ENTITY);
 
-        $size = empty($options['embedSize']) ? 'page' : $options['embedSize'];
-        $is_page = 'page' === $size;
-        $is_line = 'line' === $size;
+        // A frame is sized in one of three ways. `page` and `box` both take the
+        // width of the element they are placed in; `page` claims a minimum
+        // height of its own, while `box` states no height at all so the frame
+        // is as tall as the document it loads reports and the resizer keeps it
+        // there. Every other value takes the geometry of a fixed line; the
+        // empty source and the loader that fills it once the reader scrolls to
+        // it belong to `line` itself, so any other value loads with the page.
+        $size = empty($options[self::OPTION_SIZE]) ? self::SIZE_PAGE : $options[self::OPTION_SIZE];
+        $is_page = self::SIZE_PAGE === $size;
+        $is_line = self::SIZE_LINE === $size;
+        $is_box = self::SIZE_BOX === $size;
 
         $id = $is_page ? 'contentSyncEmbed' : 'contentSyncEmbed-'.preg_replace('@[^a-z0-9-]@', '-', uniqid('', true));
 
         $html = '<style>
   #'.$id.' {
     min-height: 32px;
-    '.($is_page ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
-    '.($is_page ? 'min-height: 200px;' : 'height: 32px; max-height: 40px;').'
+    '.($is_page || $is_box ? 'min-width: 100%; width: 1px;' : 'width: 470px;').'
+    '.($is_page ? 'min-height: 200px;' : ($is_box ? '' : 'height: 32px; max-height: 40px;')).'
     '.($is_line ? 'border-radius: 5px;' : '').'
   }
   #'.$id.'.iframe-modal {
@@ -121,17 +213,17 @@ abstract class Embed
     iFrameResize({
       //log: true,
       checkOrigin: false,
-      autoResize: '.($is_page ? 'true' : 'false').',
+      autoResize: '.($is_page || $is_box ? 'true' : 'false').',
       onInit: function(newIframe) {
         iframe = newIframe;
         iframeParent = iframe.parentNode;
         iframe.iFrameResizer.sendMessage({
           type: "config",
-          config: '.json_encode($this->config).',
+          config: '.self::encodeForScript($this->config).',
         });
         iframe.iFrameResizer.sendMessage({
           type: "options",
-          options: '.json_encode($options).',
+          options: '.self::encodeForScript($options).',
         });
       },
       onMessage: function onMessage({message}) {
@@ -260,9 +352,208 @@ abstract class Embed
           throw new Error("Unknown message "+JSON.stringify(message));
         }
       },
-    }, "#'.$id.'");
+    }, "#'.$id.'");'.($this->remeasureOnUncover ? '
+    remeasureOnUncover();' : '').'
   }
-
+'.($this->remeasureOnUncover ? '
+  // The resizer measures the frame once, so a frame hidden at that moment is
+  // measured again each time it is uncovered.
+  function remeasureOnUncover() {
+    var element = document.getElementById("'.$id.'");
+    if(!element) {
+      return;
+    }
+    var observer = null;
+    var removals = null;
+    var listeners = [];
+    var waiting = false;
+    var timer = null;
+    var attempts = 0;
+    var built = false;
+    var grace = null;
+    // The third of this watch\'s three numbers, beside the 25 attempts and the
+    // 200 milliseconds between them below: how long a frame the page has taken
+    // out of the document is given to come back before the watch forgets it.
+    var graceMilliseconds = 30000;
+    function onOpen(details) {
+      function run() {
+        if(details.open) {
+          uncovered();
+        }
+      }
+      details.addEventListener("toggle", run);
+      listeners.push({on: details, run: run});
+    }
+    // What an uncovering is heard through, and the one call that builds it:
+    // an engine carrying an intersection observer is told when the frame
+    // becomes visible, and an older one hears a disclosure the frame sits
+    // inside opening instead. Building it twice would observe the frame twice
+    // and give each disclosure a second listener, and every change to the page
+    // asks for it below, so a watch already standing is left as it is.
+    function startWatching() {
+      if(built) {
+        return;
+      }
+      built = true;
+      // An engine with no observer still fires a disclosure\'s own toggle, and
+      // a disclosure that opens is what uncovers a frame placed inside it.
+      if(typeof IntersectionObserver==="undefined") {
+        var parent = element.parentNode;
+        while(parent && parent.nodeType===1) {
+          if(parent.tagName.toUpperCase()==="DETAILS") {
+            onOpen(parent);
+          }
+          parent = parent.parentNode;
+        }
+        return;
+      }
+      observer = new IntersectionObserver(function(entries) {
+        for(var i=0; i<entries.length; i++) {
+          if(entries[i].isIntersecting) {
+            uncovered();
+            return;
+          }
+        }
+        // A report where nothing is intersecting is one more way to hear that
+        // the frame has gone, and the earliest one for a frame that was on
+        // screen when the page let go of it.
+        if(!document.contains(element)) {
+          frameHasGone();
+        }
+      });
+      observer.observe(element);
+    }
+    // Everything an uncovering is heard through comes down together, so a
+    // frame the document has let go of leaves nothing of itself behind on a
+    // page a reader stays on: the wait that is pending, the intersection
+    // observer and every listener a disclosure was given. What the changes to
+    // the page\'s own tree are heard through is not taken down here, because
+    // that is what a frame coming back is heard through too.
+    function stopWatching() {
+      built = false;
+      waiting = false;
+      if(timer!==null) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      if(observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      for(var i=0; i<listeners.length; i++) {
+        listeners[i].on.removeEventListener("toggle", listeners[i].run);
+      }
+      listeners = [];
+    }
+    // The frame has left the document. Everything an uncovering is heard
+    // through comes down at once, and what the changes to the tree are heard
+    // through is kept on its own for the window, so that a frame the page puts
+    // back inside it is watched again. One window stands at a time, and it
+    // belongs to the removal that opened it: a page that keeps changing while
+    // the frame is gone does not lengthen it, a removal after a return this
+    // callback was called for opens a fresh one because that call cleared the
+    // window the return ended, and a round trip made inside one change - the
+    // frame put back and taken out again before the change is delivered - is
+    // one call that finds the frame gone with the window still standing, so
+    // it inherits what is left of it. When a window closes with the frame
+    // still gone, that last observer goes too and nothing of the watch is
+    // left. An engine watching no change at all has nothing that could hear a
+    // frame come back, so there the take-down is the end of it.
+    function frameHasGone() {
+      stopWatching();
+      if(!removals || grace!==null) {
+        return;
+      }
+      grace = setTimeout(function() {
+        grace = null;
+        if(removals) {
+          removals.disconnect();
+          removals = null;
+        }
+      }, graceMilliseconds);
+    }
+    function remeasure() {
+      // A frame the document no longer holds is one a rebuilt form replaced.
+      // The membership test is the one every engine that gets here has, and
+      // for a frame found by its id it asks what the element would answer.
+      if(!document.contains(element)) {
+        frameHasGone();
+        return;
+      }
+      // A frame whose resizer is not the one this asks of falls through to
+      // the wait, rather than throwing out of the callback that got here.
+      if(element.iFrameResizer && typeof element.iFrameResizer.resize==="function") {
+        waiting = false;
+        element.iFrameResizer.resize();
+        return;
+      }
+      // The 25 belongs to the frame and not to one uncovering of it: the
+      // count is kept across every wait, and once it is spent no wait starts
+      // again however often the frame is uncovered afterwards. An uncovering
+      // after that still measures the frame straight away once the resizer
+      // has attached, which is the case above.
+      if(attempts<25) {
+        attempts++;
+        waiting = true;
+        timer = setTimeout(function() {
+          timer = null;
+          remeasure();
+        }, 200);
+        return;
+      }
+      waiting = false;
+    }
+    // Every way in comes through here, so one wait for the resizer runs at a
+    // time however often the frame is uncovered, and the wait that is already
+    // running is the one that measures it.
+    function uncovered() {
+      if(!document.contains(element)) {
+        frameHasGone();
+        return;
+      }
+      if(waiting) {
+        return;
+      }
+      remeasure();
+    }
+    // A frame can leave the document without anything reporting for it: an
+    // intersection observer queues an entry only where the intersection
+    // changed, and a frame hidden since it was first seen is not intersecting
+    // before it is taken out and not intersecting afterwards. So the change to
+    // the page\'s own tree is what the removal is heard from, on every engine
+    // carrying an observer of changes - which is every engine carrying the
+    // intersection observer, and the older ones besides. One thing is asked of
+    // each change: whether the document still holds the frame. It is asked
+    // after the change that raised the question rather than inside it, so a
+    // frame taken out of one parent and put into another within one change is
+    // still held and keeps its watch, which is what the handler above does
+    // when it moves the frame. A frame put back in a later change is not held
+    // when the question is asked, so what an uncovering is heard through comes
+    // down - and this observer is then the only thing left that could hear the
+    // frame come back, which is why it is kept for the window and builds the
+    // watch again there. It is this element that is watched for, not the id:
+    // the element is looked up once, so a fresh element carrying the same id
+    // is a stranger here and markup rendered afresh brings a watch of its own.
+    if(typeof MutationObserver!=="undefined") {
+      removals = new MutationObserver(function() {
+        if(!document.contains(element)) {
+          frameHasGone();
+          return;
+        }
+        if(grace!==null) {
+          clearTimeout(grace);
+          grace = null;
+        }
+        // A frame the document holds is a frame that should be watched,
+        // whether it never left or has just come back, and the call is a
+        // no-op for the watch that is already standing.
+        startWatching();
+      });
+      removals.observe(document.documentElement, {childList: true, subtree: true});
+    }
+    startWatching();
+  }
+' : '').'
   function onDocumentReady(clb) {
     if (document.readyState === "complete" || document.readyState === "interactive") {
         setTimeout(clb, 1);
