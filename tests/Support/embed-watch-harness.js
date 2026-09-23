@@ -34,6 +34,8 @@ function createWorld(engine) {
   let fired = 0;
   let resizeCalls = 0;
   let mutationRecords = [];
+  let pendingIntersections = [];
+  let intersecting = false;
 
   const byId = Object.create(null);
   const mutationObservers = [];
@@ -69,7 +71,7 @@ function createWorld(engine) {
         throw new Error('the watch keeps scheduling without end');
       }
 
-      flushMutations();
+      flushObservers();
 
       timers.sort((one, other) => one.at - other.at || one.id - other.id);
 
@@ -259,6 +261,61 @@ function createWorld(engine) {
     return delivered;
   }
 
+  // The entry an observe() queues. A browser hands an observer the target's
+  // intersection as it stands when the observation starts, before anything
+  // about the page has changed, and delivers it at the end of the task like
+  // any other entry. An element the document does not hold intersects
+  // nothing.
+  function flushIntersections() {
+    if (pendingIntersections.length === 0) {
+      return 0;
+    }
+
+    const starting = pendingIntersections;
+    let delivered = 0;
+
+    pendingIntersections = [];
+
+    starting.forEach((observer) => {
+      if (!observer.watching) {
+        return;
+      }
+
+      const isIntersecting = intersecting && documentStub.contains(observer.target);
+
+      observer.reports += 1;
+      delivered += 1;
+      observer.callback([{target: observer.target, isIntersecting: isIntersecting}], observer);
+    });
+
+    return delivered;
+  }
+
+  // Everything a browser hands an observer at the end of a task: the entries
+  // the observations queued and the records of the changes the task made. A
+  // delivery may start another watch, whose own observation is queued in its
+  // turn, so this runs until nothing is left to hand over.
+  function flushObservers() {
+    let delivered = 0;
+    let guard = 0;
+
+    for (;;) {
+      guard += 1;
+      if (guard > 1000) {
+        throw new Error('the observers keep queueing without end');
+      }
+
+      const entries = flushIntersections();
+      const records = flushMutations();
+
+      delivered += entries + records;
+
+      if (entries === 0 && records === 0) {
+        return delivered;
+      }
+    }
+  }
+
   // ---- the observers -----------------------------------------------------
 
   function MutationObserverStub(callback) {
@@ -294,6 +351,7 @@ function createWorld(engine) {
   IntersectionObserverStub.prototype.observe = function (target) {
     this.watching = true;
     this.target = target;
+    pendingIntersections.push(this);
   };
 
   IntersectionObserverStub.prototype.disconnect = function () {
@@ -301,10 +359,13 @@ function createWorld(engine) {
     this.disconnected = true;
   };
 
-  // An entry is queued only where the intersection changed, so a scenario
-  // says what changed and a scenario that says nothing is a frame nothing
-  // ever reports for.
+  // What the frame's visibility became, and the entry every observer watching
+  // it is handed for it. Beyond the first, an entry is queued only where the
+  // intersection changed, so a scenario says what changed; the state is kept
+  // because the entry an observe() queues reports where the frame stands
+  // rather than what last changed.
   function report(isIntersecting) {
+    intersecting = isIntersecting;
     intersectionObservers.slice().forEach((observer) => {
       if (observer.watching) {
         observer.reports += 1;
@@ -359,6 +420,10 @@ function createWorld(engine) {
 
   function start(source) {
     vm.runInContext(source + '\nremeasureOnUncover();\n', context, {filename: 'embed-watch.js'});
+    // A browser hands an observation its first entry at the end of the task
+    // that started it, so the watch has had it before a scenario does
+    // anything else.
+    flushObservers();
   }
 
   return {
@@ -370,7 +435,7 @@ function createWorld(engine) {
     dispatch: dispatch,
     documentElement: () => documentElement,
     fired: () => fired,
-    flushMutations: flushMutations,
+    flushObservers: flushObservers,
     findById: (id) => documentStub.getElementById(id),
     holds: (node) => documentStub.contains(node),
     intersection: () => (intersectionObservers.length > 0 ? intersectionObservers[0] : null),
@@ -463,7 +528,7 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const intersectionDisconnected = world.intersection() !== null && world.intersection().disconnected;
     const removalsHeldForTheWindow = removals !== null && !removals.disconnected;
@@ -496,7 +561,7 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.outer);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheRemoval = world.pendingDueIn();
 
@@ -528,7 +593,7 @@ const scenarios = {
     world.append(page.body, elsewhere);
     world.detach(page.frame);
     world.append(elsewhere, page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const frameInTheDocument = world.holds(page.frame);
     const intersectionDisconnected = world.intersection().disconnected;
@@ -561,7 +626,7 @@ const scenarios = {
 
     world.detach(page.frame);
     world.append(elsewhere, page.inner);
-    world.flushMutations();
+    world.flushObservers();
 
     return {
       stillListedUnderTheOldParent: page.outer.childNodes.indexOf(page.inner) !== -1,
@@ -632,7 +697,7 @@ const scenarios = {
     const resizeAfterAnOpening = world.resizeCalls();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheRemoval = world.pendingDueIn();
 
@@ -668,7 +733,7 @@ const scenarios = {
     const pendingAfterAnOpening = world.pending();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     // Nothing watches the tree here, so the removal is still unheard.
     const pendingAfterRemoval = world.pending();
@@ -726,7 +791,7 @@ const scenarios = {
     const page = ready.page;
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const disconnectedBeforeAnyReport = world.intersection().disconnected;
 
@@ -883,7 +948,7 @@ const scenarios = {
     const spentBeforeItWent = world.scheduled();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const theWatchIsDown = world.intersection().disconnected;
     const removalsHeldForTheWindow = !removals.disconnected;
@@ -896,7 +961,7 @@ const scenarios = {
     // Put back well inside the window, in a change of its own.
     world.advance(10000);
     world.append(page.inner, page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const builtAgain = world.intersections();
     const dueOnceItIsBack = world.pendingDueIn();
@@ -904,7 +969,7 @@ const scenarios = {
     // And the page keeps changing with the frame back where it belongs,
     // which builds nothing further.
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     // Uncovered again with no resizer to answer: the chain carries on from
     // the count the frame already spent.
@@ -940,14 +1005,14 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheFirstRemoval = world.pendingDueIn();
 
     // Back a third of the way into the window, which closes it.
     world.advance(10000);
     world.append(page.inner, page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueOnceItIsBack = world.pendingDueIn();
     const builtOnceItIsBack = world.intersections();
@@ -956,7 +1021,7 @@ const scenarios = {
     // would have run out had it been left standing.
     world.advance(5000);
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheSecondRemoval = world.pendingDueIn();
     const removalsHeldForTheSecondWindow = !removals.disconnected;
@@ -994,7 +1059,7 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheRemoval = world.pendingDueIn();
 
@@ -1007,7 +1072,7 @@ const scenarios = {
     // once and finds the frame outside the document.
     world.append(page.inner, page.frame);
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheRoundTrip = world.pendingDueIn();
     const builtAfterTheRoundTrip = world.intersections();
@@ -1045,7 +1110,7 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterTheRemoval = world.pendingDueIn();
 
@@ -1055,7 +1120,7 @@ const scenarios = {
 
     world.append(page.inner, fresh);
     world.attachResizer(fresh);
-    world.flushMutations();
+    world.flushObservers();
 
     const theDocumentFindsTheFreshFrame = world.findById(id) === fresh;
     const builtForTheFreshFrame = world.intersections();
@@ -1086,7 +1151,7 @@ const scenarios = {
     const removals = world.mutation();
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     // The window closes with the frame still gone.
     world.advance(40000);
@@ -1096,7 +1161,7 @@ const scenarios = {
     const heardBeforeItIsBack = removals.deliveries;
 
     world.append(page.inner, page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     world.report(true);
     world.advance(40000);
@@ -1127,7 +1192,7 @@ const scenarios = {
 
     world.report(true);
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const removalsWatchingInTheWindow = !removals.disconnected;
     const intersectionDisconnected = world.intersection().disconnected;
@@ -1138,7 +1203,7 @@ const scenarios = {
     // Two thirds of the way through it, the page changes again.
     world.advance(20000);
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     const dueAfterAChangeWhileItIsGone = world.pendingDueIn();
 
@@ -1175,7 +1240,7 @@ const scenarios = {
       world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
 
     world.detach(page.frame);
-    world.flushMutations();
+    world.flushObservers();
 
     const listenedWhileItIsGone =
       world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
@@ -1184,7 +1249,7 @@ const scenarios = {
     // which is one callback here as it is one in a browser.
     world.append(page.inner, page.frame);
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     const listenedOnceItIsBack =
       world.listenerCount(page.inner, 'toggle') + world.listenerCount(page.outer, 'toggle');
@@ -1193,9 +1258,9 @@ const scenarios = {
     // these asks for the watch again, and the flag is the whole of what makes
     // each a no-op rather than a second listener on every disclosure.
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     // One opening, one measurement: a disclosure listened to twice would
     // measure twice.
@@ -1228,10 +1293,10 @@ const scenarios = {
     world.report(false);
 
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     world.append(page.body, world.makeNode('DIV'));
-    world.flushMutations();
+    world.flushObservers();
 
     world.report(false);
 

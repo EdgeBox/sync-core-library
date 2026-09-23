@@ -47,10 +47,11 @@ final class EmbedWatchBehaviourTest extends TestCase
     {
         $run = $this->perform('removedWhileHiddenFromTheStart');
 
-        // Nothing reported an intersection for this frame in its whole life:
-        // it was not intersecting when it was first seen and it was not
-        // intersecting when the page let go of it.
-        $this->assertSame(0, $run['intersectionReports']);
+        // One report in this frame's whole life, the one every observation is
+        // handed as it starts: it was not intersecting when it was first seen,
+        // and nothing reported a change afterwards, so it was not intersecting
+        // when the page let go of it either.
+        $this->assertSame(1, $run['intersectionReports']);
 
         // What hears of the removal is the change to the page's own tree.
         // Which node the watch asked to hear about, and which kind of change,
@@ -298,7 +299,12 @@ final class EmbedWatchBehaviourTest extends TestCase
         $this->assertTrue($run['frameInTheDocument']);
         $this->assertSame(2, $run['builtAgain'], 'the watch the frame started with, and the one it came back to');
         $this->assertSame(2, $run['builtAfterAFurtherChange']);
-        $this->assertSame([], $run['dueOnceItIsBack']);
+
+        // The observation the rebuilt watch starts is handed its first entry
+        // too, and it finds the frame visible where the page put it back, so
+        // the frame is measured again there and then. The resizer has not
+        // attached, so what stands waiting is the next of the 25.
+        $this->assertSame([200], $run['dueOnceItIsBack']);
         $this->assertTrue($run['removalsStillWatching']);
 
         // And the next uncovering answers as it answered before the frame
