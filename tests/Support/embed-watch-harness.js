@@ -35,7 +35,7 @@ function createWorld(engine) {
   let resizeCalls = 0;
   let mutationRecords = [];
   let pendingIntersections = [];
-  let intersecting = false;
+  const intersectingByTarget = new Map();
 
   const byId = Object.create(null);
   const mutationObservers = [];
@@ -281,7 +281,8 @@ function createWorld(engine) {
         return;
       }
 
-      const isIntersecting = intersecting && documentStub.contains(observer.target);
+      const isIntersecting =
+        intersectingByTarget.get(observer.target) === true && documentStub.contains(observer.target);
 
       observer.reports += 1;
       delivered += 1;
@@ -365,7 +366,15 @@ function createWorld(engine) {
   // because the entry an observe() queues reports where the frame stands
   // rather than what last changed.
   function report(isIntersecting) {
-    intersecting = isIntersecting;
+    // A browser hands an observation its first entry before any entry for a
+    // change that came after it, so anything still queued goes first.
+    flushIntersections();
+
+    intersectionObservers.slice().forEach((observer) => {
+      if (observer.watching) {
+        intersectingByTarget.set(observer.target, isIntersecting);
+      }
+    });
     intersectionObservers.slice().forEach((observer) => {
       if (observer.watching) {
         observer.reports += 1;

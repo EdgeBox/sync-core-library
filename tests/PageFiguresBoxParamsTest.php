@@ -21,11 +21,11 @@ final class PageFiguresBoxParamsTest extends TestCase
 
     public function testThePageIsNamedByItsOwnParts(): void
     {
-        $params = new PageFiguresBoxParams(self::everyFigure());
+        $options = (new PageFiguresBoxParams(self::everyFigure()))->toOptions();
 
-        $this->assertSame('node', $params->getEntityType());
-        $this->assertSame('f1b0c0de-0000-4000-8000-000000000001', $params->getEntityUuid());
-        $this->assertSame('de', $params->getLangcode());
+        $this->assertSame('node', $options['entityType']);
+        $this->assertSame('f1b0c0de-0000-4000-8000-000000000001', $options['entityUuid']);
+        $this->assertSame('de', $options['langcode']);
     }
 
     /**
@@ -540,10 +540,7 @@ final class PageFiguresBoxParamsTest extends TestCase
         $figures = self::everyFigure();
         $figures['entity_uuid'] = '  417  ';
 
-        $params = new PageFiguresBoxParams($figures);
-
-        $this->assertSame('417', $params->getEntityUuid());
-        $this->assertSame('417', $params->toOptions()['entityUuid']);
+        $this->assertSame('417', (new PageFiguresBoxParams($figures))->toOptions()['entityUuid']);
     }
 
     /**

@@ -37,12 +37,11 @@ final class PageFiguresBoxParams
     /**
      * The longest an entity type machine name may be.
      *
-     * A machine name is an external service id, and Sync Core holds an
-     * external service id to 255 characters.
+     * A machine name is an external service id.
      *
      * @var int
      */
-    public const MAX_ENTITY_TYPE_LENGTH = 255;
+    public const MAX_ENTITY_TYPE_LENGTH = self::MAX_EXTERNAL_SERVICE_ID_LENGTH;
 
     /**
      * The longest an entity uuid may be.
@@ -59,11 +58,11 @@ final class PageFiguresBoxParams
      * The longest a langcode may be.
      *
      * A language is named by an external service id, the way the entity type
-     * is, and Sync Core holds one to 255 characters.
+     * is.
      *
      * @var int
      */
-    public const MAX_LANGCODE_LENGTH = 255;
+    public const MAX_LANGCODE_LENGTH = self::MAX_EXTERNAL_SERVICE_ID_LENGTH;
 
     /**
      * The longest a tag's key or its name may be.
@@ -82,6 +81,15 @@ final class PageFiguresBoxParams
      * @var int
      */
     public const MAX_SECONDS_AHEAD_OF_NOW = 365 * 24 * 60 * 60;
+
+    /**
+     * The longest an external service id may be, which is what Sync Core
+     * holds one to. The two parts of a page's identity that are named by one
+     * are held to it here rather than to a number of their own.
+     *
+     * @var int
+     */
+    private const MAX_EXTERNAL_SERVICE_ID_LENGTH = 255;
 
     private const ENTITY_TYPE = 'entity_type';
     private const ENTITY_UUID = 'entity_uuid';
@@ -193,30 +201,6 @@ final class PageFiguresBoxParams
     public static function priorities()
     {
         return self::numbersOf(ContentPriority::getAllowableEnumValues());
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityType()
-    {
-        return $this->figures[self::ENTITY_TYPE];
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityUuid()
-    {
-        return $this->figures[self::ENTITY_UUID];
-    }
-
-    /**
-     * @return string
-     */
-    public function getLangcode()
-    {
-        return $this->figures[self::LANGCODE];
     }
 
     /**
