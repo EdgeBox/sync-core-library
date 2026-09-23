@@ -88,7 +88,14 @@ interface IEmbedService
      * place it in a collapsed `details` element or a tab that is not selected
      * and needs no script of its own to size it once it is shown.
      *
+     * The named array carries the page-figures record in the record's own
+     * snake_case, so a site hands the record over rather than copying it
+     * figure by figure: entity_type, entity_uuid and langcode name the page,
+     * and content_health_percent_0_to_100, open_issue_count, content_priority,
+     * cited_in_answers_last_30_days, summary_updated and tags are its figures.
+     * PageFiguresBoxParams states what each name is held to.
+     *
      * @return IEmbedFeature
      */
-    public function pageFigures(PageFiguresBoxParams $figures);
+    public function pageFigures(array $params, ?ActingUser $as = null);
 }

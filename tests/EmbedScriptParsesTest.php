@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
-use EdgeBox\SyncCore\Interfaces\Embed\PageFiguresBoxParams;
 use EdgeBox\SyncCore\Tests\Support\EmbedMarkup;
 use EdgeBox\SyncCore\V2\Embed\Embed;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
@@ -161,7 +160,7 @@ final class EmbedScriptParsesTest extends TestCase
     private function box(array $figures): string
     {
         return $this->render(
-            (new EmbedService(EmbedMarkup::core()))->pageFigures(new PageFiguresBoxParams($figures))
+            (new EmbedService(EmbedMarkup::core()))->pageFigures($figures)
         );
     }
 

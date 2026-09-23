@@ -6,7 +6,6 @@ namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Helpers\EmbedResult;
 use EdgeBox\SyncCore\Interfaces\Embed\IEmbedFeature;
-use EdgeBox\SyncCore\Interfaces\Embed\PageFiguresBoxParams;
 use EdgeBox\SyncCore\Tests\Support\EmbedMarkup;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
@@ -87,7 +86,7 @@ final class PageFiguresEmbedTest extends TestCase
         $figures = self::everyFigure();
         $figures['embedSize'] = 'line';
 
-        $asked = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+        $asked = EmbedMarkup::of($this->pageFigures($figures));
 
         $this->assertSame('box', $this->messages($asked)['options']['embedSize']);
         $this->assertStringContainsString('class="content-sync-embed size-box"', $asked);
@@ -120,7 +119,7 @@ final class PageFiguresEmbedTest extends TestCase
             ['key' => 'onboarding', 'name' => '</script><img src=x>'],
         ];
 
-        $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+        $html = EmbedMarkup::of($this->pageFigures($figures));
 
         $this->assertSame(1, preg_match('@^\s*options: (\{.*\}),$@m', $html, $matches));
 
@@ -223,7 +222,7 @@ final class PageFiguresEmbedTest extends TestCase
         $figures['remeasureOnUncover'] = false;
         $figures['remeasure_on_uncover'] = false;
 
-        $html = EmbedMarkup::of($this->pageFigures(new PageFiguresBoxParams($figures)));
+        $html = EmbedMarkup::of($this->pageFigures($figures));
 
         $this->assertStringContainsString('remeasureOnUncover();', $html);
         $this->assertArrayNotHasKey('remeasureOnUncover', $this->messages($html)['options']);
@@ -252,7 +251,7 @@ final class PageFiguresEmbedTest extends TestCase
         $second = new TestApplication();
         $second->siteBaseUrl = 'https://second.example.com';
 
-        $figures = new PageFiguresBoxParams(self::everyFigure());
+        $figures = self::everyFigure();
 
         $one = $this->messages(EmbedMarkup::of(
             (new EmbedService(EmbedMarkup::core($first)))->pageFigures($figures)
@@ -298,10 +297,10 @@ final class PageFiguresEmbedTest extends TestCase
     /**
      * The entry point, called the way a module calls it.
      */
-    private function pageFigures(?PageFiguresBoxParams $figures = null): IEmbedFeature
+    private function pageFigures(?array $figures = null): IEmbedFeature
     {
         return (new EmbedService(EmbedMarkup::core()))
-            ->pageFigures($figures ?? new PageFiguresBoxParams(self::everyFigure()));
+            ->pageFigures($figures ?? self::everyFigure());
     }
 
     /**

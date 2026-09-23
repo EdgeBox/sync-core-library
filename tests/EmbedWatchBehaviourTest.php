@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
-use EdgeBox\SyncCore\Interfaces\Embed\PageFiguresBoxParams;
 use EdgeBox\SyncCore\Tests\Support\EmbedMarkup;
 use EdgeBox\SyncCore\V2\Embed\EmbedService;
 use PHPUnit\Framework\TestCase;
@@ -536,7 +535,7 @@ final class EmbedWatchBehaviourTest extends TestCase
     private function watch(): string
     {
         $html = EmbedMarkup::of(
-            (new EmbedService(EmbedMarkup::core()))->pageFigures(new PageFiguresBoxParams(self::figures()))
+            (new EmbedService(EmbedMarkup::core()))->pageFigures(self::figures())
         );
 
         $this->assertSame(
