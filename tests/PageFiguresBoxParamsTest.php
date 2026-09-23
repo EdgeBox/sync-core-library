@@ -233,6 +233,19 @@ final class PageFiguresBoxParamsTest extends TestCase
         $this->assertArrayNotHasKey('contentPriority', (new PageFiguresBoxParams($figures))->toOptions());
     }
 
+    /**
+     * The skipping of a member that names no number cannot be reached through
+     * the shipped enum, because every member of it opens with its number. So
+     * what is covered here is that assumption: the day the enum carries a
+     * member naming none, this is what says so.
+     */
+    public function testEveryMemberOfTheSharedEnumOpensWithTheNumberItNames(): void
+    {
+        foreach (ContentPriority::getAllowableEnumValues() as $member) {
+            $this->assertMatchesRegularExpression('@^\d+@', (string) $member, $member.' names a number');
+        }
+    }
+
     public function testAMemberThatNamesNoNumberNamesNoPriority(): void
     {
         $numbered = [];

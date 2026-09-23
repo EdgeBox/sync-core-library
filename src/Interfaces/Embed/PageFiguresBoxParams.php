@@ -47,8 +47,9 @@ final class PageFiguresBoxParams
      * The longest an entity uuid may be.
      *
      * The box asks for the uuid Sync Core keys the content item's record on,
-     * and a uuid is 36 characters. A longer value is no uuid, so there is no
-     * record under it to find.
+     * and a uuid is 36 characters, so nothing longer names a record there.
+     * What shape a value of that length has is the box's own to answer, with
+     * the alert it answers any unusable id with; this class reads no shape.
      *
      * @var int
      */
