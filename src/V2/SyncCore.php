@@ -157,7 +157,7 @@ class SyncCore implements ISyncCore
         }
 
         $this->application = $application;
-        // As the /sync-core will be exported with the routes in the swagger.yaml docs
+        // As the /sync-core will be exported with the routes in the OpenAPI document
         // that is fed into the openapi generator, our library will already include
         // that prefix for all routes. So we need to cut it off or we would end up
         // with an incorrect double-prefix of /sync-core/sync-core.
