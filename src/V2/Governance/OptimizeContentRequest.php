@@ -42,19 +42,26 @@ class OptimizeContentRequest implements IOptimizeContentRequest
 
     public function getOptimizationTypeKeys()
     {
-        return array_values($this->body['optimizationTypeKeys'] ?? []);
+        $keys = $this->body['optimizationTypeKeys'] ?? null;
+
+        return is_array($keys) ? array_values($keys) : [];
     }
 
     public function getPage()
     {
-        return $this->body['page'] ?? [];
+        $page = $this->body['page'] ?? null;
+
+        return is_array($page) ? $page : [];
     }
 
     public function getIssues()
     {
         $issues = [];
-        foreach ($this->body['issues'] ?? [] as $issue) {
-            $issues[] = new IssueContext($issue);
+        $list = $this->body['issues'] ?? null;
+        foreach (is_array($list) ? $list : [] as $issue) {
+            if (is_array($issue)) {
+                $issues[] = new IssueContext($issue);
+            }
         }
 
         return $issues;
@@ -62,7 +69,15 @@ class OptimizeContentRequest implements IOptimizeContentRequest
 
     public function getRecommendations()
     {
-        return array_values($this->body['recommendations'] ?? []);
+        $recommendations = [];
+        $list = $this->body['recommendations'] ?? null;
+        foreach (is_array($list) ? $list : [] as $recommendation) {
+            if (is_array($recommendation)) {
+                $recommendations[] = new RecommendationContext($recommendation);
+            }
+        }
+
+        return $recommendations;
     }
 
     public function wasTruncated()

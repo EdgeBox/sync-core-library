@@ -38,12 +38,24 @@ interface IOptimizeContentRequest
     public function getIssues();
 
     /**
-     * @return array<array{key: string, text: string}>
+     * The content the optimization recommends the site write, in the order it
+     * names it.
+     *
+     * Empty when the optimization recommends none, and when the sender left the
+     * list out to fit the size a site accepts.
+     *
+     * @return IRecommendationContext[]
      */
     public function getRecommendations();
 
     /**
-     * @return bool true when the sender dropped lower-priority context to fit the size bound
+     * Whether the sender dropped issues to fit the size a site accepts.
+     *
+     * It drops the lowest-priority issues first. The recommendations are not
+     * counted here and nothing else reports on them: a recommendation the
+     * sender left out, or a part it left off one, leaves this false.
+     *
+     * @return bool true when issues were dropped from this trigger
      */
     public function wasTruncated();
 

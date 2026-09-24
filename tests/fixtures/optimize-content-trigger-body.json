@@ -1,0 +1,99 @@
+{
+  "optimizationId": "66f300000000000000000a01",
+  "contentItemKey": "page.pricing",
+  "targetLocale": "en-US",
+  "page": {
+    "title": "Pricing",
+    "contentHealthPercent0To100": 62,
+    "citedInAnswersLast30Days": 4
+  },
+  "optimizationTypeKeys": [
+    "faq-section"
+  ],
+  "issues": [
+    {
+      "key": "issue-1",
+      "typeKey": "missing-faq",
+      "typeName": "Missing FAQ",
+      "priority": "300-high",
+      "instruction": "Answer the question on the page.",
+      "evidence": "No price stated."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "66f300000000000000000b01",
+      "kind": "faq",
+      "locale": {
+        "key": "en-US",
+        "name": "English (en-US)"
+      },
+      "title": {
+        "text": "What does it cost?",
+        "format": "text/plain",
+        "provenance": "model-inferred",
+        "at": "2026-01-01T00:00:00.000Z"
+      },
+      "content": {
+        "text": "It costs little.",
+        "format": "text/markdown",
+        "provenance": "model-inferred",
+        "at": "2026-01-01T00:00:00.000Z"
+      },
+      "brief": {
+        "text": "Lead with the price.",
+        "format": "text/plain",
+        "provenance": "operator",
+        "at": "2026-01-01T00:00:00.000Z"
+      },
+      "target": {
+        "state": "missing",
+        "linkTier": "400-cited-answer",
+        "evidence": [
+          {
+            "path": "body",
+            "reasoning": "No price stated."
+          }
+        ]
+      },
+      "evidence": {
+        "clusterKey": "pricing",
+        "unpromptedRate": 0.5,
+        "unpromptedDenominator": 10,
+        "gapRate": 0.25,
+        "gapDenominator": 4,
+        "gapSources": [
+          {
+            "key": "authority.example",
+            "name": "example.com"
+          }
+        ],
+        "runs": [
+          {
+            "id": "66f600000000000000000001",
+            "engine": {
+              "key": "engine.openai.chatgpt",
+              "name": "ChatGPT"
+            },
+            "promptText": "How much does it cost?",
+            "answeredAt": "2026-01-01T00:00:00.000Z"
+          }
+        ],
+        "coverage": [
+          {
+            "engine": {
+              "key": "engine.openai.chatgpt",
+              "name": "ChatGPT"
+            },
+            "purpose": {
+              "key": "purpose.discovery",
+              "name": "Discovery"
+            },
+            "answers": 3
+          }
+        ]
+      }
+    }
+  ],
+  "truncated": false
+}
