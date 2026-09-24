@@ -17,8 +17,7 @@
 #   gh workflow run regenerate-client.yml --ref <branch> -f assert_empty=true
 #
 # With assert_empty the run commits nothing and fails when the generation
-# differs from what is committed, which is how a scheduled or manual drift
-# check is run.
+# differs from what is committed, which is how a drift check is run.
 name: Regenerate the client
 
 on:
@@ -63,10 +62,10 @@ jobs:
 
       # One document, read through the contents API rather than checked out:
       # nothing but the document itself reaches this public repository's runner,
-      # and no step prints where it came from. No redirect is followed, because
-      # the Authorization header must not travel to another host, and the answer
-      # has to be an OpenAPI document before the generator ever sees it - a path
-      # that names a directory answers 200 with something else entirely.
+      # and no step prints where it came from. Anything the request does not
+      # answer with the document is reported by its status code, and the answer
+      # has to be a YAML OpenAPI 3 document before the generator ever sees it -
+      # a path that names a directory answers 200 with a listing.
       - name: Read the OpenAPI document
         env:
           DOCUMENT_REPOSITORY: ${{ secrets.OPENAPI_DOCUMENT_REPOSITORY }}
@@ -90,7 +89,7 @@ jobs:
           fi
           if ! grep -q '^openapi:' generated/openapi.yaml; then
             rm -f generated/openapi.yaml
-            echo "::error::what the source answered is not an OpenAPI 3 document; check the document secrets"
+            echo "::error::what the source answered is not a YAML OpenAPI 3 document; check the document secrets"
             exit 1
           fi
           echo "Read $(wc -c < generated/openapi.yaml) bytes of OpenAPI document."
