@@ -35,6 +35,18 @@ class OptimizeContentRequest implements IOptimizeContentRequest
         return (string) ($this->body['contentItemKey'] ?? '');
     }
 
+    public function getPageUrl()
+    {
+        return $this->getPage()['url'] ?? null;
+    }
+
+    public function getPageEntity()
+    {
+        $entity = $this->body['pageEntity'] ?? null;
+
+        return is_array($entity) ? new PageEntityReference($entity) : null;
+    }
+
     public function getTargetLocale()
     {
         return $this->body['targetLocale'] ?? null;

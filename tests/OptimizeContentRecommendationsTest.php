@@ -142,6 +142,55 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $this->assertFalse($request->wasTruncated());
     }
 
+    public function testTheRealExportNamesThePageASiteCanFind(): void
+    {
+        $request = $this->parse($this->realExport());
+
+        $this->assertSame('https://example.com/pricing', $request->getPageUrl());
+        $this->assertSame('https://example.com/pricing', $request->getPage()['url']);
+
+        $entity = $request->getPageEntity();
+        $this->assertSame('node', $entity->getEntityType());
+        $this->assertSame('6f1c2b8e-9a34-4f5d-8f2a-9b7c1d2e3f40', $entity->getRemoteUuid());
+        $this->assertSame('en', $entity->getLangcode());
+    }
+
+    public function testAPageTheSenderNamesNoEntityForIsReadAsNone(): void
+    {
+        $body = $this->realExport();
+        unset($body['pageEntity']);
+
+        $this->assertNull($this->parse($body)->getPageEntity());
+    }
+
+    public function testAPageEntityThatIsNotOneIsReadAsNone(): void
+    {
+        $body = $this->realExport();
+        $body['pageEntity'] = 'not a reference';
+
+        $this->assertNull($this->parse($body)->getPageEntity());
+    }
+
+    public function testAPageEntityWithNothingInItReadsEmptyRatherThanRaising(): void
+    {
+        $body = $this->realExport();
+        $body['pageEntity'] = [];
+
+        $entity = $this->parse($body)->getPageEntity();
+
+        $this->assertSame('', $entity->getEntityType());
+        $this->assertSame('', $entity->getRemoteUuid());
+        $this->assertSame('', $entity->getLangcode());
+    }
+
+    public function testAPageTheSenderHoldsNoUrlForIsReadAsNone(): void
+    {
+        $body = $this->realExport();
+        unset($body['page']['url']);
+
+        $this->assertNull($this->parse($body)->getPageUrl());
+    }
+
     public function testNoRecommendationsIsReadAsAnEmptyList(): void
     {
         $body = $this->realExport();

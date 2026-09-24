@@ -4,8 +4,14 @@
   "targetLocale": "en-US",
   "page": {
     "title": "Pricing",
+    "url": "https://example.com/pricing",
     "contentHealthPercent0To100": 62,
     "citedInAnswersLast30Days": 4
+  },
+  "pageEntity": {
+    "entityType": "node",
+    "remoteUuid": "6f1c2b8e-9a34-4f5d-8f2a-9b7c1d2e3f40",
+    "langcode": "en"
   },
   "optimizationTypeKeys": [
     "faq-section"
