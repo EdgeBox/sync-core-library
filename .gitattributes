@@ -1,0 +1,12 @@
+# The published package carries the library and its dependency declaration and
+# nothing else: everything a consumer of the Packagist dist never runs is
+# export-ignored, so it stays in the repository and out of every release
+# archive.
+.gitattributes    export-ignore
+.gitignore        export-ignore
+/.claude/         export-ignore
+/.github/         export-ignore
+/phpunit.xml.dist export-ignore
+/scripts/         export-ignore
+/tests/           export-ignore
+/tools/           export-ignore
