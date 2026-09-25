@@ -80,6 +80,11 @@ class EmbedService implements IEmbedService
         return new GovernanceContentInventoryEmbed($this->core, $params, $as);
     }
 
+    public function governanceIssues(array $params, ?ActingUser $as = null)
+    {
+        return new GovernanceIssuesEmbed($this->core, $params, $as);
+    }
+
     public function pageFigures(array $params, ?ActingUser $as = null)
     {
         return new PageFiguresEmbed($this->core, $params, $as);
