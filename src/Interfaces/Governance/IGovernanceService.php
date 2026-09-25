@@ -5,6 +5,11 @@ namespace EdgeBox\SyncCore\Interfaces\Governance;
 interface IGovernanceService
 {
     /**
+     * Read an inbound optimize-content trigger.
+     *
+     * The body is the request's JSON decoded to arrays all the way down, the
+     * way json_decode() returns it when it is asked for associative arrays.
+     *
      * @return IOptimizeContentRequest
      */
     public function parseOptimizeContentRequest(array $query, array $body);

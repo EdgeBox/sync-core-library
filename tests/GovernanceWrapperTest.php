@@ -7,6 +7,7 @@ namespace EdgeBox\SyncCore\Tests;
 use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
 use EdgeBox\SyncCore\V2\Governance\GovernanceService;
+use EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationKind;
 use EdgeBox\SyncCore\V2\SyncCore;
 use GuzzleHttp\Psr7\Response;
 
@@ -41,7 +42,12 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
                 'issues' => [
                     ['key' => 'i1', 'typeKey' => 'missing-meta', 'typeName' => 'Missing meta', 'priority' => '400-critical', 'instruction' => 'Add a meta description', 'evidence' => 'none found'],
                 ],
-                'recommendations' => [['key' => 'r1', 'text' => 'Shorten the title']],
+                'recommendations' => [[
+                    'id' => 'r1',
+                    'kind' => ContentRecommendationKind::FAQ,
+                    'locale' => ['key' => 'de', 'name' => 'German (de)'],
+                    'title' => ['text' => 'What does it cost?', 'format' => 'text/plain', 'provenance' => 'model-inferred', 'at' => '2026-01-01T00:00:00.000Z'],
+                ]],
                 'truncated' => true,
             ]
         );
@@ -58,7 +64,12 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         $this->assertSame('missing-meta', $issues[0]->getTypeKey());
         $this->assertSame('Add a meta description', $issues[0]->getInstruction());
 
-        $this->assertSame(['key' => 'r1', 'text' => 'Shorten the title'], $request->getRecommendations()[0]);
+        $recommendation = $request->getRecommendations()[0];
+        $this->assertSame('r1', $recommendation->getId());
+        $this->assertSame(ContentRecommendationKind::FAQ, $recommendation->getKind());
+        $this->assertSame('de', $recommendation->getLocale()->getKey());
+        $this->assertSame('What does it cost?', $recommendation->getTitle()->getText());
+
         $this->assertSame(['accepted' => true], $request->accept());
         $this->assertSame(['accepted' => false, 'reason' => 'busy'], $request->refuse('busy'));
     }
