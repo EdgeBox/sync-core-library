@@ -22,6 +22,13 @@ interface IEmbedService
     // its users, which is not the name this code gives the topic.
     public const GOVERNANCE_CONTENT_INVENTORY = 'brand-presence.content-inventory';
 
+    // The issue screen, which is the one a CMS hosts: a site token reaches its
+    // own site's issues through it, where the content inventory above is the
+    // whole project's and is read in the application. The value is the embed's
+    // id on the wire and, with the dot read as a slash, the route people land
+    // on.
+    public const GOVERNANCE_ISSUES = 'brand-presence.issues';
+
     public const BOX_PAGE_FIGURES = 'box.page-figures';
 
     /**
@@ -78,6 +85,20 @@ interface IEmbedService
      * @return IEmbedFeature
      */
     public function governanceContentInventory(array $params, ?ActingUser $as = null);
+
+    /**
+     * The issue screen, for a site to host beside its own content.
+     *
+     * The frame is signed with the site's own credentials, so it shows that
+     * site's issues and no other site's. The acting person's scopes decide what
+     * they may do on a row: a person carrying issue:own:write gets the status
+     * control and the two verdicts, and anyone else reads the same rows with
+     * the status as text. Sync Core refuses a write for a token without the
+     * scope either way.
+     *
+     * @return IEmbedFeature
+     */
+    public function governanceIssues(array $params, ?ActingUser $as = null);
 
     /**
      * The box that renders one page's figures, sized to fill the region it is
