@@ -60,7 +60,7 @@ final class GovernanceIssuesEmbedTest extends TestCase
         $this->assertSame('lena@example.com', $payload['user']['email']);
     }
 
-    public function testAPersonWithoutTheWriteScopeCarriesOnlyWhatTheySiteAuthorized(): void
+    public function testAPersonWithoutTheWriteScopeCarriesOnlyWhatTheSiteAuthorized(): void
     {
         $acting = new ActingUser(['issue:own:read'], 'Sam', 'sam@example.com');
         $embed = (new EmbedService($this->core()))->governanceIssues([], $acting);
@@ -76,8 +76,9 @@ final class GovernanceIssuesEmbedTest extends TestCase
         $embed = (new EmbedService($this->core()))->governanceIssues(['query' => ['status' => 'open']]);
         $html = $embed->run()->getRenderedHtml();
 
-        // The options are handed to the frame as the message the screen reads
-        // its own query out of, which is how a link opens the list on a filter.
+        // What the caller names reaches the frame as the options message. What a
+        // screen does with it is the screen's own business: this holds the
+        // library to sending it, not a screen to reading it.
         $this->assertStringContainsString('"query":{"status":"open"}', $html);
     }
 
