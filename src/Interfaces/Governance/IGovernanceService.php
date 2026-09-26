@@ -20,6 +20,14 @@ interface IGovernanceService
     public function postExternalDraft(string $content_item_key, string $external_revision_id, string $rendered_html, ?ActingUser $as = null);
 
     /**
+     * Report what became of a draft posted with postExternalDraft(). Available
+     * when ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE is enabled.
+     *
+     * @return IReportExternalDraftOutcome
+     */
+    public function reportExternalDraftOutcome(ExternalDraftOutcome $outcome, ?ActingUser $as = null);
+
+    /**
      * @return IContentItemSummary
      */
     public function getContentItemByKey(string $key, string $status, ?ActingUser $as = null);
