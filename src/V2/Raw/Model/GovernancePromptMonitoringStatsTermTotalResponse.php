@@ -82,6 +82,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => 'float',
         'averageAspectScore' => 'float',
         'coverage' => 'float',
+        'verdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
+        'competitorVerdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
+        'averageVerdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
     ];
 
     /**
@@ -116,6 +119,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => null,
         'averageAspectScore' => null,
         'coverage' => null,
+        'verdict' => null,
+        'competitorVerdict' => null,
+        'averageVerdict' => null,
     ];
 
     /**
@@ -146,6 +152,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => true,
         'averageAspectScore' => true,
         'coverage' => true,
+        'verdict' => true,
+        'competitorVerdict' => true,
+        'averageVerdict' => true,
     ];
 
     /**
@@ -184,6 +193,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => 'aspectScore',
         'averageAspectScore' => 'averageAspectScore',
         'coverage' => 'coverage',
+        'verdict' => 'verdict',
+        'competitorVerdict' => 'competitorVerdict',
+        'averageVerdict' => 'averageVerdict',
     ];
 
     /**
@@ -214,6 +226,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => 'setAspectScore',
         'averageAspectScore' => 'setAverageAspectScore',
         'coverage' => 'setCoverage',
+        'verdict' => 'setVerdict',
+        'competitorVerdict' => 'setCompetitorVerdict',
+        'averageVerdict' => 'setAverageVerdict',
     ];
 
     /**
@@ -244,6 +259,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         'aspectScore' => 'getAspectScore',
         'averageAspectScore' => 'getAverageAspectScore',
         'coverage' => 'getCoverage',
+        'verdict' => 'getVerdict',
+        'competitorVerdict' => 'getCompetitorVerdict',
+        'averageVerdict' => 'getAverageVerdict',
     ];
 
     /**
@@ -283,6 +301,9 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
         $this->setIfExists('aspectScore', $data ?? [], null);
         $this->setIfExists('averageAspectScore', $data ?? [], null);
         $this->setIfExists('coverage', $data ?? [], null);
+        $this->setIfExists('verdict', $data ?? [], null);
+        $this->setIfExists('competitorVerdict', $data ?? [], null);
+        $this->setIfExists('averageVerdict', $data ?? [], null);
     }
 
     /**
@@ -1139,6 +1160,108 @@ class GovernancePromptMonitoringStatsTermTotalResponse implements ModelInterface
             }
         }
         $this->container['coverage'] = $coverage;
+
+        return $this;
+    }
+
+    /**
+     * Gets verdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getVerdict()
+    {
+        return $this->container['verdict'];
+    }
+
+    /**
+     * Sets verdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $verdict verdict
+     *
+     * @return self
+     */
+    public function setVerdict($verdict)
+    {
+        if (is_null($verdict)) {
+            array_push($this->openAPINullablesSetToNull, 'verdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('verdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['verdict'] = $verdict;
+
+        return $this;
+    }
+
+    /**
+     * Gets competitorVerdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getCompetitorVerdict()
+    {
+        return $this->container['competitorVerdict'];
+    }
+
+    /**
+     * Sets competitorVerdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $competitorVerdict competitorVerdict
+     *
+     * @return self
+     */
+    public function setCompetitorVerdict($competitorVerdict)
+    {
+        if (is_null($competitorVerdict)) {
+            array_push($this->openAPINullablesSetToNull, 'competitorVerdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('competitorVerdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['competitorVerdict'] = $competitorVerdict;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageVerdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getAverageVerdict()
+    {
+        return $this->container['averageVerdict'];
+    }
+
+    /**
+     * Sets averageVerdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $averageVerdict averageVerdict
+     *
+     * @return self
+     */
+    public function setAverageVerdict($averageVerdict)
+    {
+        if (is_null($averageVerdict)) {
+            array_push($this->openAPINullablesSetToNull, 'averageVerdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageVerdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageVerdict'] = $averageVerdict;
 
         return $this;
     }

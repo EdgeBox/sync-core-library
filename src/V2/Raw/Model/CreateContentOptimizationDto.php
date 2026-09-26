@@ -68,6 +68,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'fixesIssueTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'fixesIssues' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
+        'fixesRecommendations' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicReference[]',
         'customer' => 'DynamicReference',
         'project' => 'DynamicReference',
         'targetStage' => 'ContentOptimizationTargetStage',
@@ -94,6 +95,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => null,
         'fixesIssueTypes' => null,
         'fixesIssues' => null,
+        'fixesRecommendations' => null,
         'customer' => null,
         'project' => null,
         'targetStage' => null,
@@ -116,6 +118,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => true,
         'fixesIssueTypes' => true,
         'fixesIssues' => true,
+        'fixesRecommendations' => true,
         'customer' => true,
         'project' => true,
         'targetStage' => true,
@@ -146,6 +149,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => 'types',
         'fixesIssueTypes' => 'fixesIssueTypes',
         'fixesIssues' => 'fixesIssues',
+        'fixesRecommendations' => 'fixesRecommendations',
         'customer' => 'customer',
         'project' => 'project',
         'targetStage' => 'targetStage',
@@ -168,6 +172,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => 'setTypes',
         'fixesIssueTypes' => 'setFixesIssueTypes',
         'fixesIssues' => 'setFixesIssues',
+        'fixesRecommendations' => 'setFixesRecommendations',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'targetStage' => 'setTargetStage',
@@ -190,6 +195,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         'types' => 'getTypes',
         'fixesIssueTypes' => 'getFixesIssueTypes',
         'fixesIssues' => 'getFixesIssues',
+        'fixesRecommendations' => 'getFixesRecommendations',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'targetStage' => 'getTargetStage',
@@ -221,6 +227,7 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
         $this->setIfExists('types', $data ?? [], null);
         $this->setIfExists('fixesIssueTypes', $data ?? [], null);
         $this->setIfExists('fixesIssues', $data ?? [], null);
+        $this->setIfExists('fixesRecommendations', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('targetStage', $data ?? [], null);
@@ -608,6 +615,40 @@ class CreateContentOptimizationDto implements ModelInterface, \ArrayAccess, \Jso
             }
         }
         $this->container['fixesIssues'] = $fixesIssues;
+
+        return $this;
+    }
+
+    /**
+     * Gets fixesRecommendations.
+     *
+     * @return null|DynamicReference[]
+     */
+    public function getFixesRecommendations()
+    {
+        return $this->container['fixesRecommendations'];
+    }
+
+    /**
+     * Sets fixesRecommendations.
+     *
+     * @param null|DynamicReference[] $fixesRecommendations fixesRecommendations
+     *
+     * @return self
+     */
+    public function setFixesRecommendations($fixesRecommendations)
+    {
+        if (is_null($fixesRecommendations)) {
+            array_push($this->openAPINullablesSetToNull, 'fixesRecommendations');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('fixesRecommendations', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['fixesRecommendations'] = $fixesRecommendations;
 
         return $this;
     }

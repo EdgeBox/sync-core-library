@@ -76,6 +76,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => 'DynamicReference',
         'parsedFile' => 'DynamicReference',
         'entities' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunEntityItem[]',
+        'verdictCoverage' => 'MonitoringPromptRunVerdictCoverage',
         'aspectSummaries' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunAspectSummary[]',
         'aspectScores' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunAspectScore[]',
         'citationHosts' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptRunCitationHost[]',
@@ -126,6 +127,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => null,
         'parsedFile' => null,
         'entities' => null,
+        'verdictCoverage' => null,
         'aspectSummaries' => null,
         'aspectScores' => null,
         'citationHosts' => null,
@@ -172,6 +174,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => true,
         'parsedFile' => true,
         'entities' => true,
+        'verdictCoverage' => true,
         'aspectSummaries' => true,
         'aspectScores' => true,
         'citationHosts' => true,
@@ -226,6 +229,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => 'rawResponseFile',
         'parsedFile' => 'parsedFile',
         'entities' => 'entities',
+        'verdictCoverage' => 'verdictCoverage',
         'aspectSummaries' => 'aspectSummaries',
         'aspectScores' => 'aspectScores',
         'citationHosts' => 'citationHosts',
@@ -272,6 +276,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => 'setRawResponseFile',
         'parsedFile' => 'setParsedFile',
         'entities' => 'setEntities',
+        'verdictCoverage' => 'setVerdictCoverage',
         'aspectSummaries' => 'setAspectSummaries',
         'aspectScores' => 'setAspectScores',
         'citationHosts' => 'setCitationHosts',
@@ -318,6 +323,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         'rawResponseFile' => 'getRawResponseFile',
         'parsedFile' => 'getParsedFile',
         'entities' => 'getEntities',
+        'verdictCoverage' => 'getVerdictCoverage',
         'aspectSummaries' => 'getAspectSummaries',
         'aspectScores' => 'getAspectScores',
         'citationHosts' => 'getCitationHosts',
@@ -373,6 +379,7 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
         $this->setIfExists('rawResponseFile', $data ?? [], null);
         $this->setIfExists('parsedFile', $data ?? [], null);
         $this->setIfExists('entities', $data ?? [], null);
+        $this->setIfExists('verdictCoverage', $data ?? [], null);
         $this->setIfExists('aspectSummaries', $data ?? [], null);
         $this->setIfExists('aspectScores', $data ?? [], null);
         $this->setIfExists('citationHosts', $data ?? [], null);
@@ -1049,6 +1056,40 @@ class MonitoringPromptRunEntity implements ModelInterface, \ArrayAccess, \JsonSe
             }
         }
         $this->container['entities'] = $entities;
+
+        return $this;
+    }
+
+    /**
+     * Gets verdictCoverage.
+     *
+     * @return null|MonitoringPromptRunVerdictCoverage
+     */
+    public function getVerdictCoverage()
+    {
+        return $this->container['verdictCoverage'];
+    }
+
+    /**
+     * Sets verdictCoverage.
+     *
+     * @param null|MonitoringPromptRunVerdictCoverage $verdictCoverage verdictCoverage
+     *
+     * @return self
+     */
+    public function setVerdictCoverage($verdictCoverage)
+    {
+        if (is_null($verdictCoverage)) {
+            array_push($this->openAPINullablesSetToNull, 'verdictCoverage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('verdictCoverage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['verdictCoverage'] = $verdictCoverage;
 
         return $this;
     }

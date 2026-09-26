@@ -76,6 +76,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => 'string',
         'crawling' => 'ExtendedProjectCrawlingSettings',
         'ai' => 'ProjectAiSettings',
+        'promptCoverage' => 'ProjectPromptCoverage',
         'id' => 'string',
         'createdAt' => 'float',
         'updatedAt' => 'float',
@@ -114,6 +115,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => null,
         'crawling' => null,
         'ai' => null,
+        'promptCoverage' => null,
         'id' => null,
         'createdAt' => null,
         'updatedAt' => null,
@@ -148,6 +150,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => false,
         'crawling' => true,
         'ai' => true,
+        'promptCoverage' => true,
         'id' => false,
         'createdAt' => false,
         'updatedAt' => false,
@@ -190,6 +193,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => 'uuid',
         'crawling' => 'crawling',
         'ai' => 'ai',
+        'promptCoverage' => 'promptCoverage',
         'id' => 'id',
         'createdAt' => 'createdAt',
         'updatedAt' => 'updatedAt',
@@ -224,6 +228,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => 'setUuid',
         'crawling' => 'setCrawling',
         'ai' => 'setAi',
+        'promptCoverage' => 'setPromptCoverage',
         'id' => 'setId',
         'createdAt' => 'setCreatedAt',
         'updatedAt' => 'setUpdatedAt',
@@ -258,6 +263,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'uuid' => 'getUuid',
         'crawling' => 'getCrawling',
         'ai' => 'getAi',
+        'promptCoverage' => 'getPromptCoverage',
         'id' => 'getId',
         'createdAt' => 'getCreatedAt',
         'updatedAt' => 'getUpdatedAt',
@@ -301,6 +307,7 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('uuid', $data ?? [], null);
         $this->setIfExists('crawling', $data ?? [], null);
         $this->setIfExists('ai', $data ?? [], null);
+        $this->setIfExists('promptCoverage', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
@@ -956,6 +963,40 @@ class ProjectEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['ai'] = $ai;
+
+        return $this;
+    }
+
+    /**
+     * Gets promptCoverage.
+     *
+     * @return null|ProjectPromptCoverage
+     */
+    public function getPromptCoverage()
+    {
+        return $this->container['promptCoverage'];
+    }
+
+    /**
+     * Sets promptCoverage.
+     *
+     * @param null|ProjectPromptCoverage $promptCoverage promptCoverage
+     *
+     * @return self
+     */
+    public function setPromptCoverage($promptCoverage)
+    {
+        if (is_null($promptCoverage)) {
+            array_push($this->openAPINullablesSetToNull, 'promptCoverage');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('promptCoverage', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['promptCoverage'] = $promptCoverage;
 
         return $this;
     }
