@@ -114,6 +114,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => 'float',
         'lastBlockedBy' => 'string',
         'crawledViaProxy' => 'bool',
+        'entityReferenceLookupMissedUrl' => 'string',
+        'pageFiguresAuthoredAt' => 'float',
     ];
 
     /**
@@ -180,6 +182,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => null,
         'lastBlockedBy' => null,
         'crawledViaProxy' => null,
+        'entityReferenceLookupMissedUrl' => null,
+        'pageFiguresAuthoredAt' => null,
     ];
 
     /**
@@ -242,6 +246,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => true,
         'lastBlockedBy' => true,
         'crawledViaProxy' => true,
+        'entityReferenceLookupMissedUrl' => true,
+        'pageFiguresAuthoredAt' => true,
     ];
 
     /**
@@ -312,6 +318,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => 'lastBlockedAt',
         'lastBlockedBy' => 'lastBlockedBy',
         'crawledViaProxy' => 'crawledViaProxy',
+        'entityReferenceLookupMissedUrl' => 'entityReferenceLookupMissedUrl',
+        'pageFiguresAuthoredAt' => 'pageFiguresAuthoredAt',
     ];
 
     /**
@@ -374,6 +382,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => 'setLastBlockedAt',
         'lastBlockedBy' => 'setLastBlockedBy',
         'crawledViaProxy' => 'setCrawledViaProxy',
+        'entityReferenceLookupMissedUrl' => 'setEntityReferenceLookupMissedUrl',
+        'pageFiguresAuthoredAt' => 'setPageFiguresAuthoredAt',
     ];
 
     /**
@@ -436,6 +446,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'lastBlockedAt' => 'getLastBlockedAt',
         'lastBlockedBy' => 'getLastBlockedBy',
         'crawledViaProxy' => 'getCrawledViaProxy',
+        'entityReferenceLookupMissedUrl' => 'getEntityReferenceLookupMissedUrl',
+        'pageFiguresAuthoredAt' => 'getPageFiguresAuthoredAt',
     ];
 
     /**
@@ -507,6 +519,8 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('lastBlockedAt', $data ?? [], null);
         $this->setIfExists('lastBlockedBy', $data ?? [], null);
         $this->setIfExists('crawledViaProxy', $data ?? [], null);
+        $this->setIfExists('entityReferenceLookupMissedUrl', $data ?? [], null);
+        $this->setIfExists('pageFiguresAuthoredAt', $data ?? [], null);
     }
 
     /**
@@ -2403,6 +2417,74 @@ class ContentItemEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             }
         }
         $this->container['crawledViaProxy'] = $crawledViaProxy;
+
+        return $this;
+    }
+
+    /**
+     * Gets entityReferenceLookupMissedUrl.
+     *
+     * @return null|string
+     */
+    public function getEntityReferenceLookupMissedUrl()
+    {
+        return $this->container['entityReferenceLookupMissedUrl'];
+    }
+
+    /**
+     * Sets entityReferenceLookupMissedUrl.
+     *
+     * @param null|string $entityReferenceLookupMissedUrl entityReferenceLookupMissedUrl
+     *
+     * @return self
+     */
+    public function setEntityReferenceLookupMissedUrl($entityReferenceLookupMissedUrl)
+    {
+        if (is_null($entityReferenceLookupMissedUrl)) {
+            array_push($this->openAPINullablesSetToNull, 'entityReferenceLookupMissedUrl');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('entityReferenceLookupMissedUrl', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['entityReferenceLookupMissedUrl'] = $entityReferenceLookupMissedUrl;
+
+        return $this;
+    }
+
+    /**
+     * Gets pageFiguresAuthoredAt.
+     *
+     * @return null|float
+     */
+    public function getPageFiguresAuthoredAt()
+    {
+        return $this->container['pageFiguresAuthoredAt'];
+    }
+
+    /**
+     * Sets pageFiguresAuthoredAt.
+     *
+     * @param null|float $pageFiguresAuthoredAt pageFiguresAuthoredAt
+     *
+     * @return self
+     */
+    public function setPageFiguresAuthoredAt($pageFiguresAuthoredAt)
+    {
+        if (is_null($pageFiguresAuthoredAt)) {
+            array_push($this->openAPINullablesSetToNull, 'pageFiguresAuthoredAt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('pageFiguresAuthoredAt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['pageFiguresAuthoredAt'] = $pageFiguresAuthoredAt;
 
         return $this;
     }
