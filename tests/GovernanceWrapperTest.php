@@ -36,6 +36,7 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         $core = new SyncCore(new TestApplication(), 'https://core.example.com/sync-core');
 
         $this->assertInstanceOf(IGovernanceService::class, $core->getGovernanceService());
+        $this->assertInstanceOf(GovernanceService::class, $core->getGovernanceService());
     }
 
     public function testTheInboundTriggerParsesAndAnswers(): void

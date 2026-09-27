@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\V2\Governance;
 
 use EdgeBox\SyncCore\Interfaces\Governance\IOptimizeContentRequest;
+use EdgeBox\SyncCore\Interfaces\Governance\IPageEntityReference;
 
 /**
  * An inbound optimize-content trigger, parsed from the request's query and body.
@@ -35,11 +36,38 @@ class OptimizeContentRequest implements IOptimizeContentRequest
         return (string) ($this->body['contentItemKey'] ?? '');
     }
 
+    /**
+     * The page as a person finds it: its canonical URL, else the URL the crawl
+     * fetched.
+     *
+     * It is the URL a site's own entity lookup is asked by, so a site that
+     * offers no such lookup, and is therefore sent no page entity, still has
+     * this to find the page by. Absent only for a page the Sync Core holds no
+     * URL for.
+     *
+     * Declared on this class and not on IOptimizeContentRequest, so a class
+     * that implements IOptimizeContentRequest stays compatible.
+     *
+     * @return null|string
+     */
     public function getPageUrl()
     {
         return $this->getPage()['url'] ?? null;
     }
 
+    /**
+     * The thing the site already holds the page as.
+     *
+     * Absent when the Sync Core has no such reference for the page, which is
+     * the case for every site that offers no lookup of its own entities by page
+     * URL. A site that files what it receives per entity files nothing for such
+     * a trigger and goes by the page URL instead.
+     *
+     * Declared on this class and not on IOptimizeContentRequest, so a class
+     * that implements IOptimizeContentRequest stays compatible.
+     *
+     * @return null|IPageEntityReference
+     */
     public function getPageEntity()
     {
         $entity = $this->body['pageEntity'] ?? null;

@@ -80,6 +80,23 @@ class EmbedService implements IEmbedService
         return new GovernanceContentInventoryEmbed($this->core, $params, $as);
     }
 
+    /**
+     * The issue screen, for a site to host beside its own content.
+     *
+     * The frame is signed with the site's own credentials, so it shows that
+     * site's issues and no other site's. The acting person's scopes decide what
+     * they may do on a row: a person carrying issue:own:write gets the status
+     * control and the two verdicts, and anyone else reads the same rows with
+     * the status as text. Sync Core refuses a write for a token without the
+     * scope either way.
+     *
+     * Declared on this class and not on IEmbedService, so a class that
+     * implements IEmbedService stays compatible. SyncCore::getEmbedService()
+     * returns an instance of this class; code that holds an ISyncCore checks
+     * the service it gets with instanceof EmbedService before calling this.
+     *
+     * @return IEmbedFeature
+     */
     public function governanceIssues(array $params, ?ActingUser $as = null)
     {
         return new GovernanceIssuesEmbed($this->core, $params, $as);

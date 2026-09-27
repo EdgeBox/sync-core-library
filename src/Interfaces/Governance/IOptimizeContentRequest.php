@@ -18,31 +18,6 @@ interface IOptimizeContentRequest
     public function getContentItemKey();
 
     /**
-     * The page as a person finds it: its canonical URL, else the URL the crawl
-     * fetched.
-     *
-     * It is the URL a site's own entity lookup is asked by, so a site that
-     * offers no such lookup, and is therefore sent no page entity, still has
-     * this to find the page by. Absent only for a page the Sync Core holds no
-     * URL for.
-     *
-     * @return null|string
-     */
-    public function getPageUrl();
-
-    /**
-     * The thing the site already holds the page as.
-     *
-     * Absent when the Sync Core has no such reference for the page, which is
-     * the case for every site that offers no lookup of its own entities by page
-     * URL. A site that files what it receives per entity files nothing for such
-     * a trigger and goes by the page URL instead.
-     *
-     * @return null|IPageEntityReference
-     */
-    public function getPageEntity();
-
-    /**
      * @return null|string
      */
     public function getTargetLocale();
@@ -74,13 +49,10 @@ interface IOptimizeContentRequest
     public function getRecommendations();
 
     /**
-     * Whether the sender dropped issues to fit the size a site accepts.
+     * The recommendations are not counted here: a recommendation the sender
+     * left out, or a part it left off one, leaves this false.
      *
-     * It drops the lowest-priority issues first. The recommendations are not
-     * counted here and nothing else reports on them: a recommendation the
-     * sender left out, or a part it left off one, leaves this false.
-     *
-     * @return bool true when issues were dropped from this trigger
+     * @return bool true when the sender dropped lower-priority context to fit the size bound
      */
     public function wasTruncated();
 

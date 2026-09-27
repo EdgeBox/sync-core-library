@@ -5,6 +5,7 @@ namespace EdgeBox\SyncCore\V2\Governance;
 use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
 use EdgeBox\SyncCore\Interfaces\Governance\ExternalDraftOutcome;
 use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
+use EdgeBox\SyncCore\Interfaces\Governance\IReportExternalDraftOutcome;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\TaxonomyTermEntity;
@@ -22,6 +23,9 @@ class GovernanceService implements IGovernanceService
         $this->core = $core;
     }
 
+    /**
+     * @return OptimizeContentRequest
+     */
     public function parseOptimizeContentRequest(array $query, array $body)
     {
         return new OptimizeContentRequest($query, $body);
@@ -32,6 +36,17 @@ class GovernanceService implements IGovernanceService
         return new PostExternalDraft($this->core, $content_item_key, $external_revision_id, $rendered_html, $as);
     }
 
+    /**
+     * Report what became of a draft posted with postExternalDraft(). Available
+     * when ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE is enabled.
+     *
+     * Declared on this class and not on IGovernanceService, so a class that
+     * implements IGovernanceService stays compatible. SyncCore::getGovernanceService()
+     * returns an instance of this class; code that holds an ISyncCore checks
+     * the service it gets with instanceof GovernanceService before calling this.
+     *
+     * @return IReportExternalDraftOutcome
+     */
     public function reportExternalDraftOutcome(ExternalDraftOutcome $outcome, ?ActingUser $as = null)
     {
         return new ReportExternalDraftOutcome($this->core, $outcome, $as);
