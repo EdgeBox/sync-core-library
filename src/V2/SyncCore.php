@@ -11,7 +11,6 @@ use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
 use EdgeBox\SyncCore\Exception\UnauthorizedException;
 use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
 use EdgeBox\SyncCore\V2\Configuration\ConfigurationService;
@@ -917,7 +916,7 @@ class SyncCore implements ISyncCore
     }
 
     /**
-     * @return IGovernanceService
+     * @return GovernanceService
      */
     public function getGovernanceService()
     {

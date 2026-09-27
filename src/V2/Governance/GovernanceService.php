@@ -38,8 +38,9 @@ class GovernanceService implements IGovernanceService
      * when ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE is enabled.
      *
      * Declared on this class and not on IGovernanceService, so a class that
-     * implements IGovernanceService stays compatible. The service
-     * ISyncCore::getGovernanceService() returns is an instance of this class.
+     * implements IGovernanceService stays compatible. SyncCore::getGovernanceService()
+     * returns an instance of this class; code that holds an ISyncCore checks
+     * the service it gets with instanceof GovernanceService before calling this.
      *
      * @return IReportExternalDraftOutcome
      */
