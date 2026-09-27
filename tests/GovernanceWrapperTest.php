@@ -246,9 +246,20 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         }
     }
 
-    public function testTheOutcomeReportIsAdvertisedByItsFeatureFlag(): void
+    /**
+     * getFeatures() keeps the first answer it reads for the rest of the
+     * process, so the one answer read here carries both the flag this library
+     * checks and the absence of another.
+     */
+    public function testTheOutcomeReportIsAvailableWhereTheSyncCoreAdvertisesIt(): void
     {
-        $this->assertSame('governance:aim-external-outcome:available', ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE);
+        $core = $this->syncCoreWithResponses([new Response(200, [], json_encode(['flags' => [
+            'governance:aim-external-outcome:available' => 1,
+        ]]))]);
+
+        $this->assertTrue($core->featureEnabled(ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE));
+        $this->assertFalse($core->featureEnabled(ISyncCore::FEATURE_ASYNC_SITE_CONFIG_AVAILABLE));
+        $this->assertStringEndsWith('/features/summary', $this->sentRequest()->getUri()->getPath());
     }
 
     public function testTheContentItemReadParsesItsSummary(): void

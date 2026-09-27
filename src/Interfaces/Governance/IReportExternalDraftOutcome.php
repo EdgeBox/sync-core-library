@@ -21,7 +21,9 @@ interface IReportExternalDraftOutcome
      *                              nothing: a repeat, or a report about an
      *                              optimization that ended otherwise
      *
-     * @throws BadRequestException   malformed, or an outcome the Sync Core does not know
+     * @throws BadRequestException   malformed, an outcome the Sync Core does not know, or a
+     *                               publication whose page the Sync Core could not queue for
+     *                               its re-measurement; the optimization is unchanged then
      * @throws UnauthorizedException the site's credentials were not accepted
      * @throws ForbiddenException    the optimization is not this site's
      * @throws NotFoundException     no such optimization
