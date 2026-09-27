@@ -22,7 +22,9 @@ interface IExternalDraftResult
      * @return bool true when the Sync Core changed nothing: for a post, an
      *              idempotent repeat; for a report of what became of the
      *              draft, a repeat or a report about an optimization that had
-     *              already ended another way, which the Sync Core ignores
+     *              already ended another way, which the Sync Core ignores; a
+     *              publication reported after the site's own earlier report
+     *              that the draft was discarded or superseded still changes it
      */
     public function wasExisting();
 }

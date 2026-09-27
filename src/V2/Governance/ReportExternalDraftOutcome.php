@@ -13,8 +13,8 @@ use EdgeBox\SyncCore\V2\SyncCore;
 
 /**
  * Reports what became of a draft a site wrote for an optimization itself, and
- * whether the report changed the optimization or matched a report it already
- * had.
+ * whether the report changed the optimization or changed nothing: a repeat,
+ * or a report about an optimization that had already ended another way.
  */
 class ReportExternalDraftOutcome implements IReportExternalDraftOutcome
 {
