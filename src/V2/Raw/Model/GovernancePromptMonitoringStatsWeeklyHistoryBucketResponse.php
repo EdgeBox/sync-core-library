@@ -78,6 +78,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => 'float',
         'competitorRecommendation' => 'float',
         'averageRecommendation' => 'float',
+        'verdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
+        'competitorVerdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
+        'averageVerdict' => 'GovernancePromptMonitoringStatsVerdictResponse',
         'voteDisagreementRate' => 'float',
         'divergenceRate' => 'float',
         'contestedUnitCount' => 'float',
@@ -114,6 +117,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => null,
         'competitorRecommendation' => null,
         'averageRecommendation' => null,
+        'verdict' => null,
+        'competitorVerdict' => null,
+        'averageVerdict' => null,
         'voteDisagreementRate' => null,
         'divergenceRate' => null,
         'contestedUnitCount' => null,
@@ -146,6 +152,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => true,
         'competitorRecommendation' => true,
         'averageRecommendation' => true,
+        'verdict' => true,
+        'competitorVerdict' => true,
+        'averageVerdict' => true,
         'voteDisagreementRate' => true,
         'divergenceRate' => true,
         'contestedUnitCount' => true,
@@ -186,6 +195,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => 'recommendation',
         'competitorRecommendation' => 'competitorRecommendation',
         'averageRecommendation' => 'averageRecommendation',
+        'verdict' => 'verdict',
+        'competitorVerdict' => 'competitorVerdict',
+        'averageVerdict' => 'averageVerdict',
         'voteDisagreementRate' => 'voteDisagreementRate',
         'divergenceRate' => 'divergenceRate',
         'contestedUnitCount' => 'contestedUnitCount',
@@ -218,6 +230,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => 'setRecommendation',
         'competitorRecommendation' => 'setCompetitorRecommendation',
         'averageRecommendation' => 'setAverageRecommendation',
+        'verdict' => 'setVerdict',
+        'competitorVerdict' => 'setCompetitorVerdict',
+        'averageVerdict' => 'setAverageVerdict',
         'voteDisagreementRate' => 'setVoteDisagreementRate',
         'divergenceRate' => 'setDivergenceRate',
         'contestedUnitCount' => 'setContestedUnitCount',
@@ -250,6 +265,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         'recommendation' => 'getRecommendation',
         'competitorRecommendation' => 'getCompetitorRecommendation',
         'averageRecommendation' => 'getAverageRecommendation',
+        'verdict' => 'getVerdict',
+        'competitorVerdict' => 'getCompetitorVerdict',
+        'averageVerdict' => 'getAverageVerdict',
         'voteDisagreementRate' => 'getVoteDisagreementRate',
         'divergenceRate' => 'getDivergenceRate',
         'contestedUnitCount' => 'getContestedUnitCount',
@@ -291,6 +309,9 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
         $this->setIfExists('recommendation', $data ?? [], null);
         $this->setIfExists('competitorRecommendation', $data ?? [], null);
         $this->setIfExists('averageRecommendation', $data ?? [], null);
+        $this->setIfExists('verdict', $data ?? [], null);
+        $this->setIfExists('competitorVerdict', $data ?? [], null);
+        $this->setIfExists('averageVerdict', $data ?? [], null);
         $this->setIfExists('voteDisagreementRate', $data ?? [], null);
         $this->setIfExists('divergenceRate', $data ?? [], null);
         $this->setIfExists('contestedUnitCount', $data ?? [], null);
@@ -1000,6 +1021,108 @@ class GovernancePromptMonitoringStatsWeeklyHistoryBucketResponse implements Mode
             }
         }
         $this->container['averageRecommendation'] = $averageRecommendation;
+
+        return $this;
+    }
+
+    /**
+     * Gets verdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getVerdict()
+    {
+        return $this->container['verdict'];
+    }
+
+    /**
+     * Sets verdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $verdict verdict
+     *
+     * @return self
+     */
+    public function setVerdict($verdict)
+    {
+        if (is_null($verdict)) {
+            array_push($this->openAPINullablesSetToNull, 'verdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('verdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['verdict'] = $verdict;
+
+        return $this;
+    }
+
+    /**
+     * Gets competitorVerdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getCompetitorVerdict()
+    {
+        return $this->container['competitorVerdict'];
+    }
+
+    /**
+     * Sets competitorVerdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $competitorVerdict competitorVerdict
+     *
+     * @return self
+     */
+    public function setCompetitorVerdict($competitorVerdict)
+    {
+        if (is_null($competitorVerdict)) {
+            array_push($this->openAPINullablesSetToNull, 'competitorVerdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('competitorVerdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['competitorVerdict'] = $competitorVerdict;
+
+        return $this;
+    }
+
+    /**
+     * Gets averageVerdict.
+     *
+     * @return null|GovernancePromptMonitoringStatsVerdictResponse
+     */
+    public function getAverageVerdict()
+    {
+        return $this->container['averageVerdict'];
+    }
+
+    /**
+     * Sets averageVerdict.
+     *
+     * @param null|GovernancePromptMonitoringStatsVerdictResponse $averageVerdict averageVerdict
+     *
+     * @return self
+     */
+    public function setAverageVerdict($averageVerdict)
+    {
+        if (is_null($averageVerdict)) {
+            array_push($this->openAPINullablesSetToNull, 'averageVerdict');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('averageVerdict', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['averageVerdict'] = $averageVerdict;
 
         return $this;
     }

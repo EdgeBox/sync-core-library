@@ -65,6 +65,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => 'DynamicRevisionReference',
         'contentGroup' => 'DynamicReference',
         'site' => 'DynamicReference',
+        'monitoringPrompt' => 'DynamicRevisionReference',
         'issueType' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignmentTerm',
         'key' => 'string',
         'status' => 'IssueStatus',
@@ -98,6 +99,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => null,
         'contentGroup' => null,
         'site' => null,
+        'monitoringPrompt' => null,
         'issueType' => null,
         'key' => null,
         'status' => null,
@@ -127,6 +129,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => true,
         'contentGroup' => true,
         'site' => true,
+        'monitoringPrompt' => true,
         'issueType' => false,
         'key' => false,
         'status' => false,
@@ -164,6 +167,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => 'contentItem',
         'contentGroup' => 'contentGroup',
         'site' => 'site',
+        'monitoringPrompt' => 'monitoringPrompt',
         'issueType' => 'issueType',
         'key' => 'key',
         'status' => 'status',
@@ -193,6 +197,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => 'setContentItem',
         'contentGroup' => 'setContentGroup',
         'site' => 'setSite',
+        'monitoringPrompt' => 'setMonitoringPrompt',
         'issueType' => 'setIssueType',
         'key' => 'setKey',
         'status' => 'setStatus',
@@ -222,6 +227,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'contentItem' => 'getContentItem',
         'contentGroup' => 'getContentGroup',
         'site' => 'getSite',
+        'monitoringPrompt' => 'getMonitoringPrompt',
         'issueType' => 'getIssueType',
         'key' => 'getKey',
         'status' => 'getStatus',
@@ -260,6 +266,7 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('contentItem', $data ?? [], null);
         $this->setIfExists('contentGroup', $data ?? [], null);
         $this->setIfExists('site', $data ?? [], null);
+        $this->setIfExists('monitoringPrompt', $data ?? [], null);
         $this->setIfExists('issueType', $data ?? [], null);
         $this->setIfExists('key', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
@@ -583,6 +590,40 @@ class IssueEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['site'] = $site;
+
+        return $this;
+    }
+
+    /**
+     * Gets monitoringPrompt.
+     *
+     * @return null|DynamicRevisionReference
+     */
+    public function getMonitoringPrompt()
+    {
+        return $this->container['monitoringPrompt'];
+    }
+
+    /**
+     * Sets monitoringPrompt.
+     *
+     * @param null|DynamicRevisionReference $monitoringPrompt monitoringPrompt
+     *
+     * @return self
+     */
+    public function setMonitoringPrompt($monitoringPrompt)
+    {
+        if (is_null($monitoringPrompt)) {
+            array_push($this->openAPINullablesSetToNull, 'monitoringPrompt');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('monitoringPrompt', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['monitoringPrompt'] = $monitoringPrompt;
 
         return $this;
     }
