@@ -64,10 +64,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => 'string',
         'targetLocale' => 'string',
         'page' => '\EdgeBox\SyncCore\V2\Raw\Model\OptimizeContentTriggerBodyPage',
-        'pageEntity' => 'OptimizeContentTriggerPageEntity',
         'optimizationTypeKeys' => 'string[]',
         'issues' => '\EdgeBox\SyncCore\V2\Raw\Model\OptimizeContentTriggerIssue[]',
-        'recommendations' => '\EdgeBox\SyncCore\V2\Raw\Model\OptimizeContentTriggerRecommendation[]',
         'truncated' => 'bool',
     ];
 
@@ -85,10 +83,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => null,
         'targetLocale' => null,
         'page' => null,
-        'pageEntity' => null,
         'optimizationTypeKeys' => null,
         'issues' => null,
-        'recommendations' => null,
         'truncated' => null,
     ];
 
@@ -102,10 +98,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => false,
         'targetLocale' => true,
         'page' => false,
-        'pageEntity' => true,
         'optimizationTypeKeys' => false,
         'issues' => false,
-        'recommendations' => true,
         'truncated' => false,
     ];
 
@@ -127,10 +121,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => 'contentItemKey',
         'targetLocale' => 'targetLocale',
         'page' => 'page',
-        'pageEntity' => 'pageEntity',
         'optimizationTypeKeys' => 'optimizationTypeKeys',
         'issues' => 'issues',
-        'recommendations' => 'recommendations',
         'truncated' => 'truncated',
     ];
 
@@ -144,10 +136,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => 'setContentItemKey',
         'targetLocale' => 'setTargetLocale',
         'page' => 'setPage',
-        'pageEntity' => 'setPageEntity',
         'optimizationTypeKeys' => 'setOptimizationTypeKeys',
         'issues' => 'setIssues',
-        'recommendations' => 'setRecommendations',
         'truncated' => 'setTruncated',
     ];
 
@@ -161,10 +151,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         'contentItemKey' => 'getContentItemKey',
         'targetLocale' => 'getTargetLocale',
         'page' => 'getPage',
-        'pageEntity' => 'getPageEntity',
         'optimizationTypeKeys' => 'getOptimizationTypeKeys',
         'issues' => 'getIssues',
-        'recommendations' => 'getRecommendations',
         'truncated' => 'getTruncated',
     ];
 
@@ -187,10 +175,8 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
         $this->setIfExists('contentItemKey', $data ?? [], null);
         $this->setIfExists('targetLocale', $data ?? [], null);
         $this->setIfExists('page', $data ?? [], null);
-        $this->setIfExists('pageEntity', $data ?? [], null);
         $this->setIfExists('optimizationTypeKeys', $data ?? [], null);
         $this->setIfExists('issues', $data ?? [], null);
-        $this->setIfExists('recommendations', $data ?? [], null);
         $this->setIfExists('truncated', $data ?? [], null);
     }
 
@@ -442,40 +428,6 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
     }
 
     /**
-     * Gets pageEntity.
-     *
-     * @return null|OptimizeContentTriggerPageEntity
-     */
-    public function getPageEntity()
-    {
-        return $this->container['pageEntity'];
-    }
-
-    /**
-     * Sets pageEntity.
-     *
-     * @param null|OptimizeContentTriggerPageEntity $pageEntity pageEntity
-     *
-     * @return self
-     */
-    public function setPageEntity($pageEntity)
-    {
-        if (is_null($pageEntity)) {
-            array_push($this->openAPINullablesSetToNull, 'pageEntity');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('pageEntity', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['pageEntity'] = $pageEntity;
-
-        return $this;
-    }
-
-    /**
      * Gets optimizationTypeKeys.
      *
      * @return string[]
@@ -525,40 +477,6 @@ class OptimizeContentTriggerBody implements ModelInterface, \ArrayAccess, \JsonS
             throw new \InvalidArgumentException('non-nullable issues cannot be null');
         }
         $this->container['issues'] = $issues;
-
-        return $this;
-    }
-
-    /**
-     * Gets recommendations.
-     *
-     * @return null|OptimizeContentTriggerRecommendation[]
-     */
-    public function getRecommendations()
-    {
-        return $this->container['recommendations'];
-    }
-
-    /**
-     * Sets recommendations.
-     *
-     * @param null|OptimizeContentTriggerRecommendation[] $recommendations recommendations
-     *
-     * @return self
-     */
-    public function setRecommendations($recommendations)
-    {
-        if (is_null($recommendations)) {
-            array_push($this->openAPINullablesSetToNull, 'recommendations');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('recommendations', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['recommendations'] = $recommendations;
 
         return $this;
     }

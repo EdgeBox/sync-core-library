@@ -63,7 +63,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => 'string',
         'deprecatedMachineName' => 'string',
         'baseUrl' => 'string',
-        'kind' => 'SiteKind',
         'status' => 'SiteStatus',
         'inactiveSince' => 'float',
         'appType' => 'SiteApplicationType',
@@ -110,7 +109,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => null,
         'deprecatedMachineName' => null,
         'baseUrl' => null,
-        'kind' => null,
         'status' => null,
         'inactiveSince' => null,
         'appType' => null,
@@ -153,7 +151,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => false,
         'deprecatedMachineName' => true,
         'baseUrl' => false,
-        'kind' => true,
         'status' => false,
         'inactiveSince' => true,
         'appType' => false,
@@ -204,7 +201,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => 'name',
         'deprecatedMachineName' => 'deprecatedMachineName',
         'baseUrl' => 'baseUrl',
-        'kind' => 'kind',
         'status' => 'status',
         'inactiveSince' => 'inactiveSince',
         'appType' => 'appType',
@@ -247,7 +243,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => 'setName',
         'deprecatedMachineName' => 'setDeprecatedMachineName',
         'baseUrl' => 'setBaseUrl',
-        'kind' => 'setKind',
         'status' => 'setStatus',
         'inactiveSince' => 'setInactiveSince',
         'appType' => 'setAppType',
@@ -290,7 +285,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         'name' => 'getName',
         'deprecatedMachineName' => 'getDeprecatedMachineName',
         'baseUrl' => 'getBaseUrl',
-        'kind' => 'getKind',
         'status' => 'getStatus',
         'inactiveSince' => 'getInactiveSince',
         'appType' => 'getAppType',
@@ -342,7 +336,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('deprecatedMachineName', $data ?? [], null);
         $this->setIfExists('baseUrl', $data ?? [], null);
-        $this->setIfExists('kind', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('inactiveSince', $data ?? [], null);
         $this->setIfExists('appType', $data ?? [], null);
@@ -502,6 +495,9 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
         if (null === $this->container['customer']) {
             $invalidProperties[] = "'customer' can't be null";
         }
+        if (null === $this->container['contract']) {
+            $invalidProperties[] = "'contract' can't be null";
+        }
         if (null === $this->container['project']) {
             $invalidProperties[] = "'project' can't be null";
         }
@@ -619,40 +615,6 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
             throw new \InvalidArgumentException('non-nullable baseUrl cannot be null');
         }
         $this->container['baseUrl'] = $baseUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets kind.
-     *
-     * @return null|SiteKind
-     */
-    public function getKind()
-    {
-        return $this->container['kind'];
-    }
-
-    /**
-     * Sets kind.
-     *
-     * @param null|SiteKind $kind kind
-     *
-     * @return self
-     */
-    public function setKind($kind)
-    {
-        if (is_null($kind)) {
-            array_push($this->openAPINullablesSetToNull, 'kind');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('kind', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['kind'] = $kind;
 
         return $this;
     }
@@ -1121,7 +1083,7 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
     /**
      * Gets contract.
      *
-     * @return null|RuntimeRemoteEntityDependencyWithDependenciesEntity
+     * @return RuntimeRemoteEntityDependencyWithDependenciesEntity
      */
     public function getContract()
     {
@@ -1131,7 +1093,7 @@ class SmallSiteEntityWithDetails implements ModelInterface, \ArrayAccess, \JsonS
     /**
      * Sets contract.
      *
-     * @param null|RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
+     * @param RuntimeRemoteEntityDependencyWithDependenciesEntity $contract contract
      *
      * @return self
      */

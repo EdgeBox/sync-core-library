@@ -74,6 +74,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'templateTerm' => 'DynamicRevisionReference',
         'placeholderValue' => 'string',
+        'framing' => 'MonitoringPromptFraming',
         'engines' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'countryLocales' => '\EdgeBox\SyncCore\V2\Raw\Model\MonitoringPromptCountryLocale[]',
         'frequencyHours' => 'float',
@@ -82,9 +83,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'terms' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
         'targetTerms' => '\EdgeBox\SyncCore\V2\Raw\Model\TermAssignment[]',
-        'health' => '\EdgeBox\SyncCore\V2\Raw\Model\ContentHealth[]',
-        'healthScore' => 'float',
-        'healthPending' => 'bool',
         'customer' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'project' => '\EdgeBox\SyncCore\V2\Raw\Model\RuntimeRemoteEntityDependencyWithDependenciesEntity',
         'id' => 'string',
@@ -118,6 +116,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => null,
         'templateTerm' => null,
         'placeholderValue' => null,
+        'framing' => null,
         'engines' => null,
         'countryLocales' => null,
         'frequencyHours' => null,
@@ -126,9 +125,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => null,
         'terms' => null,
         'targetTerms' => null,
-        'health' => null,
-        'healthScore' => null,
-        'healthPending' => null,
         'customer' => null,
         'project' => null,
         'id' => null,
@@ -158,6 +154,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => true,
         'templateTerm' => true,
         'placeholderValue' => true,
+        'framing' => true,
         'engines' => false,
         'countryLocales' => false,
         'frequencyHours' => false,
@@ -166,9 +163,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => true,
         'terms' => true,
         'targetTerms' => true,
-        'health' => true,
-        'healthScore' => true,
-        'healthPending' => true,
         'customer' => false,
         'project' => false,
         'id' => false,
@@ -206,6 +200,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'templateTerms',
         'templateTerm' => 'templateTerm',
         'placeholderValue' => 'placeholderValue',
+        'framing' => 'framing',
         'engines' => 'engines',
         'countryLocales' => 'countryLocales',
         'frequencyHours' => 'frequencyHours',
@@ -214,9 +209,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => 'staticTerms',
         'terms' => 'terms',
         'targetTerms' => 'targetTerms',
-        'health' => 'health',
-        'healthScore' => 'healthScore',
-        'healthPending' => 'healthPending',
         'customer' => 'customer',
         'project' => 'project',
         'id' => 'id',
@@ -246,6 +238,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'setTemplateTerms',
         'templateTerm' => 'setTemplateTerm',
         'placeholderValue' => 'setPlaceholderValue',
+        'framing' => 'setFraming',
         'engines' => 'setEngines',
         'countryLocales' => 'setCountryLocales',
         'frequencyHours' => 'setFrequencyHours',
@@ -254,9 +247,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => 'setStaticTerms',
         'terms' => 'setTerms',
         'targetTerms' => 'setTargetTerms',
-        'health' => 'setHealth',
-        'healthScore' => 'setHealthScore',
-        'healthPending' => 'setHealthPending',
         'customer' => 'setCustomer',
         'project' => 'setProject',
         'id' => 'setId',
@@ -286,6 +276,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'templateTerms' => 'getTemplateTerms',
         'templateTerm' => 'getTemplateTerm',
         'placeholderValue' => 'getPlaceholderValue',
+        'framing' => 'getFraming',
         'engines' => 'getEngines',
         'countryLocales' => 'getCountryLocales',
         'frequencyHours' => 'getFrequencyHours',
@@ -294,9 +285,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         'staticTerms' => 'getStaticTerms',
         'terms' => 'getTerms',
         'targetTerms' => 'getTargetTerms',
-        'health' => 'getHealth',
-        'healthScore' => 'getHealthScore',
-        'healthPending' => 'getHealthPending',
         'customer' => 'getCustomer',
         'project' => 'getProject',
         'id' => 'getId',
@@ -335,6 +323,7 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         $this->setIfExists('templateTerms', $data ?? [], null);
         $this->setIfExists('templateTerm', $data ?? [], null);
         $this->setIfExists('placeholderValue', $data ?? [], null);
+        $this->setIfExists('framing', $data ?? [], null);
         $this->setIfExists('engines', $data ?? [], null);
         $this->setIfExists('countryLocales', $data ?? [], null);
         $this->setIfExists('frequencyHours', $data ?? [], null);
@@ -343,9 +332,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
         $this->setIfExists('staticTerms', $data ?? [], null);
         $this->setIfExists('terms', $data ?? [], null);
         $this->setIfExists('targetTerms', $data ?? [], null);
-        $this->setIfExists('health', $data ?? [], null);
-        $this->setIfExists('healthScore', $data ?? [], null);
-        $this->setIfExists('healthPending', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
         $this->setIfExists('project', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
@@ -942,6 +928,40 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
     }
 
     /**
+     * Gets framing.
+     *
+     * @return null|MonitoringPromptFraming
+     */
+    public function getFraming()
+    {
+        return $this->container['framing'];
+    }
+
+    /**
+     * Sets framing.
+     *
+     * @param null|MonitoringPromptFraming $framing framing
+     *
+     * @return self
+     */
+    public function setFraming($framing)
+    {
+        if (is_null($framing)) {
+            array_push($this->openAPINullablesSetToNull, 'framing');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('framing', $nullablesSetToNull);
+            if (false !== $index) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['framing'] = $framing;
+
+        return $this;
+    }
+
+    /**
      * Gets engines.
      *
      * @return DynamicRevisionReference[]
@@ -1188,108 +1208,6 @@ class MonitoringPromptUpdateFlagsDto implements ModelInterface, \ArrayAccess, \J
             }
         }
         $this->container['targetTerms'] = $targetTerms;
-
-        return $this;
-    }
-
-    /**
-     * Gets health.
-     *
-     * @return null|ContentHealth[]
-     */
-    public function getHealth()
-    {
-        return $this->container['health'];
-    }
-
-    /**
-     * Sets health.
-     *
-     * @param null|ContentHealth[] $health health
-     *
-     * @return self
-     */
-    public function setHealth($health)
-    {
-        if (is_null($health)) {
-            array_push($this->openAPINullablesSetToNull, 'health');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('health', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['health'] = $health;
-
-        return $this;
-    }
-
-    /**
-     * Gets healthScore.
-     *
-     * @return null|float
-     */
-    public function getHealthScore()
-    {
-        return $this->container['healthScore'];
-    }
-
-    /**
-     * Sets healthScore.
-     *
-     * @param null|float $healthScore healthScore
-     *
-     * @return self
-     */
-    public function setHealthScore($healthScore)
-    {
-        if (is_null($healthScore)) {
-            array_push($this->openAPINullablesSetToNull, 'healthScore');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('healthScore', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['healthScore'] = $healthScore;
-
-        return $this;
-    }
-
-    /**
-     * Gets healthPending.
-     *
-     * @return null|bool
-     */
-    public function getHealthPending()
-    {
-        return $this->container['healthPending'];
-    }
-
-    /**
-     * Sets healthPending.
-     *
-     * @param null|bool $healthPending healthPending
-     *
-     * @return self
-     */
-    public function setHealthPending($healthPending)
-    {
-        if (is_null($healthPending)) {
-            array_push($this->openAPINullablesSetToNull, 'healthPending');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('healthPending', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['healthPending'] = $healthPending;
 
         return $this;
     }

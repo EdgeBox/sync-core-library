@@ -69,12 +69,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => 'float',
         'runOrder' => 'float',
         'contentRepresentation' => 'ContentRepresentation',
-        'subject' => 'SyncCoreEntityType',
         'name' => 'string',
         'description' => 'string',
         'issueTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'formula' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthCheckEntityFormula',
-        'appliesWhen' => 'Formula',
         'defaultScore' => 'float',
         'defaultScoreWeight' => 'float',
         'rules' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthCheckRule[]',
@@ -107,12 +105,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => null,
         'runOrder' => null,
         'contentRepresentation' => null,
-        'subject' => null,
         'name' => null,
         'description' => null,
         'issueTypes' => null,
         'formula' => null,
-        'appliesWhen' => null,
         'defaultScore' => null,
         'defaultScoreWeight' => null,
         'rules' => null,
@@ -141,12 +137,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => true,
         'runOrder' => false,
         'contentRepresentation' => false,
-        'subject' => true,
         'name' => false,
         'description' => true,
         'issueTypes' => false,
         'formula' => false,
-        'appliesWhen' => true,
         'defaultScore' => true,
         'defaultScoreWeight' => true,
         'rules' => true,
@@ -183,12 +177,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => 'revisionArchivedAt',
         'runOrder' => 'runOrder',
         'contentRepresentation' => 'contentRepresentation',
-        'subject' => 'subject',
         'name' => 'name',
         'description' => 'description',
         'issueTypes' => 'issueTypes',
         'formula' => 'formula',
-        'appliesWhen' => 'appliesWhen',
         'defaultScore' => 'defaultScore',
         'defaultScoreWeight' => 'defaultScoreWeight',
         'rules' => 'rules',
@@ -217,12 +209,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => 'setRevisionArchivedAt',
         'runOrder' => 'setRunOrder',
         'contentRepresentation' => 'setContentRepresentation',
-        'subject' => 'setSubject',
         'name' => 'setName',
         'description' => 'setDescription',
         'issueTypes' => 'setIssueTypes',
         'formula' => 'setFormula',
-        'appliesWhen' => 'setAppliesWhen',
         'defaultScore' => 'setDefaultScore',
         'defaultScoreWeight' => 'setDefaultScoreWeight',
         'rules' => 'setRules',
@@ -251,12 +241,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         'revisionArchivedAt' => 'getRevisionArchivedAt',
         'runOrder' => 'getRunOrder',
         'contentRepresentation' => 'getContentRepresentation',
-        'subject' => 'getSubject',
         'name' => 'getName',
         'description' => 'getDescription',
         'issueTypes' => 'getIssueTypes',
         'formula' => 'getFormula',
-        'appliesWhen' => 'getAppliesWhen',
         'defaultScore' => 'getDefaultScore',
         'defaultScoreWeight' => 'getDefaultScoreWeight',
         'rules' => 'getRules',
@@ -294,12 +282,10 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
         $this->setIfExists('revisionArchivedAt', $data ?? [], null);
         $this->setIfExists('runOrder', $data ?? [], null);
         $this->setIfExists('contentRepresentation', $data ?? [], null);
-        $this->setIfExists('subject', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('issueTypes', $data ?? [], null);
         $this->setIfExists('formula', $data ?? [], null);
-        $this->setIfExists('appliesWhen', $data ?? [], null);
         $this->setIfExists('defaultScore', $data ?? [], null);
         $this->setIfExists('defaultScoreWeight', $data ?? [], null);
         $this->setIfExists('rules', $data ?? [], null);
@@ -724,40 +710,6 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
     }
 
     /**
-     * Gets subject.
-     *
-     * @return null|SyncCoreEntityType
-     */
-    public function getSubject()
-    {
-        return $this->container['subject'];
-    }
-
-    /**
-     * Sets subject.
-     *
-     * @param null|SyncCoreEntityType $subject subject
-     *
-     * @return self
-     */
-    public function setSubject($subject)
-    {
-        if (is_null($subject)) {
-            array_push($this->openAPINullablesSetToNull, 'subject');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('subject', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['subject'] = $subject;
-
-        return $this;
-    }
-
-    /**
      * Gets name.
      *
      * @return string
@@ -868,40 +820,6 @@ class HealthCheckEntity implements ModelInterface, \ArrayAccess, \JsonSerializab
             throw new \InvalidArgumentException('non-nullable formula cannot be null');
         }
         $this->container['formula'] = $formula;
-
-        return $this;
-    }
-
-    /**
-     * Gets appliesWhen.
-     *
-     * @return null|Formula
-     */
-    public function getAppliesWhen()
-    {
-        return $this->container['appliesWhen'];
-    }
-
-    /**
-     * Sets appliesWhen.
-     *
-     * @param null|Formula $appliesWhen appliesWhen
-     *
-     * @return self
-     */
-    public function setAppliesWhen($appliesWhen)
-    {
-        if (is_null($appliesWhen)) {
-            array_push($this->openAPINullablesSetToNull, 'appliesWhen');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('appliesWhen', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['appliesWhen'] = $appliesWhen;
 
         return $this;
     }

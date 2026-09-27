@@ -69,8 +69,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => 'float',
         'sentiment' => 'float',
         'recommendation' => 'float',
-        'verdict' => 'MonitoringPromptRunMentionVerdict',
-        'verdictShares' => 'MonitoringPromptRunEntityVerdictShares',
     ];
 
     /**
@@ -92,8 +90,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => null,
         'sentiment' => null,
         'recommendation' => null,
-        'verdict' => null,
-        'verdictShares' => null,
     ];
 
     /**
@@ -111,8 +107,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => false,
         'sentiment' => true,
         'recommendation' => true,
-        'verdict' => true,
-        'verdictShares' => true,
     ];
 
     /**
@@ -138,8 +132,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => 'shareOfVoice',
         'sentiment' => 'sentiment',
         'recommendation' => 'recommendation',
-        'verdict' => 'verdict',
-        'verdictShares' => 'verdictShares',
     ];
 
     /**
@@ -157,8 +149,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => 'setShareOfVoice',
         'sentiment' => 'setSentiment',
         'recommendation' => 'setRecommendation',
-        'verdict' => 'setVerdict',
-        'verdictShares' => 'setVerdictShares',
     ];
 
     /**
@@ -176,8 +166,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         'shareOfVoice' => 'getShareOfVoice',
         'sentiment' => 'getSentiment',
         'recommendation' => 'getRecommendation',
-        'verdict' => 'getVerdict',
-        'verdictShares' => 'getVerdictShares',
     ];
 
     /**
@@ -204,8 +192,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
         $this->setIfExists('shareOfVoice', $data ?? [], null);
         $this->setIfExists('sentiment', $data ?? [], null);
         $this->setIfExists('recommendation', $data ?? [], null);
-        $this->setIfExists('verdict', $data ?? [], null);
-        $this->setIfExists('verdictShares', $data ?? [], null);
     }
 
     /**
@@ -604,74 +590,6 @@ class MonitoringPromptRunEntityItem implements ModelInterface, \ArrayAccess, \Js
             }
         }
         $this->container['recommendation'] = $recommendation;
-
-        return $this;
-    }
-
-    /**
-     * Gets verdict.
-     *
-     * @return null|MonitoringPromptRunMentionVerdict
-     */
-    public function getVerdict()
-    {
-        return $this->container['verdict'];
-    }
-
-    /**
-     * Sets verdict.
-     *
-     * @param null|MonitoringPromptRunMentionVerdict $verdict verdict
-     *
-     * @return self
-     */
-    public function setVerdict($verdict)
-    {
-        if (is_null($verdict)) {
-            array_push($this->openAPINullablesSetToNull, 'verdict');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('verdict', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['verdict'] = $verdict;
-
-        return $this;
-    }
-
-    /**
-     * Gets verdictShares.
-     *
-     * @return null|MonitoringPromptRunEntityVerdictShares
-     */
-    public function getVerdictShares()
-    {
-        return $this->container['verdictShares'];
-    }
-
-    /**
-     * Sets verdictShares.
-     *
-     * @param null|MonitoringPromptRunEntityVerdictShares $verdictShares verdictShares
-     *
-     * @return self
-     */
-    public function setVerdictShares($verdictShares)
-    {
-        if (is_null($verdictShares)) {
-            array_push($this->openAPINullablesSetToNull, 'verdictShares');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('verdictShares', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['verdictShares'] = $verdictShares;
 
         return $this;
     }

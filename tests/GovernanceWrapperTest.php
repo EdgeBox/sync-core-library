@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
-use EdgeBox\SyncCore\Exception\BadRequestException;
-use EdgeBox\SyncCore\Exception\ConflictException;
-use EdgeBox\SyncCore\Exception\ForbiddenException;
-use EdgeBox\SyncCore\Exception\NotFoundException;
-use EdgeBox\SyncCore\Exception\SyncCoreException;
-use EdgeBox\SyncCore\Exception\UnauthorizedException;
-use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Governance\ExternalDraftOutcome;
 use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
-use EdgeBox\SyncCore\Interfaces\ISyncCore;
 use EdgeBox\SyncCore\Tests\Support\TestApplication;
 use EdgeBox\SyncCore\V2\Governance\GovernanceService;
-use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationExternalOutcome;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationKind;
 use EdgeBox\SyncCore\V2\SyncCore;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * The wrappers are instantiated directly rather than through getGovernanceService(),
@@ -125,141 +114,6 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         ;
 
         $this->assertTrue($result->wasExisting());
-    }
-
-    public function testTheExternalDraftOutcomeCarriesItsNamedValues(): void
-    {
-        $outcome = new ExternalDraftOutcome(
-            optimizationId: 'opt-1',
-            externalRevisionId: 'rev-1',
-            outcome: ContentOptimizationExternalOutcome::PUBLISHED,
-        );
-
-        $this->assertSame('opt-1', $outcome->getOptimizationId());
-        $this->assertSame('rev-1', $outcome->getExternalRevisionId());
-        $this->assertSame('published', $outcome->getOutcome());
-    }
-
-    public function testTheExternalDraftOutcomeReportRoundTrips(): void
-    {
-        $core = $this->syncCoreWithResponses([new Response(201, [], json_encode(['id' => 'opt-1', 'status' => '500-applied']))]);
-
-        $result = (new GovernanceService($core))
-            ->reportExternalDraftOutcome(new ExternalDraftOutcome(
-                optimizationId: 'opt-1',
-                externalRevisionId: 'rev-1',
-                outcome: ContentOptimizationExternalOutcome::PUBLISHED,
-            ))
-            ->execute()
-        ;
-
-        $this->assertSame('opt-1', $result->getOptimizationId());
-        $this->assertSame('500-applied', $result->getStatus());
-        $this->assertFalse($result->wasExisting());
-
-        $sent = $this->sentRequest();
-        $this->assertSame('POST', $sent->getMethod());
-        $this->assertStringEndsWith('/content-optimization/opt-1/external-outcome', $sent->getUri()->getPath());
-        $this->assertSame(['externalRevisionId' => 'rev-1', 'outcome' => 'published'], $this->sentBody());
-
-        $payload = $this->decodeBearer($sent);
-        $this->assertSame('site', $payload['type']);
-        $this->assertSame(['content'], $payload['scopes']);
-    }
-
-    public function testTheExternalDraftOutcomeReportSendsAsTheActingPerson(): void
-    {
-        $core = $this->syncCoreWithResponses([new Response(201, [], json_encode(['id' => 'opt-1', 'status' => '600-aborted']))]);
-
-        (new GovernanceService($core))
-            ->reportExternalDraftOutcome(
-                new ExternalDraftOutcome(
-                    optimizationId: 'opt-1',
-                    externalRevisionId: 'rev-1',
-                    outcome: ContentOptimizationExternalOutcome::DISCARDED,
-                ),
-                new ActingUser(['issue:own:write'], 'Ada Editor', 'ada@example.com')
-            )
-            ->execute()
-        ;
-
-        $this->assertSame('discarded', $this->sentBody()['outcome']);
-
-        $payload = $this->decodeBearer($this->sentRequest());
-        $this->assertSame(['content', 'issue:own:write'], $payload['scopes']);
-        $this->assertSame(['name' => 'Ada Editor', 'email' => 'ada@example.com'], $payload['user']);
-    }
-
-    public function testARepeatedOutcomeReportIsReportedAsExisting(): void
-    {
-        $core = $this->syncCoreWithResponses([new Response(200, [], json_encode(['id' => 'opt-1', 'status' => '500-applied']))]);
-
-        $result = (new GovernanceService($core))
-            ->reportExternalDraftOutcome(new ExternalDraftOutcome(
-                optimizationId: 'opt-1',
-                externalRevisionId: 'rev-1',
-                outcome: ContentOptimizationExternalOutcome::PUBLISHED,
-            ))
-            ->execute()
-        ;
-
-        $this->assertTrue($result->wasExisting());
-        $this->assertSame('500-applied', $result->getStatus());
-    }
-
-    /**
-     * @return array<string, array{int, class-string}>
-     */
-    public static function refusedOutcomeReports(): array
-    {
-        return [
-            'an invalid body' => [400, BadRequestException::class],
-            'an invalid token' => [401, UnauthorizedException::class],
-            'another site\'s optimization' => [403, ForbiddenException::class],
-            'an unknown optimization' => [404, NotFoundException::class],
-            'another revision than the draft' => [409, ConflictException::class],
-            'a server error' => [500, SyncCoreException::class],
-        ];
-    }
-
-    /**
-     * @param class-string $exception
-     */
-    #[DataProvider('refusedOutcomeReports')]
-    public function testARefusedOutcomeReportRaisesTheExceptionOfItsStatus(int $status, string $exception): void
-    {
-        $core = $this->syncCoreWithResponses([new Response($status, [], '{"message":"refused"}')]);
-
-        try {
-            (new GovernanceService($core))
-                ->reportExternalDraftOutcome(new ExternalDraftOutcome(
-                    optimizationId: 'opt-1',
-                    externalRevisionId: 'rev-1',
-                    outcome: ContentOptimizationExternalOutcome::SUPERSEDED,
-                ))
-                ->execute()
-            ;
-            $this->fail("expected {$exception} for a {$status}");
-        } catch (SyncCoreException $e) {
-            $this->assertSame($exception, get_class($e));
-            $this->assertSame($status, $e->getStatusCode());
-        }
-    }
-
-    /**
-     * getFeatures() keeps the first answer it reads for the rest of the
-     * process, so the one answer read here carries both the flag this library
-     * checks and the absence of another.
-     */
-    public function testTheOutcomeReportIsAvailableWhereTheSyncCoreAdvertisesIt(): void
-    {
-        $core = $this->syncCoreWithResponses([new Response(200, [], json_encode(['flags' => [
-            'governance:aim-external-outcome:available' => 1,
-        ]]))]);
-
-        $this->assertTrue($core->featureEnabled(ISyncCore::FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE));
-        $this->assertFalse($core->featureEnabled(ISyncCore::FEATURE_ASYNC_SITE_CONFIG_AVAILABLE));
-        $this->assertStringEndsWith('/features/summary', $this->sentRequest()->getUri()->getPath());
     }
 
     public function testTheContentItemReadParsesItsSummary(): void

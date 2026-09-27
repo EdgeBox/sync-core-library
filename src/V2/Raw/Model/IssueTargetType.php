@@ -50,8 +50,6 @@ class IssueTargetType
 
     public const CONTENT_GROUP = 'content-group';
 
-    public const MONITORING_PROMPT = 'monitoring-prompt';
-
     /**
      * Gets allowable values of the enum.
      *
@@ -63,7 +61,6 @@ class IssueTargetType
             self::CONTENT_ITEM,
             self::SITE,
             self::CONTENT_GROUP,
-            self::MONITORING_PROMPT,
         ];
     }
 }

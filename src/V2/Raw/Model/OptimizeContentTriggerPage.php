@@ -61,7 +61,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $openAPITypes = [
         'title' => 'string',
-        'url' => 'string',
         'contentHealthPercent0To100' => 'float',
         'contentPriority' => 'ContentPriority',
         'citedInAnswersLast30Days' => 'float',
@@ -78,7 +77,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $openAPIFormats = [
         'title' => null,
-        'url' => null,
         'contentHealthPercent0To100' => null,
         'contentPriority' => null,
         'citedInAnswersLast30Days' => null,
@@ -91,7 +89,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static array $openAPINullables = [
         'title' => true,
-        'url' => true,
         'contentHealthPercent0To100' => true,
         'contentPriority' => true,
         'citedInAnswersLast30Days' => true,
@@ -112,7 +109,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $attributeMap = [
         'title' => 'title',
-        'url' => 'url',
         'contentHealthPercent0To100' => 'contentHealthPercent0To100',
         'contentPriority' => 'contentPriority',
         'citedInAnswersLast30Days' => 'citedInAnswersLast30Days',
@@ -125,7 +121,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $setters = [
         'title' => 'setTitle',
-        'url' => 'setUrl',
         'contentHealthPercent0To100' => 'setContentHealthPercent0To100',
         'contentPriority' => 'setContentPriority',
         'citedInAnswersLast30Days' => 'setCitedInAnswersLast30Days',
@@ -138,7 +133,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
      */
     protected static $getters = [
         'title' => 'getTitle',
-        'url' => 'getUrl',
         'contentHealthPercent0To100' => 'getContentHealthPercent0To100',
         'contentPriority' => 'getContentPriority',
         'citedInAnswersLast30Days' => 'getCitedInAnswersLast30Days',
@@ -160,7 +154,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
     public function __construct(?array $data = null)
     {
         $this->setIfExists('title', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
         $this->setIfExists('contentHealthPercent0To100', $data ?? [], null);
         $this->setIfExists('contentPriority', $data ?? [], null);
         $this->setIfExists('citedInAnswersLast30Days', $data ?? [], null);
@@ -307,40 +300,6 @@ class OptimizeContentTriggerPage implements ModelInterface, \ArrayAccess, \JsonS
             }
         }
         $this->container['title'] = $title;
-
-        return $this;
-    }
-
-    /**
-     * Gets url.
-     *
-     * @return null|string
-     */
-    public function getUrl()
-    {
-        return $this->container['url'];
-    }
-
-    /**
-     * Sets url.
-     *
-     * @param null|string $url url
-     *
-     * @return self
-     */
-    public function setUrl($url)
-    {
-        if (is_null($url)) {
-            array_push($this->openAPINullablesSetToNull, 'url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('url', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['url'] = $url;
 
         return $this;
     }

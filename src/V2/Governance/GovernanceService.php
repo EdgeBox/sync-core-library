@@ -3,7 +3,6 @@
 namespace EdgeBox\SyncCore\V2\Governance;
 
 use EdgeBox\SyncCore\Interfaces\Governance\ActingUser;
-use EdgeBox\SyncCore\Interfaces\Governance\ExternalDraftOutcome;
 use EdgeBox\SyncCore\Interfaces\Governance\IGovernanceService;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
@@ -30,11 +29,6 @@ class GovernanceService implements IGovernanceService
     public function postExternalDraft(string $content_item_key, string $external_revision_id, string $rendered_html, ?ActingUser $as = null)
     {
         return new PostExternalDraft($this->core, $content_item_key, $external_revision_id, $rendered_html, $as);
-    }
-
-    public function reportExternalDraftOutcome(ExternalDraftOutcome $outcome, ?ActingUser $as = null)
-    {
-        return new ReportExternalDraftOutcome($this->core, $outcome, $as);
     }
 
     public function getContentItemByKey(string $key, string $status, ?ActingUser $as = null)

@@ -72,7 +72,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => 'object',
         'results' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthRuleResult[]',
         'items' => '\EdgeBox\SyncCore\V2\Raw\Model\ContentHealthItem[]',
-        'applicabilityError' => 'HealthCheckApplicabilityError',
     ];
 
     /**
@@ -97,7 +96,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => null,
         'results' => null,
         'items' => null,
-        'applicabilityError' => null,
     ];
 
     /**
@@ -118,7 +116,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => true,
         'results' => true,
         'items' => true,
-        'applicabilityError' => true,
     ];
 
     /**
@@ -147,7 +144,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => 'explanation',
         'results' => 'results',
         'items' => 'items',
-        'applicabilityError' => 'applicabilityError',
     ];
 
     /**
@@ -168,7 +164,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => 'setExplanation',
         'results' => 'setResults',
         'items' => 'setItems',
-        'applicabilityError' => 'setApplicabilityError',
     ];
 
     /**
@@ -189,7 +184,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         'explanation' => 'getExplanation',
         'results' => 'getResults',
         'items' => 'getItems',
-        'applicabilityError' => 'getApplicabilityError',
     ];
 
     /**
@@ -219,7 +213,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('explanation', $data ?? [], null);
         $this->setIfExists('results', $data ?? [], null);
         $this->setIfExists('items', $data ?? [], null);
-        $this->setIfExists('applicabilityError', $data ?? [], null);
     }
 
     /**
@@ -732,40 +725,6 @@ class ContentHealth implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['items'] = $items;
-
-        return $this;
-    }
-
-    /**
-     * Gets applicabilityError.
-     *
-     * @return null|HealthCheckApplicabilityError
-     */
-    public function getApplicabilityError()
-    {
-        return $this->container['applicabilityError'];
-    }
-
-    /**
-     * Sets applicabilityError.
-     *
-     * @param null|HealthCheckApplicabilityError $applicabilityError applicabilityError
-     *
-     * @return self
-     */
-    public function setApplicabilityError($applicabilityError)
-    {
-        if (is_null($applicabilityError)) {
-            array_push($this->openAPINullablesSetToNull, 'applicabilityError');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('applicabilityError', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['applicabilityError'] = $applicabilityError;
 
         return $this;
     }

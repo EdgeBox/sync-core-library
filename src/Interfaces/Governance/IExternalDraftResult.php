@@ -3,8 +3,7 @@
 namespace EdgeBox\SyncCore\Interfaces\Governance;
 
 /**
- * The record Sync Core returns for an externally authored draft: after its
- * post, or after a report of what became of it.
+ * The record Sync Core returns for an externally authored draft.
  */
 interface IExternalDraftResult
 {
@@ -19,12 +18,7 @@ interface IExternalDraftResult
     public function getStatus();
 
     /**
-     * @return bool true when the Sync Core changed nothing: for a post, an
-     *              idempotent repeat; for a report of what became of the
-     *              draft, a repeat or a report about an optimization that had
-     *              already ended another way, which the Sync Core ignores; a
-     *              publication reported after the site's own earlier report
-     *              that the draft was discarded or superseded still changes it
+     * @return bool true when the post was an idempotent repeat
      */
     public function wasExisting();
 }

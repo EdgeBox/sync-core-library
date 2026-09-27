@@ -78,8 +78,6 @@ class TaskType
 
     public const SCORE_CONTENT = 'score-content';
 
-    public const SCORE_MONITORING_PROMPT = 'score-monitoring-prompt';
-
     public const MONITORING_PROMPT_RUN = 'monitoring-prompt.run';
 
     public const TAXONOMY_TERM_DETECT_COLOR = 'taxonomy-term.detect-color';
@@ -121,7 +119,6 @@ class TaskType
             self::CRAWL_URL,
             self::CLASSIFY_CONTENT,
             self::SCORE_CONTENT,
-            self::SCORE_MONITORING_PROMPT,
             self::MONITORING_PROMPT_RUN,
             self::TAXONOMY_TERM_DETECT_COLOR,
             self::EXPORT_PLAN,

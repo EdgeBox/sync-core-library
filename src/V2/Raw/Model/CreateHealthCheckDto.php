@@ -63,13 +63,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => 'AccessScope',
         'key' => 'string',
         'status' => 'HealthCheckStatus',
-        'subject' => 'SyncCoreEntityType',
         'contentRepresentation' => 'ContentRepresentation',
         'name' => 'string',
         'description' => 'string',
         'issueTypes' => '\EdgeBox\SyncCore\V2\Raw\Model\DynamicRevisionReference[]',
         'formula' => '\EdgeBox\SyncCore\V2\Raw\Model\HealthCheckEntityFormula',
-        'appliesWhen' => 'Formula',
         'defaultScore' => 'float',
         'runOrder' => 'float',
         'customer' => 'DynamicReference',
@@ -89,13 +87,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => null,
         'key' => null,
         'status' => null,
-        'subject' => null,
         'contentRepresentation' => null,
         'name' => null,
         'description' => null,
         'issueTypes' => null,
         'formula' => null,
-        'appliesWhen' => null,
         'defaultScore' => null,
         'runOrder' => null,
         'customer' => null,
@@ -111,13 +107,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => false,
         'key' => false,
         'status' => true,
-        'subject' => true,
         'contentRepresentation' => false,
         'name' => false,
         'description' => true,
         'issueTypes' => false,
         'formula' => false,
-        'appliesWhen' => true,
         'defaultScore' => true,
         'runOrder' => false,
         'customer' => true,
@@ -141,13 +135,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => 'accessScope',
         'key' => 'key',
         'status' => 'status',
-        'subject' => 'subject',
         'contentRepresentation' => 'contentRepresentation',
         'name' => 'name',
         'description' => 'description',
         'issueTypes' => 'issueTypes',
         'formula' => 'formula',
-        'appliesWhen' => 'appliesWhen',
         'defaultScore' => 'defaultScore',
         'runOrder' => 'runOrder',
         'customer' => 'customer',
@@ -163,13 +155,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => 'setAccessScope',
         'key' => 'setKey',
         'status' => 'setStatus',
-        'subject' => 'setSubject',
         'contentRepresentation' => 'setContentRepresentation',
         'name' => 'setName',
         'description' => 'setDescription',
         'issueTypes' => 'setIssueTypes',
         'formula' => 'setFormula',
-        'appliesWhen' => 'setAppliesWhen',
         'defaultScore' => 'setDefaultScore',
         'runOrder' => 'setRunOrder',
         'customer' => 'setCustomer',
@@ -185,13 +175,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         'accessScope' => 'getAccessScope',
         'key' => 'getKey',
         'status' => 'getStatus',
-        'subject' => 'getSubject',
         'contentRepresentation' => 'getContentRepresentation',
         'name' => 'getName',
         'description' => 'getDescription',
         'issueTypes' => 'getIssueTypes',
         'formula' => 'getFormula',
-        'appliesWhen' => 'getAppliesWhen',
         'defaultScore' => 'getDefaultScore',
         'runOrder' => 'getRunOrder',
         'customer' => 'getCustomer',
@@ -216,13 +204,11 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
         $this->setIfExists('accessScope', $data ?? [], null);
         $this->setIfExists('key', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('subject', $data ?? [], null);
         $this->setIfExists('contentRepresentation', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('issueTypes', $data ?? [], null);
         $this->setIfExists('formula', $data ?? [], null);
-        $this->setIfExists('appliesWhen', $data ?? [], null);
         $this->setIfExists('defaultScore', $data ?? [], null);
         $this->setIfExists('runOrder', $data ?? [], null);
         $this->setIfExists('customer', $data ?? [], null);
@@ -453,40 +439,6 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
     }
 
     /**
-     * Gets subject.
-     *
-     * @return null|SyncCoreEntityType
-     */
-    public function getSubject()
-    {
-        return $this->container['subject'];
-    }
-
-    /**
-     * Sets subject.
-     *
-     * @param null|SyncCoreEntityType $subject subject
-     *
-     * @return self
-     */
-    public function setSubject($subject)
-    {
-        if (is_null($subject)) {
-            array_push($this->openAPINullablesSetToNull, 'subject');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('subject', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['subject'] = $subject;
-
-        return $this;
-    }
-
-    /**
      * Gets contentRepresentation.
      *
      * @return ContentRepresentation
@@ -624,40 +576,6 @@ class CreateHealthCheckDto implements ModelInterface, \ArrayAccess, \JsonSeriali
             throw new \InvalidArgumentException('non-nullable formula cannot be null');
         }
         $this->container['formula'] = $formula;
-
-        return $this;
-    }
-
-    /**
-     * Gets appliesWhen.
-     *
-     * @return null|Formula
-     */
-    public function getAppliesWhen()
-    {
-        return $this->container['appliesWhen'];
-    }
-
-    /**
-     * Sets appliesWhen.
-     *
-     * @param null|Formula $appliesWhen appliesWhen
-     *
-     * @return self
-     */
-    public function setAppliesWhen($appliesWhen)
-    {
-        if (is_null($appliesWhen)) {
-            array_push($this->openAPINullablesSetToNull, 'appliesWhen');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('appliesWhen', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['appliesWhen'] = $appliesWhen;
 
         return $this;
     }

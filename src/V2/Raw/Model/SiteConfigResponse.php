@@ -70,7 +70,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => '\EdgeBox\SyncCore\V2\Raw\Model\SiteLocaleDefinition[]',
         'defaultLanguageCode' => 'string',
         'textProfiles' => '\EdgeBox\SyncCore\V2\Raw\Model\CreateTextProfileDto[]',
-        'enabledGovernanceVocabularies' => 'string[]',
     ];
 
     /**
@@ -93,7 +92,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => null,
         'defaultLanguageCode' => null,
         'textProfiles' => null,
-        'enabledGovernanceVocabularies' => null,
     ];
 
     /**
@@ -112,7 +110,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => true,
         'defaultLanguageCode' => true,
         'textProfiles' => true,
-        'enabledGovernanceVocabularies' => true,
     ];
 
     /**
@@ -139,7 +136,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => 'languages',
         'defaultLanguageCode' => 'defaultLanguageCode',
         'textProfiles' => 'textProfiles',
-        'enabledGovernanceVocabularies' => 'enabledGovernanceVocabularies',
     ];
 
     /**
@@ -158,7 +154,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => 'setLanguages',
         'defaultLanguageCode' => 'setDefaultLanguageCode',
         'textProfiles' => 'setTextProfiles',
-        'enabledGovernanceVocabularies' => 'setEnabledGovernanceVocabularies',
     ];
 
     /**
@@ -177,7 +172,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         'languages' => 'getLanguages',
         'defaultLanguageCode' => 'getDefaultLanguageCode',
         'textProfiles' => 'getTextProfiles',
-        'enabledGovernanceVocabularies' => 'getEnabledGovernanceVocabularies',
     ];
 
     /**
@@ -205,7 +199,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
         $this->setIfExists('languages', $data ?? [], null);
         $this->setIfExists('defaultLanguageCode', $data ?? [], null);
         $this->setIfExists('textProfiles', $data ?? [], null);
-        $this->setIfExists('enabledGovernanceVocabularies', $data ?? [], null);
     }
 
     /**
@@ -655,40 +648,6 @@ class SiteConfigResponse implements ModelInterface, \ArrayAccess, \JsonSerializa
             }
         }
         $this->container['textProfiles'] = $textProfiles;
-
-        return $this;
-    }
-
-    /**
-     * Gets enabledGovernanceVocabularies.
-     *
-     * @return null|string[]
-     */
-    public function getEnabledGovernanceVocabularies()
-    {
-        return $this->container['enabledGovernanceVocabularies'];
-    }
-
-    /**
-     * Sets enabledGovernanceVocabularies.
-     *
-     * @param null|string[] $enabledGovernanceVocabularies enabledGovernanceVocabularies
-     *
-     * @return self
-     */
-    public function setEnabledGovernanceVocabularies($enabledGovernanceVocabularies)
-    {
-        if (is_null($enabledGovernanceVocabularies)) {
-            array_push($this->openAPINullablesSetToNull, 'enabledGovernanceVocabularies');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('enabledGovernanceVocabularies', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['enabledGovernanceVocabularies'] = $enabledGovernanceVocabularies;
 
         return $this;
     }

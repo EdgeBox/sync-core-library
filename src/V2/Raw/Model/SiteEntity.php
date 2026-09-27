@@ -63,7 +63,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => 'string',
         'deprecatedMachineName' => 'string',
         'baseUrl' => 'string',
-        'kind' => 'SiteKind',
         'status' => 'SiteStatus',
         'inactiveSince' => 'float',
         'appType' => 'SiteApplicationType',
@@ -109,7 +108,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => null,
         'deprecatedMachineName' => null,
         'baseUrl' => null,
-        'kind' => null,
         'status' => null,
         'inactiveSince' => null,
         'appType' => null,
@@ -151,7 +149,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => false,
         'deprecatedMachineName' => true,
         'baseUrl' => false,
-        'kind' => true,
         'status' => false,
         'inactiveSince' => true,
         'appType' => false,
@@ -201,7 +198,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => 'name',
         'deprecatedMachineName' => 'deprecatedMachineName',
         'baseUrl' => 'baseUrl',
-        'kind' => 'kind',
         'status' => 'status',
         'inactiveSince' => 'inactiveSince',
         'appType' => 'appType',
@@ -243,7 +239,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => 'setName',
         'deprecatedMachineName' => 'setDeprecatedMachineName',
         'baseUrl' => 'setBaseUrl',
-        'kind' => 'setKind',
         'status' => 'setStatus',
         'inactiveSince' => 'setInactiveSince',
         'appType' => 'setAppType',
@@ -285,7 +280,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         'name' => 'getName',
         'deprecatedMachineName' => 'getDeprecatedMachineName',
         'baseUrl' => 'getBaseUrl',
-        'kind' => 'getKind',
         'status' => 'getStatus',
         'inactiveSince' => 'getInactiveSince',
         'appType' => 'getAppType',
@@ -336,7 +330,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('deprecatedMachineName', $data ?? [], null);
         $this->setIfExists('baseUrl', $data ?? [], null);
-        $this->setIfExists('kind', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('inactiveSince', $data ?? [], null);
         $this->setIfExists('appType', $data ?? [], null);
@@ -612,40 +605,6 @@ class SiteEntity implements ModelInterface, \ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable baseUrl cannot be null');
         }
         $this->container['baseUrl'] = $baseUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets kind.
-     *
-     * @return null|SiteKind
-     */
-    public function getKind()
-    {
-        return $this->container['kind'];
-    }
-
-    /**
-     * Sets kind.
-     *
-     * @param null|SiteKind $kind kind
-     *
-     * @return self
-     */
-    public function setKind($kind)
-    {
-        if (is_null($kind)) {
-            array_push($this->openAPINullablesSetToNull, 'kind');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('kind', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['kind'] = $kind;
 
         return $this;
     }

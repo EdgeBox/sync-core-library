@@ -41,17 +41,10 @@ use EdgeBox\SyncCore\V2\Raw\Model\AnswerExportCountResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ApplyContentOptimizationChangesResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationDto;
 use EdgeBox\SyncCore\V2\Raw\Model\BulkMonitoringPromptTermAssociationResponse;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptCoverageRequestDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationRequestDto;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentGroupEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemAutocompleteResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemContentAreaHtmlResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentItemEntity;
-use EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationTypeEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\ContentRecommendationEntity;
@@ -89,7 +82,6 @@ use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaRequest;
 use EdgeBox\SyncCore\V2\Raw\Model\EvaluateFormulaResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\ExtendedProjectCrawlingSettings;
 use EdgeBox\SyncCore\V2\Raw\Model\ExternalContentOptimizationDto;
-use EdgeBox\SyncCore\V2\Raw\Model\ExternalContentOptimizationOutcomeDto;
 use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\FeatureFlagSummaryAll;
 use EdgeBox\SyncCore\V2\Raw\Model\FileEntity;
@@ -154,7 +146,6 @@ use EdgeBox\SyncCore\V2\Raw\Model\PagedLocaleListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMigrationList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptRunListResponse;
-use EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityCloneListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityRevisionList;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
@@ -337,9 +328,6 @@ class DefaultApi
         'contentItemControllerList' => [
             'application/json',
         ],
-        'contentItemControllerPageFigures' => [
-            'application/json',
-        ],
         'contentItemControllerRevisionsByPreviousStatus' => [
             'application/json',
         ],
@@ -362,9 +350,6 @@ class DefaultApi
             'application/json',
         ],
         'contentOptimizationControllerList' => [
-            'application/json',
-        ],
-        'contentOptimizationControllerReportExternalOutcome' => [
             'application/json',
         ],
         'contentOptimizationTypeControllerItem' => [
@@ -605,18 +590,6 @@ class DefaultApi
             'application/json',
         ],
         'monitoringPromptControllerList' => [
-            'application/json',
-        ],
-        'monitoringPromptControllerListSummaries' => [
-            'application/json',
-        ],
-        'monitoringPromptControllerRecommendationConfirm' => [
-            'application/json',
-        ],
-        'monitoringPromptControllerRecommendationPreview' => [
-            'application/json',
-        ],
-        'monitoringPromptControllerRecommendationPromptCoverage' => [
             'application/json',
         ],
         'monitoringPromptControllerRevisionsByPreviousStatus' => [
@@ -11076,334 +11049,6 @@ class DefaultApi
     }
 
     /**
-     * Operation contentItemControllerPageFigures.
-     *
-     * @param  string $entityType entityType (required)
-     * @param  string $entityUuid entityUuid (required)
-     * @param  string $langcode langcode (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerPageFigures'] to see the possible values for this operation
-     *
-     * @return ContentItemPageFiguresResponse
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function contentItemControllerPageFigures($entityType, $entityUuid, $langcode, string $contentType = self::contentTypes['contentItemControllerPageFigures'][0])
-    {
-        [$response] = $this->contentItemControllerPageFiguresWithHttpInfo($entityType, $entityUuid, $langcode, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation contentItemControllerPageFiguresWithHttpInfo.
-     *
-     * @param  string $entityType (required)
-     * @param  string $entityUuid (required)
-     * @param  string $langcode (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerPageFigures'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse, HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function contentItemControllerPageFiguresWithHttpInfo($entityType, $entityUuid, $langcode, string $contentType = self::contentTypes['contentItemControllerPageFigures'][0])
-    {
-        $request = $this->contentItemControllerPageFiguresRequest($entityType, $entityUuid, $langcode, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation contentItemControllerPageFiguresAsync.
-     *
-     * @param  string $entityType (required)
-     * @param  string $entityUuid (required)
-     * @param  string $langcode (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerPageFigures'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentItemControllerPageFiguresAsync($entityType, $entityUuid, $langcode, string $contentType = self::contentTypes['contentItemControllerPageFigures'][0])
-    {
-        return $this->contentItemControllerPageFiguresAsyncWithHttpInfo($entityType, $entityUuid, $langcode, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation contentItemControllerPageFiguresAsyncWithHttpInfo.
-     *
-     * @param  string $entityType (required)
-     * @param  string $entityUuid (required)
-     * @param  string $langcode (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerPageFigures'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentItemControllerPageFiguresAsyncWithHttpInfo($entityType, $entityUuid, $langcode, string $contentType = self::contentTypes['contentItemControllerPageFigures'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentItemPageFiguresResponse';
-        $request = $this->contentItemControllerPageFiguresRequest($entityType, $entityUuid, $langcode, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'contentItemControllerPageFigures'.
-     *
-     * @param  string $entityType (required)
-     * @param  string $entityUuid (required)
-     * @param  string $langcode (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentItemControllerPageFigures'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentItemControllerPageFiguresRequest($entityType, $entityUuid, $langcode, string $contentType = self::contentTypes['contentItemControllerPageFigures'][0])
-    {
-        // verify the required parameter 'entityType' is set
-        if (null === $entityType || (is_array($entityType) && 0 === count($entityType))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $entityType when calling contentItemControllerPageFigures'
-            );
-        }
-
-        // verify the required parameter 'entityUuid' is set
-        if (null === $entityUuid || (is_array($entityUuid) && 0 === count($entityUuid))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $entityUuid when calling contentItemControllerPageFigures'
-            );
-        }
-
-        // verify the required parameter 'langcode' is set
-        if (null === $langcode || (is_array($langcode) && 0 === count($langcode))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $langcode when calling contentItemControllerPageFigures'
-            );
-        }
-
-        $resourcePath = '/sync-core/content-item/page-figures';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $entityType,
-            'entityType', // param base name
-            'string', // openApiType
-            'form', // style
-            true, // explode
-            true // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $entityUuid,
-            'entityUuid', // param base name
-            'string', // openApiType
-            'form', // style
-            true, // explode
-            true // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $langcode,
-            'langcode', // param base name
-            'string', // openApiType
-            'form', // style
-            true, // explode
-            true // required
-        ) ?? []);
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'GET',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
      * Operation contentItemControllerRevisionsByPreviousStatus.
      *
      * @param  string $key key (required)
@@ -13808,310 +13453,6 @@ class DefaultApi
 
         return new Request(
             'GET',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation contentOptimizationControllerReportExternalOutcome.
-     *
-     * @param  string $id id (required)
-     * @param  ExternalContentOptimizationOutcomeDto $externalContentOptimizationOutcomeDto externalContentOptimizationOutcomeDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerReportExternalOutcome'] to see the possible values for this operation
-     *
-     * @return ContentOptimizationEntity
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function contentOptimizationControllerReportExternalOutcome($id, $externalContentOptimizationOutcomeDto, string $contentType = self::contentTypes['contentOptimizationControllerReportExternalOutcome'][0])
-    {
-        [$response] = $this->contentOptimizationControllerReportExternalOutcomeWithHttpInfo($id, $externalContentOptimizationOutcomeDto, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation contentOptimizationControllerReportExternalOutcomeWithHttpInfo.
-     *
-     * @param  string $id (required)
-     * @param  ExternalContentOptimizationOutcomeDto $externalContentOptimizationOutcomeDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerReportExternalOutcome'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity, HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function contentOptimizationControllerReportExternalOutcomeWithHttpInfo($id, $externalContentOptimizationOutcomeDto, string $contentType = self::contentTypes['contentOptimizationControllerReportExternalOutcome'][0])
-    {
-        $request = $this->contentOptimizationControllerReportExternalOutcomeRequest($id, $externalContentOptimizationOutcomeDto, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation contentOptimizationControllerReportExternalOutcomeAsync.
-     *
-     * @param  string $id (required)
-     * @param  ExternalContentOptimizationOutcomeDto $externalContentOptimizationOutcomeDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerReportExternalOutcome'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentOptimizationControllerReportExternalOutcomeAsync($id, $externalContentOptimizationOutcomeDto, string $contentType = self::contentTypes['contentOptimizationControllerReportExternalOutcome'][0])
-    {
-        return $this->contentOptimizationControllerReportExternalOutcomeAsyncWithHttpInfo($id, $externalContentOptimizationOutcomeDto, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation contentOptimizationControllerReportExternalOutcomeAsyncWithHttpInfo.
-     *
-     * @param  string $id (required)
-     * @param  ExternalContentOptimizationOutcomeDto $externalContentOptimizationOutcomeDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerReportExternalOutcome'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentOptimizationControllerReportExternalOutcomeAsyncWithHttpInfo($id, $externalContentOptimizationOutcomeDto, string $contentType = self::contentTypes['contentOptimizationControllerReportExternalOutcome'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ContentOptimizationEntity';
-        $request = $this->contentOptimizationControllerReportExternalOutcomeRequest($id, $externalContentOptimizationOutcomeDto, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'contentOptimizationControllerReportExternalOutcome'.
-     *
-     * @param  string $id (required)
-     * @param  ExternalContentOptimizationOutcomeDto $externalContentOptimizationOutcomeDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['contentOptimizationControllerReportExternalOutcome'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function contentOptimizationControllerReportExternalOutcomeRequest($id, $externalContentOptimizationOutcomeDto, string $contentType = self::contentTypes['contentOptimizationControllerReportExternalOutcome'][0])
-    {
-        // verify the required parameter 'id' is set
-        if (null === $id || (is_array($id) && 0 === count($id))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $id when calling contentOptimizationControllerReportExternalOutcome'
-            );
-        }
-
-        // verify the required parameter 'externalContentOptimizationOutcomeDto' is set
-        if (null === $externalContentOptimizationOutcomeDto || (is_array($externalContentOptimizationOutcomeDto) && 0 === count($externalContentOptimizationOutcomeDto))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $externalContentOptimizationOutcomeDto when calling contentOptimizationControllerReportExternalOutcome'
-            );
-        }
-
-        $resourcePath = '/sync-core/content-optimization/{id}/external-outcome';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        // path params
-        if (null !== $id) {
-            $resourcePath = str_replace(
-                '{id}',
-                ObjectSerializer::toPathValue($id),
-                $resourcePath
-            );
-        }
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (isset($externalContentOptimizationOutcomeDto)) {
-            if (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($externalContentOptimizationOutcomeDto));
-            } else {
-                $httpBody = $externalContentOptimizationOutcomeDto;
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'POST',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -27228,7 +26569,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -27265,7 +26606,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27385,7 +26726,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27425,7 +26766,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27497,7 +26838,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27786,7 +27127,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -27822,7 +27163,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27941,7 +27282,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -27980,7 +27321,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28051,7 +27392,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28317,7 +27658,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -28353,7 +27694,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28472,7 +27813,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28511,7 +27852,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28582,7 +27923,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -28856,7 +28197,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -28893,7 +28234,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29013,7 +28354,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29053,7 +28394,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29125,7 +28466,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29414,7 +28755,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -29450,7 +28791,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29569,7 +28910,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29608,7 +28949,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29679,7 +29020,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -29953,7 +29294,7 @@ class DefaultApi
      * @param  string $taxonomyTerms taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey facetTaxonomyKey (optional)
      * @param  string $includeSources includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey entityTermKey (optional)
      * @param  string $groupBy groupBy (optional)
      * @param  string $sourceHosts sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey xAxisTaxonomyKey (optional)
@@ -29990,7 +29331,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -30110,7 +29451,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -30150,7 +29491,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -30222,7 +29563,7 @@ class DefaultApi
      * @param  string $taxonomyTerms (optional)
      * @param  string $facetTaxonomyKey (optional)
      * @param  string $includeSources (optional)
-     * @param  string $entityTermKey Scope the aspect rows to one named subject. It does NOT narrow the verdict distributions: each of them covers whatever the surface it rides on covers — the answer&#39;s whole family on a window figure and on a matrix cell, and the subjects filed under that row&#39;s term on a &#x60;terms[]&#x60; row — and this filter narrows none of those, so a request naming one subject receives the same distributions a request without it receives. (optional)
+     * @param  string $entityTermKey (optional)
      * @param  string $groupBy (optional)
      * @param  string $sourceHosts (optional)
      * @param  string $xAxisTaxonomyKey (optional)
@@ -31665,7 +31006,6 @@ class DefaultApi
      * @param  mixed $status status (optional)
      * @param  string $page page (optional)
      * @param  string $itemsPerPage itemsPerPage (optional)
-     * @param  string $subject subject (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthCheckControllerList'] to see the possible values for this operation
      *
      * @return PagedHealthCheckListResponse
@@ -31673,9 +31013,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function healthCheckControllerList($statuses = null, $status = null, $page = null, $itemsPerPage = null, $subject = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
+    public function healthCheckControllerList($statuses = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
     {
-        [$response] = $this->healthCheckControllerListWithHttpInfo($statuses, $status, $page, $itemsPerPage, $subject, $contentType);
+        [$response] = $this->healthCheckControllerListWithHttpInfo($statuses, $status, $page, $itemsPerPage, $contentType);
 
         return $response;
     }
@@ -31687,7 +31027,6 @@ class DefaultApi
      * @param  mixed $status (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
-     * @param  string $subject (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthCheckControllerList'] to see the possible values for this operation
      *
      * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedHealthCheckListResponse, HTTP status code, HTTP response headers (array of strings)
@@ -31695,9 +31034,9 @@ class DefaultApi
      * @throws ApiException on non-2xx response
      * @throws \InvalidArgumentException
      */
-    public function healthCheckControllerListWithHttpInfo($statuses = null, $status = null, $page = null, $itemsPerPage = null, $subject = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
+    public function healthCheckControllerListWithHttpInfo($statuses = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
     {
-        $request = $this->healthCheckControllerListRequest($statuses, $status, $page, $itemsPerPage, $subject, $contentType);
+        $request = $this->healthCheckControllerListRequest($statuses, $status, $page, $itemsPerPage, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -31792,16 +31131,15 @@ class DefaultApi
      * @param  mixed $status (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
-     * @param  string $subject (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthCheckControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function healthCheckControllerListAsync($statuses = null, $status = null, $page = null, $itemsPerPage = null, $subject = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
+    public function healthCheckControllerListAsync($statuses = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
     {
-        return $this->healthCheckControllerListAsyncWithHttpInfo($statuses, $status, $page, $itemsPerPage, $subject, $contentType)
+        return $this->healthCheckControllerListAsyncWithHttpInfo($statuses, $status, $page, $itemsPerPage, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -31817,17 +31155,16 @@ class DefaultApi
      * @param  mixed $status (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
-     * @param  string $subject (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthCheckControllerList'] to see the possible values for this operation
      *
      * @return PromiseInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function healthCheckControllerListAsyncWithHttpInfo($statuses = null, $status = null, $page = null, $itemsPerPage = null, $subject = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
+    public function healthCheckControllerListAsyncWithHttpInfo($statuses = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
     {
         $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedHealthCheckListResponse';
-        $request = $this->healthCheckControllerListRequest($statuses, $status, $page, $itemsPerPage, $subject, $contentType);
+        $request = $this->healthCheckControllerListRequest($statuses, $status, $page, $itemsPerPage, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -31874,14 +31211,13 @@ class DefaultApi
      * @param  mixed $status (optional)
      * @param  string $page (optional)
      * @param  string $itemsPerPage (optional)
-     * @param  string $subject (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['healthCheckControllerList'] to see the possible values for this operation
      *
      * @return Request
      *
      * @throws \InvalidArgumentException
      */
-    public function healthCheckControllerListRequest($statuses = null, $status = null, $page = null, $itemsPerPage = null, $subject = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
+    public function healthCheckControllerListRequest($statuses = null, $status = null, $page = null, $itemsPerPage = null, string $contentType = self::contentTypes['healthCheckControllerList'][0])
     {
         $resourcePath = '/sync-core/health-check';
         $formParams = [];
@@ -31921,15 +31257,6 @@ class DefaultApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $itemsPerPage,
             'itemsPerPage', // param base name
-            'string', // openApiType
-            'form', // style
-            true, // explode
-            false // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $subject,
-            'subject', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
@@ -40635,1188 +39962,6 @@ class DefaultApi
 
         return new Request(
             'GET',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation monitoringPromptControllerListSummaries.
-     *
-     * @param  mixed $status status (optional)
-     * @param  mixed $itemsPerPage itemsPerPage (optional)
-     * @param  mixed $page page (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerListSummaries'] to see the possible values for this operation
-     *
-     * @return PagedMonitoringPromptSummaryListResponse
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerListSummaries($status = null, $itemsPerPage = null, $page = null, string $contentType = self::contentTypes['monitoringPromptControllerListSummaries'][0])
-    {
-        [$response] = $this->monitoringPromptControllerListSummariesWithHttpInfo($status, $itemsPerPage, $page, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation monitoringPromptControllerListSummariesWithHttpInfo.
-     *
-     * @param  mixed $status (optional)
-     * @param  mixed $itemsPerPage (optional)
-     * @param  mixed $page (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerListSummaries'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse, HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerListSummariesWithHttpInfo($status = null, $itemsPerPage = null, $page = null, string $contentType = self::contentTypes['monitoringPromptControllerListSummaries'][0])
-    {
-        $request = $this->monitoringPromptControllerListSummariesRequest($status, $itemsPerPage, $page, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation monitoringPromptControllerListSummariesAsync.
-     *
-     * @param  mixed $status (optional)
-     * @param  mixed $itemsPerPage (optional)
-     * @param  mixed $page (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerListSummaries'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerListSummariesAsync($status = null, $itemsPerPage = null, $page = null, string $contentType = self::contentTypes['monitoringPromptControllerListSummaries'][0])
-    {
-        return $this->monitoringPromptControllerListSummariesAsyncWithHttpInfo($status, $itemsPerPage, $page, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation monitoringPromptControllerListSummariesAsyncWithHttpInfo.
-     *
-     * @param  mixed $status (optional)
-     * @param  mixed $itemsPerPage (optional)
-     * @param  mixed $page (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerListSummaries'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerListSummariesAsyncWithHttpInfo($status = null, $itemsPerPage = null, $page = null, string $contentType = self::contentTypes['monitoringPromptControllerListSummaries'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\PagedMonitoringPromptSummaryListResponse';
-        $request = $this->monitoringPromptControllerListSummariesRequest($status, $itemsPerPage, $page, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'monitoringPromptControllerListSummaries'.
-     *
-     * @param  mixed $status (optional)
-     * @param  mixed $itemsPerPage (optional)
-     * @param  mixed $page (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerListSummaries'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerListSummariesRequest($status = null, $itemsPerPage = null, $page = null, string $contentType = self::contentTypes['monitoringPromptControllerListSummaries'][0])
-    {
-        $resourcePath = '/sync-core/monitoring-prompt/summaries';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $status,
-            'status', // param base name
-            'mixed', // openApiType
-            'form', // style
-            true, // explode
-            false // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $itemsPerPage,
-            'itemsPerPage', // param base name
-            'mixed', // openApiType
-            'form', // style
-            true, // explode
-            false // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $page,
-            'page', // param base name
-            'mixed', // openApiType
-            'form', // style
-            true, // explode
-            false // required
-        ) ?? []);
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'GET',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationConfirm.
-     *
-     * @param  ClientMonitoringPromptRecommendationConfirmDto $clientMonitoringPromptRecommendationConfirmDto clientMonitoringPromptRecommendationConfirmDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationConfirm'] to see the possible values for this operation
-     *
-     * @return ClientMonitoringPromptRecommendationConfirmErrorDto[]|ClientMonitoringPromptRecommendationConfirmResultDto
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationConfirm($clientMonitoringPromptRecommendationConfirmDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationConfirm'][0])
-    {
-        [$response] = $this->monitoringPromptControllerRecommendationConfirmWithHttpInfo($clientMonitoringPromptRecommendationConfirmDto, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationConfirmWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptRecommendationConfirmDto $clientMonitoringPromptRecommendationConfirmDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationConfirm'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto|\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto[], HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationConfirmWithHttpInfo($clientMonitoringPromptRecommendationConfirmDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationConfirm'][0])
-    {
-        $request = $this->monitoringPromptControllerRecommendationConfirmRequest($clientMonitoringPromptRecommendationConfirmDto, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-
-                case 400:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto[]' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto[]' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmErrorDto[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationConfirmAsync.
-     *
-     * @param  ClientMonitoringPromptRecommendationConfirmDto $clientMonitoringPromptRecommendationConfirmDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationConfirm'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationConfirmAsync($clientMonitoringPromptRecommendationConfirmDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationConfirm'][0])
-    {
-        return $this->monitoringPromptControllerRecommendationConfirmAsyncWithHttpInfo($clientMonitoringPromptRecommendationConfirmDto, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationConfirmAsyncWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptRecommendationConfirmDto $clientMonitoringPromptRecommendationConfirmDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationConfirm'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationConfirmAsyncWithHttpInfo($clientMonitoringPromptRecommendationConfirmDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationConfirm'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationConfirmResultDto';
-        $request = $this->monitoringPromptControllerRecommendationConfirmRequest($clientMonitoringPromptRecommendationConfirmDto, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'monitoringPromptControllerRecommendationConfirm'.
-     *
-     * @param  ClientMonitoringPromptRecommendationConfirmDto $clientMonitoringPromptRecommendationConfirmDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationConfirm'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationConfirmRequest($clientMonitoringPromptRecommendationConfirmDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationConfirm'][0])
-    {
-        // verify the required parameter 'clientMonitoringPromptRecommendationConfirmDto' is set
-        if (null === $clientMonitoringPromptRecommendationConfirmDto || (is_array($clientMonitoringPromptRecommendationConfirmDto) && 0 === count($clientMonitoringPromptRecommendationConfirmDto))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $clientMonitoringPromptRecommendationConfirmDto when calling monitoringPromptControllerRecommendationConfirm'
-            );
-        }
-
-        $resourcePath = '/sync-core/monitoring-prompt/recommendation/confirm';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (isset($clientMonitoringPromptRecommendationConfirmDto)) {
-            if (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($clientMonitoringPromptRecommendationConfirmDto));
-            } else {
-                $httpBody = $clientMonitoringPromptRecommendationConfirmDto;
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'POST',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPreview.
-     *
-     * @param  ClientMonitoringPromptRecommendationRequestDto $clientMonitoringPromptRecommendationRequestDto clientMonitoringPromptRecommendationRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPreview'] to see the possible values for this operation
-     *
-     * @return ClientMonitoringPromptRecommendationDto
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPreview($clientMonitoringPromptRecommendationRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPreview'][0])
-    {
-        [$response] = $this->monitoringPromptControllerRecommendationPreviewWithHttpInfo($clientMonitoringPromptRecommendationRequestDto, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPreviewWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptRecommendationRequestDto $clientMonitoringPromptRecommendationRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPreview'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto, HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPreviewWithHttpInfo($clientMonitoringPromptRecommendationRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPreview'][0])
-    {
-        $request = $this->monitoringPromptControllerRecommendationPreviewRequest($clientMonitoringPromptRecommendationRequestDto, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPreviewAsync.
-     *
-     * @param  ClientMonitoringPromptRecommendationRequestDto $clientMonitoringPromptRecommendationRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPreview'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPreviewAsync($clientMonitoringPromptRecommendationRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPreview'][0])
-    {
-        return $this->monitoringPromptControllerRecommendationPreviewAsyncWithHttpInfo($clientMonitoringPromptRecommendationRequestDto, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPreviewAsyncWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptRecommendationRequestDto $clientMonitoringPromptRecommendationRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPreview'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPreviewAsyncWithHttpInfo($clientMonitoringPromptRecommendationRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPreview'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ClientMonitoringPromptRecommendationDto';
-        $request = $this->monitoringPromptControllerRecommendationPreviewRequest($clientMonitoringPromptRecommendationRequestDto, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'monitoringPromptControllerRecommendationPreview'.
-     *
-     * @param  ClientMonitoringPromptRecommendationRequestDto $clientMonitoringPromptRecommendationRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPreview'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPreviewRequest($clientMonitoringPromptRecommendationRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPreview'][0])
-    {
-        // verify the required parameter 'clientMonitoringPromptRecommendationRequestDto' is set
-        if (null === $clientMonitoringPromptRecommendationRequestDto || (is_array($clientMonitoringPromptRecommendationRequestDto) && 0 === count($clientMonitoringPromptRecommendationRequestDto))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $clientMonitoringPromptRecommendationRequestDto when calling monitoringPromptControllerRecommendationPreview'
-            );
-        }
-
-        $resourcePath = '/sync-core/monitoring-prompt/recommendation/preview';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (isset($clientMonitoringPromptRecommendationRequestDto)) {
-            if (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($clientMonitoringPromptRecommendationRequestDto));
-            } else {
-                $httpBody = $clientMonitoringPromptRecommendationRequestDto;
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'POST',
-            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPromptCoverage.
-     *
-     * @param  ClientMonitoringPromptCoverageRequestDto $clientMonitoringPromptCoverageRequestDto clientMonitoringPromptCoverageRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'] to see the possible values for this operation
-     *
-     * @return ProjectEntity
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPromptCoverage($clientMonitoringPromptCoverageRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'][0])
-    {
-        [$response] = $this->monitoringPromptControllerRecommendationPromptCoverageWithHttpInfo($clientMonitoringPromptCoverageRequestDto, $contentType);
-
-        return $response;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPromptCoverageWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptCoverageRequestDto $clientMonitoringPromptCoverageRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'] to see the possible values for this operation
-     *
-     * @return array of \EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity, HTTP status code, HTTP response headers (array of strings)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPromptCoverageWithHttpInfo($clientMonitoringPromptCoverageRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'][0])
-    {
-        $request = $this->monitoringPromptControllerRecommendationPromptCoverageRequest($clientMonitoringPromptCoverageRequestDto, $contentType);
-
-        try {
-            $options = $this->createHttpClientOption();
-
-            try {
-                $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
-                );
-            } catch (ConnectException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
-                    null,
-                    null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
-
-            switch ($statusCode) {
-                case 200:
-                    if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' === '\SplFileObject') {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-            }
-
-            $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity';
-            if ('\SplFileObject' === $returnType) {
-                $content = $response->getBody(); // stream goes to serializer
-            } else {
-                $content = (string) $response->getBody();
-                if ('string' !== $returnType) {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders(),
-            ];
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPromptCoverageAsync.
-     *
-     * @param  ClientMonitoringPromptCoverageRequestDto $clientMonitoringPromptCoverageRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPromptCoverageAsync($clientMonitoringPromptCoverageRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'][0])
-    {
-        return $this->monitoringPromptControllerRecommendationPromptCoverageAsyncWithHttpInfo($clientMonitoringPromptCoverageRequestDto, $contentType)
-            ->then(
-                function ($response) {
-                    return $response[0];
-                }
-            )
-        ;
-    }
-
-    /**
-     * Operation monitoringPromptControllerRecommendationPromptCoverageAsyncWithHttpInfo.
-     *
-     * @param  ClientMonitoringPromptCoverageRequestDto $clientMonitoringPromptCoverageRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'] to see the possible values for this operation
-     *
-     * @return PromiseInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPromptCoverageAsyncWithHttpInfo($clientMonitoringPromptCoverageRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'][0])
-    {
-        $returnType = '\EdgeBox\SyncCore\V2\Raw\Model\ProjectEntity';
-        $request = $this->monitoringPromptControllerRecommendationPromptCoverageRequest($clientMonitoringPromptCoverageRequestDto, $contentType);
-
-        return $this->client
-            ->sendAsync($request, $this->createHttpClientOption())
-            ->then(
-                function ($response) use ($returnType) {
-                    if ('\SplFileObject' === $returnType) {
-                        $content = $response->getBody(); // stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('string' !== $returnType) {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
-                },
-                function ($exception) {
-                    $response = $exception->getResponse();
-                    $statusCode = $response->getStatusCode();
-
-                    throw new ApiException(
-                        sprintf(
-                            '[%d] Error connecting to the API (%s)',
-                            $statusCode,
-                            $exception->getRequest()->getUri()
-                        ),
-                        $statusCode,
-                        $response->getHeaders(),
-                        (string) $response->getBody()
-                    );
-                }
-            )
-        ;
-    }
-
-    /**
-     * Create request for operation 'monitoringPromptControllerRecommendationPromptCoverage'.
-     *
-     * @param  ClientMonitoringPromptCoverageRequestDto $clientMonitoringPromptCoverageRequestDto (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'] to see the possible values for this operation
-     *
-     * @return Request
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function monitoringPromptControllerRecommendationPromptCoverageRequest($clientMonitoringPromptCoverageRequestDto, string $contentType = self::contentTypes['monitoringPromptControllerRecommendationPromptCoverage'][0])
-    {
-        // verify the required parameter 'clientMonitoringPromptCoverageRequestDto' is set
-        if (null === $clientMonitoringPromptCoverageRequestDto || (is_array($clientMonitoringPromptCoverageRequestDto) && 0 === count($clientMonitoringPromptCoverageRequestDto))) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $clientMonitoringPromptCoverageRequestDto when calling monitoringPromptControllerRecommendationPromptCoverage'
-            );
-        }
-
-        $resourcePath = '/sync-core/monitoring-prompt/recommendation/prompt-coverage';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-        $headers = $this->headerSelector->selectHeaders(
-            ['application/json'],
-            $contentType,
-            $multipart
-        );
-
-        // for model (json/xml)
-        if (isset($clientMonitoringPromptCoverageRequestDto)) {
-            if (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the body
-                $httpBody = ObjectSerializer::guzzleJsonEncode(ObjectSerializer::sanitizeForSerialization($clientMonitoringPromptCoverageRequestDto));
-            } else {
-                $httpBody = $clientMonitoringPromptCoverageRequestDto;
-            }
-        } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem,
-                        ];
-                    }
-                }
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
-            } elseif (false !== stripos($headers['Content-Type'], 'application/json')) {
-                // if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = ObjectSerializer::guzzleJsonEncode($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = ObjectSerializer::buildQuery($formParams);
-            }
-        }
-
-        // this endpoint requires Bearer (JWT) authentication (access token)
-        if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
-        }
-
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        $operationHost = $this->config->getHost();
-        $query = ObjectSerializer::buildQuery($queryParams);
-
-        return new Request(
-            'PUT',
             $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
