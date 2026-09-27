@@ -905,6 +905,9 @@ class SyncCore implements ISyncCore
         return $cache = new SyndicationService($this);
     }
 
+    /**
+     * @return EmbedService
+     */
     public function getEmbedService()
     {
         static $cache = null;

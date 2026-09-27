@@ -18,31 +18,6 @@ interface IOptimizeContentRequest
     public function getContentItemKey();
 
     /**
-     * The page as a person finds it: its canonical URL, else the URL the crawl
-     * fetched.
-     *
-     * It is the URL a site's own entity lookup is asked by, so a site that
-     * offers no such lookup, and is therefore sent no page entity, still has
-     * this to find the page by. Absent only for a page the Sync Core holds no
-     * URL for.
-     *
-     * @return null|string
-     */
-    public function getPageUrl();
-
-    /**
-     * The thing the site already holds the page as.
-     *
-     * Absent when the Sync Core has no such reference for the page, which is
-     * the case for every site that offers no lookup of its own entities by page
-     * URL. A site that files what it receives per entity files nothing for such
-     * a trigger and goes by the page URL instead.
-     *
-     * @return null|IPageEntityReference
-     */
-    public function getPageEntity();
-
-    /**
      * @return null|string
      */
     public function getTargetLocale();
@@ -64,12 +39,17 @@ interface IOptimizeContentRequest
 
     /**
      * The content the optimization recommends the site write, in the order it
-     * names it.
+     * names it, each as its key and its text: the id the optimization names
+     * the recommendation by and the text of its title.
      *
      * Empty when the optimization recommends none, and when the sender left the
      * list out to fit the size a site accepts.
      *
-     * @return IRecommendationContext[]
+     * @deprecated from 5.0.0 this returns IRecommendationContext[]; on 4.x,
+     *             OptimizeContentRequest::getRecommendationContexts() returns
+     *             every part of each recommendation
+     *
+     * @return array<array{key: string, text: string}>
      */
     public function getRecommendations();
 

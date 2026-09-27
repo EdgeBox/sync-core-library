@@ -76,7 +76,9 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         $this->assertSame('missing-meta', $issues[0]->getTypeKey());
         $this->assertSame('Add a meta description', $issues[0]->getInstruction());
 
-        $recommendation = $request->getRecommendations()[0];
+        $this->assertSame([['key' => 'r1', 'text' => 'What does it cost?']], $request->getRecommendations());
+
+        $recommendation = $request->getRecommendationContexts()[0];
         $this->assertSame('r1', $recommendation->getId());
         $this->assertSame(ContentRecommendationKind::FAQ, $recommendation->getKind());
         $this->assertSame('de', $recommendation->getLocale()->getKey());
@@ -84,6 +86,18 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
 
         $this->assertSame(['accepted' => true], $request->accept());
         $this->assertSame(['accepted' => false, 'reason' => 'busy'], $request->refuse('busy'));
+    }
+
+    public function testRecommendationsSentAsKeyAndTextArriveAsSent(): void
+    {
+        $governance = new GovernanceService(new SyncCore(new TestApplication(), 'https://core.example.com/sync-core'));
+
+        $request = $governance->parseOptimizeContentRequest(
+            ['optimizationId' => 'opt-1'],
+            ['recommendations' => [['key' => 'r1', 'text' => 'Shorten the title']]]
+        );
+
+        $this->assertSame([['key' => 'r1', 'text' => 'Shorten the title']], $request->getRecommendations());
     }
 
     public function testTheExternalDraftPostRoundTrips(): void

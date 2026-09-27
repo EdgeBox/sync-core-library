@@ -23,6 +23,9 @@ class GovernanceService implements IGovernanceService
         $this->core = $core;
     }
 
+    /**
+     * @return OptimizeContentRequest
+     */
     public function parseOptimizeContentRequest(array $query, array $body)
     {
         return new OptimizeContentRequest($query, $body);
