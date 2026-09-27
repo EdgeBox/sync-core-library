@@ -49,6 +49,9 @@ interface IOptimizeContentRequest
     public function getRecommendations();
 
     /**
+     * The recommendations are not counted here: a recommendation the sender
+     * left out, or a part it left off one, leaves this false.
+     *
      * @return bool true when the sender dropped lower-priority context to fit the size bound
      */
     public function wasTruncated();
