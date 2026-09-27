@@ -113,17 +113,12 @@ class OptimizeContentRequest implements IOptimizeContentRequest
         $recommendations = [];
         $list = $this->body['recommendations'] ?? null;
         foreach (is_array($list) ? $list : [] as $recommendation) {
-            if (!is_array($recommendation)) {
-                continue;
+            if (is_array($recommendation)) {
+                $context = new RecommendationContext($recommendation);
+                $recommendation += ['key' => $context->getId(), 'text' => $context->getTitle()->getText()];
             }
 
-            $context = new RecommendationContext($recommendation);
-            $key = $recommendation['key'] ?? null;
-            $text = $recommendation['text'] ?? null;
-            $recommendations[] = [
-                'key' => is_string($key) ? $key : $context->getId(),
-                'text' => is_string($text) ? $text : $context->getTitle()->getText(),
-            ];
+            $recommendations[] = $recommendation;
         }
 
         return $recommendations;
