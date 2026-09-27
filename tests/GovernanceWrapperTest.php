@@ -76,13 +76,7 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
         $this->assertSame('missing-meta', $issues[0]->getTypeKey());
         $this->assertSame('Add a meta description', $issues[0]->getInstruction());
 
-        $recommendations = $request->getRecommendations();
-        $this->assertCount(1, $recommendations);
-        $this->assertSame('r1', $recommendations[0]['key']);
-        $this->assertSame('What does it cost?', $recommendations[0]['text']);
-        $this->assertSame(ContentRecommendationKind::FAQ, $recommendations[0]['kind']);
-
-        $recommendation = $request->getRecommendationContexts()[0];
+        $recommendation = $request->getRecommendations()[0];
         $this->assertSame('r1', $recommendation->getId());
         $this->assertSame(ContentRecommendationKind::FAQ, $recommendation->getKind());
         $this->assertSame('de', $recommendation->getLocale()->getKey());
@@ -90,18 +84,6 @@ final class GovernanceWrapperTest extends SyncCoreTestCase
 
         $this->assertSame(['accepted' => true], $request->accept());
         $this->assertSame(['accepted' => false, 'reason' => 'busy'], $request->refuse('busy'));
-    }
-
-    public function testRecommendationsSentAsKeyAndTextArriveAsSent(): void
-    {
-        $governance = new GovernanceService(new SyncCore(new TestApplication(), 'https://core.example.com/sync-core'));
-
-        $request = $governance->parseOptimizeContentRequest(
-            ['optimizationId' => 'opt-1'],
-            ['recommendations' => [['key' => 'r1', 'text' => 'Shorten the title', 'priority' => 2], ['key' => 7, 'text' => 'Add a summary']]]
-        );
-
-        $this->assertSame([['key' => 'r1', 'text' => 'Shorten the title', 'priority' => 2], ['key' => 7, 'text' => 'Add a summary']], $request->getRecommendations());
     }
 
     public function testTheExternalDraftPostRoundTrips(): void

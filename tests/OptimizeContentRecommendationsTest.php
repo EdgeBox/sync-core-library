@@ -32,7 +32,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
     {
         $request = $this->parse($this->realExport());
 
-        $recommendations = $request->getRecommendationContexts();
+        $recommendations = $request->getRecommendations();
         $this->assertCount(1, $recommendations);
 
         $recommendation = $recommendations[0];
@@ -58,7 +58,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
 
     public function testTheRealExportCarriesTheTargetAndTheEvidenceBehindIt(): void
     {
-        $recommendation = $this->parse($this->realExport())->getRecommendationContexts()[0];
+        $recommendation = $this->parse($this->realExport())->getRecommendations()[0];
 
         $target = $recommendation->getTarget();
         $this->assertSame(ContentRecommendationTargetState::MISSING, $target->getState());
@@ -104,7 +104,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $evidence['coverage'][] = ['engine' => ['key' => 'engine.second', 'name' => 'Second'], 'purpose' => ['key' => 'purpose.comparison', 'name' => 'Comparison'], 'answers' => 9];
         unset($evidence);
 
-        $read = $this->parse($body)->getRecommendationContexts()[0]->getEvidence();
+        $read = $this->parse($body)->getRecommendations()[0]->getEvidence();
 
         $this->assertSame(['authority.example', 'authority.second'], array_map(fn ($source) => $source->getKey(), $read->getGapSources()));
         $this->assertSame(['66f600000000000000000001', 'the second run'], array_map(fn ($run) => $run->getId(), $read->getRuns()));
@@ -120,7 +120,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $body['recommendations'][0]['evidence']['gapSources'] = 7;
         $body['recommendations'][0]['evidence']['coverage'] = (object) ['first' => ['answers' => 3]];
 
-        $recommendation = $this->parse($body)->getRecommendationContexts()[0];
+        $recommendation = $this->parse($body)->getRecommendations()[0];
 
         $this->assertSame([], $recommendation->getTarget()->getEvidence());
         $this->assertSame([], $recommendation->getEvidence()->getRuns());
@@ -196,7 +196,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $body = $this->realExport();
         $body['recommendations'] = null;
 
-        $this->assertSame([], $this->parse($body)->getRecommendationContexts());
+        $this->assertSame([], $this->parse($body)->getRecommendations());
     }
 
     public function testAKindThisLibraryHasNoNameForIsHandedOnWithItsParts(): void
@@ -209,7 +209,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
             'title' => ['text' => 'Say what it costs', 'format' => TextFormat::PLAIN, 'provenance' => 'operator', 'at' => '2026-01-01T00:00:00.000Z'],
         ]];
 
-        $recommendation = $this->parse($body)->getRecommendationContexts()[0];
+        $recommendation = $this->parse($body)->getRecommendations()[0];
 
         $this->assertSame('a-kind-from-a-later-release', $recommendation->getKind());
         $this->assertSame('Say what it costs', $recommendation->getTitle()->getText());
@@ -227,7 +227,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
             ['path' => 'body', 'value' => 'The first sentence of a long page', 'isTruncated' => true],
         ];
 
-        $evidence = $this->parse($body)->getRecommendationContexts()[0]->getTarget()->getEvidence();
+        $evidence = $this->parse($body)->getRecommendations()[0]->getTarget()->getEvidence();
 
         $this->assertSame('title', $evidence[0]->getPath());
         $this->assertSame('Pricing', $evidence[0]->getValue());
@@ -246,7 +246,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $second = array_merge($first, ['id' => 'the second one', 'kind' => ContentRecommendationKind::PAGE_RETIRE]);
         $body['recommendations'] = [$first, $second];
 
-        $recommendations = $this->parse($body)->getRecommendationContexts();
+        $recommendations = $this->parse($body)->getRecommendations();
 
         $this->assertSame(['66f300000000000000000b01', 'the second one'], [$recommendations[0]->getId(), $recommendations[1]->getId()]);
         $this->assertSame(
@@ -260,7 +260,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $body = $this->realExport();
         $body['recommendations'] = ['not an entry', $body['recommendations'][0], 7];
 
-        $recommendations = $this->parse($body)->getRecommendationContexts();
+        $recommendations = $this->parse($body)->getRecommendations();
 
         $this->assertCount(1, $recommendations);
         $this->assertSame(ContentRecommendationKind::FAQ, $recommendations[0]->getKind());
@@ -271,7 +271,7 @@ final class OptimizeContentRecommendationsTest extends TestCase
         $body = $this->realExport();
         $body['recommendations'] = [['id' => 'r-1', 'kind' => ContentRecommendationKind::FAQ, 'locale' => 'not a reference']];
 
-        $recommendation = $this->parse($body)->getRecommendationContexts()[0];
+        $recommendation = $this->parse($body)->getRecommendations()[0];
 
         $this->assertSame('', $recommendation->getLocale()->getKey());
         $this->assertSame('', $recommendation->getTitle()->getText());

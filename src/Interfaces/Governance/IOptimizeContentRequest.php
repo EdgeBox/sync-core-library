@@ -39,18 +39,12 @@ interface IOptimizeContentRequest
 
     /**
      * The content the optimization recommends the site write, in the order it
-     * names it, each as the trigger carries it. A recommendation that carries
-     * no key or text of its own gets them from its parts: the key is the id the
-     * optimization names it by and the text is the text of its title.
+     * names it.
      *
      * Empty when the optimization recommends none, and when the sender left the
      * list out to fit the size a site accepts.
      *
-     * @deprecated from 5.0.0 this returns IRecommendationContext[]; on 4.x,
-     *             OptimizeContentRequest::getRecommendationContexts() returns
-     *             every part of each recommendation
-     *
-     * @return array<array{key: string, text: string}>
+     * @return IRecommendationContext[]
      */
     public function getRecommendations();
 

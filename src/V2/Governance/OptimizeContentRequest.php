@@ -4,7 +4,6 @@ namespace EdgeBox\SyncCore\V2\Governance;
 
 use EdgeBox\SyncCore\Interfaces\Governance\IOptimizeContentRequest;
 use EdgeBox\SyncCore\Interfaces\Governance\IPageEntityReference;
-use EdgeBox\SyncCore\Interfaces\Governance\IRecommendationContext;
 
 /**
  * An inbound optimize-content trigger, parsed from the request's query and body.
@@ -109,35 +108,6 @@ class OptimizeContentRequest implements IOptimizeContentRequest
     }
 
     public function getRecommendations()
-    {
-        $recommendations = [];
-        $list = $this->body['recommendations'] ?? null;
-        foreach (is_array($list) ? $list : [] as $recommendation) {
-            if (is_array($recommendation)) {
-                $context = new RecommendationContext($recommendation);
-                $recommendation += ['key' => $context->getId(), 'text' => $context->getTitle()->getText()];
-            }
-
-            $recommendations[] = $recommendation;
-        }
-
-        return $recommendations;
-    }
-
-    /**
-     * The content the optimization recommends the site write, in the order it
-     * names it, with every part the trigger carries for each recommendation.
-     *
-     * Empty when the optimization recommends none, and when the sender left the
-     * list out to fit the size a site accepts.
-     *
-     * Declared on this class and not on IOptimizeContentRequest, so a class
-     * that implements IOptimizeContentRequest stays compatible. From 5.0.0,
-     * getRecommendations() returns this list.
-     *
-     * @return IRecommendationContext[]
-     */
-    public function getRecommendationContexts()
     {
         $recommendations = [];
         $list = $this->body['recommendations'] ?? null;
