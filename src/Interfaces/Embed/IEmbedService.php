@@ -25,9 +25,11 @@ interface IEmbedService
     // The issue screen, which is the one a CMS hosts: a site token reaches its
     // own site's issues through it, where the content inventory above is the
     // whole project's and is read in the application. The value is the embed's
-    // id on the wire and, with the dot read as a slash, the route people land
-    // on.
-    public const GOVERNANCE_ISSUES = 'brand-presence.issues';
+    // id on the wire and the route people land on: an entry of its own for a
+    // site's frame, beside the application's Brand Presence area rather than
+    // inside it, so the screen a site hosts carries none of that area's
+    // navigation and is laid out to the height of what it shows.
+    public const GOVERNANCE_ISSUES = 'brand-presence-issues';
 
     public const BOX_PAGE_FIGURES = 'box.page-figures';
 
