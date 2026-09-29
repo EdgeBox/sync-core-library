@@ -21,12 +21,22 @@ use PHPUnit\Framework\TestCase;
  */
 final class GovernanceIssuesEmbedTest extends TestCase
 {
-    public function testTheUrlResolvesToTheIssuesPath(): void
+    public function testTheUrlResolvesToTheScreenASiteHosts(): void
     {
         $embed = (new EmbedService($this->core()))->governanceIssues([]);
         $embed->run();
 
-        $this->assertStringEndsWith('/brand-presence/issues', $this->url($embed));
+        $this->assertStringEndsWith('/brand-presence-issues', $this->url($embed));
+    }
+
+    public function testItIsNoScreenOfTheApplicationsArea(): void
+    {
+        $embed = (new EmbedService($this->core()))->governanceIssues([]);
+        $embed->run();
+
+        // The application's own Brand Presence area lives under this path, with
+        // navigation that leads to screens only the application hosts.
+        $this->assertStringNotContainsString('/brand-presence/', $this->url($embed));
     }
 
     public function testItIsNotTheContentInventoryPath(): void
