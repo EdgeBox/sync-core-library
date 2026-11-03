@@ -55,6 +55,14 @@ class PullOperation implements IPullOperation
     protected $fileEntity;
 
     /**
+     * The languages the site stored the pulled content in, keyed by the
+     * source's language.
+     *
+     * @var array<string, string>
+     */
+    protected $siteLanguages = [];
+
+    /**
      * PullOperation constructor.
      *
      * @param array|RemoteEntityEmbed|RemoteEntityEmbedDraft|RemoteEntityEmbedRootDraft|RemoteEntityRootEmbed $body
@@ -434,11 +442,20 @@ class PullOperation implements IPullOperation
         // Turn objects into arrays
         $data = json_decode(json_encode($data), true);
 
+        if (!empty($this->siteLanguages)) {
+            $data = $this->applySiteLanguages($data);
+        }
+
         if ($entity_deep_link) {
             $data['viewUrl'] = $entity_deep_link;
         }
 
         return $data;
+    }
+
+    public function setSiteLanguages(array $site_languages): void
+    {
+        $this->siteLanguages = $site_languages;
     }
 
     /**
@@ -469,6 +486,53 @@ class PullOperation implements IPullOperation
         }
 
         return null;
+    }
+
+    /**
+     * Replace the languages of a serialized response body with the ones the
+     * site stored the content in, and leave out every translation whose
+     * language the root or an earlier translation already has.
+     *
+     * @return array
+     */
+    protected function applySiteLanguages(array $data)
+    {
+        $root_language = null;
+        if (isset($data['language']) && is_string($data['language'])) {
+            $root_language = $this->siteLanguage($data['language']);
+            $data['language'] = $root_language;
+        }
+
+        if (!isset($data['translations']) || !is_array($data['translations'])) {
+            return $data;
+        }
+
+        $languages = null === $root_language ? [] : [$root_language => true];
+        $translations = [];
+        foreach ($data['translations'] as $translation) {
+            if (is_array($translation) && isset($translation['language']) && is_string($translation['language'])) {
+                $language = $this->siteLanguage($translation['language']);
+                if (isset($languages[$language])) {
+                    continue;
+                }
+                $languages[$language] = true;
+                $translation['language'] = $language;
+            }
+            $translations[] = $translation;
+        }
+        $data['translations'] = $translations;
+
+        return $data;
+    }
+
+    /**
+     * The language the site stored content of the given source language in.
+     */
+    protected function siteLanguage(string $language): string
+    {
+        $site_language = $this->siteLanguages[$language] ?? null;
+
+        return is_string($site_language) ? $site_language : $language;
     }
 
     /**

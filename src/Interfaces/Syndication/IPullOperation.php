@@ -90,7 +90,27 @@ interface IPullOperation
      * Get the proper response body to return to the Sync Core. Should include a
      * deep link to the entity so that other sites can deep link to this content.
      *
+     * With a map from {@see IPullOperation::setSiteLanguages}, the languages of
+     * the body are the ones the site stored the content in.
+     *
      * @return array
      */
     public function getResponseBody(?string $entity_deep_link, ?string $target_remote_uuid = null);
+
+    /**
+     * Set the languages the site stored the pulled content in, so that
+     * {@see IPullOperation::getResponseBody} reports them instead of the
+     * source's.
+     *
+     * The response body's root language and the language of each translation
+     * are replaced through the map when the map has them as a key. A
+     * translation that then has the same language as the root or as a
+     * translation before it is left out of the body, because the site stored
+     * it in that entry. An empty map leaves the body as it is.
+     *
+     * @param array<string, string> $site_languages
+     *                                              The source's language codes as keys, the site's
+     *                                              language codes they were stored in as values
+     */
+    public function setSiteLanguages(array $site_languages): void;
 }
