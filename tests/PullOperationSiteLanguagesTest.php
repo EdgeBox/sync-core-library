@@ -42,7 +42,54 @@ final class PullOperationSiteLanguagesTest extends SyncCoreTestCase
 
         $languages = array_merge([$body['language']], array_column($body['translations'], 'language'));
         $this->assertSame(['it', 'de'], $languages);
-        $this->assertSame('de', $body['translations'][0]['name']);
+        $this->assertSame('fr', $body['translations'][0]['name']);
+    }
+
+    public function testTheTranslationTheMapMovesWinsWhateverItsPositionInTheBody(): void
+    {
+        foreach ([['it', 'de'], ['de', 'it']] as $translation_languages) {
+            $operation = $this->pullOperation($translation_languages);
+            $operation->setSiteLanguages(['de' => 'it']);
+
+            $body = $operation->getResponseBody(self::DEEP_LINK);
+
+            $this->assertSame('en', $body['language']);
+            $this->assertSame(['it'], array_column($body['translations'], 'language'));
+            $this->assertSame('de', $body['translations'][0]['name']);
+        }
+    }
+
+    public function testATranslationTheMapMovesToTheRootLanguageIsLeftOut(): void
+    {
+        $operation = $this->pullOperation(['fr', 'de']);
+        $operation->setSiteLanguages(['fr' => 'en']);
+
+        $body = $operation->getResponseBody(self::DEEP_LINK);
+
+        $this->assertSame('en', $body['language']);
+        $this->assertSame(['de'], array_column($body['translations'], 'language'));
+    }
+
+    public function testEntriesTheMapDoesNotMoveAreNeverLeftOut(): void
+    {
+        $expected = json_encode($this->pullOperation(['en', 'it', 'it'])->getResponseBody(self::DEEP_LINK));
+
+        $operation = $this->pullOperation(['en', 'it', 'it']);
+        $operation->setSiteLanguages(['fr' => 'it']);
+        $body = $operation->getResponseBody(self::DEEP_LINK);
+
+        $this->assertSame($expected, json_encode($body));
+        $this->assertSame(['en', 'it', 'it'], array_column($body['translations'], 'language'));
+    }
+
+    public function testAnEmptySiteLanguageIsIgnored(): void
+    {
+        $expected = json_encode($this->pullOperation(['it'])->getResponseBody(self::DEEP_LINK));
+
+        $operation = $this->pullOperation(['it']);
+        $operation->setSiteLanguages(['en' => '', 'it' => '']);
+
+        $this->assertSame($expected, json_encode($operation->getResponseBody(self::DEEP_LINK)));
     }
 
     public function testATranslationLanguageIsReplacedThroughTheMap(): void

@@ -90,8 +90,8 @@ interface IPullOperation
      * Get the proper response body to return to the Sync Core. Should include a
      * deep link to the entity so that other sites can deep link to this content.
      *
-     * With a map from {@see IPullOperation::setSiteLanguages}, the languages of
-     * the body are the ones the site stored the content in.
+     * With a map from {@see IPullOperation::setSiteLanguages}, the language of
+     * the root and of each translation is the one the site stored it in.
      *
      * @return array
      */
@@ -100,13 +100,16 @@ interface IPullOperation
     /**
      * Set the languages the site stored the pulled content in, so that
      * {@see IPullOperation::getResponseBody} reports them instead of the
-     * source's.
+     * source's for every response body built after this call.
      *
-     * The response body's root language and the language of each translation
-     * are replaced through the map when the map has them as a key. A
-     * translation that then has the same language as the root or as a
-     * translation before it is left out of the body, because the site stored
-     * it in that entry. An empty map leaves the body as it is.
+     * The language of the response body's root and of each of its
+     * translations is replaced through the map when the map has it as a key.
+     * A translation is left out of the body when the site stored it in
+     * another entry: the map gives it the language of the root or of another
+     * translation the map moved, or the map moved another entry to its
+     * language. A map without any of the body's languages, or an empty map,
+     * leaves the body as it is. A site that stored content in other languages
+     * passes the map for every answer about that content.
      *
      * @param array<string, string> $site_languages
      *                                              The source's language codes as keys, the site's
