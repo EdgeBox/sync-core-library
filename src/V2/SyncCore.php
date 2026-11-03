@@ -1339,12 +1339,12 @@ class SyncCore implements ISyncCore
     private function readableRefusal(array $data): ?string
     {
         $summary = $data[self::REFUSAL_SUMMARY] ?? null;
-        if (!is_string($summary) || '' === $summary) {
+        if (!is_string($summary) || '' === trim($summary)) {
             return null;
         }
 
         $property = $data[self::REFUSAL_PROPERTY] ?? null;
-        if (!is_string($property) || '' === $property) {
+        if (!is_string($property) || '' === trim($property)) {
             return $summary;
         }
 

@@ -20,6 +20,8 @@ final class ValidationRefusalTest extends SyncCoreTestCase
 {
     private const URL = 'https://core.example.com/sync-core/remote-entity-revision';
 
+    private const PREFIX_400 = 'The Sync Core responded with 400 Bad Request for POST '.self::URL.' ';
+
     /**
      * The validation tree a refusal carries as its message.
      */
@@ -45,41 +47,45 @@ final class ValidationRefusalTest extends SyncCoreTestCase
         $exception = $this->refusal(400, ['summary' => 'Must be a valid URL.', 'property' => 'embed.3.viewUrl']);
 
         $this->assertInstanceOf(BadRequestException::class, $exception);
-        $this->assertStringEndsWith(' embed.3.viewUrl: Must be a valid URL.', $exception->getMessage());
-        $this->assertStringStartsWith('The Sync Core responded with 400 Bad Request for POST '.self::URL.' ', $exception->getMessage());
+        $this->assertSame(self::PREFIX_400.'embed.3.viewUrl: Must be a valid URL.', $exception->getMessage());
     }
 
     public function testAReasonInSeveralSentencesFollowsTheFieldUnchanged(): void
     {
-        $summary = 'Embedded content "costume shop.jpg": Must be a valid URL. Rejected value: "https://a.test/costume shop.jpg"';
+        $summary = 'Embedded content "team photo.jpg": Must be a valid URL. Rejected value: "https://a.test/team photo.jpg"';
 
         $exception = $this->refusal(400, ['summary' => $summary, 'property' => 'embed.3.viewUrl']);
 
         $this->assertInstanceOf(BadRequestException::class, $exception);
-        $this->assertStringEndsWith(' embed.3.viewUrl: '.$summary, $exception->getMessage());
+        $this->assertSame(self::PREFIX_400.'embed.3.viewUrl: '.$summary, $exception->getMessage());
     }
 
     public function testAReasonOfSeveralClausesIsAppendedUnchanged(): void
     {
-        $summary = 'Must be a valid URL.; Must be shorter than or equal to 2048 characters.; Must not be empty.';
+        foreach ([
+            'Must be a valid URL.; Must be shorter than or equal to 2048 characters.; Must not be empty.',
+            'Must be a valid URL. Must be shorter than or equal to 2048 characters. Must not be empty.',
+        ] as $summary) {
+            $exception = $this->refusal(400, ['summary' => $summary, 'property' => 'embed.3.viewUrl']);
 
-        $exception = $this->refusal(400, ['summary' => $summary, 'property' => 'embed.3.viewUrl']);
-
-        $this->assertStringEndsWith(' embed.3.viewUrl: '.$summary, $exception->getMessage());
+            $this->assertSame(self::PREFIX_400.'embed.3.viewUrl: '.$summary, $exception->getMessage());
+        }
     }
 
     public function testAReasonWithoutAFieldStandsAlone(): void
     {
         $exception = $this->refusal(400, ['summary' => 'Must be a valid URL.']);
 
-        $this->assertStringEndsWith(self::URL.' Must be a valid URL.', $exception->getMessage());
+        $this->assertSame(self::PREFIX_400.'Must be a valid URL.', $exception->getMessage());
     }
 
-    public function testAnEmptyFieldIsNotNamed(): void
+    public function testABlankFieldIsNotNamed(): void
     {
-        $exception = $this->refusal(400, ['summary' => 'Must be a valid URL.', 'property' => '']);
+        foreach (['', ' '] as $property) {
+            $exception = $this->refusal(400, ['summary' => 'Must be a valid URL.', 'property' => $property]);
 
-        $this->assertStringEndsWith(self::URL.' Must be a valid URL.', $exception->getMessage());
+            $this->assertSame(self::PREFIX_400.'Must be a valid URL.', $exception->getMessage());
+        }
     }
 
     public function testARefusalWithoutAReasonKeepsTheValidationTree(): void
@@ -90,9 +96,9 @@ final class ValidationRefusalTest extends SyncCoreTestCase
         $this->assertStringEndsWith(self::URL.' '.json_encode(self::TREE), $exception->getMessage());
     }
 
-    public function testAnEmptyOrNonTextReasonKeepsTheValidationTree(): void
+    public function testABlankOrNonTextReasonKeepsTheValidationTree(): void
     {
-        foreach ([['summary' => ''], ['summary' => ['Must be a valid URL.']], ['summary' => null, 'property' => 'embed.3.viewUrl']] as $keys) {
+        foreach ([['summary' => ''], ['summary' => '  '], ['summary' => ['Must be a valid URL.']], ['summary' => null, 'property' => 'embed.3.viewUrl']] as $keys) {
             $exception = $this->refusal(400, $keys);
 
             $this->assertStringEndsWith(self::URL.' '.json_encode(self::TREE), $exception->getMessage());
@@ -123,7 +129,7 @@ final class ValidationRefusalTest extends SyncCoreTestCase
 
         $this->assertSame(SyncCoreException::class, get_class($exception));
         $this->assertSame(500, $exception->getStatusCode());
-        $this->assertStringEndsWith(' embed.3.viewUrl: Must be a valid URL.', $exception->getMessage());
+        $this->assertSame('The Sync Core responded with a non-OK status code for POST '.self::URL.' embed.3.viewUrl: Must be a valid URL.', $exception->getMessage());
     }
 
     public function testTheRawBodyStaysOnTheException(): void
