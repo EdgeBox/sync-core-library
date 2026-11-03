@@ -105,11 +105,12 @@ interface IPullOperation
      * The language of the response body's root and of each of its
      * translations is replaced through the map when the map has it as a key.
      * A translation is left out of the body when the site stored it in
-     * another entry: the map gives it the language of the root or of another
-     * translation the map moved, or the map moved another entry to its
-     * language. A map without any of the body's languages, or an empty map,
-     * leaves the body as it is. A site that stored content in other languages
-     * passes the map for every answer about that content.
+     * another entry: the map gives it the language of the root or of an
+     * earlier translation the map moved, or the map moved the root or another
+     * translation to its language. Entries the map does not move are kept, so
+     * a map without any of the body's languages, or an empty map, leaves the
+     * body as it is. A site that stored content in other languages passes the
+     * map for every answer about that content.
      *
      * @param array<string, string> $site_languages
      *                                              The source's language codes as keys, the site's

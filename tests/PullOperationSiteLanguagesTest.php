@@ -59,6 +59,40 @@ final class PullOperationSiteLanguagesTest extends SyncCoreTestCase
         }
     }
 
+    public function testOfTwoTranslationsTheMapMovesToOneLanguageTheFirstIsKept(): void
+    {
+        $operation = $this->pullOperation(['fr', 'de']);
+        $operation->setSiteLanguages(['fr' => 'it', 'de' => 'it']);
+
+        $body = $operation->getResponseBody(self::DEEP_LINK);
+
+        $this->assertSame('en', $body['language']);
+        $this->assertSame(['it'], array_column($body['translations'], 'language'));
+        $this->assertSame('fr', $body['translations'][0]['name']);
+    }
+
+    public function testATranslationTheMapMovesToTheMovedRootLanguageIsLeftOut(): void
+    {
+        $operation = $this->pullOperation(['fr', 'de']);
+        $operation->setSiteLanguages(['en' => 'it', 'fr' => 'it']);
+
+        $body = $operation->getResponseBody(self::DEEP_LINK);
+
+        $this->assertSame('it', $body['language']);
+        $this->assertSame(['de'], array_column($body['translations'], 'language'));
+    }
+
+    public function testALanguageTheSourceBodyAlreadyRepeatsPassesThrough(): void
+    {
+        $operation = $this->pullOperation(['en', 'de']);
+        $operation->setSiteLanguages(['de' => 'it']);
+
+        $body = $operation->getResponseBody(self::DEEP_LINK);
+
+        $this->assertSame('en', $body['language']);
+        $this->assertSame(['en', 'it'], array_column($body['translations'], 'language'));
+    }
+
     public function testATranslationTheMapMovesToTheRootLanguageIsLeftOut(): void
     {
         $operation = $this->pullOperation(['fr', 'de']);

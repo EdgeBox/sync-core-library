@@ -536,7 +536,8 @@ class PullOperation implements IPullOperation
      * A translation the map moves to a language the root or another moved
      * translation already has is left out, and so is a translation the map
      * does not move whose language a moved entry now has: the site stored it
-     * in that entry. Two entries the map does not move are never touched.
+     * in that entry. Two entries the map does not move are never touched, so
+     * a language the source's body already repeats passes through.
      */
     private function applySiteLanguages(array $data): array
     {
@@ -555,8 +556,9 @@ class PullOperation implements IPullOperation
             return $data;
         }
 
-        // Moved translations first, so the outcome does not depend on the
-        // order of the translations in the body.
+        // Moved translations first, so a moved translation is kept over an
+        // unmoved one wherever either stands in the body. Of two translations
+        // moved to one language, the first is kept.
         $moved = [];
         $left_out = [];
         foreach ($data[self::BODY_TRANSLATIONS] as $index => $translation) {
