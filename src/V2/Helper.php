@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\V2;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+
 /**
  * Class Helper.
  *
@@ -9,9 +11,43 @@ namespace EdgeBox\SyncCore\V2;
  */
 class Helper
 {
+    /**
+     * The values {@see requireId()} refuses.
+     */
+    private const NO_IDS = ['', '.', '..', '0'];
+
     public static function isUuid($shared_entity_id)
     {
         return (bool) preg_match('/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-([89ab])[a-f0-9]{3}-[a-f0-9]{12}/', $shared_entity_id);
+    }
+
+    /**
+     * The scope a request is signed with: the site's configuration scope, which
+     * carries its content scope, or its content scope alone.
+     *
+     * @return string "configuration" or "content"
+     */
+    public static function permissions(bool $configuration_access): string
+    {
+        return $configuration_access ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
+    }
+
+    /**
+     * Refuse an ID a request can't name a record by: an empty one or `0` would
+     * leave a query filter out, an empty one would reach the list route instead
+     * of the record, and `.` or `..` would reach a parent route.
+     *
+     * @return string the ID
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function requireId(string $id): string
+    {
+        if (in_array($id, self::NO_IDS, true)) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not an ID.', $id));
+        }
+
+        return $id;
     }
 
     public static function formatStorageSize($size, $round_up = false)

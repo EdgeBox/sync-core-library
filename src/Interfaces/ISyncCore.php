@@ -37,6 +37,12 @@ interface ISyncCore
     public const FEATURE_LANGUAGE_MAPPING_AVAILABLE = 'syndication:language-mapping:available';
 
     /**
+     * The Sync Core lists the content a site can pull, which the pull dashboard
+     * and {@see ISyndicationService::listPreviews()} read.
+     */
+    public const FEATURE_PREVIEWS = 'previews';
+
+    /**
      * Default for dev environments.
      */
     public const PRIORITY_LOW = 0;
