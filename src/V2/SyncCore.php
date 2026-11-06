@@ -95,7 +95,6 @@ class SyncCore implements ISyncCore
     public const PULL_RETRY_COUNT = 4;
     public const UPDATES_GET_RETRY_COUNT = 3;
     public const PREVIEWS_GET_RETRY_COUNT = 3;
-    public const TASKS_GET_RETRY_COUNT = 3;
 
     /**
      * A single attempt. A pull sent again after a connection failure may have

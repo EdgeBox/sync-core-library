@@ -23,10 +23,12 @@ interface ITriggerPullSingle
 
     /**
      * Name the item by its other ID as well, so the request carries both its
-     * UUID and its unique ID. Which of the two this is, is told apart as for
-     * the ID the pull was created with.
+     * UUID and its unique ID: created with the item's UUID, this is its unique
+     * ID, and the other way round. Calling it again replaces that other ID.
      *
      * @return $this
+     *
+     * @throws \InvalidArgumentException the ID is empty, `.` or `..`
      */
     public function alsoKnownAs(string $shared_entity_id);
 
@@ -51,7 +53,7 @@ interface ITriggerPullSingle
      *                              object it sent; a field it leaves out is
      *                              missing from the array
      *
-     * @throws SyncCoreException
+     * @throws SyncCoreException also when the answer is not a JSON object
      */
     public function executeOnce(bool $configuration_access);
 

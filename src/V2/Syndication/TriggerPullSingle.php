@@ -36,6 +36,13 @@ class TriggerPullSingle implements ITriggerPullSingle
     private $task;
 
     /**
+     * Whether the ID the pull was created with is the item's UUID.
+     *
+     * @var bool
+     */
+    private $createdWithUuid;
+
+    /**
      * TriggerPullSingle constructor.
      */
     public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id, string $flow_id)
@@ -48,7 +55,12 @@ class TriggerPullSingle implements ITriggerPullSingle
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
 
-        $this->identifyBy($shared_entity_id);
+        $this->createdWithUuid = Helper::isUuid($shared_entity_id);
+        if ($this->createdWithUuid) {
+            $this->dto->setRemoteUuid($shared_entity_id);
+        } else {
+            $this->dto->setRemoteUniqueId($shared_entity_id);
+        }
     }
 
     // TODO: Drupal: Support multiple pools.
@@ -77,7 +89,12 @@ class TriggerPullSingle implements ITriggerPullSingle
 
     public function alsoKnownAs(string $shared_entity_id)
     {
-        $this->identifyBy($shared_entity_id);
+        Helper::requireId($shared_entity_id);
+        if ($this->createdWithUuid) {
+            $this->dto->setRemoteUniqueId($shared_entity_id);
+        } else {
+            $this->dto->setRemoteUuid($shared_entity_id);
+        }
 
         return $this;
     }
@@ -112,15 +129,6 @@ class TriggerPullSingle implements ITriggerPullSingle
         }
         if ($this->syndication) {
             return $this->syndication->getId();
-        }
-    }
-
-    private function identifyBy(string $shared_entity_id): void
-    {
-        if (Helper::isUuid($shared_entity_id)) {
-            $this->dto->setRemoteUuid($shared_entity_id);
-        } else {
-            $this->dto->setRemoteUniqueId($shared_entity_id);
         }
     }
 }

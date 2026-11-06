@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * A single pull sent once: never again after a connection failure, since
@@ -26,6 +27,8 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
     private const UNIQUE_ID = '4444';
 
     private const TASK_ID = '555555555555555555555555';
+
+    private const OTHER_UUID = '66666666-6666-4666-8666-666666666666';
 
     public function testThePullIsSentOnceAfterAConnectionFailure(): void
     {
@@ -45,7 +48,7 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
 
     public function testThePullIsSentWithBothIdsAndTheScopeTheCallerPasses(): void
     {
-        $answer = ['id' => self::TASK_ID, 'type' => 'pull', 'status' => '100-initializing'];
+        $answer = ['id' => self::TASK_ID, 'type' => 'retrieve-entity', 'status' => '100-initializing'];
         $pull = $this->service([$this->json($answer)])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
             ->alsoKnownAs(self::UNIQUE_ID)
@@ -66,7 +69,7 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(self::UUID, $body['remoteUuid']);
         $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
         $this->assertTrue($body['manually']);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(['configuration', 'content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testThePullByItsUniqueIdAloneIsSentInTheContentScope(): void
@@ -79,7 +82,7 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $body = $this->sentBody();
         $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
         $this->assertArrayNotHasKey('remoteUuid', $body);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(['content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testATaskWithAnUnknownStatusAndWithoutItsTypeIsReturnedAsSent(): void
@@ -103,6 +106,67 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
 
         $this->assertSame(['status' => '100-initializing'], $pull->executeOnce(false));
         $this->assertNull($pull->getId());
+    }
+
+    public function testAUniqueIdShapedLikeAUuidIsSentAsTheUniqueIdOfAnItemCreatedWithItsUuid(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->alsoKnownAs(self::OTHER_UUID)
+            ->executeOnce(false)
+        ;
+
+        $body = $this->sentBody();
+        $this->assertSame(self::UUID, $body['remoteUuid']);
+        $this->assertSame(self::OTHER_UUID, $body['remoteUniqueId']);
+    }
+
+    public function testAnUppercaseUuidIsSentAsTheUuidOfAnItemCreatedWithItsUniqueId(): void
+    {
+        $uppercase_uuid = strtoupper(self::UUID);
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UNIQUE_ID)
+            ->alsoKnownAs($uppercase_uuid)
+            ->executeOnce(false)
+        ;
+
+        $body = $this->sentBody();
+        $this->assertSame($uppercase_uuid, $body['remoteUuid']);
+        $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function idsThatNameNoItem(): array
+    {
+        return ['empty' => [''], 'a dot' => ['.'], 'two dots' => ['..']];
+    }
+
+    #[DataProvider('idsThatNameNoItem')]
+    public function testAnOtherIdThatNamesNoItemIsRefused(string $id): void
+    {
+        $pull = $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+        ;
+
+        $this->expectException(\InvalidArgumentException::class);
+        $pull->alsoKnownAs($id);
+    }
+
+    public function testAnAnswerThatIsNotAJsonObjectThrowsAfterTheOneAttempt(): void
+    {
+        $pull = $this->service([new Response(201, [], '<html></html>'), $this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+        ;
+
+        try {
+            $pull->executeOnce(false);
+            $this->fail('The unreadable answer was not reported.');
+        } catch (SyncCoreException $e) {
+            $this->assertCount(1, $this->history);
+            $this->assertNull($pull->getId());
+        }
     }
 
     /**

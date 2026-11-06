@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
 use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Interfaces\ISyncCore;
 
 interface ISyndicationService
 {
@@ -67,10 +68,11 @@ interface ISyndicationService
      * Read the Flows, Pools and entity types the pull dashboard offers this
      * site.
      *
-     * Every answer of the reading methods below is the JSON object the Sync
-     * Core sent, as an associative array: a field the Sync Core leaves out is
-     * missing from the array, and a status this library does not know is
-     * returned as it was sent.
+     * This method and the five after it read the JSON object the Sync Core
+     * answered with as an associative array: a field the Sync Core leaves out
+     * is missing from the array, and a status this library does not know is
+     * returned as it was sent. An answer that is not a JSON object throws a
+     * SyncCoreException.
      *
      * @param bool $configuration_access whether to read with the site's
      *                                   configuration scope, as the dashboard
@@ -85,20 +87,24 @@ interface ISyndicationService
 
     /**
      * List the content one Flow can pull into this site, one page at a time.
+     * Available when the feature {@see ISyncCore::FEATURE_PREVIEWS} is enabled.
      *
-     * @param array<string, null|string> $query the filters, keyed by the Sync
-     *                                          Core's query names:
-     *                                          `search`,
-     *                                          `entityTypeNamespaceMachineNames`,
-     *                                          `entityTypeMachineNames`,
-     *                                          `poolMachineNames`,
-     *                                          `sourceSiteId`,
-     *                                          `publishedEarliest`,
-     *                                          `publishedLatest`,
-     *                                          `existsLocally`, `deleted`,
-     *                                          `deletedLocally`, `page` and
-     *                                          `itemsPerPage`; a missing or
-     *                                          null value leaves the filter out
+     * @param array{
+     *     search?: null|string,
+     *     entityTypeNamespaceMachineNames?: null|string,
+     *     entityTypeMachineNames?: null|string,
+     *     poolMachineNames?: null|string,
+     *     sourceSiteId?: null|string,
+     *     publishedEarliest?: null|string,
+     *     publishedLatest?: null|string,
+     *     existsLocally?: null|string,
+     *     deleted?: null|string,
+     *     deletedLocally?: null|string,
+     *     page?: null|string,
+     *     itemsPerPage?: null|string,
+     * } $query the filters, keyed by the Sync Core's query names; a missing,
+     *   null or empty value and the value `'0'` leave the filter out, so the
+     *   Sync Core applies its default, and a key not named here is not sent
      * @param bool $configuration_access see {@see getPullDashboardConfiguration()}
      *
      * @return array<string, mixed> the page: `items`, `page`,
@@ -106,6 +112,7 @@ interface ISyndicationService
      *                              `totalNumberOfItems`
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the Flow ID is empty, `.` or `..`
      */
     public function listPreviews(string $flow_id, array $query, bool $configuration_access);
 
@@ -115,6 +122,7 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the task ID is empty, `.` or `..`
      */
     public function getTask(string $task_id);
 
@@ -126,6 +134,7 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the task group ID is empty, `.` or `..`
      */
     public function getTaskGroup(string $task_group_id, bool $configuration_access);
 
@@ -135,17 +144,20 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the task group ID is empty, `.` or `..`
      */
     public function getTaskGroupSummary(string $task_group_id);
 
     /**
      * Read the task group of the newest manual push of this site through the
-     * given Flow.
+     * given Flow: the first item of the list the Sync Core answers with.
      *
-     * @return null|array<string, mixed> null when this site pushed nothing
-     *                                   manually through the Flow
+     * @return null|array<string, mixed> null when the list has no item, as
+     *                                   when this site pushed nothing manually
+     *                                   through the Flow
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the Flow ID is empty, `.` or `..`
      */
     public function getNewestManualPushTaskGroup(string $flow_id);
 

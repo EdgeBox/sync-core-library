@@ -2,6 +2,7 @@
 
 namespace EdgeBox\SyncCore\V2;
 
+use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 
 /**
@@ -11,6 +12,11 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
  */
 class Helper
 {
+    /**
+     * The values {@see requireId()} refuses.
+     */
+    private const NO_IDS = ['', '.', '..'];
+
     public static function isUuid($shared_entity_id)
     {
         return (bool) preg_match('/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-([89ab])[a-f0-9]{3}-[a-f0-9]{12}/', $shared_entity_id);
@@ -33,18 +39,40 @@ class Helper
      * An answer is read this way rather than mapped to a generated model: a
      * model declares every field as set and refuses an enum value it does not
      * declare, while the Sync Core may leave a field out or send a status newer
-     * than this library. A caller reads each field with a fallback, and an
-     * answer that is not a JSON object is an empty array.
+     * than this library. A caller reads each field with a fallback.
      *
      * @param string $answer the response body
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed> an empty array for the empty object `{}`
+     *
+     * @throws SyncCoreException the answer is not a JSON object, such as a list
+     *                           or a page that is not JSON at all
      */
     public static function decodeJsonObject(string $answer): array
     {
-        $data = json_decode($answer, true);
+        if (!json_decode($answer) instanceof \stdClass) {
+            throw new SyncCoreException('The Sync Core answered with something other than a JSON object.', null, null, $answer);
+        }
 
-        return is_array($data) ? $data : [];
+        return json_decode($answer, true);
+    }
+
+    /**
+     * Refuse an ID a request can't name a record by: an empty one would leave a
+     * filter out or reach the list route instead of the record, and `.` or `..`
+     * would reach a parent route.
+     *
+     * @return string the ID
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function requireId(string $id): string
+    {
+        if (in_array($id, self::NO_IDS, true)) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not an ID.', $id));
+        }
+
+        return $id;
     }
 
     public static function formatStorageSize($size, $round_up = false)

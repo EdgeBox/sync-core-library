@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Exception\NotFoundException;
-use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * The reads of the pull dashboard and of tasks return the JSON the Sync Core
@@ -32,24 +33,28 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
     private const UNKNOWN_STATUS = '999-not-yet-known';
 
+    private const CONTENT_SCOPES = ['content'];
+
+    private const CONFIGURATION_SCOPES = ['configuration', 'content'];
+
     public function testThePullDashboardConfigurationIsReadWithTheScopeTheCallerPasses(): void
     {
-        $answer = ['flows' => [['machineName' => self::FLOW_ID, 'pools' => [['machineName' => 'content']]]]];
+        $answer = ['flows' => [['machineName' => self::FLOW_ID, 'pools' => [['machineName' => 'content']], 'entityTypes' => [['namespaceMachineName' => 'node', 'machineName' => 'article']]]]];
 
         $configuration = $this->service([$this->json($answer)])->getPullDashboardConfiguration(true);
 
         $this->assertSame($answer, $configuration);
         $this->assertSame('GET', $this->sentRequest()->getMethod());
         $this->assertSame('/sync-core/configuration/pull-dashboard', $this->sentRequest()->getUri()->getPath());
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testThePullDashboardConfigurationWithoutFlowsIsReturnedWithoutThem(): void
     {
-        $configuration = $this->service([$this->json(['entityTypes' => []])])->getPullDashboardConfiguration(false);
+        $configuration = $this->service([$this->json(['newerField' => true])])->getPullDashboardConfiguration(false);
 
         $this->assertArrayNotHasKey('flows', $configuration);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testThePreviewsAreListedWithEveryFilterTheCallerSets(): void
@@ -94,7 +99,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
             'page' => '1',
             'search' => 'Welcome',
         ], $query);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testAFilterTheCallerLeavesOutOrSetsToNullIsNotSent(): void
@@ -103,6 +108,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
         parse_str($this->sentRequest()->getUri()->getQuery(), $query);
         $this->assertSame(['page' => '2'], $query);
+        $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testAPreviewPageWithoutItsCountsIsReturnedWithoutThem(): void
@@ -117,7 +123,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
     {
         $answer = [
             'id' => self::TASK_ID,
-            'type' => 'pull',
+            'type' => 'retrieve-entity',
             'status' => '400-finished',
             'usage' => ['status' => 'exists', 'viewUrl' => 'https://site.example.com/node/1'],
         ];
@@ -127,7 +133,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertSame($answer, $task);
         $this->assertSame('/sync-core/task/'.self::TASK_ID, $this->sentRequest()->getUri()->getPath());
         $this->assertSame('includeUsage=true', $this->sentRequest()->getUri()->getQuery());
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testATaskWithAnUnknownStatusAndWithoutItsUsageIsReturnedAsSent(): void
@@ -147,7 +153,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
         $this->assertSame($answer, $group);
         $this->assertSame('/sync-core/migration/'.self::TASK_GROUP_ID, $this->sentRequest()->getUri()->getPath());
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testATaskGroupWithAnUnknownStatusAndTypeAndWithoutItsFlowIsReturnedAsSent(): void
@@ -157,7 +163,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertSame(self::UNKNOWN_STATUS, $group['status']);
         $this->assertSame('not-yet-known', $group['type']);
         $this->assertArrayNotHasKey('flowMachineName', $group);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testATaskGroupSummaryIsReadInTheConfigurationScope(): void
@@ -168,7 +174,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
         $this->assertSame($answer, $summary);
         $this->assertSame('/sync-core/migration/'.self::TASK_GROUP_ID.'/summary', $this->sentRequest()->getUri()->getPath());
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testTheNewestManualPushOfThisSiteThroughTheFlowIsReadInTheContentScope(): void
@@ -187,7 +193,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
             'siteUuid' => $this->application->siteUuid,
             'itemsPerPage' => '1',
         ], $query);
-        $this->assertSame([IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT], $this->decodeBearer($this->sentRequest())['scopes']);
+        $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testWithoutAManualPushThroughTheFlowThereIsNoNewestOne(): void
@@ -196,20 +202,95 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertNull($this->service([$this->json(['numberOfPages' => 0])])->getNewestManualPushTaskGroup(self::FLOW_ID));
     }
 
-    public function testAnAnswerThatIsNotAJsonObjectIsAnEmptyArray(): void
+    public function testTheEmptyObjectIsAnEmptyArray(): void
     {
-        $this->assertSame([], $this->service([new Response(200, [], 'null')])->getTaskGroupSummary(self::TASK_GROUP_ID));
+        $this->assertSame([], $this->service([new Response(200, [], '{}')])->getTaskGroupSummary(self::TASK_GROUP_ID));
     }
 
-    public function testAReadIsSentAgainAfterAConnectionFailure(): void
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function answersThatAreNotAJsonObject(): array
+    {
+        return [
+            'a list' => ['[{"id":"222222222222222222222222"}]'],
+            'an empty list' => ['[]'],
+            'null' => ['null'],
+            'a string' => ['"done"'],
+            'a page that is not JSON' => ['<html><body>Gateway</body></html>'],
+            'an empty body' => [''],
+        ];
+    }
+
+    #[DataProvider('answersThatAreNotAJsonObject')]
+    public function testAnAnswerThatIsNotAJsonObjectThrows(string $body): void
+    {
+        $service = $this->service([new Response(200, [], $body)]);
+
+        $this->expectException(SyncCoreException::class);
+        $service->getTaskGroup(self::TASK_GROUP_ID, false);
+    }
+
+    /**
+     * @return array<string, array{\Closure(SyndicationService): mixed}>
+     */
+    public static function reads(): array
+    {
+        return [
+            'the pull dashboard configuration' => [static fn (SyndicationService $service) => $service->getPullDashboardConfiguration(false)],
+            'the previews' => [static fn (SyndicationService $service) => $service->listPreviews(self::FLOW_ID, [], false)],
+            'a task' => [static fn (SyndicationService $service) => $service->getTask(self::TASK_ID)],
+            'a task group' => [static fn (SyndicationService $service) => $service->getTaskGroup(self::TASK_GROUP_ID, false)],
+            'a task group summary' => [static fn (SyndicationService $service) => $service->getTaskGroupSummary(self::TASK_GROUP_ID)],
+            'the newest manual push' => [static fn (SyndicationService $service) => $service->getNewestManualPushTaskGroup(self::FLOW_ID)],
+        ];
+    }
+
+    #[DataProvider('reads')]
+    public function testAReadIsSentAgainAfterAConnectionFailure(\Closure $read): void
     {
         $service = $this->service([
             new ConnectException('Connection refused', new Request('GET', 'https://core.example.com')),
-            $this->json(['id' => self::TASK_ID]),
+            $this->json(['items' => [['id' => self::TASK_GROUP_ID]]]),
         ]);
 
-        $this->assertSame(['id' => self::TASK_ID], $service->getTask(self::TASK_ID));
+        $this->assertNotNull($read($service));
         $this->assertCount(2, $this->history);
+    }
+
+    /**
+     * @return array<string, array{\Closure(SyndicationService, string): mixed}>
+     */
+    public static function readsById(): array
+    {
+        $cases = [];
+        $reads = [
+            'the previews of a Flow' => static fn (SyndicationService $service, string $id) => $service->listPreviews($id, [], false),
+            'a task' => static fn (SyndicationService $service, string $id) => $service->getTask($id),
+            'a task group' => static fn (SyndicationService $service, string $id) => $service->getTaskGroup($id, false),
+            'a task group summary' => static fn (SyndicationService $service, string $id) => $service->getTaskGroupSummary($id),
+            'the newest manual push through a Flow' => static fn (SyndicationService $service, string $id) => $service->getNewestManualPushTaskGroup($id),
+        ];
+        foreach ($reads as $name => $read) {
+            foreach (['', '.', '..'] as $id) {
+                $cases[$name.' by the ID "'.$id.'"'] = [$read, $id];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[DataProvider('readsById')]
+    public function testAReadByAnIdThatNamesNoRecordIsRefusedBeforeItIsSent(\Closure $read, string $id): void
+    {
+        $service = $this->service([$this->json(['items' => []])]);
+
+        try {
+            $read($service, $id);
+            $this->fail('The ID was not refused.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertCount(0, $this->history);
+        }
     }
 
     public function testARefusalStillThrows(): void
