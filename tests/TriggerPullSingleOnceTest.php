@@ -30,6 +30,8 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
 
     private const OTHER_UUID = '66666666-6666-4666-8666-666666666666';
 
+    private const UPPERCASE_UUID = 'AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA';
+
     public function testThePullIsSentOnceAfterAConnectionFailure(): void
     {
         $service = $this->service([
@@ -51,7 +53,7 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $answer = ['id' => self::TASK_ID, 'type' => 'retrieve-entity', 'status' => '100-initializing'];
         $pull = $this->service([$this->json($answer)])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
-            ->alsoKnownAs(self::UNIQUE_ID)
+            ->withUniqueId(self::UNIQUE_ID)
             ->manually(true)
         ;
 
@@ -108,11 +110,11 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertNull($pull->getId());
     }
 
-    public function testAUniqueIdShapedLikeAUuidIsSentAsTheUniqueIdOfAnItemCreatedWithItsUuid(): void
+    public function testAUniqueIdShapedLikeAUuidIsSentAsTheUniqueId(): void
     {
         $this->service([$this->json(['id' => self::TASK_ID])])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
-            ->alsoKnownAs(self::OTHER_UUID)
+            ->withUniqueId(self::OTHER_UUID)
             ->executeOnce(false)
         ;
 
@@ -121,18 +123,45 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(self::OTHER_UUID, $body['remoteUniqueId']);
     }
 
-    public function testAnUppercaseUuidIsSentAsTheUuidOfAnItemCreatedWithItsUniqueId(): void
+    public function testAnUppercaseUuidThePullWasCreatedWithIsMovedOutOfTheUniqueId(): void
     {
-        $uppercase_uuid = strtoupper(self::UUID);
         $this->service([$this->json(['id' => self::TASK_ID])])
-            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UNIQUE_ID)
-            ->alsoKnownAs($uppercase_uuid)
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UPPERCASE_UUID)
+            ->withUuid(self::UPPERCASE_UUID)
+            ->withUniqueId(self::UNIQUE_ID)
             ->executeOnce(false)
         ;
 
         $body = $this->sentBody();
-        $this->assertSame($uppercase_uuid, $body['remoteUuid']);
+        $this->assertSame(self::UPPERCASE_UUID, $body['remoteUuid']);
         $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
+    }
+
+    public function testAnUppercaseUuidAloneIsSentAsTheUuid(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UPPERCASE_UUID)
+            ->withUuid(self::UPPERCASE_UUID)
+            ->executeOnce(false)
+        ;
+
+        $body = $this->sentBody();
+        $this->assertSame(self::UPPERCASE_UUID, $body['remoteUuid']);
+        $this->assertNull($body['remoteUniqueId'] ?? null);
+    }
+
+    public function testAUniqueIdShapedLikeAUuidThePullWasCreatedWithIsMovedOutOfTheUuid(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::OTHER_UUID)
+            ->withUniqueId(self::OTHER_UUID)
+            ->withUuid(self::UUID)
+            ->executeOnce(false)
+        ;
+
+        $body = $this->sentBody();
+        $this->assertSame(self::UUID, $body['remoteUuid']);
+        $this->assertSame(self::OTHER_UUID, $body['remoteUniqueId']);
     }
 
     /**
@@ -140,18 +169,44 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
      */
     public static function idsThatNameNoItem(): array
     {
-        return ['empty' => [''], 'a dot' => ['.'], 'two dots' => ['..']];
+        return ['empty' => [''], 'a dot' => ['.'], 'two dots' => ['..'], 'zero' => ['0']];
     }
 
     #[DataProvider('idsThatNameNoItem')]
-    public function testAnOtherIdThatNamesNoItemIsRefused(string $id): void
+    public function testAUuidThatNamesNoItemIsRefused(string $id): void
+    {
+        $pull = $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UNIQUE_ID)
+        ;
+
+        $this->expectException(\InvalidArgumentException::class);
+        $pull->withUuid($id);
+    }
+
+    #[DataProvider('idsThatNameNoItem')]
+    public function testAUniqueIdThatNamesNoItemIsRefused(string $id): void
     {
         $pull = $this->service([$this->json(['id' => self::TASK_ID])])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
         ;
 
         $this->expectException(\InvalidArgumentException::class);
-        $pull->alsoKnownAs($id);
+        $pull->withUniqueId($id);
+    }
+
+    #[DataProvider('idsThatNameNoItem')]
+    public function testAPullCreatedWithAnIdThatNamesNoItemIsRefusedBeforeItIsSent(string $id): void
+    {
+        $pull = $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', $id)
+        ;
+
+        try {
+            $pull->executeOnce(false);
+            $this->fail('The ID was not refused.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertCount(0, $this->history);
+        }
     }
 
     public function testAnAnswerThatIsNotAJsonObjectThrowsAfterTheOneAttempt(): void

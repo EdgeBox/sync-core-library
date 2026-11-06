@@ -3,6 +3,7 @@
 namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
 use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\Exception\TimeoutException;
 
 interface ITriggerPullSingle
 {
@@ -22,15 +23,27 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
-     * Name the item by its other ID as well, so the request carries both its
-     * UUID and its unique ID: created with the item's UUID, this is its unique
-     * ID, and the other way round. Calling it again replaces that other ID.
+     * Name the item by its UUID. The ID the pull was created with is sorted
+     * into a UUID or a unique ID by its shape; this sets the UUID whatever its
+     * shape, and takes it back out of the unique ID when it was sorted there.
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException the ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the UUID is empty, `.`, `..` or `0`
      */
-    public function alsoKnownAs(string $shared_entity_id);
+    public function withUuid(string $uuid);
+
+    /**
+     * Name the item by its unique ID, the ID a site shares in place of a UUID.
+     * As {@see withUuid()}, this sets the unique ID whatever its shape, and
+     * takes it back out of the UUID when the ID the pull was created with was
+     * sorted there.
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException the unique ID is empty, `.`, `..` or `0`
+     */
+    public function withUniqueId(string $unique_id);
 
     /**
      * @return $this
@@ -53,7 +66,12 @@ interface ITriggerPullSingle
      *                              object it sent; a field it leaves out is
      *                              missing from the array
      *
-     * @throws SyncCoreException also when the answer is not a JSON object
+     * @throws TimeoutException  the Sync Core did not answer; the pull may
+     *                           have reached it, so it is never sent again
+     * @throws SyncCoreException also when the pull was accepted but the
+     *                           answer is not a JSON object
+     * @throws \InvalidArgumentException an ID of the item is empty, `.`, `..`
+     *                                   or `0`
      */
     public function executeOnce(bool $configuration_access);
 

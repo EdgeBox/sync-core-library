@@ -112,7 +112,7 @@ interface ISyndicationService
      *                              `totalNumberOfItems`
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the Flow ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`
      */
     public function listPreviews(string $flow_id, array $query, bool $configuration_access);
 
@@ -122,7 +122,7 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the task ID is empty, `.`, `..` or `0`
      */
     public function getTask(string $task_id);
 
@@ -134,7 +134,7 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task group ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
      */
     public function getTaskGroup(string $task_group_id, bool $configuration_access);
 
@@ -144,7 +144,7 @@ interface ISyndicationService
      * @return array<string, mixed>
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task group ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
      */
     public function getTaskGroupSummary(string $task_group_id);
 
@@ -157,7 +157,7 @@ interface ISyndicationService
      *                                   through the Flow
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the Flow ID is empty, `.` or `..`
+     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`
      */
     public function getNewestManualPushTaskGroup(string $flow_id);
 

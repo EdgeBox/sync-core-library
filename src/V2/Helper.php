@@ -13,9 +13,14 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 class Helper
 {
     /**
+     * The first character of a JSON object.
+     */
+    private const JSON_OBJECT_START = '{';
+
+    /**
      * The values {@see requireId()} refuses.
      */
-    private const NO_IDS = ['', '.', '..'];
+    private const NO_IDS = ['', '.', '..', '0'];
 
     public static function isUuid($shared_entity_id)
     {
@@ -50,17 +55,18 @@ class Helper
      */
     public static function decodeJsonObject(string $answer): array
     {
-        if (!json_decode($answer) instanceof \stdClass) {
+        $data = json_decode($answer, true);
+        if (!is_array($data) || self::JSON_OBJECT_START !== substr(ltrim($answer), 0, 1)) {
             throw new SyncCoreException('The Sync Core answered with something other than a JSON object.', null, null, $answer);
         }
 
-        return json_decode($answer, true);
+        return $data;
     }
 
     /**
-     * Refuse an ID a request can't name a record by: an empty one would leave a
-     * filter out or reach the list route instead of the record, and `.` or `..`
-     * would reach a parent route.
+     * Refuse an ID a request can't name a record by: an empty one or `0` would
+     * leave a query filter out, an empty one would reach the list route instead
+     * of the record, and `.` or `..` would reach a parent route.
      *
      * @return string the ID
      *

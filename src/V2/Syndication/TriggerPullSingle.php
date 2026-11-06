@@ -36,13 +36,6 @@ class TriggerPullSingle implements ITriggerPullSingle
     private $task;
 
     /**
-     * Whether the ID the pull was created with is the item's UUID.
-     *
-     * @var bool
-     */
-    private $createdWithUuid;
-
-    /**
      * TriggerPullSingle constructor.
      */
     public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id, string $flow_id)
@@ -55,8 +48,7 @@ class TriggerPullSingle implements ITriggerPullSingle
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
 
-        $this->createdWithUuid = Helper::isUuid($shared_entity_id);
-        if ($this->createdWithUuid) {
+        if (Helper::isUuid($shared_entity_id)) {
             $this->dto->setRemoteUuid($shared_entity_id);
         } else {
             $this->dto->setRemoteUniqueId($shared_entity_id);
@@ -87,13 +79,21 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    public function alsoKnownAs(string $shared_entity_id)
+    public function withUuid(string $uuid)
     {
-        Helper::requireId($shared_entity_id);
-        if ($this->createdWithUuid) {
-            $this->dto->setRemoteUniqueId($shared_entity_id);
-        } else {
-            $this->dto->setRemoteUuid($shared_entity_id);
+        $this->dto->setRemoteUuid(Helper::requireId($uuid));
+        if ($this->dto->getRemoteUniqueId() === $uuid) {
+            $this->dto->setRemoteUniqueId(null);
+        }
+
+        return $this;
+    }
+
+    public function withUniqueId(string $unique_id)
+    {
+        $this->dto->setRemoteUniqueId(Helper::requireId($unique_id));
+        if ($this->dto->getRemoteUuid() === $unique_id) {
+            $this->dto->setRemoteUuid(null);
         }
 
         return $this;
@@ -109,6 +109,11 @@ class TriggerPullSingle implements ITriggerPullSingle
 
     public function executeOnce(bool $configuration_access)
     {
+        foreach ([$this->dto->getRemoteUuid(), $this->dto->getRemoteUniqueId()] as $id) {
+            if (null !== $id) {
+                Helper::requireId($id);
+            }
+        }
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
 
         return $this->task = Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::PULL_ONCE_RETRY_COUNT));

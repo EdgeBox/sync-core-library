@@ -102,9 +102,9 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testAFilterTheCallerLeavesOutOrSetsToNullIsNotSent(): void
+    public function testAFilterTheCallerLeavesOutOrSetsToNullOrEmptyOrZeroIsNotSent(): void
     {
-        $this->service([$this->json(['items' => []])])->listPreviews(self::FLOW_ID, ['search' => null, 'page' => '2'], true);
+        $this->service([$this->json(['items' => []])])->listPreviews(self::FLOW_ID, ['search' => null, 'sourceSiteId' => '', 'deleted' => '0', 'unknownFilter' => 'x', 'page' => '2'], true);
 
         parse_str($this->sentRequest()->getUri()->getQuery(), $query);
         $this->assertSame(['page' => '2'], $query);
@@ -272,7 +272,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
             'the newest manual push through a Flow' => static fn (SyndicationService $service, string $id) => $service->getNewestManualPushTaskGroup($id),
         ];
         foreach ($reads as $name => $read) {
-            foreach (['', '.', '..'] as $id) {
+            foreach (['', '.', '..', '0'] as $id) {
                 $cases[$name.' by the ID "'.$id.'"'] = [$read, $id];
             }
         }
