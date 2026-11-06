@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EdgeBox\SyncCore\Tests;
 
-use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskType;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
@@ -59,7 +61,10 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
 
         $task = $pull->executeOnce(true);
 
-        $this->assertSame($answer, $task);
+        $this->assertInstanceOf(TaskEntity::class, $task);
+        $this->assertSame(self::TASK_ID, $task->getId());
+        $this->assertSame(TaskType::RETRIEVE_ENTITY, $task->getType());
+        $this->assertSame(TaskStatus::_100_INITIALIZING, $task->getStatus());
         $this->assertSame(self::TASK_ID, $pull->getId());
         $this->assertCount(1, $this->history);
         $this->assertSame('POST', $this->sentRequest()->getMethod());
@@ -87,26 +92,16 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(['content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testATaskWithAnUnknownStatusAndWithoutItsTypeIsReturnedAsSent(): void
-    {
-        $pull = $this->service([$this->json(['id' => self::TASK_ID, 'status' => '999-not-yet-known'])])
-            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
-        ;
-
-        $task = $pull->executeOnce(false);
-
-        $this->assertSame('999-not-yet-known', $task['status']);
-        $this->assertArrayNotHasKey('type', $task);
-        $this->assertSame(self::TASK_ID, $pull->getId());
-    }
-
     public function testATaskWithoutItsIdHasNoId(): void
     {
         $pull = $this->service([$this->json(['status' => '100-initializing'])])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
         ;
 
-        $this->assertSame(['status' => '100-initializing'], $pull->executeOnce(false));
+        $task = $pull->executeOnce(false);
+
+        $this->assertSame(TaskStatus::_100_INITIALIZING, $task->getStatus());
+        $this->assertNull($task->getId());
         $this->assertNull($pull->getId());
     }
 
@@ -236,21 +231,6 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
             $this->fail('The Pool ID was not refused.');
         } catch (\InvalidArgumentException $e) {
             $this->assertCount(0, $this->history);
-        }
-    }
-
-    public function testAnAnswerThatIsNotAJsonObjectThrowsAfterTheOneAttempt(): void
-    {
-        $pull = $this->service([new Response(201, [], '<html></html>'), $this->json(['id' => self::TASK_ID])])
-            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
-        ;
-
-        try {
-            $pull->executeOnce(false);
-            $this->fail('The unreadable answer was not reported.');
-        } catch (SyncCoreException $e) {
-            $this->assertCount(1, $this->history);
-            $this->assertNull($pull->getId());
         }
     }
 

@@ -22,18 +22,11 @@ class TriggerPullSingle implements ITriggerPullSingle
     protected $dto;
 
     /**
-     * The Syndication Entity, set when running ->execute().
+     * The Syndication Entity, set when running ->execute() or ->executeOnce().
      *
      * @var TaskEntity
      */
     protected $syndication;
-
-    /**
-     * The task the Sync Core created, set when running ->executeOnce().
-     *
-     * @var null|array<string, mixed>
-     */
-    private $task;
 
     /**
      * The UUID given through ->withUuid().
@@ -137,8 +130,9 @@ class TriggerPullSingle implements ITriggerPullSingle
             Helper::requireId($id);
         }
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
+        $this->syndication = $this->core->sendToSyncCoreAndExpect($request, TaskEntity::class, Helper::permissions($configuration_access), false, SyncCore::PULL_ONCE_RETRY_COUNT);
 
-        return $this->task = Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::PULL_ONCE_RETRY_COUNT));
+        return $this->syndication;
     }
 
     public function getPullDashboardSearchResultItem()
@@ -151,9 +145,6 @@ class TriggerPullSingle implements ITriggerPullSingle
      */
     public function getId()
     {
-        if (isset($this->task['id']) && is_scalar($this->task['id'])) {
-            return (string) $this->task['id'];
-        }
         if ($this->syndication) {
             return $this->syndication->getId();
         }

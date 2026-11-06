@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
 
 interface ITriggerPullSingle
 {
@@ -64,18 +65,14 @@ interface ITriggerPullSingle
      *                                   dashboard does for an administrator,
      *                                   rather than its content scope
      *
-     * @return array<string, mixed> the task the Sync Core created, as the JSON
-     *                              object it sent; a field it leaves out is
-     *                              missing from the array
+     * @return TaskEntity the task the Sync Core created
      *
      * @throws TimeoutException  the Sync Core did not answer
      * @throws SyncCoreException after the pull was sent, such as for a
-     *                           gateway timeout, a connection that broke
-     *                           during the answer, or an accepted pull whose
-     *                           answer is not a JSON object; the pull may have
-     *                           reached the Sync Core whichever exception is
-     *                           thrown, so a caller never sends it again in
-     *                           its place
+     *                           gateway timeout or a connection that broke
+     *                           during the answer; the pull may have reached
+     *                           the Sync Core whichever exception is thrown,
+     *                           so a caller never sends it again in its place
      * @throws \InvalidArgumentException an ID of the item, the Flow or a Pool
      *                                   is empty, `.`, `..` or `0`
      */
