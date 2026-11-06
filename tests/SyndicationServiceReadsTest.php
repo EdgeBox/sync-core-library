@@ -6,10 +6,12 @@ namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Exception\NotFoundException;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\FlowSyndicationMode;
 use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
 use EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration;
 use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskStatus;
@@ -44,7 +46,12 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
     public function testThePullDashboardConfigurationIsReadWithTheScopeTheCallerPasses(): void
     {
-        $answer = ['flows' => [['name' => 'Articles', 'machineName' => self::FLOW_ID, 'pools' => [['name' => 'Content', 'machineName' => 'content']], 'entityTypes' => []]]];
+        $answer = ['flows' => [[
+            'name' => 'Articles',
+            'machineName' => self::FLOW_ID,
+            'pools' => [['name' => 'Content', 'machineName' => 'content']],
+            'entityTypes' => [['namespaceMachineName' => 'node', 'machineName' => 'article', 'name' => 'Article', 'mode' => 'manually', 'clone' => true]],
+        ]]];
 
         $configuration = $this->service([$this->json($answer)])->getPullDashboardConfiguration(true);
 
@@ -52,6 +59,10 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertCount(1, $configuration->getFlows());
         $this->assertSame(self::FLOW_ID, $configuration->getFlows()[0]->getMachineName());
         $this->assertSame('content', $configuration->getFlows()[0]->getPools()[0]->getMachineName());
+        $entity_type = $configuration->getFlows()[0]->getEntityTypes()[0];
+        $this->assertSame('article', $entity_type->getMachineName());
+        $this->assertSame(FlowSyndicationMode::MANUALLY, $entity_type->getMode());
+        $this->assertTrue($entity_type->getClone());
         $this->assertSame('GET', $this->sentRequest()->getMethod());
         $this->assertSame('/sync-core/configuration/pull-dashboard', $this->sentRequest()->getUri()->getPath());
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
@@ -176,9 +187,9 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
         $this->assertInstanceOf(MigrationSummary::class, $summary);
         $this->assertCount(2, $summary->getByStatus());
-        $this->assertSame(TaskStatus::_400_FINISHED, $summary->getByStatus()[0]->getStatus());
+        $this->assertSame(SyndicationStatus::_400_FINISHED, $summary->getByStatus()[0]->getStatus());
         $this->assertEquals(3, $summary->getByStatus()[0]->getCount());
-        $this->assertSame(TaskStatus::_500_FAILED, $summary->getByStatus()[1]->getStatus());
+        $this->assertSame(SyndicationStatus::_500_FAILED, $summary->getByStatus()[1]->getStatus());
         $this->assertEquals(1, $summary->getByStatus()[1]->getCount());
         $this->assertSame('/sync-core/migration/'.self::TASK_GROUP_ID.'/summary', $this->sentRequest()->getUri()->getPath());
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
