@@ -219,6 +219,7 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
             'a string' => ['"done"'],
             'a page that is not JSON' => ['<html><body>Gateway</body></html>'],
             'an empty body' => [''],
+            'a truncated object' => ['{"id":"222222222222222222222222",'],
         ];
     }
 

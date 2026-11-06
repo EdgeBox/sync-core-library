@@ -36,6 +36,28 @@ class TriggerPullSingle implements ITriggerPullSingle
     private $task;
 
     /**
+     * The UUID given through ->withUuid().
+     *
+     * @var null|string
+     */
+    private $uuid;
+
+    /**
+     * The unique ID given through ->withUniqueId().
+     *
+     * @var null|string
+     */
+    private $uniqueId;
+
+    /**
+     * The ID the pull was created with, kept once ->withUuid() or
+     * ->withUniqueId() name the item's IDs by role.
+     *
+     * @var null|string
+     */
+    private $createdWith;
+
+    /**
      * TriggerPullSingle constructor.
      */
     public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id, string $flow_id)
@@ -81,26 +103,21 @@ class TriggerPullSingle implements ITriggerPullSingle
 
     public function withUuid(string $uuid)
     {
-        $this->dto->setRemoteUuid(Helper::requireId($uuid));
-        if ($this->dto->getRemoteUniqueId() === $uuid) {
-            $this->dto->setRemoteUniqueId(null);
-        }
+        $this->uuid = Helper::requireId($uuid);
 
         return $this;
     }
 
     public function withUniqueId(string $unique_id)
     {
-        $this->dto->setRemoteUniqueId(Helper::requireId($unique_id));
-        if ($this->dto->getRemoteUuid() === $unique_id) {
-            $this->dto->setRemoteUuid(null);
-        }
+        $this->uniqueId = Helper::requireId($unique_id);
 
         return $this;
     }
 
     public function execute()
     {
+        $this->identify();
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
         $this->syndication = $this->core->sendToSyncCoreAndExpect($request, TaskEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
 
@@ -109,10 +126,15 @@ class TriggerPullSingle implements ITriggerPullSingle
 
     public function executeOnce(bool $configuration_access)
     {
+        $this->identify();
+        $ids = array_merge([$this->dto->getFlowMachineName()], $this->dto->getPoolMachineNames() ?? []);
         foreach ([$this->dto->getRemoteUuid(), $this->dto->getRemoteUniqueId()] as $id) {
             if (null !== $id) {
-                Helper::requireId($id);
+                $ids[] = $id;
             }
+        }
+        foreach ($ids as $id) {
+            Helper::requireId($id);
         }
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
 
@@ -135,5 +157,39 @@ class TriggerPullSingle implements ITriggerPullSingle
         if ($this->syndication) {
             return $this->syndication->getId();
         }
+    }
+
+    /**
+     * Put the IDs named by role into the request. The ID the pull was created
+     * with takes the role no ID was named for, unless it is the ID named for
+     * the other role; until an ID is named by role, the request keeps the ID
+     * the pull was created with where its shape sorted it.
+     */
+    private function identify(): void
+    {
+        if (null === $this->uuid && null === $this->uniqueId) {
+            return;
+        }
+        if (null === $this->createdWith) {
+            $this->createdWith = $this->dto->getRemoteUuid() ?? $this->dto->getRemoteUniqueId();
+        }
+
+        $uuid = $this->uuid;
+        $unique_id = $this->uniqueId;
+        if (null === $uuid && !self::sameId($this->createdWith, $unique_id)) {
+            $uuid = $this->createdWith;
+        } elseif (null === $unique_id && !self::sameId($this->createdWith, $uuid)) {
+            $unique_id = $this->createdWith;
+        }
+        $this->dto->setRemoteUuid($uuid);
+        $this->dto->setRemoteUniqueId($unique_id);
+    }
+
+    /**
+     * Whether two IDs are the same, as a UUID is in either case.
+     */
+    private static function sameId(?string $id, ?string $other): bool
+    {
+        return null !== $id && null !== $other && 0 === strcasecmp($id, $other);
     }
 }

@@ -23,9 +23,12 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
-     * Name the item by its UUID. The ID the pull was created with is sorted
-     * into a UUID or a unique ID by its shape; this sets the UUID whatever its
-     * shape, and takes it back out of the unique ID when it was sorted there.
+     * Name the item by its UUID, whatever its shape.
+     *
+     * The ID the pull was created with is sorted into a UUID or a unique ID by
+     * its shape, which a UUID in upper case or of another version than 4
+     * doesn't have. Once an ID is named by role, the ID the pull was created
+     * with takes the other role, unless it is the ID named here.
      *
      * @return $this
      *
@@ -34,10 +37,9 @@ interface ITriggerPullSingle
     public function withUuid(string $uuid);
 
     /**
-     * Name the item by its unique ID, the ID a site shares in place of a UUID.
-     * As {@see withUuid()}, this sets the unique ID whatever its shape, and
-     * takes it back out of the UUID when the ID the pull was created with was
-     * sorted there.
+     * Name the item by its unique ID, the ID a site shares in place of a UUID,
+     * whatever its shape. As for {@see withUuid()}, the ID the pull was
+     * created with takes the other role, unless it is the ID named here.
      *
      * @return $this
      *
@@ -66,12 +68,16 @@ interface ITriggerPullSingle
      *                              object it sent; a field it leaves out is
      *                              missing from the array
      *
-     * @throws TimeoutException  the Sync Core did not answer; the pull may
-     *                           have reached it, so it is never sent again
-     * @throws SyncCoreException also when the pull was accepted but the
-     *                           answer is not a JSON object
-     * @throws \InvalidArgumentException an ID of the item is empty, `.`, `..`
-     *                                   or `0`
+     * @throws TimeoutException  the Sync Core did not answer
+     * @throws SyncCoreException after the pull was sent, such as for a
+     *                           gateway timeout, a connection that broke
+     *                           during the answer, or an accepted pull whose
+     *                           answer is not a JSON object; the pull may have
+     *                           reached the Sync Core whichever exception is
+     *                           thrown, so a caller never sends it again in
+     *                           its place
+     * @throws \InvalidArgumentException an ID of the item, the Flow or a Pool
+     *                                   is empty, `.`, `..` or `0`
      */
     public function executeOnce(bool $configuration_access);
 
