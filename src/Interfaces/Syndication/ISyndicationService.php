@@ -4,6 +4,11 @@ namespace EdgeBox\SyncCore\Interfaces\Syndication;
 
 use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\ISyncCore;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity;
 
 interface ISyndicationService
 {
@@ -68,18 +73,12 @@ interface ISyndicationService
      * Read the Flows, Pools and entity types the pull dashboard offers this
      * site.
      *
-     * This method and the five after it read the JSON object the Sync Core
-     * answered with as an associative array: a field the Sync Core leaves out
-     * is missing from the array, and a status this library does not know is
-     * returned as it was sent. An answer that is not a JSON object throws a
-     * SyncCoreException.
-     *
      * @param bool $configuration_access whether to read with the site's
      *                                   configuration scope, as the dashboard
      *                                   does for an administrator, rather than
      *                                   its content scope
      *
-     * @return array<string, mixed>
+     * @return PullDashboardConfiguration
      *
      * @throws SyncCoreException
      */
@@ -107,9 +106,7 @@ interface ISyndicationService
      *   Sync Core applies its default, and a key not named here is not sent
      * @param bool $configuration_access see {@see getPullDashboardConfiguration()}
      *
-     * @return array<string, mixed> the page: `items`, `page`,
-     *                              `numberOfPages`, `itemsPerPage` and
-     *                              `totalNumberOfItems`
+     * @return PreviewsListResponse one page of the content
      *
      * @throws SyncCoreException
      * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`
@@ -119,7 +116,7 @@ interface ISyndicationService
     /**
      * Read one task, with the usage of its item on this site.
      *
-     * @return array<string, mixed>
+     * @return SyndicationEntityWithUsage
      *
      * @throws SyncCoreException
      * @throws \InvalidArgumentException the task ID is empty, `.`, `..` or `0`
@@ -131,7 +128,7 @@ interface ISyndicationService
      *
      * @param bool $configuration_access see {@see getPullDashboardConfiguration()}
      *
-     * @return array<string, mixed>
+     * @return TaskGroupEntity
      *
      * @throws SyncCoreException
      * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
@@ -141,7 +138,7 @@ interface ISyndicationService
     /**
      * Count the tasks of one task group per status.
      *
-     * @return array<string, mixed>
+     * @return MigrationSummary
      *
      * @throws SyncCoreException
      * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
@@ -152,9 +149,9 @@ interface ISyndicationService
      * Read the task group of the newest manual push of this site through the
      * given Flow: the first item of the list the Sync Core answers with.
      *
-     * @return null|array<string, mixed> null when the list has no item, as
-     *                                   when this site pushed nothing manually
-     *                                   through the Flow
+     * @return null|TaskGroupEntity null when the list has no item, as when
+     *                              this site pushed nothing manually through
+     *                              the Flow
      *
      * @throws SyncCoreException
      * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`

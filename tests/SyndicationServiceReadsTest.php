@@ -5,7 +5,15 @@ declare(strict_types=1);
 namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Exception\NotFoundException;
-use EdgeBox\SyncCore\Exception\SyncCoreException;
+use EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\MigrationSummary;
+use EdgeBox\SyncCore\V2\Raw\Model\PreviewsListResponse;
+use EdgeBox\SyncCore\V2\Raw\Model\PullDashboardConfiguration;
+use EdgeBox\SyncCore\V2\Raw\Model\SyndicationEntityWithUsage;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskStatus;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskType;
 use EdgeBox\SyncCore\V2\Syndication\SyndicationService;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
@@ -13,9 +21,8 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * The reads of the pull dashboard and of tasks return the JSON the Sync Core
- * answered with, so a field it leaves out or a status this library does not
- * know never throws.
+ * The reads of the pull dashboard and of tasks return the generated models of
+ * their routes.
  *
  * The service is instantiated directly rather than through
  * getSyndicationService(), whose method-level static cache would otherwise bind
@@ -31,29 +38,30 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
     private const TASK_GROUP_ID = '222222222222222222222222';
 
-    private const UNKNOWN_STATUS = '999-not-yet-known';
-
     private const CONTENT_SCOPES = ['content'];
 
     private const CONFIGURATION_SCOPES = ['configuration', 'content'];
 
     public function testThePullDashboardConfigurationIsReadWithTheScopeTheCallerPasses(): void
     {
-        $answer = ['flows' => [['machineName' => self::FLOW_ID, 'pools' => [['machineName' => 'content']], 'entityTypes' => [['namespaceMachineName' => 'node', 'machineName' => 'article']]]]];
+        $answer = ['flows' => [['name' => 'Articles', 'machineName' => self::FLOW_ID, 'pools' => [['name' => 'Content', 'machineName' => 'content']], 'entityTypes' => []]]];
 
         $configuration = $this->service([$this->json($answer)])->getPullDashboardConfiguration(true);
 
-        $this->assertSame($answer, $configuration);
+        $this->assertInstanceOf(PullDashboardConfiguration::class, $configuration);
+        $this->assertCount(1, $configuration->getFlows());
+        $this->assertSame(self::FLOW_ID, $configuration->getFlows()[0]->getMachineName());
+        $this->assertSame('content', $configuration->getFlows()[0]->getPools()[0]->getMachineName());
         $this->assertSame('GET', $this->sentRequest()->getMethod());
         $this->assertSame('/sync-core/configuration/pull-dashboard', $this->sentRequest()->getUri()->getPath());
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testThePullDashboardConfigurationWithoutFlowsIsReturnedWithoutThem(): void
+    public function testThePullDashboardConfigurationIsReadInTheContentScopeWithoutConfigurationAccess(): void
     {
-        $configuration = $this->service([$this->json(['newerField' => true])])->getPullDashboardConfiguration(false);
+        $configuration = $this->service([$this->json(['flows' => []])])->getPullDashboardConfiguration(false);
 
-        $this->assertArrayNotHasKey('flows', $configuration);
+        $this->assertSame([], $configuration->getFlows());
         $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
@@ -82,7 +90,11 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
             'itemsPerPage' => '5',
         ], false);
 
-        $this->assertSame($answer, $page);
+        $this->assertInstanceOf(PreviewsListResponse::class, $page);
+        $this->assertCount(1, $page->getItems());
+        $this->assertSame('https://source.example.com/node/1', $page->getItems()[0]->getSourceUsage()->getViewUrl());
+        $this->assertEquals(3, $page->getNumberOfPages());
+        $this->assertEquals(11, $page->getTotalNumberOfItems());
         $this->assertSame('/sync-core/previews/'.self::FLOW_ID, $this->sentRequest()->getUri()->getPath());
         parse_str($this->sentRequest()->getUri()->getQuery(), $query);
         $this->assertSame([
@@ -111,14 +123,6 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testAPreviewPageWithoutItsCountsIsReturnedWithoutThem(): void
-    {
-        $page = $this->service([$this->json(['items' => [['entity' => []]]])])->listPreviews(self::FLOW_ID, [], false);
-
-        $this->assertSame([['entity' => []]], $page['items']);
-        $this->assertArrayNotHasKey('numberOfPages', $page);
-    }
-
     public function testATaskIsReadWithTheUsageOfItsItemInTheContentScope(): void
     {
         $answer = [
@@ -130,61 +134,67 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
 
         $task = $this->service([$this->json($answer)])->getTask(self::TASK_ID);
 
-        $this->assertSame($answer, $task);
+        $this->assertInstanceOf(SyndicationEntityWithUsage::class, $task);
+        $this->assertSame(self::TASK_ID, $task->getId());
+        $this->assertSame(TaskType::RETRIEVE_ENTITY, $task->getType());
+        $this->assertSame(TaskStatus::_400_FINISHED, $task->getStatus());
+        $this->assertSame(EntityRemoteStatus::EXISTS, $task->getUsage()->getStatus());
+        $this->assertSame('https://site.example.com/node/1', $task->getUsage()->getViewUrl());
         $this->assertSame('/sync-core/task/'.self::TASK_ID, $this->sentRequest()->getUri()->getPath());
         $this->assertSame('includeUsage=true', $this->sentRequest()->getUri()->getQuery());
         $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testATaskWithAnUnknownStatusAndWithoutItsUsageIsReturnedAsSent(): void
-    {
-        $task = $this->service([$this->json(['id' => self::TASK_ID, 'status' => self::UNKNOWN_STATUS])])->getTask(self::TASK_ID);
-
-        $this->assertSame(self::UNKNOWN_STATUS, $task['status']);
-        $this->assertArrayNotHasKey('usage', $task);
-        $this->assertArrayNotHasKey('type', $task);
-    }
-
-    public function testATaskGroupIsReadWithTheScopeTheCallerPasses(): void
+    public function testATaskGroupIsReadInTheContentScopeWithoutConfigurationAccess(): void
     {
         $answer = ['id' => self::TASK_GROUP_ID, 'type' => 'pull-all', 'status' => '200-running', 'flowMachineName' => self::FLOW_ID];
 
         $group = $this->service([$this->json($answer)])->getTaskGroup(self::TASK_GROUP_ID, false);
 
-        $this->assertSame($answer, $group);
+        $this->assertInstanceOf(TaskGroupEntity::class, $group);
+        $this->assertSame(self::TASK_GROUP_ID, $group->getId());
+        $this->assertSame(TaskGroupType::PULL_ALL, $group->getType());
+        $this->assertSame(TaskStatus::_200_RUNNING, $group->getStatus());
+        $this->assertSame(self::FLOW_ID, $group->getFlowMachineName());
         $this->assertSame('/sync-core/migration/'.self::TASK_GROUP_ID, $this->sentRequest()->getUri()->getPath());
         $this->assertSame(self::CONTENT_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    public function testATaskGroupWithAnUnknownStatusAndTypeAndWithoutItsFlowIsReturnedAsSent(): void
+    public function testATaskGroupIsReadInTheConfigurationScopeWithConfigurationAccess(): void
     {
-        $group = $this->service([$this->json(['id' => self::TASK_GROUP_ID, 'type' => 'not-yet-known', 'status' => self::UNKNOWN_STATUS])])->getTaskGroup(self::TASK_GROUP_ID, true);
+        $group = $this->service([$this->json(['id' => self::TASK_GROUP_ID, 'type' => 'pull-all', 'status' => '400-finished'])])->getTaskGroup(self::TASK_GROUP_ID, true);
 
-        $this->assertSame(self::UNKNOWN_STATUS, $group['status']);
-        $this->assertSame('not-yet-known', $group['type']);
-        $this->assertArrayNotHasKey('flowMachineName', $group);
+        $this->assertSame(TaskStatus::_400_FINISHED, $group->getStatus());
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testATaskGroupSummaryIsReadInTheConfigurationScope(): void
     {
-        $answer = ['byStatus' => [['status' => '400-finished', 'count' => 3], ['status' => self::UNKNOWN_STATUS, 'count' => 1], ['status' => '500-failed']]];
+        $answer = ['byStatus' => [['status' => '400-finished', 'count' => 3], ['status' => '500-failed', 'count' => 1]]];
 
         $summary = $this->service([$this->json($answer)])->getTaskGroupSummary(self::TASK_GROUP_ID);
 
-        $this->assertSame($answer, $summary);
+        $this->assertInstanceOf(MigrationSummary::class, $summary);
+        $this->assertCount(2, $summary->getByStatus());
+        $this->assertSame(TaskStatus::_400_FINISHED, $summary->getByStatus()[0]->getStatus());
+        $this->assertEquals(3, $summary->getByStatus()[0]->getCount());
+        $this->assertSame(TaskStatus::_500_FAILED, $summary->getByStatus()[1]->getStatus());
+        $this->assertEquals(1, $summary->getByStatus()[1]->getCount());
         $this->assertSame('/sync-core/migration/'.self::TASK_GROUP_ID.'/summary', $this->sentRequest()->getUri()->getPath());
         $this->assertSame(self::CONFIGURATION_SCOPES, $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
     public function testTheNewestManualPushOfThisSiteThroughTheFlowIsReadInTheContentScope(): void
     {
-        $newest = ['id' => self::TASK_GROUP_ID, 'type' => 'push-manually', 'status' => self::UNKNOWN_STATUS];
-        $service = $this->service([$this->json(['items' => [$newest], 'numberOfPages' => 4])]);
+        $newest = ['id' => self::TASK_GROUP_ID, 'type' => 'push-manually', 'status' => '200-running'];
+        $older = ['id' => '333333333333333333333333', 'type' => 'push-manually', 'status' => '400-finished'];
+        $service = $this->service([$this->json(['items' => [$newest, $older], 'numberOfPages' => 4])]);
 
         $group = $service->getNewestManualPushTaskGroup(self::FLOW_ID);
 
-        $this->assertSame($newest, $group);
+        $this->assertInstanceOf(TaskGroupEntity::class, $group);
+        $this->assertSame(self::TASK_GROUP_ID, $group->getId());
+        $this->assertSame(TaskGroupType::PUSH_MANUALLY, $group->getType());
         $this->assertSame('/sync-core/migration', $this->sentRequest()->getUri()->getPath());
         parse_str($this->sentRequest()->getUri()->getQuery(), $query);
         $this->assertSame([
@@ -200,36 +210,6 @@ final class SyndicationServiceReadsTest extends SyncCoreTestCase
     {
         $this->assertNull($this->service([$this->json(['items' => []])])->getNewestManualPushTaskGroup(self::FLOW_ID));
         $this->assertNull($this->service([$this->json(['numberOfPages' => 0])])->getNewestManualPushTaskGroup(self::FLOW_ID));
-    }
-
-    public function testTheEmptyObjectIsAnEmptyArray(): void
-    {
-        $this->assertSame([], $this->service([new Response(200, [], '{}')])->getTaskGroupSummary(self::TASK_GROUP_ID));
-    }
-
-    /**
-     * @return array<string, array{string}>
-     */
-    public static function answersThatAreNotAJsonObject(): array
-    {
-        return [
-            'a list' => ['[{"id":"222222222222222222222222"}]'],
-            'an empty list' => ['[]'],
-            'null' => ['null'],
-            'a string' => ['"done"'],
-            'a page that is not JSON' => ['<html><body>Gateway</body></html>'],
-            'an empty body' => [''],
-            'a truncated object' => ['{"id":"222222222222222222222222",'],
-        ];
-    }
-
-    #[DataProvider('answersThatAreNotAJsonObject')]
-    public function testAnAnswerThatIsNotAJsonObjectThrows(string $body): void
-    {
-        $service = $this->service([new Response(200, [], $body)]);
-
-        $this->expectException(SyncCoreException::class);
-        $service->getTaskGroup(self::TASK_GROUP_ID, false);
     }
 
     /**

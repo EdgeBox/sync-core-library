@@ -2,7 +2,6 @@
 
 namespace EdgeBox\SyncCore\V2;
 
-use EdgeBox\SyncCore\Exception\SyncCoreException;
 use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
 
 /**
@@ -12,11 +11,6 @@ use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
  */
 class Helper
 {
-    /**
-     * The first character of a JSON object.
-     */
-    private const JSON_OBJECT_START = '{';
-
     /**
      * The values {@see requireId()} refuses.
      */
@@ -36,31 +30,6 @@ class Helper
     public static function permissions(bool $configuration_access): string
     {
         return $configuration_access ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
-    }
-
-    /**
-     * The JSON object the Sync Core answered with, as an associative array.
-     *
-     * An answer is read this way rather than mapped to a generated model: a
-     * model declares every field as set and refuses an enum value it does not
-     * declare, while the Sync Core may leave a field out or send a status newer
-     * than this library. A caller reads each field with a fallback.
-     *
-     * @param string $answer the response body
-     *
-     * @return array<string, mixed> an empty array for the empty object `{}`
-     *
-     * @throws SyncCoreException the answer is not a JSON object, such as a list
-     *                           or a page that is not JSON at all
-     */
-    public static function decodeJsonObject(string $answer): array
-    {
-        $data = json_decode($answer, true);
-        if (!is_array($data) || self::JSON_OBJECT_START !== substr(ltrim($answer), 0, 1)) {
-            throw new SyncCoreException('The Sync Core answered with something other than a JSON object.', null, null, $answer);
-        }
-
-        return $data;
     }
 
     /**
