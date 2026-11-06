@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EdgeBox\SyncCore\Tests;
 
 use EdgeBox\SyncCore\Exception\TimeoutException;
+use EdgeBox\SyncCore\Interfaces\Syndication\ITriggerPullSingle;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\TaskType;
@@ -156,6 +157,34 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $body = $this->sentBody();
         $this->assertSame(self::UPPERCASE_UUID, $body['remoteUuid']);
         $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
+    }
+
+    /**
+     * @return array<string, array{string, \Closure(ITriggerPullSingle): ITriggerPullSingle}>
+     */
+    public static function itemsCarryingBothIds(): array
+    {
+        return [
+            'created with the unique ID, the UUID named' => [self::UNIQUE_ID, static fn (ITriggerPullSingle $pull) => $pull->withUuid(self::UUID)],
+            'created with the UUID, the unique ID named' => [self::UUID, static fn (ITriggerPullSingle $pull) => $pull->withUniqueId(self::UNIQUE_ID)],
+            'created with the UUID, both named' => [self::UUID, static fn (ITriggerPullSingle $pull) => $pull->withUuid(self::UUID)->withUniqueId(self::UNIQUE_ID)],
+            'created with the unique ID, both named' => [self::UNIQUE_ID, static fn (ITriggerPullSingle $pull) => $pull->withUniqueId(self::UNIQUE_ID)->withUuid(self::UUID)],
+        ];
+    }
+
+    /**
+     * @param \Closure(ITriggerPullSingle): ITriggerPullSingle $name
+     */
+    #[DataProvider('itemsCarryingBothIds')]
+    public function testAnItemCarryingBothIdsIsIdentifiedByItsUniqueId(string $created_with, \Closure $name): void
+    {
+        $name($this->service([$this->json(['id' => self::TASK_ID])])->pullSingle(self::FLOW_ID, 'node', 'article', $created_with))
+            ->executeOnce(false)
+        ;
+
+        $body = $this->sentBody();
+        $this->assertSame(self::UNIQUE_ID, $body['remoteUniqueId']);
+        $this->assertSame(self::UUID, $body['remoteUuid']);
     }
 
     /**

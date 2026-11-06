@@ -121,7 +121,7 @@ class TriggerPullSingle implements ITriggerPullSingle
     {
         $this->identify();
         $ids = array_merge([$this->dto->getFlowMachineName()], $this->dto->getPoolMachineNames() ?? []);
-        foreach ([$this->dto->getRemoteUuid(), $this->dto->getRemoteUniqueId()] as $id) {
+        foreach ([$this->dto->getRemoteUniqueId(), $this->dto->getRemoteUuid()] as $id) {
             if (null !== $id) {
                 $ids[] = $id;
             }
@@ -162,15 +162,15 @@ class TriggerPullSingle implements ITriggerPullSingle
             return;
         }
         if (null === $this->createdWith) {
-            $this->createdWith = $this->dto->getRemoteUuid() ?? $this->dto->getRemoteUniqueId();
+            $this->createdWith = $this->dto->getRemoteUniqueId() ?? $this->dto->getRemoteUuid();
         }
 
         $uuid = $this->uuid;
         $unique_id = $this->uniqueId;
-        if (null === $uuid && !$this->isCreatedWith($unique_id)) {
-            $uuid = $this->createdWith;
-        } elseif (null === $unique_id && !$this->isCreatedWith($uuid)) {
+        if (null === $unique_id && !$this->isCreatedWith($uuid)) {
             $unique_id = $this->createdWith;
+        } elseif (null === $uuid && !$this->isCreatedWith($unique_id)) {
+            $uuid = $this->createdWith;
         }
         $this->dto->setRemoteUuid($uuid);
         $this->dto->setRemoteUniqueId($unique_id);
