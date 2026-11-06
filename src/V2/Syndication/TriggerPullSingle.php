@@ -29,13 +29,6 @@ class TriggerPullSingle implements ITriggerPullSingle
     protected $syndication;
 
     /**
-     * The UUID given through ->withUuid().
-     *
-     * @var null|string
-     */
-    private $uuid;
-
-    /**
      * The unique ID given through ->withUniqueId().
      *
      * @var null|string
@@ -43,8 +36,15 @@ class TriggerPullSingle implements ITriggerPullSingle
     private $uniqueId;
 
     /**
-     * The ID the pull was created with, kept once ->withUuid() or
-     * ->withUniqueId() name the item's IDs by role.
+     * The UUID given through ->withUuid().
+     *
+     * @var null|string
+     */
+    private $uuid;
+
+    /**
+     * The ID the pull was created with, kept once ->withUniqueId() or
+     * ->withUuid() name the item's IDs by role.
      *
      * @var null|string
      */
@@ -94,16 +94,16 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
-    public function withUuid(string $uuid)
+    public function withUniqueId(string $unique_id)
     {
-        $this->uuid = Helper::requireId($uuid);
+        $this->uniqueId = Helper::requireId($unique_id);
 
         return $this;
     }
 
-    public function withUniqueId(string $unique_id)
+    public function withUuid(string $uuid)
     {
-        $this->uniqueId = Helper::requireId($unique_id);
+        $this->uuid = Helper::requireId($uuid);
 
         return $this;
     }
@@ -158,22 +158,22 @@ class TriggerPullSingle implements ITriggerPullSingle
      */
     private function identify(): void
     {
-        if (null === $this->uuid && null === $this->uniqueId) {
+        if (null === $this->uniqueId && null === $this->uuid) {
             return;
         }
         if (null === $this->createdWith) {
             $this->createdWith = $this->dto->getRemoteUniqueId() ?? $this->dto->getRemoteUuid();
         }
 
-        $uuid = $this->uuid;
         $unique_id = $this->uniqueId;
+        $uuid = $this->uuid;
         if (null === $unique_id && !$this->isCreatedWith($uuid)) {
             $unique_id = $this->createdWith;
         } elseif (null === $uuid && !$this->isCreatedWith($unique_id)) {
             $uuid = $this->createdWith;
         }
-        $this->dto->setRemoteUuid($uuid);
         $this->dto->setRemoteUniqueId($unique_id);
+        $this->dto->setRemoteUuid($uuid);
     }
 
     /**

@@ -24,7 +24,8 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
-     * Name the item by its UUID, whatever its shape.
+     * Name the item by its unique ID, the ID a site shares in place of a UUID,
+     * whatever its shape.
      *
      * The ID the pull was created with is sorted into a UUID or a unique ID by
      * its shape, which a UUID in upper case or of another version than 4
@@ -33,20 +34,20 @@ interface ITriggerPullSingle
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException the UUID is empty, `.`, `..` or `0`
-     */
-    public function withUuid(string $uuid);
-
-    /**
-     * Name the item by its unique ID, the ID a site shares in place of a UUID,
-     * whatever its shape. As for {@see withUuid()}, the ID the pull was
-     * created with takes the other role, unless it is the ID named here.
-     *
-     * @return $this
-     *
      * @throws \InvalidArgumentException the unique ID is empty, `.`, `..` or `0`
      */
     public function withUniqueId(string $unique_id);
+
+    /**
+     * Name the item by its UUID, whatever its shape. As for
+     * {@see withUniqueId()}, the ID the pull was created with takes the other
+     * role, unless it is the ID named here.
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException the UUID is empty, `.`, `..` or `0`
+     */
+    public function withUuid(string $uuid);
 
     /**
      * @return $this
