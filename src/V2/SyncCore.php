@@ -94,6 +94,15 @@ class SyncCore implements ISyncCore
     public const PUSH_RETRY_COUNT = 4;
     public const PULL_RETRY_COUNT = 4;
     public const UPDATES_GET_RETRY_COUNT = 3;
+    public const PREVIEWS_GET_RETRY_COUNT = 3;
+    public const TASKS_GET_RETRY_COUNT = 3;
+
+    /**
+     * A single attempt. A pull sent again after a connection failure may have
+     * reached the Sync Core the first time, and through a Flow that pulls
+     * copies, the second request creates a second copy.
+     */
+    public const PULL_ONCE_RETRY_COUNT = 1;
     protected const PLACEHOLDER_SITE_BASE_URL = '[site.baseUrl]';
     protected const PLACEHOLDER_FLOW_MACHINE_NAME = '[flow.machineName]';
     protected const PLACEHOLDER_ENTITY_SHARED_ID = '[entity.sharedId]';

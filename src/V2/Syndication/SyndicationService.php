@@ -9,10 +9,16 @@ use EdgeBox\SyncCore\V2\Raw\Model\DeleteRemoteEntityRevisionDto;
 use EdgeBox\SyncCore\V2\Raw\Model\EntityRemoteStatus;
 use EdgeBox\SyncCore\V2\Raw\Model\PagedRemoteEntityUsageListResponse;
 use EdgeBox\SyncCore\V2\Raw\Model\RemoteEntityTypeEntity;
+use EdgeBox\SyncCore\V2\Raw\Model\TaskGroupType;
 use EdgeBox\SyncCore\V2\SyncCore;
 
 class SyndicationService implements ISyndicationService
 {
+    /**
+     * Asks the Sync Core to add the usage of a task's item on this site.
+     */
+    private const INCLUDE_USAGE = 'true';
+
     /**
      * @var SyncCore
      */
@@ -126,6 +132,69 @@ class SyndicationService implements ISyndicationService
         } while ($page < $response->getNumberOfPages());
 
         return $result;
+    }
+
+    public function getPullDashboardConfiguration(bool $configuration_access)
+    {
+        $request = $this->core->getClient()->configurationControllerPullDashboardRequest();
+
+        return Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::CONFIG_GET_RETRY_COUNT));
+    }
+
+    public function listPreviews(string $flow_id, array $query, bool $configuration_access)
+    {
+        $request = $this->core->getClient()->previewsControllerListForFlowRequest(
+            flowMachineName: $flow_id,
+            existsLocally: $query['existsLocally'] ?? null,
+            deletedLocally: $query['deletedLocally'] ?? null,
+            deleted: $query['deleted'] ?? null,
+            sourceSiteId: $query['sourceSiteId'] ?? null,
+            entityTypeMachineNames: $query['entityTypeMachineNames'] ?? null,
+            entityTypeNamespaceMachineNames: $query['entityTypeNamespaceMachineNames'] ?? null,
+            publishedLatest: $query['publishedLatest'] ?? null,
+            publishedEarliest: $query['publishedEarliest'] ?? null,
+            poolMachineNames: $query['poolMachineNames'] ?? null,
+            itemsPerPage: $query['itemsPerPage'] ?? null,
+            page: $query['page'] ?? null,
+            search: $query['search'] ?? null
+        );
+
+        return Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::PREVIEWS_GET_RETRY_COUNT));
+    }
+
+    public function getTask(string $task_id)
+    {
+        $request = $this->core->getClient()->taskControllerItemRequest(id: $task_id, includeUsage: self::INCLUDE_USAGE);
+
+        return Helper::decodeJsonObject($this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::TASKS_GET_RETRY_COUNT));
+    }
+
+    public function getTaskGroup(string $task_group_id, bool $configuration_access)
+    {
+        $request = $this->core->getClient()->migrationControllerItemRequest(id: $task_group_id);
+
+        return Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::TASKS_GET_RETRY_COUNT));
+    }
+
+    public function getTaskGroupSummary(string $task_group_id)
+    {
+        $request = $this->core->getClient()->migrationControllerSummaryRequest(id: $task_group_id);
+
+        return Helper::decodeJsonObject($this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION, false, SyncCore::TASKS_GET_RETRY_COUNT));
+    }
+
+    public function getNewestManualPushTaskGroup(string $flow_id)
+    {
+        $request = $this->core->getClient()->migrationControllerListRequest(
+            flowMachineName: $flow_id,
+            types: TaskGroupType::PUSH_MANUALLY,
+            siteUuid: $this->core->getApplication()->getSiteUuid(),
+            itemsPerPage: 1
+        );
+        $page = Helper::decodeJsonObject($this->core->sendToSyncCore($request, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::TASKS_GET_RETRY_COUNT));
+        $newest = $page['items'][0] ?? null;
+
+        return is_array($newest) ? $newest : null;
     }
 
     public function refreshAuthentication()

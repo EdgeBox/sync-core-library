@@ -2,6 +2,8 @@
 
 namespace EdgeBox\SyncCore\V2;
 
+use EdgeBox\SyncCore\Interfaces\IApplicationInterface;
+
 /**
  * Class Helper.
  *
@@ -12,6 +14,37 @@ class Helper
     public static function isUuid($shared_entity_id)
     {
         return (bool) preg_match('/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-([89ab])[a-f0-9]{3}-[a-f0-9]{12}/', $shared_entity_id);
+    }
+
+    /**
+     * The scope a request is signed with: the site's configuration scope, which
+     * carries its content scope, or its content scope alone.
+     *
+     * @return string "configuration" or "content"
+     */
+    public static function permissions(bool $configuration_access): string
+    {
+        return $configuration_access ? IApplicationInterface::SYNC_CORE_PERMISSIONS_CONFIGURATION : IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT;
+    }
+
+    /**
+     * The JSON object the Sync Core answered with, as an associative array.
+     *
+     * An answer is read this way rather than mapped to a generated model: a
+     * model declares every field as set and refuses an enum value it does not
+     * declare, while the Sync Core may leave a field out or send a status newer
+     * than this library. A caller reads each field with a fallback, and an
+     * answer that is not a JSON object is an empty array.
+     *
+     * @param string $answer the response body
+     *
+     * @return array<string, mixed>
+     */
+    public static function decodeJsonObject(string $answer): array
+    {
+        $data = json_decode($answer, true);
+
+        return is_array($data) ? $data : [];
     }
 
     public static function formatStorageSize($size, $round_up = false)

@@ -22,11 +22,38 @@ interface ITriggerPullSingle
     public function asDependency(bool $set);
 
     /**
+     * Name the item by its other ID as well, so the request carries both its
+     * UUID and its unique ID. Which of the two this is, is told apart as for
+     * the ID the pull was created with.
+     *
+     * @return $this
+     */
+    public function alsoKnownAs(string $shared_entity_id);
+
+    /**
      * @return $this
      *
      * @throws SyncCoreException
      */
     public function execute();
+
+    /**
+     * Send the pull in a single attempt, never again after a connection
+     * failure: the first attempt may have reached the Sync Core, and through a
+     * Flow that pulls copies a second one creates a second copy.
+     *
+     * @param bool $configuration_access whether to send it with the site's
+     *                                   configuration scope, as the pull
+     *                                   dashboard does for an administrator,
+     *                                   rather than its content scope
+     *
+     * @return array<string, mixed> the task the Sync Core created, as the JSON
+     *                              object it sent; a field it leaves out is
+     *                              missing from the array
+     *
+     * @throws SyncCoreException
+     */
+    public function executeOnce(bool $configuration_access);
 
     /**
      * @return null|IPullDashboardSearchResultItem

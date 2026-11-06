@@ -29,6 +29,13 @@ class TriggerPullSingle implements ITriggerPullSingle
     protected $syndication;
 
     /**
+     * The task the Sync Core created, set when running ->executeOnce().
+     *
+     * @var null|array<string, mixed>
+     */
+    private $task;
+
+    /**
      * TriggerPullSingle constructor.
      */
     public function __construct(SyncCore $core, string $namespace_machine_name, string $machine_name, string $shared_entity_id, string $flow_id)
@@ -41,11 +48,7 @@ class TriggerPullSingle implements ITriggerPullSingle
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
 
-        if (Helper::isUuid($shared_entity_id)) {
-            $this->dto->setRemoteUuid($shared_entity_id);
-        } else {
-            $this->dto->setRemoteUniqueId($shared_entity_id);
-        }
+        $this->identifyBy($shared_entity_id);
     }
 
     // TODO: Drupal: Support multiple pools.
@@ -72,12 +75,26 @@ class TriggerPullSingle implements ITriggerPullSingle
         return $this;
     }
 
+    public function alsoKnownAs(string $shared_entity_id)
+    {
+        $this->identifyBy($shared_entity_id);
+
+        return $this;
+    }
+
     public function execute()
     {
         $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
         $this->syndication = $this->core->sendToSyncCoreAndExpect($request, TaskEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::PULL_RETRY_COUNT);
 
         return $this;
+    }
+
+    public function executeOnce(bool $configuration_access)
+    {
+        $request = $this->core->getClient()->syndicationControllerCreateRequest(createTaskDto: $this->dto);
+
+        return $this->task = Helper::decodeJsonObject($this->core->sendToSyncCore($request, Helper::permissions($configuration_access), false, SyncCore::PULL_ONCE_RETRY_COUNT));
     }
 
     public function getPullDashboardSearchResultItem()
@@ -90,8 +107,20 @@ class TriggerPullSingle implements ITriggerPullSingle
      */
     public function getId()
     {
+        if (isset($this->task['id']) && is_scalar($this->task['id'])) {
+            return (string) $this->task['id'];
+        }
         if ($this->syndication) {
             return $this->syndication->getId();
+        }
+    }
+
+    private function identifyBy(string $shared_entity_id): void
+    {
+        if (Helper::isUuid($shared_entity_id)) {
+            $this->dto->setRemoteUuid($shared_entity_id);
+        } else {
+            $this->dto->setRemoteUniqueId($shared_entity_id);
         }
     }
 }
