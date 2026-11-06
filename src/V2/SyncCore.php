@@ -107,6 +107,16 @@ class SyncCore implements ISyncCore
     ];
 
     /**
+     * The key of a refusal body's readable reason.
+     */
+    private const REFUSAL_SUMMARY = 'summary';
+
+    /**
+     * The key of the refused field's path in a refusal body.
+     */
+    private const REFUSAL_PROPERTY = 'property';
+
+    /**
      * @var string
      *             The base URL of the remote Sync Core. See Pool::$backend_url
      */
@@ -404,9 +414,12 @@ class SyncCore implements ISyncCore
             }
 
             $data = json_decode($response_body, true);
-            $message = $data['message'] ?? $response_body.'';
-            if (!is_string($message)) {
-                $message = json_encode($message);
+            $message = is_array($data) ? $this->readableRefusal($data) : null;
+            if (null === $message) {
+                $message = $data['message'] ?? $response_body.'';
+                if (!is_string($message)) {
+                    $message = json_encode($message);
+                }
             }
             if (400 === $status) {
                 throw new BadRequestException('The Sync Core responded with 400 Bad Request for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$message, $status, $response->getReasonPhrase(), $response_body);
@@ -1317,5 +1330,24 @@ class SyncCore implements ISyncCore
         }
 
         return $relative;
+    }
+
+    /**
+     * The reason a refusal body gives in words, preceded by the path of the
+     * refused field when the body names it; null when the body gives none.
+     */
+    private function readableRefusal(array $data): ?string
+    {
+        $summary = $data[self::REFUSAL_SUMMARY] ?? null;
+        if (!is_string($summary) || '' === trim($summary)) {
+            return null;
+        }
+
+        $property = $data[self::REFUSAL_PROPERTY] ?? null;
+        if (!is_string($property) || '' === trim($property)) {
+            return $summary;
+        }
+
+        return $property.': '.$summary;
     }
 }
