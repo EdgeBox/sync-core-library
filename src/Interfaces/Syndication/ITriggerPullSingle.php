@@ -75,7 +75,10 @@ interface ITriggerPullSingle
      *                           the Sync Core whichever exception is thrown,
      *                           so a caller never sends it again in its place
      * @throws \InvalidArgumentException an ID of the item, the Flow or a Pool
-     *                                   is empty, `.`, `..` or `0`
+     *                                   is empty, `.`, `..` or `0`, before the
+     *                                   pull is sent; or, after it was sent,
+     *                                   the answer carries an enum value the
+     *                                   task model does not declare
      */
     public function executeOnce(bool $configuration_access);
 

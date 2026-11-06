@@ -73,6 +73,10 @@ interface ISyndicationService
      * Read the Flows, Pools and entity types the pull dashboard offers this
      * site.
      *
+     * This method and the five after it return the generated model of their
+     * route, which throws an \InvalidArgumentException for a value of an enum
+     * field that the model does not declare.
+     *
      * @param bool $configuration_access whether to read with the site's
      *                                   configuration scope, as the dashboard
      *                                   does for an administrator, rather than
@@ -81,6 +85,8 @@ interface ISyndicationService
      * @return PullDashboardConfiguration
      *
      * @throws SyncCoreException
+     * @throws \InvalidArgumentException the answer carries an enum value the
+     *                                   model does not declare
      */
     public function getPullDashboardConfiguration(bool $configuration_access);
 
@@ -109,7 +115,10 @@ interface ISyndicationService
      * @return PreviewsListResponse one page of the content
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`
+     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`,
+     *                                   before anything is sent, or the
+     *                                   answer carries an enum value the
+     *                                   model does not declare
      */
     public function listPreviews(string $flow_id, array $query, bool $configuration_access);
 
@@ -119,7 +128,10 @@ interface ISyndicationService
      * @return SyndicationEntityWithUsage
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task ID is empty, `.`, `..` or `0`
+     * @throws \InvalidArgumentException the task ID is empty, `.`, `..` or `0`,
+     *                                   before anything is sent, or the
+     *                                   answer carries an enum value the
+     *                                   model does not declare
      */
     public function getTask(string $task_id);
 
@@ -131,7 +143,10 @@ interface ISyndicationService
      * @return TaskGroupEntity
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
+     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`,
+     *                                   before anything is sent, or the
+     *                                   answer carries an enum value the
+     *                                   model does not declare
      */
     public function getTaskGroup(string $task_group_id, bool $configuration_access);
 
@@ -141,7 +156,10 @@ interface ISyndicationService
      * @return MigrationSummary
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`
+     * @throws \InvalidArgumentException the task group ID is empty, `.`, `..` or `0`,
+     *                                   before anything is sent, or the
+     *                                   answer carries an enum value the
+     *                                   model does not declare
      */
     public function getTaskGroupSummary(string $task_group_id);
 
@@ -154,7 +172,10 @@ interface ISyndicationService
      *                              the Flow
      *
      * @throws SyncCoreException
-     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`
+     * @throws \InvalidArgumentException the Flow ID is empty, `.`, `..` or `0`,
+     *                                   before anything is sent, or the
+     *                                   answer carries an enum value the
+     *                                   model does not declare
      */
     public function getNewestManualPushTaskGroup(string $flow_id);
 
