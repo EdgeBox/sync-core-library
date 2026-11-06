@@ -19,6 +19,16 @@ use EdgeBox\SyncCore\V2\SyncCore;
 class PullOperation implements IPullOperation
 {
     /**
+     * The key of an entry's language in the serialized response body.
+     */
+    private const BODY_LANGUAGE = 'language';
+
+    /**
+     * The key of the root's translations in the serialized response body.
+     */
+    private const BODY_TRANSLATIONS = 'translations';
+
+    /**
      * @var SyncCore
      */
     protected $core;
@@ -53,6 +63,14 @@ class PullOperation implements IPullOperation
      * @var null|FileEntity
      */
     protected $fileEntity;
+
+    /**
+     * The languages the site stored the pulled content in, keyed by the
+     * source's language.
+     *
+     * @var array<string, string>
+     */
+    private $siteLanguages = [];
 
     /**
      * PullOperation constructor.
@@ -434,11 +452,20 @@ class PullOperation implements IPullOperation
         // Turn objects into arrays
         $data = json_decode(json_encode($data), true);
 
+        if (!empty($this->siteLanguages)) {
+            $data = $this->applySiteLanguages($data);
+        }
+
         if ($entity_deep_link) {
             $data['viewUrl'] = $entity_deep_link;
         }
 
         return $data;
+    }
+
+    public function setSiteLanguages(array $site_languages): void
+    {
+        $this->siteLanguages = $site_languages;
     }
 
     /**
@@ -500,5 +527,94 @@ class PullOperation implements IPullOperation
         $this->fileEntity = $this->core->sendToSyncCoreAndExpect($request, FileEntity::class, IApplicationInterface::SYNC_CORE_PERMISSIONS_CONTENT, false, SyncCore::FILE_DOWNLOAD_RETRY_COUNT);
 
         return $this->fileEntity;
+    }
+
+    /**
+     * Replace the languages of a serialized response body with the ones the
+     * site stored the content in.
+     *
+     * A translation the map moves to a language the root or another moved
+     * translation already has is left out, and so is a translation the map
+     * does not move whose language a moved entry now has: the site stored it
+     * in that entry. Two entries the map does not move are never touched, so
+     * a language the source's body already repeats passes through.
+     */
+    private function applySiteLanguages(array $data): array
+    {
+        // The site's languages the body holds; true where the map moved the
+        // entry holding it there.
+        $held = [];
+
+        $root_language = $this->entryLanguage($data);
+        if (null !== $root_language) {
+            $site_language = $this->siteLanguage($root_language);
+            $held[$site_language] = $site_language !== $root_language;
+            $data[self::BODY_LANGUAGE] = $site_language;
+        }
+
+        if (!isset($data[self::BODY_TRANSLATIONS]) || !is_array($data[self::BODY_TRANSLATIONS])) {
+            return $data;
+        }
+
+        // Moved translations first, so a moved translation is kept over an
+        // unmoved one wherever either stands in the body. Of two translations
+        // moved to one language, the first is kept.
+        $moved = [];
+        $left_out = [];
+        foreach ($data[self::BODY_TRANSLATIONS] as $index => $translation) {
+            $language = $this->entryLanguage($translation);
+            if (null === $language) {
+                continue;
+            }
+            $site_language = $this->siteLanguage($language);
+            if ($site_language === $language) {
+                continue;
+            }
+            $moved[$index] = true;
+            if (isset($held[$site_language])) {
+                $left_out[$index] = true;
+
+                continue;
+            }
+            $held[$site_language] = true;
+            $data[self::BODY_TRANSLATIONS][$index][self::BODY_LANGUAGE] = $site_language;
+        }
+
+        foreach ($data[self::BODY_TRANSLATIONS] as $index => $translation) {
+            $language = $this->entryLanguage($translation);
+            if (null !== $language && !isset($moved[$index]) && !empty($held[$language])) {
+                $left_out[$index] = true;
+            }
+        }
+
+        if (!empty($left_out)) {
+            $data[self::BODY_TRANSLATIONS] = array_values(array_diff_key($data[self::BODY_TRANSLATIONS], $left_out));
+        }
+
+        return $data;
+    }
+
+    /**
+     * The language of a serialized body entry, or null if it names none.
+     *
+     * @param mixed $entry
+     */
+    private function entryLanguage($entry): ?string
+    {
+        if (!is_array($entry) || !isset($entry[self::BODY_LANGUAGE]) || !is_string($entry[self::BODY_LANGUAGE])) {
+            return null;
+        }
+
+        return $entry[self::BODY_LANGUAGE];
+    }
+
+    /**
+     * The language the site stored content of the given source language in.
+     */
+    private function siteLanguage(string $language): string
+    {
+        $site_language = $this->siteLanguages[$language] ?? null;
+
+        return is_string($site_language) && '' !== $site_language ? $site_language : $language;
     }
 }

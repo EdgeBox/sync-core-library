@@ -34,6 +34,7 @@ interface ISyncCore
     public const FEATURE_SKIP_UNCHANGED_TRANSLATIONS = 'syndication:skip-unchanged-translations';
     public const FEATURE_ASYNC_SITE_CONFIG_AVAILABLE = 'site:async-site-config:available';
     public const FEATURE_AIM_EXTERNAL_OUTCOME_AVAILABLE = 'governance:aim-external-outcome:available';
+    public const FEATURE_LANGUAGE_MAPPING_AVAILABLE = 'syndication:language-mapping:available';
 
     /**
      * Default for dev environments.
