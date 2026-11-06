@@ -176,9 +176,9 @@ class TriggerPullSingle implements ITriggerPullSingle
 
         $uuid = $this->uuid;
         $unique_id = $this->uniqueId;
-        if (null === $uuid && !self::sameId($this->createdWith, $unique_id)) {
+        if (null === $uuid && !$this->isCreatedWith($unique_id)) {
             $uuid = $this->createdWith;
-        } elseif (null === $unique_id && !self::sameId($this->createdWith, $uuid)) {
+        } elseif (null === $unique_id && !$this->isCreatedWith($uuid)) {
             $unique_id = $this->createdWith;
         }
         $this->dto->setRemoteUuid($uuid);
@@ -186,10 +186,11 @@ class TriggerPullSingle implements ITriggerPullSingle
     }
 
     /**
-     * Whether two IDs are the same, as a UUID is in either case.
+     * Whether the ID is the one the pull was created with, as a UUID is in
+     * either case.
      */
-    private static function sameId(?string $id, ?string $other): bool
+    private function isCreatedWith(?string $id): bool
     {
-        return null !== $id && null !== $other && 0 === strcasecmp($id, $other);
+        return null !== $id && null !== $this->createdWith && 0 === strcasecmp($id, $this->createdWith);
     }
 }
