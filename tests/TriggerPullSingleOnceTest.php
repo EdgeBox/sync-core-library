@@ -93,6 +93,27 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(['content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
+    public function testAPullThatNamesNoPoolIsSentWithoutAPoolList(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->executeOnce(false)
+        ;
+
+        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+    }
+
+    public function testAPullFromAPoolIsSentWithThatPool(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->fromPool('content')
+            ->executeOnce(false)
+        ;
+
+        $this->assertSame(['content'], $this->sentBody()['poolMachineNames']);
+    }
+
     public function testATaskWithoutItsIdHasNoId(): void
     {
         $pull = $this->service([$this->json(['status' => '100-initializing'])])
