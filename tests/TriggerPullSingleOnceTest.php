@@ -18,7 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * A single pull sent once: never again after a connection failure, since
  * through a Flow that pulls copies a second request creates a second copy.
- * The request it sends is the one ->execute() sends too.
+ * ->execute() sends the same request body.
  *
  * @internal
  */
