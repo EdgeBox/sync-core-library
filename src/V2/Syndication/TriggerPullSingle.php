@@ -59,7 +59,6 @@ class TriggerPullSingle implements ITriggerPullSingle
 
         $this->dto = new CreateTaskDto();
         $this->dto->setFlowMachineName($flow_id);
-        $this->dto->setPoolMachineNames([]);
         $this->dto->setEntityTypeNamespaceMachineName($namespace_machine_name);
         $this->dto->setEntityTypeMachineName($machine_name);
 
@@ -73,7 +72,9 @@ class TriggerPullSingle implements ITriggerPullSingle
     // TODO: Drupal: Support multiple pools.
     public function fromPool(string $pool_id)
     {
-        $pools = $this->dto->getPoolMachineNames();
+        // Left unset until a Pool is named: Sync Core takes any list, even an
+        // empty one, as the Pools to look the item up in.
+        $pools = $this->dto->getPoolMachineNames() ?? [];
         $pools[] = $pool_id;
         $this->dto->setPoolMachineNames($pools);
 
