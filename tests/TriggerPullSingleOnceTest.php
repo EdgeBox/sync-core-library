@@ -93,6 +93,63 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(['content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
+    /**
+     * @return array<string, array{string[]}>
+     */
+    public static function pools(): array
+    {
+        return ['one Pool' => [['content']], 'two Pools' => [['content', 'news']]];
+    }
+
+    public function testAPullNamingNoPoolLeavesThePoolsToTheFlow(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->executeOnce(false)
+        ;
+
+        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+    }
+
+    /**
+     * @param string[] $pools
+     */
+    #[DataProvider('pools')]
+    public function testAPullNamingPoolsIsSentWithExactlyThosePools(array $pools): void
+    {
+        $pull = $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+        ;
+        foreach ($pools as $pool) {
+            $pull->fromPool($pool);
+        }
+
+        $pull->executeOnce(false);
+
+        $this->assertSame($pools, $this->sentBody()['poolMachineNames']);
+    }
+
+    public function testARetriedPullNamingNoPoolLeavesThePoolsToTheFlow(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->execute()
+        ;
+
+        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+    }
+
+    public function testARetriedPullNamingAPoolIsSentWithThatPool(): void
+    {
+        $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+            ->fromPool('content')
+            ->execute()
+        ;
+
+        $this->assertSame(['content'], $this->sentBody()['poolMachineNames']);
+    }
+
     public function testATaskWithoutItsIdHasNoId(): void
     {
         $pull = $this->service([$this->json(['status' => '100-initializing'])])
