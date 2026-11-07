@@ -9,6 +9,9 @@ use EdgeBox\SyncCore\V2\Raw\Model\TaskEntity;
 interface ITriggerPullSingle
 {
     /**
+     * Look the item up in this Pool. A pull that names no Pool looks it up
+     * in the Pools of its Flow.
+     *
      * @return $this
      */
     public function fromPool(string $pool_id);

@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * A single pull sent once: never again after a connection failure, since
  * through a Flow that pulls copies a second request creates a second copy.
+ * The request it sends is the one ->execute() sends too.
  *
  * @internal
  */
@@ -93,14 +94,6 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame(['content'], $this->decodeBearer($this->sentRequest())['scopes']);
     }
 
-    /**
-     * @return array<string, array{string[]}>
-     */
-    public static function pools(): array
-    {
-        return ['one Pool' => [['content']], 'two Pools' => [['content', 'news']]];
-    }
-
     public function testAPullNamingNoPoolLeavesThePoolsToTheFlow(): void
     {
         $this->service([$this->json(['id' => self::TASK_ID])])
@@ -108,7 +101,17 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
             ->executeOnce(false)
         ;
 
-        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+        $body = $this->sentBody();
+        $this->assertSame(self::FLOW_ID, $body['flowMachineName']);
+        $this->assertArrayNotHasKey('poolMachineNames', $body);
+    }
+
+    /**
+     * @return array<string, array{string[]}>
+     */
+    public static function pools(): array
+    {
+        return ['one Pool' => [['content']], 'two Pools' => [['content', 'news']]];
     }
 
     /**
@@ -129,17 +132,19 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
         $this->assertSame($pools, $this->sentBody()['poolMachineNames']);
     }
 
-    public function testARetriedPullNamingNoPoolLeavesThePoolsToTheFlow(): void
+    public function testAPullThroughExecuteNamingNoPoolLeavesThePoolsToTheFlow(): void
     {
         $this->service([$this->json(['id' => self::TASK_ID])])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
             ->execute()
         ;
 
-        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+        $body = $this->sentBody();
+        $this->assertSame(self::FLOW_ID, $body['flowMachineName']);
+        $this->assertArrayNotHasKey('poolMachineNames', $body);
     }
 
-    public function testARetriedPullNamingAPoolIsSentWithThatPool(): void
+    public function testAPullThroughExecuteNamingAPoolIsSentWithThatPool(): void
     {
         $this->service([$this->json(['id' => self::TASK_ID])])
             ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
