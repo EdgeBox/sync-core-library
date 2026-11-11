@@ -100,7 +100,25 @@ final class TriggerPullSingleOnceTest extends SyncCoreTestCase
             ->executeOnce(false)
         ;
 
-        $this->assertArrayNotHasKey('poolMachineNames', $this->sentBody());
+        $body = $this->sentBody();
+        $this->assertSame(self::FLOW_ID, $body['flowMachineName']);
+        $this->assertArrayNotHasKey('poolMachineNames', $body);
+    }
+
+    public function testAPullThatNamesNoPoolIsExecutedWithoutAPoolList(): void
+    {
+        $pull = $this->service([$this->json(['id' => self::TASK_ID])])
+            ->pullSingle(self::FLOW_ID, 'node', 'article', self::UUID)
+        ;
+
+        $pull->execute();
+
+        $this->assertSame(self::TASK_ID, $pull->getId());
+        $this->assertCount(1, $this->history);
+        $body = $this->sentBody();
+        $this->assertSame(self::FLOW_ID, $body['flowMachineName']);
+        $this->assertSame(self::UUID, $body['remoteUuid']);
+        $this->assertArrayNotHasKey('poolMachineNames', $body);
     }
 
     public function testAPullFromAPoolIsSentWithThatPool(): void
