@@ -70,7 +70,7 @@ abstract class MassUpdate
     protected $summary;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $migrationId;
 
@@ -235,6 +235,17 @@ abstract class MassUpdate
     public function execute()
     {
         return $this->executeWithType($this->getMigrationType());
+    }
+
+    /**
+     * The ID of the task group execute() started, to read its status by.
+     *
+     * @return null|string the ID, or null before execute() ran or when the
+     *                     Sync Core's answer named none
+     */
+    public function getMigrationId(): ?string
+    {
+        return $this->migrationId;
     }
 
     protected function updateSummary()

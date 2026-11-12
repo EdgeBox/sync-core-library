@@ -58,4 +58,12 @@ interface IMassPull extends IProgressWithStatus
      * @throws SyncCoreException
      */
     public function execute();
+
+    /**
+     * The ID of the task group execute() started.
+     *
+     * @return null|string the ID, or null before execute() ran or when the
+     *                     Sync Core's answer named none
+     */
+    public function getMigrationId(): ?string;
 }

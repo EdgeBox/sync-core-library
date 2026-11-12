@@ -61,13 +61,18 @@ abstract class SyncCoreTestCase extends TestCase
     }
 
     /**
-     * The decoded body of the request the wrapper sent.
+     * The decoded body of the request the wrapper sent; a body that is not a
+     * JSON object fails the test, so an assertion about the absence of a key
+     * can't pass on it.
      *
      * @return array
      */
     protected function sentBody(int $index = 0): array
     {
-        return json_decode((string) $this->sentRequest($index)->getBody(), true) ?? [];
+        $body = json_decode((string) $this->sentRequest($index)->getBody(), true);
+        $this->assertIsArray($body, 'The request body is a JSON object.');
+
+        return $body;
     }
 
     /**
