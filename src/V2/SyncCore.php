@@ -414,7 +414,12 @@ class SyncCore implements ISyncCore
         } catch (ConnectException $e) {
             $not_sent = self::failedBeforeSending($e);
             if ($retry_count > 1) {
-                return $this->retry($request, $options, $retry_count - 1, $not_sent);
+                try {
+                    return $this->sendRawResponse($request, $options, $retry_count - 1);
+                } catch (ConnectionFailedException $later) {
+                    // The request never left only if this attempt didn't send any of it either.
+                    throw $not_sent ? $later : new TimeoutException($later->getMessage());
+                }
             }
 
             $message = 'The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage();
@@ -432,7 +437,12 @@ class SyncCore implements ISyncCore
 
         if (200 !== $status && 201 !== $status) {
             if ($retry_count > 1 && in_array($status, self::RETRYABLE_STATUS_CODES)) {
-                return $this->retry($request, $options, $retry_count - 1, false);
+                try {
+                    return $this->sendRawResponse($request, $options, $retry_count - 1);
+                } catch (ConnectionFailedException $later) {
+                    // This attempt reached the Sync Core, which answered it.
+                    throw new TimeoutException($later->getMessage());
+                }
             }
 
             $data = json_decode($response_body, true);
@@ -463,52 +473,6 @@ class SyncCore implements ISyncCore
         }
 
         return $response;
-    }
-
-    /**
-     * Send the request again after a failed attempt. A ConnectionFailedException
-     * of a later attempt says the request never left only when no earlier
-     * attempt may have reached the Sync Core either; otherwise it becomes the
-     * TimeoutException it was before.
-     *
-     * @param Request $request the request to send through Guzzle
-     * @param int $retry_count how often to try the request from now on
-     * @param bool $not_sent_yet whether every earlier attempt failed before any of the request was sent
-     *
-     * @throws BadRequestException
-     * @throws ConflictException
-     * @throws ConnectionFailedException
-     * @throws ForbiddenException
-     * @throws NotFoundException
-     * @throws SyncCoreException
-     * @throws TimeoutException
-     */
-    private function retry(Request $request, array $options, int $retry_count, bool $not_sent_yet)
-    {
-        try {
-            return $this->sendRawResponse($request, $options, $retry_count);
-        } catch (ConnectionFailedException $e) {
-            if ($not_sent_yet) {
-                throw $e;
-            }
-
-            throw new TimeoutException($e->getMessage());
-        }
-    }
-
-    /**
-     * Whether Guzzle reports that the request failed before any of it was sent.
-     * Only Guzzle's cURL handler says so, through the cURL error and the number
-     * of request bytes it sent; any other connection failure may have reached
-     * the Sync Core.
-     */
-    private static function failedBeforeSending(ConnectException $e): bool
-    {
-        $context = $e->getHandlerContext();
-
-        return isset($context['errno'], $context['request_size'])
-            && in_array((int) $context['errno'], self::CURL_ERRORS_BEFORE_SENDING, true)
-            && 0 === (int) $context['request_size'];
     }
 
     /**
@@ -1417,5 +1381,23 @@ class SyncCore implements ISyncCore
         }
 
         return $property.': '.$summary;
+    }
+
+    /**
+     * Whether Guzzle reports that a failed connection sent none of the request.
+     * Only Guzzle's cURL handler says so, through the cURL error and the number
+     * of request bytes it sent; any other connection failure may have reached
+     * the Sync Core.
+     *
+     * @param \Throwable $e Guzzle's ConnectException
+     */
+    private static function failedBeforeSending(\Throwable $e): bool
+    {
+        $context = method_exists($e, 'getHandlerContext') ? $e->getHandlerContext() : [];
+
+        return is_array($context)
+            && isset($context['errno'], $context['request_size'])
+            && in_array((int) $context['errno'], self::CURL_ERRORS_BEFORE_SENDING, true)
+            && 0 === (int) $context['request_size'];
     }
 }
