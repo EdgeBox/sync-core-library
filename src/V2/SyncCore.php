@@ -57,7 +57,6 @@ use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
@@ -426,18 +425,16 @@ class SyncCore implements ISyncCore
             $message = 'The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage();
 
             throw $not_sent ? new ConnectionFailedException($message) : new TimeoutException($message);
-        } catch (RequestException $e) {
-            // The transfer failed once it was under way, for example when the
-            // connection broke while the request was sent or its answer read.
-            // Unless cURL reports that none of the request was sent, it may have
-            // reached the Sync Core.
-            if (self::sentNothing($e)) {
-                throw new SyncCoreException($e->getMessage());
+        } catch (GuzzleException $e) {
+            $message = $e->getMessage();
+            // A transfer that failed once it was under way, for example when the
+            // connection broke while the request was sent or its answer read,
+            // may have reached the Sync Core.
+            if (self::failedAfterSending($e)) {
+                throw new TimeoutException('The connection to the Sync Core failed after the request was sent: '.$message);
             }
 
-            throw new TimeoutException('The connection to the Sync Core failed after sending '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
-        } catch (GuzzleException $e) {
-            throw new SyncCoreException($e->getMessage());
+            throw new SyncCoreException($message);
         } catch (\Exception $e) {
             throw new SyncCoreException($e->getMessage());
         }
@@ -1413,19 +1410,27 @@ class SyncCore implements ISyncCore
     }
 
     /**
-     * Whether Guzzle reports that a failed transfer sent none of the request.
-     * Only Guzzle's cURL handler says so, through the number of request bytes
-     * it sent; a failure it reports with an answer, or without that number,
-     * may have reached the Sync Core.
+     * Whether a Guzzle exception other than a ConnectException is a transfer
+     * that failed once it was under way, and so may have reached the Sync
+     * Core. Guzzle reports such a failure as a RequestException, which carries
+     * the handler's context; it sent nothing only when Guzzle's cURL handler
+     * reports no request bytes sent and no answer arrived.
      *
-     * @param RequestException $e Guzzle's exception for a failed transfer
+     * @param \Throwable $e Guzzle's exception
      */
-    private static function sentNothing(RequestException $e): bool
+    private static function failedAfterSending(\Throwable $e): bool
     {
+        if (!method_exists($e, 'getHandlerContext')) {
+            return false;
+        }
+        if (method_exists($e, 'hasResponse') && $e->hasResponse()) {
+            return true;
+        }
+
         $context = $e->getHandlerContext();
 
-        return !$e->hasResponse()
+        return !(is_array($context)
             && isset($context['errno'], $context['request_size'])
-            && 0 === (int) $context['request_size'];
+            && 0 === (int) $context['request_size']);
     }
 }
