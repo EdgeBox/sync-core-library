@@ -4,6 +4,7 @@ namespace EdgeBox\SyncCore\V2;
 
 use EdgeBox\SyncCore\Exception\BadRequestException;
 use EdgeBox\SyncCore\Exception\ConflictException;
+use EdgeBox\SyncCore\Exception\ConnectionFailedException;
 use EdgeBox\SyncCore\Exception\ForbiddenException;
 use EdgeBox\SyncCore\Exception\InternalContentSyncError;
 use EdgeBox\SyncCore\Exception\NotFoundException;
@@ -113,6 +114,14 @@ class SyncCore implements ISyncCore
         // Gateway Timeout
         504,
     ];
+
+    /**
+     * The cURL errors that can stop a request before any of it is sent:
+     * CURLE_COULDNT_RESOLVE_HOST, CURLE_COULDNT_CONNECT,
+     * CURLE_OPERATION_TIMEDOUT and CURLE_SSL_CONNECT_ERROR. Written as numbers
+     * so the library doesn't need the cURL extension to read them.
+     */
+    private const CURL_ERRORS_BEFORE_SENDING = [6, 7, 28, 35];
 
     /**
      * The key of a refusal body's readable reason.
@@ -360,6 +369,7 @@ class SyncCore implements ISyncCore
      * @return mixed
      *
      * @throws BadRequestException
+     * @throws ConnectionFailedException when no attempt sent any of the request
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
@@ -381,6 +391,7 @@ class SyncCore implements ISyncCore
      *
      * @throws BadRequestException
      * @throws ConflictException
+     * @throws ConnectionFailedException when no attempt sent any of the request
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws SyncCoreException
@@ -401,11 +412,14 @@ class SyncCore implements ISyncCore
 
             $response = $this->application->getHttpClient()->send($request, $options);
         } catch (ConnectException $e) {
+            $not_sent = self::failedBeforeSending($e);
             if ($retry_count > 1) {
-                return $this->sendRawResponse($request, $options, $retry_count - 1);
+                return $this->retry($request, $options, $retry_count - 1, $not_sent);
             }
 
-            throw new TimeoutException('The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage());
+            $message = 'The Sync Core did not respond in time for '.$request->getMethod().' '.Helper::obfuscateCredentials($request->getUri()).' '.$e->getMessage();
+
+            throw $not_sent ? new ConnectionFailedException($message) : new TimeoutException($message);
         } catch (GuzzleException $e) {
             throw new SyncCoreException($e->getMessage());
         } catch (\Exception $e) {
@@ -418,7 +432,7 @@ class SyncCore implements ISyncCore
 
         if (200 !== $status && 201 !== $status) {
             if ($retry_count > 1 && in_array($status, self::RETRYABLE_STATUS_CODES)) {
-                return $this->sendRawResponse($request, $options, $retry_count - 1);
+                return $this->retry($request, $options, $retry_count - 1, false);
             }
 
             $data = json_decode($response_body, true);
@@ -449,6 +463,52 @@ class SyncCore implements ISyncCore
         }
 
         return $response;
+    }
+
+    /**
+     * Send the request again after a failed attempt. A ConnectionFailedException
+     * of a later attempt says the request never left only when no earlier
+     * attempt may have reached the Sync Core either; otherwise it becomes the
+     * TimeoutException it was before.
+     *
+     * @param Request $request the request to send through Guzzle
+     * @param int $retry_count how often to try the request from now on
+     * @param bool $not_sent_yet whether every earlier attempt failed before any of the request was sent
+     *
+     * @throws BadRequestException
+     * @throws ConflictException
+     * @throws ConnectionFailedException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws SyncCoreException
+     * @throws TimeoutException
+     */
+    private function retry(Request $request, array $options, int $retry_count, bool $not_sent_yet)
+    {
+        try {
+            return $this->sendRawResponse($request, $options, $retry_count);
+        } catch (ConnectionFailedException $e) {
+            if ($not_sent_yet) {
+                throw $e;
+            }
+
+            throw new TimeoutException($e->getMessage());
+        }
+    }
+
+    /**
+     * Whether Guzzle reports that the request failed before any of it was sent.
+     * Only Guzzle's cURL handler says so, through the cURL error and the number
+     * of request bytes it sent; any other connection failure may have reached
+     * the Sync Core.
+     */
+    private static function failedBeforeSending(ConnectException $e): bool
+    {
+        $context = $e->getHandlerContext();
+
+        return isset($context['errno'], $context['request_size'])
+            && in_array((int) $context['errno'], self::CURL_ERRORS_BEFORE_SENDING, true)
+            && 0 === (int) $context['request_size'];
     }
 
     /**
