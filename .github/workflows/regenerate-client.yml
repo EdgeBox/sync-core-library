@@ -18,6 +18,18 @@
 #
 # With assert_empty the run commits nothing and fails when the generation
 # differs from what is committed, which is how a drift check is run.
+#
+# Every pull request against 4.x runs that drift check on its merge result, so
+# a pull request that edits the generated client by hand, or leaves it behind
+# the document, is red; so is one whose generated directory holds a file the
+# generation does not produce. A dispatched run deletes nothing, so the files
+# its summary counts as no longer generated are deleted by hand in the same
+# pull request. A pull request run never commits and keeps no
+# push credentials in its checkout. A commit a dispatched run pushes starts no
+# pull request run of its own, so that head is checked by the next push to the
+# pull request. A pull request from a fork receives no secrets, so its run fails
+# on the first step; a maintainer pushes its commits to a branch of this
+# repository and opens the pull request from there.
 name: Regenerate the client
 
 on:
@@ -28,9 +40,18 @@ on:
         type: boolean
         required: false
         default: false
+  pull_request:
+    branches:
+      - 4.x
 
 permissions:
   contents: write
+
+# A newer push to the same pull request replaces a check still running for it;
+# a dispatched run is never cancelled.
+concurrency:
+  group: regenerate-client-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   regenerate:
@@ -43,8 +64,14 @@ jobs:
           DOCUMENT_REF: ${{ secrets.OPENAPI_DOCUMENT_REF }}
           DOCUMENT_PATH: ${{ secrets.OPENAPI_DOCUMENT_PATH }}
           DOCUMENT_TOKEN: ${{ secrets.SYNC_CORE_READ_TOKEN }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           set -e
+          if [ -n "$HEAD_REPOSITORY" ] && [ "$HEAD_REPOSITORY" != "$REPOSITORY" ]; then
+            echo "::error::a pull request from a fork has no access to the document; a maintainer pushes its commits to a branch of this repository and opens the pull request from there"
+            exit 1
+          fi
           missing=
           [ -n "$DOCUMENT_REPOSITORY" ] || missing="$missing OPENAPI_DOCUMENT_REPOSITORY"
           [ -n "$DOCUMENT_REF" ] || missing="$missing OPENAPI_DOCUMENT_REF"
@@ -55,10 +82,12 @@ jobs:
             exit 1
           fi
 
+      # Only a dispatched run pushes, so only its checkout keeps the credentials.
       - name: Check out the library
         uses: actions/checkout@v4
         with:
           path: library
+          persist-credentials: ${{ github.event_name == 'workflow_dispatch' }}
 
       # One document, read through the contents API rather than checked out:
       # nothing but the document itself reaches this public repository's runner,
@@ -165,18 +194,27 @@ jobs:
           } | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Fail when the committed client is out of date
-        if: ${{ inputs.assert_empty }}
+        if: ${{ inputs.assert_empty || github.event_name == 'pull_request' }}
         working-directory: library
         run: |
+          failed=
           if [ -n "$(git status --porcelain --untracked-files=all -- src/V2/Raw)" ]; then
             echo "::error::the committed client does not match the OpenAPI document this run read"
             git status --porcelain --untracked-files=all -- src/V2/Raw
+            failed=1
+          fi
+          if [ "$REMOVED" != "0" ]; then
+            echo "::error::src/V2/Raw holds $REMOVED committed files the generation does not produce; delete them by hand"
+            comm -23 "$RUNNER_TEMP/committed.txt" "$RUNNER_TEMP/generated.txt"
+            failed=1
+          fi
+          if [ -n "$failed" ]; then
             exit 1
           fi
           echo "The committed client matches the OpenAPI document this run read."
 
       - name: Commit the regeneration
-        if: ${{ !inputs.assert_empty }}
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.assert_empty }}
         working-directory: library
         env:
           REF_NAME: ${{ github.ref_name }}
