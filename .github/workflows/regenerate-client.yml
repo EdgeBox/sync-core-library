@@ -21,9 +21,13 @@
 #
 # Every pull request against 4.x runs that drift check on its merge result, so
 # a pull request that edits the generated client by hand, or leaves it behind
-# the document, is red. A pull request run never commits. A pull request from a
-# fork receives no secrets, so its run fails on the first step; a maintainer
-# runs the check for it by dispatch with assert_empty.
+# the document, is red; so is one whose generated directory holds a file the
+# generation does not produce. A pull request run never commits and keeps no
+# push credentials in its checkout. A commit a dispatched run pushes starts no
+# pull request run of its own, so that head is checked by the next push to the
+# pull request. A pull request from a fork receives no secrets, so its run fails
+# on the first step; a maintainer pushes its commits to a branch of this
+# repository and opens the pull request from there.
 name: Regenerate the client
 
 on:
@@ -63,7 +67,7 @@ jobs:
         run: |
           set -e
           if [ -n "$HEAD_REPOSITORY" ] && [ "$HEAD_REPOSITORY" != "$REPOSITORY" ]; then
-            echo "::error::a pull request from a fork has no access to the document; a maintainer runs this check by dispatch with assert_empty"
+            echo "::error::a pull request from a fork has no access to the document; a maintainer pushes its commits to a branch of this repository and opens the pull request from there"
             exit 1
           fi
           missing=
@@ -76,10 +80,12 @@ jobs:
             exit 1
           fi
 
+      # Only a dispatched run pushes, so only its checkout keeps the credentials.
       - name: Check out the library
         uses: actions/checkout@v4
         with:
           path: library
+          persist-credentials: ${{ github.event_name == 'workflow_dispatch' }}
 
       # One document, read through the contents API rather than checked out:
       # nothing but the document itself reaches this public repository's runner,
@@ -189,9 +195,18 @@ jobs:
         if: ${{ inputs.assert_empty || github.event_name == 'pull_request' }}
         working-directory: library
         run: |
+          failed=
           if [ -n "$(git status --porcelain --untracked-files=all -- src/V2/Raw)" ]; then
             echo "::error::the committed client does not match the OpenAPI document this run read"
             git status --porcelain --untracked-files=all -- src/V2/Raw
+            failed=1
+          fi
+          if [ "$REMOVED" != "0" ]; then
+            echo "::error::src/V2/Raw holds $REMOVED committed files the generation does not produce"
+            comm -23 "$RUNNER_TEMP/committed.txt" "$RUNNER_TEMP/generated.txt"
+            failed=1
+          fi
+          if [ -n "$failed" ]; then
             exit 1
           fi
           echo "The committed client matches the OpenAPI document this run read."
