@@ -22,7 +22,9 @@
 # Every pull request against 4.x runs that drift check on its merge result, so
 # a pull request that edits the generated client by hand, or leaves it behind
 # the document, is red; so is one whose generated directory holds a file the
-# generation does not produce. A pull request run never commits and keeps no
+# generation does not produce. A dispatched run deletes nothing, so the files
+# its summary counts as no longer generated are deleted by hand in the same
+# pull request. A pull request run never commits and keeps no
 # push credentials in its checkout. A commit a dispatched run pushes starts no
 # pull request run of its own, so that head is checked by the next push to the
 # pull request. A pull request from a fork receives no secrets, so its run fails
@@ -202,7 +204,7 @@ jobs:
             failed=1
           fi
           if [ "$REMOVED" != "0" ]; then
-            echo "::error::src/V2/Raw holds $REMOVED committed files the generation does not produce"
+            echo "::error::src/V2/Raw holds $REMOVED committed files the generation does not produce; delete them by hand"
             comm -23 "$RUNNER_TEMP/committed.txt" "$RUNNER_TEMP/generated.txt"
             failed=1
           fi
