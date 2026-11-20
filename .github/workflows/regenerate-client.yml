@@ -18,6 +18,12 @@
 #
 # With assert_empty the run commits nothing and fails when the generation
 # differs from what is committed, which is how a drift check is run.
+#
+# Every pull request against 4.x runs that drift check on its merge result, so
+# a pull request that edits the generated client by hand, or leaves it behind
+# the document, is red. A pull request run never commits. A pull request from a
+# fork receives no secrets, so its run fails on the first step; a maintainer
+# runs the check for it by dispatch with assert_empty.
 name: Regenerate the client
 
 on:
@@ -28,9 +34,18 @@ on:
         type: boolean
         required: false
         default: false
+  pull_request:
+    branches:
+      - 4.x
 
 permissions:
   contents: write
+
+# A newer push to the same pull request replaces a check still running for it;
+# a dispatched run is never cancelled.
+concurrency:
+  group: regenerate-client-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   regenerate:
@@ -43,8 +58,14 @@ jobs:
           DOCUMENT_REF: ${{ secrets.OPENAPI_DOCUMENT_REF }}
           DOCUMENT_PATH: ${{ secrets.OPENAPI_DOCUMENT_PATH }}
           DOCUMENT_TOKEN: ${{ secrets.SYNC_CORE_READ_TOKEN }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           set -e
+          if [ -n "$HEAD_REPOSITORY" ] && [ "$HEAD_REPOSITORY" != "$REPOSITORY" ]; then
+            echo "::error::a pull request from a fork has no access to the document; a maintainer runs this check by dispatch with assert_empty"
+            exit 1
+          fi
           missing=
           [ -n "$DOCUMENT_REPOSITORY" ] || missing="$missing OPENAPI_DOCUMENT_REPOSITORY"
           [ -n "$DOCUMENT_REF" ] || missing="$missing OPENAPI_DOCUMENT_REF"
@@ -165,7 +186,7 @@ jobs:
           } | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Fail when the committed client is out of date
-        if: ${{ inputs.assert_empty }}
+        if: ${{ inputs.assert_empty || github.event_name == 'pull_request' }}
         working-directory: library
         run: |
           if [ -n "$(git status --porcelain --untracked-files=all -- src/V2/Raw)" ]; then
@@ -176,7 +197,7 @@ jobs:
           echo "The committed client matches the OpenAPI document this run read."
 
       - name: Commit the regeneration
-        if: ${{ !inputs.assert_empty }}
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.assert_empty }}
         working-directory: library
         env:
           REF_NAME: ${{ github.ref_name }}
